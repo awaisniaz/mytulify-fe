@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mytulify — 398+ Online Tools (Free tier + Pro)
 
-## Getting Started
+A fast, privacy-first hub of **398 online tools** across **15 categories**, built with
+Next.js 16, React 19, TypeScript and Tailwind CSS v4. Most browser tools are **free & unlimited**;
+AI and OCR tools include a **free daily allowance** — **Pro** unlocks unlimited runs and removes ads.
+Fully SEO-optimised (per-tool metadata, JSON-LD, sitemap, robots, Open Graph images).
 
-First, run the development server:
+## Categories
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+| Category | Examples |
+|---|---|
+| AI-Powered Tools | Code explainer, SQL generator, regex, README, Docker Compose |
+| Handwriting OCR | Handwriting to text in 30+ languages |
+| DevOps Tools | Kubernetes YAML, nginx, GitHub Actions, crontab |
+| Health & Fitness | BMI, macros, heart rate zones, calories burned |
+| Text Tools | Word counter, case converter, lorem ipsum, morse, diff |
+| Developer Tools | JSON formatter, JWT decoder, regex tester, base64, cron |
+| Security & Password | Password/hash/HMAC/AES, ciphers, token generators |
+| PDF Tools | Merge, split, rotate, watermark, page numbers, images→PDF |
+| Image Tools | Resize, compress, convert, crop, filters, meme, favicon |
+| Color Tools | Picker, converters, palettes, gradients, contrast, shadows |
+| Calculators | BMI, loan, mortgage, age, GPA, scientific, calorie |
+| Unit Converters | Length, weight, temp, units, size charts, time zones |
+| SEO & Web Tools | Meta/OG/schema generators, robots, sitemap, UTM, readability |
+| Social Media Tools | Fancy fonts, fake tweet/IG mockups, hashtags, captions |
+| Converters & Generators | QR, barcode, UUID, JSON↔CSV/YAML/XML, minifiers |
+
+> **All 398 tools are now fully interactive.** PDF protect/unlock and PDF↔Word use browser-based approaches with documented limitations.
+
+## Architecture
+
+```
+src/
+  app/
+    layout.tsx                  Root layout, theme, header/footer, site JSON-LD
+    page.tsx                    Homepage (hero, categories, trending, CTA)
+    [category]/page.tsx         Category listing (SSG + metadata + breadcrumb JSON-LD)
+    [category]/[tool]/page.tsx  Tool page (SSG, SoftwareApplication + FAQ JSON-LD)
+    tools/page.tsx              Searchable all-tools browser
+    sitemap.ts / robots.ts      SEO infra (auto-generated from the catalog)
+  lib/catalog/                  398-tool catalog: typed JSON per category + helpers
+  components/
+    Header / Footer / SearchModal / ThemeToggle / cards
+    tools/
+      ToolRenderer.tsx          Lazy-loads each category's tool bundle by slug
+      reg/<category>.tsx        Maps tool slug → React component (per-category code split)
+      impl/*.tsx                The actual tool implementations + shared engines
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The catalog (`src/lib/catalog`) is the single source of truth — it drives the homepage,
+category pages, search, sitemap and static params. **To add a tool:** add it to the category
+JSON, then map its slug to a component in the matching `reg/<category>.tsx`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Develop
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Sibling repos** (recommended):
 
-## Learn More
+```
+~/tools-hub/           ← this repo — Next.js frontend :3000
+~/tools-hub-backend/   ← Express API — auth & payments :4000
+```
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Frontend only
+npm install
+npm run dev              # http://localhost:3000
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Backend (separate terminal, sibling folder)
+cd ../tools-hub-backend && npm install && npm run dev   # :4000
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Or both from tools-hub:
+npm run dev:all
 
-## Deploy on Vercel
+# First-time payments setup (syncs secrets across both repos)
+npm run setup:payments
+npm run payments:check
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build            # production build
+npm start                # serve production build
+npm run lint
+npm run brand:check
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Set `NEXT_PUBLIC_SITE_URL` to your domain so canonical URLs / sitemap / OG tags are correct.
+Backend URL defaults to `http://localhost:4000` via `NEXT_PUBLIC_API_URL` in `.env.local`.
+
+## Tech
+
+Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · Tailwind v4 ·
+lucide-react · pdf-lib · qrcode · jsbarcode · crypto-js · js-yaml · marked · fuse.js · html-to-image

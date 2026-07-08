@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx prisma *)",
+      "Bash(export DATABASE_URL=\"postgresql://u:p@localhost:5432/db?schema=public\")",
+      "Bash(export DATABASE_URL=\"postgresql://intel:intel_dev_pw@localhost:55433/product_intel?schema=public\")",
+      "Bash(curl -s -w \"\\\\nHTTP %{http_code}\\\\n\" http://localhost:4100/v1/health)",
+      "Bash(curl -s -w \"\\\\nHTTP %{http_code}\\\\n\" http://localhost:4777/v1/health)",
+      "Bash(curl -s -w \" HTTP %{http_code}\\\\n\" http://localhost:4777/v1/v1/health)",
+      "Bash(pkill -f \"apps/backend/dist/main.js\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3777/)",
+      "Bash(curl -s http://localhost:3777/)"
+    ],
+    "additionalDirectories": [
+      "/home/zigron/product-intel/apps/backend/prisma",
+      "/home/zigron/product-intel",
+      "/home/zigron/product-intel/apps/backend/src"
+    ]
+  }
+}

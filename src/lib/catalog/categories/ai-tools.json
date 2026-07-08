@@ -1,0 +1,17 @@
+{
+  "name": "AI-Powered Tools",
+  "slug": "ai-tools",
+  "description": "AI assistants for developers — explain code, generate SQL, debug errors, write commits, docs and tests, powered by a large language model.",
+  "tools": [
+    { "name": "AI Code Explainer", "slug": "code-explainer", "description": "Paste code and get a plain-English explanation, with likely bugs flagged. Beginner or expert depth.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": false },
+    { "name": "AI SQL Query Generator", "slug": "sql-query-generator", "description": "Describe a query in English and get correct SQL for Postgres, MySQL, SQLite or T-SQL, explained back to you.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": false },
+    { "name": "AI Error Diagnoser", "slug": "error-diagnoser", "description": "Paste an error or stack trace and get the root cause plus the exact code fix as a diff.", "searchVolume": "medium", "competition": "low", "complexity": "hard", "clientSide": false },
+    { "name": "AI Code Review Assistant", "slug": "code-review-assistant", "description": "Get feedback on your code split into Security, Performance and Style sections.", "searchVolume": "medium", "competition": "medium", "complexity": "hard", "clientSide": false },
+    { "name": "AI Regex Generator", "slug": "regex-generator", "description": "Turn a plain-English description into a working regular expression, with an explanation and examples.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": false },
+    { "name": "AI Commit Message Generator", "slug": "commit-message-generator", "description": "Turn a git diff into a clean commit message — Conventional Commits, Gitmoji or plain style.", "searchVolume": "medium", "competition": "low", "complexity": "hard", "clientSide": false },
+    { "name": "AI README Generator", "slug": "readme-generator", "description": "Generate a professional README.md from your project details, auto-detecting the stack from package.json.", "searchVolume": "medium", "competition": "medium", "complexity": "hard", "clientSide": false },
+    { "name": "AI Test Case Generator", "slug": "test-case-generator", "description": "Paste a function and get a thorough test suite for Jest, PyTest or JUnit covering edge cases.", "searchVolume": "medium", "competition": "low", "complexity": "hard", "clientSide": false },
+    { "name": "AI Docker Compose Generator", "slug": "docker-compose-generator", "description": "Describe your services or pick a stack template (MERN, Laravel+MySQL+Redis, Django+Postgres) and get a valid docker-compose.yml.", "searchVolume": "medium", "competition": "low", "complexity": "hard", "clientSide": false },
+    { "name": "AI Cron Expression Explainer", "slug": "cron-explainer", "description": "Convert plain English to a cron expression or explain any cron expression, with timezone-aware next run times.", "searchVolume": "medium", "competition": "low", "complexity": "hard", "clientSide": false }
+  ]
+}

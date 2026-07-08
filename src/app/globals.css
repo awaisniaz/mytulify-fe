@@ -1,26 +1,203 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8f7f4;
+  --surface: #ffffff;
+  --surface-solid: #ffffff;
+  --surface-2: #f0efeb;
+  --foreground: #1c1917;
+  --muted: #78716c;
+  --border: #e7e5e4;
+  --brand: #ea580c;
+  --brand-2: #c2410c;
+  --brand-fg: #ffffff;
+  --ring: #ea580c;
+}
+
+.dark {
+  --background: #0c0a09;
+  --surface: #1c1917;
+  --surface-solid: #1c1917;
+  --surface-2: #292524;
+  --foreground: #fafaf9;
+  --muted: #a8a29e;
+  --border: #292524;
+  --brand: #fb923c;
+  --brand-2: #ea580c;
+  --brand-fg: #0c0a09;
+  --ring: #fb923c;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-solid: var(--surface-solid);
+  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-brand: var(--brand);
+  --color-brand-2: var(--brand-2);
+  --color-brand-fg: var(--brand-fg);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+* { border-color: var(--border); }
+html { scroll-behavior: smooth; }
+
+body {
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--background);
+}
+
+/* LCP hero uses system font — avoids waiting for Geist extrabold webfont */
+.hero-lcp {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Below-fold sections skip layout until near viewport */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+}
+
+.glass-solid { background: var(--surface-solid); border: 1px solid var(--border); }
+.gradient-text { color: var(--brand); }
+.gradient-border { border: 1px solid var(--border); }
+.aurora, .bg-grid, .bg-dots { display: none; }
+
+::selection {
+  background: color-mix(in srgb, var(--brand) 30%, transparent);
+}
+
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 9999px; }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up { animation: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.animate-fade-in { animation: fade-in 0.3s ease both; }
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-scale-in { animation: scale-in 0.35s ease both; }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+/* marquee removed from UI — keep keyframes unused */
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--border) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 0.75rem;
+}
+
+.animate-float, .glow-pulse, .animate-pulse-soft { animation: none; }
+
+.interactive-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.interactive-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.12);
+}
+.dark .interactive-card:hover {
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.45);
+}
+
+.tool-panel {
+  border-radius: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+}
+@media (min-width: 640px) { .tool-panel { padding: 1.75rem; } }
+
+.section-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.faq-item summary { list-style: none; cursor: pointer; user-select: none; }
+.faq-item summary::-webkit-details-marker { display: none; }
+
+.input-glow { transition: border-color 0.2s, box-shadow 0.2s; }
+.input-glow:focus-within {
+  border-color: var(--brand) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 15%, transparent);
+}
+
+.prose-tool h2 { font-size: 1.25rem; font-weight: 700; }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 0.35rem 0.8rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+.pill:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+/* colored tile for bento */
+.tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.tile:hover {
+  transform: scale(1.02);
+  box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.25);
+}
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 55%);
+  pointer-events: none;
 }

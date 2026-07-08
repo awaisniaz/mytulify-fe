@@ -1,0 +1,17 @@
+{
+  "name": "Health & Fitness",
+  "slug": "health-tools",
+  "description": "Free health and fitness calculators — hydration, macros, heart-rate zones, training and more. Instant, private and running entirely in your browser.",
+  "tools": [
+    { "name": "Water Intake Calculator", "slug": "water-intake-calculator", "description": "Estimate your daily water needs based on weight, exercise and climate, shown in litres, cups and bottles.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true },
+    { "name": "Macro Calculator", "slug": "macro-calculator", "description": "Split your daily calories into protein, carbs and fat with diet-style presets and a per-meal breakdown.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
+    { "name": "Heart Rate Zone Calculator", "slug": "heart-rate-zone-calculator", "description": "Calculate your 5 training heart-rate zones using the Karvonen method with your resting heart rate.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
+    { "name": "Calories Burned Calculator", "slug": "calories-burned-calculator", "description": "Estimate calories burned for dozens of activities using MET values, your weight and duration.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
+    { "name": "One Rep Max Calculator", "slug": "one-rep-max-calculator", "description": "Estimate your 1RM from a lift and reps, with a full percentage-of-max training table.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
+    { "name": "Running Pace Calculator", "slug": "pace-calculator", "description": "Turn a distance and time into pace per km and per mile, plus projected 5K, 10K, half and marathon times.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
+    { "name": "Blood Alcohol (BAC) Calculator", "slug": "bac-calculator", "description": "Estimate blood alcohol concentration with the Widmark formula and a time-to-sober estimate.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
+    { "name": "Protein Intake Calculator", "slug": "protein-intake-calculator", "description": "Find your daily protein target range based on body weight and your goal.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
+    { "name": "Waist-to-Hip Ratio Calculator", "slug": "waist-to-hip-ratio-calculator", "description": "Calculate your waist-to-hip ratio and see your health-risk category by sex.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
+    { "name": "Body Surface Area Calculator", "slug": "body-surface-area-calculator", "description": "Compute body surface area with the Mosteller and Du Bois formulas side by side.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true }
+  ]
+}
