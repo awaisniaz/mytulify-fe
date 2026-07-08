@@ -6,6 +6,7 @@ import { socialMeta } from "@/lib/seo";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { LazyEnhancements } from "@/components/LazyEnhancements";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { themeScript } from "@/lib/theme-script";
 
 const geistSans = Geist({
@@ -66,6 +67,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className="flex min-h-full flex-col">
+        <GoogleAnalytics />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
