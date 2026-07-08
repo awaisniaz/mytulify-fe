@@ -1,22 +1,17 @@
 import Link from "next/link";
 import { NAV_CATEGORIES } from "@/lib/catalog/nav";
-import { site } from "@/lib/site";
 import { Icon } from "@/components/ui/Icon";
 import { ThemeToggleButton } from "@/components/ThemeToggleButton";
 import { UserMenu } from "@/components/auth/UserMenu";
+import { SiteLogo } from "@/components/SiteLogo";
 import { cn } from "@/lib/utils";
 
 /** Fully server-rendered — search/theme need no React hydration. */
 export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-surface lg:bg-surface/90 lg:backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5 font-extrabold tracking-tight">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-brand to-amber-500 text-white shadow-sm">
-            <Icon name="Wand2" className="h-4 w-4" />
-          </span>
-          <span>{site.name}</span>
-        </Link>
+      <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center gap-3 px-4 sm:px-6">
+        <SiteLogo logoHeight={64} />
 
         <nav className="ml-4 hidden items-center gap-1 lg:flex">
           <div className="group relative">

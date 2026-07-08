@@ -41,6 +41,7 @@ const jsonLd = [
     "@type": "Organization",
     name: site.name,
     url: site.url,
+    logo: `${site.url}/logo.png`,
     description: site.description,
     sameAs: [`https://twitter.com/${site.twitter.replace("@", "")}`],
   },
@@ -50,7 +51,7 @@ const jsonLd = [
     name: site.name,
     url: site.url,
     description: site.description,
-    publisher: { "@type": "Organization", name: site.name, url: site.url },
+    publisher: { "@type": "Organization", name: site.name, url: site.url, logo: `${site.url}/logo.png` },
     potentialAction: {
       "@type": "SearchAction",
       target: `${site.url}/tools?q={search_term_string}`,

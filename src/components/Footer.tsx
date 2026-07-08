@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CATEGORIES, TOTAL_TOOLS } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { messaging } from "@/lib/messaging";
+import { SiteLogo } from "@/components/SiteLogo";
 
 export function Footer() {
   return (
@@ -9,7 +10,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_2fr]">
           <div>
-            <p className="font-bold">{site.name}</p>
+            <SiteLogo logoHeight={56} nameClassName="font-bold" />
             <p className="mt-2 max-w-xs text-sm text-muted">{site.description}</p>
             <p className="mt-3 text-sm font-medium text-muted">{messaging.footerNote}</p>
           </div>
