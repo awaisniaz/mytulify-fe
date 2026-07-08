@@ -10,8 +10,8 @@ import { cn } from "@/lib/utils";
 export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-surface lg:bg-surface/90 lg:backdrop-blur-md">
-      <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center gap-3 px-4 sm:px-6">
-        <SiteLogo logoHeight={64} />
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
+        <SiteLogo logoHeight={44} />
 
         <nav className="ml-4 hidden items-center gap-1 lg:flex">
           <div className="group relative">

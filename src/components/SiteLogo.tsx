@@ -19,7 +19,7 @@ type SiteLogoProps = {
 
 /** Brand mark — transparent PNG from /public/logo.png */
 export function SiteLogo({
-  logoHeight = 52,
+  logoHeight = 44,
   showName = true,
   className,
   nameClassName,
