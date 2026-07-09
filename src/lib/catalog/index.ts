@@ -2,7 +2,7 @@ import type { Category, CategoryData, CategoryMeta, Tool } from "./types";
 import { ocrCatalogTools } from "../ai/tools";
 import { isToolAvailable } from "./availability";
 
-export { isToolAvailable, COMING_SOON_KEYS } from "./availability";
+export { isToolAvailable, COMING_SOON_KEYS, LIVE_SERVER_TOOLS } from "./availability";
 
 import textTools from "./categories/text-tools.json";
 import aiTools from "./categories/ai-tools.json";

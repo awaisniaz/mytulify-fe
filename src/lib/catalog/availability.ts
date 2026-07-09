@@ -5,10 +5,13 @@ export function toolKey(category: string, slug: string): string {
   return `${category}/${slug}`;
 }
 
-/** Server-side / AI-dependent tools are visible but not usable yet. */
+/** Server-side tools that are live (others stay coming soon). */
+export const LIVE_SERVER_TOOLS = new Set<string>([]);
+
 export function isToolAvailable(tool: { category?: string; slug: string; clientSide?: boolean }): boolean {
   if (!tool.category) return true;
-  if (COMING_SOON_KEYS.has(toolKey(tool.category, tool.slug))) return false;
-  if (tool.clientSide === false) return false;
+  const key = toolKey(tool.category, tool.slug);
+  if (COMING_SOON_KEYS.has(key)) return false;
+  if (tool.clientSide === false) return LIVE_SERVER_TOOLS.has(key);
   return true;
 }

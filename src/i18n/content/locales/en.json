@@ -72,6 +72,10 @@
     }
   },
   "tools": {
+    "ai-tools/ai-form-builder": {
+      "name": "AI Form Builder",
+      "description": "Pick from 60+ ready-made forms worldwide or describe a custom form in any language. Edit fields, branding, digital signature, scan from image, and download PDF."
+    },
     "ai-tools/code-explainer": {
       "name": "AI Code Explainer",
       "description": "Paste code and get a plain-English explanation, with likely bugs flagged. Beginner or expert depth."

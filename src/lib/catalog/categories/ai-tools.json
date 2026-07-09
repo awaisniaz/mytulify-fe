@@ -3,6 +3,7 @@
   "slug": "ai-tools",
   "description": "AI assistants for developers — explain code, generate SQL, debug errors, write commits, docs and tests, powered by a large language model.",
   "tools": [
+    { "name": "AI Form Builder", "slug": "ai-form-builder", "description": "60+ ready-made forms from any country, or describe a custom form in any language. Edit, brand, sign, scan from image, download PDF.", "searchVolume": "high", "competition": "low", "complexity": "hard", "clientSide": false },
     { "name": "AI Code Explainer", "slug": "code-explainer", "description": "Paste code and get a plain-English explanation, with likely bugs flagged. Beginner or expert depth.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": false },
     { "name": "AI SQL Query Generator", "slug": "sql-query-generator", "description": "Describe a query in English and get correct SQL for Postgres, MySQL, SQLite or T-SQL, explained back to you.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": false },
     { "name": "AI Error Diagnoser", "slug": "error-diagnoser", "description": "Paste an error or stack trace and get the root cause plus the exact code fix as a diff.", "searchVolume": "medium", "competition": "low", "complexity": "hard", "clientSide": false },
