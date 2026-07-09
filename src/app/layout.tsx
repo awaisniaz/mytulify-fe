@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Noto_Nastaliq_Urdu } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 import { socialMeta } from "@/lib/seo";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { LazyEnhancements } from "@/components/LazyEnhancements";
+import { LazyEnhancementsShell } from "@/components/LazyEnhancementsShell";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { themeScript } from "@/lib/theme-script";
+import { getLocale } from "@/i18n/locale";
+import { getMessaging } from "@/i18n/messaging";
+import { localeDir } from "@/i18n/config";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,23 +20,34 @@ const geistSans = Geist({
   preload: true,
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: {
-    default: `${site.name} — ${site.tagline}`,
-    template: `%s · ${site.name}`,
-  },
-  description: site.description,
-  keywords: [...site.keywords],
-  applicationName: site.name,
-  authors: [{ name: site.name }],
-  ...socialMeta({
-    title: `${site.name} — ${site.tagline}`,
-    description: site.description,
-    url: site.url,
-  }),
-  robots: { index: true, follow: true },
-};
+const notoUrdu = Noto_Nastaliq_Urdu({
+  variable: "--font-urdu",
+  subsets: ["arabic"],
+  weight: ["400", "600", "700"],
+  display: "swap",
+});
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const messaging = await getMessaging(locale);
+  return {
+    metadataBase: new URL(site.url),
+    title: {
+      default: `${site.name} — ${messaging.tagline}`,
+      template: `%s · ${site.name}`,
+    },
+    description: messaging.siteDescription,
+    keywords: [...site.keywords],
+    applicationName: site.name,
+    authors: [{ name: site.name }],
+    ...socialMeta({
+      title: `${site.name} — ${messaging.tagline}`,
+      description: messaging.siteDescription,
+      url: site.url,
+    }),
+    robots: { index: true, follow: true },
+  };
+}
 
 const jsonLd = [
   {
@@ -60,9 +74,18 @@ const jsonLd = [
   },
 ];
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const locale = await getLocale();
+  const dir = localeDir(locale);
+
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`${geistSans.variable} h-full`} suppressHydrationWarning>
+    <html
+      lang={locale}
+      dir={dir}
+      data-scroll-behavior="smooth"
+      className={`${geistSans.variable} ${notoUrdu.variable} h-full`}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -72,7 +95,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
-        <LazyEnhancements />
+        <LazyEnhancementsShell />
       </body>
     </html>
   );

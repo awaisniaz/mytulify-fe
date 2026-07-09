@@ -1,14 +1,21 @@
 import Link from "next/link";
 import { CATEGORIES, TOTAL_TOOLS, featuredTools, toolHref } from "@/lib/catalog";
-import { messaging } from "@/lib/messaging";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
+import { getLocale } from "@/i18n/locale";
+import { getMessages } from "@/i18n/messages";
+import { getMessaging, categoryLabelFrom } from "@/i18n/messaging";
+import { getContent, localizeTool } from "@/i18n/content";
 
 const HERO_CATS = CATEGORIES.slice(0, 6);
 const QUICK_TOOLS = featuredTools(8);
 
-/** Server-rendered hero — no client JS required for LCP. */
-export function HomeHero() {
+export async function HomeHero() {
+  const locale = await getLocale();
+  const t = await getMessages(locale);
+  const messaging = await getMessaging(locale);
+  const content = await getContent(locale);
+
   return (
     <>
       <section className="overflow-hidden border-b border-border">
@@ -22,7 +29,7 @@ export function HomeHero() {
             <h1 className="hero-lcp mt-5 text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.25rem]">
               {messaging.heroTitleLead}
               <br />
-              <span className="text-brand">everything</span> you do.
+              <span className="text-brand">{t.home.heroEverything}</span> {t.home.heroYouDo}
             </h1>
 
             <p className="mt-4 max-w-md text-base leading-relaxed text-muted">
@@ -34,27 +41,30 @@ export function HomeHero() {
               method="get"
               className="input-glow mt-7 flex items-center gap-2 rounded-2xl border-2 border-border bg-surface p-2 shadow-sm"
             >
-              <Icon name="Search" className="ml-2 h-5 w-5 shrink-0 text-muted" />
+              <Icon name="Search" className="ms-2 h-5 w-5 shrink-0 text-muted" />
               <input
                 name="q"
                 type="search"
-                placeholder={`Search ${TOTAL_TOOLS}+ tools…`}
+                placeholder={t.home.searchPlaceholder(TOTAL_TOOLS)}
                 className="h-12 flex-1 bg-transparent text-base outline-none placeholder:text-muted"
               />
               <button
                 type="submit"
                 className="h-12 shrink-0 rounded-xl bg-brand px-5 text-sm font-bold text-brand-fg transition-colors hover:bg-brand-2"
               >
-                Go
+                {t.home.go}
               </button>
             </form>
 
             <div className="mt-5 flex flex-wrap gap-2">
-              {featuredTools(4).map((t) => (
-                <Link key={toolHref(t)} href={toolHref(t)} prefetch={false} className="pill text-xs">
-                  {t.name}
-                </Link>
-              ))}
+              {featuredTools(4).map((tool) => {
+                const label = localizeTool(content, tool);
+                return (
+                  <Link key={toolHref(tool)} href={toolHref(tool)} prefetch={false} className="pill text-xs">
+                    {label.name}
+                  </Link>
+                );
+              })}
             </div>
           </div>
 
@@ -75,10 +85,10 @@ export function HomeHero() {
                   <Icon name={c.icon} className={cn("opacity-90", i === 0 ? "h-8 w-8" : "h-5 w-5")} />
                   <div>
                     <p className={cn("font-bold leading-tight", i === 0 ? "text-lg sm:text-xl" : "text-xs sm:text-sm")}>
-                      {c.name}
+                      {categoryLabelFrom(t, c.slug, c.name)}
                     </p>
                     {i === 0 && (
-                      <p className="mt-1 text-sm text-white/75">{c.tools.length} tools</p>
+                      <p className="mt-1 text-sm text-white/75">{t.home.toolsInCategory(c.tools.length)}</p>
                     )}
                   </div>
                 </div>
@@ -88,21 +98,23 @@ export function HomeHero() {
         </div>
       </section>
 
-      {/* Static quick links — no infinite marquee (saves CPU / TBT) */}
       <div className="border-b border-border bg-surface py-3">
         <div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-2 px-4 sm:px-6">
-          {QUICK_TOOLS.map((t) => (
-            <Link
-              key={toolHref(t)}
-              href={toolHref(t)}
-              prefetch={false}
-              className="pill text-xs"
-            >
-              {t.name}
-            </Link>
-          ))}
+          {QUICK_TOOLS.map((tool) => {
+            const label = localizeTool(content, tool);
+            return (
+              <Link
+                key={toolHref(tool)}
+                href={toolHref(tool)}
+                prefetch={false}
+                className="pill text-xs"
+              >
+                {label.name}
+              </Link>
+            );
+          })}
           <Link href="/tools" prefetch={false} className="pill text-xs font-semibold text-brand">
-            All tools →
+            {t.home.allToolsArrow}
           </Link>
         </div>
       </div>

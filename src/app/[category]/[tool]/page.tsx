@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ALL_TOOLS, getCategory, getTool, isToolAvailable, relatedTools, toolHref } from "@/lib/catalog";
+import { ALL_TOOLS, getCategory, getTool, getToolIcon, getToolIconPresentation, TOOL_BADGE_BG, isToolAvailable, relatedTools, toolHref } from "@/lib/catalog";
 import { ToolRenderer } from "@/components/tools/ToolRenderer";
+import { ComingSoon } from "@/components/tools/reg/_util";
 import { Icon } from "@/components/ui/Icon";
 import { Badge } from "@/components/ui/primitives";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
-import { messaging } from "@/lib/messaging";
 import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
 import { socialMeta } from "@/lib/seo";
+import { getLocale } from "@/i18n/locale";
+import {
+  buildFaq, getContent, localizeCategory, localizeTool, toolAboutText, toolMeta,
+} from "@/i18n/content";
 
 export function generateStaticParams() {
   return ALL_TOOLS.map((t) => ({ category: t.category!, tool: t.slug }));
@@ -23,46 +27,20 @@ export async function generateMetadata({
   const { category, tool } = await params;
   const t = getTool(category, tool);
   if (!t) return {};
-  const title = messaging.toolMetaTitle(t.name);
-  const desc = t.clientSide
-    ? messaging.toolMetaClient(t.description)
-    : messaging.toolMetaAi(t.description);
-  const available = isToolAvailable(t);
+  const locale = await getLocale();
+  const content = await getContent(locale);
+  const label = localizeTool(content, t);
+  const meta = toolMeta(content, label.name, label.description, t.clientSide);
   return {
-    title,
-    description: desc,
+    title: meta.title,
+    description: meta.description,
     alternates: { canonical: toolHref(t) },
-    ...(available ? {} : { robots: { index: false, follow: true } }),
     ...socialMeta({
-      title: `${t.name} · ${site.name}`,
-      description: desc,
+      title: `${label.name} · ${site.name}`,
+      description: meta.description,
       url: toolHref(t),
     }),
   };
-}
-
-function faqFor(name: string, desc: string, clientSide: boolean) {
-  return [
-    {
-      q: `Is the ${name} free to use?`,
-      a: messaging.faqIsFree(name, clientSide),
-    },
-    clientSide
-      ? {
-          q: `Is my data safe with the ${name}?`,
-          a: `Absolutely. ${name} runs entirely in your browser — your data is never uploaded to any server.`,
-        }
-      : {
-          q: `How is my data handled by the ${name}?`,
-          a: `${name} sends your input to our server, which securely calls an AI model to generate the result. We don't store your inputs — but avoid pasting secrets or sensitive data, and always review AI output before relying on it.`,
-        },
-    {
-      q: `How does the ${name} work?`,
-      a: clientSide
-        ? `${desc} Just enter your input and the result is generated instantly on your device.`
-        : `${desc} Enter your input and an AI model generates the result in a few seconds.`,
-    },
-  ];
 }
 
 export default async function ToolPage({
@@ -74,17 +52,29 @@ export default async function ToolPage({
   const t = getTool(category, tool);
   if (!t) notFound();
   const cat = getCategory(category)!;
+  const locale = await getLocale();
+  const content = await getContent(locale);
+  const label = localizeTool(content, t);
+  const catLabel = localizeCategory(content, cat.slug, {
+    name: cat.name,
+    description: cat.description,
+    tagline: cat.tagline,
+  });
   const related = relatedTools(t, 6);
-  const faq = faqFor(t.name, t.description, t.clientSide);
+  const faq = buildFaq(content, label.name, label.description, t.clientSide);
+  const present = getToolIconPresentation(t);
+  const s = content.strings;
+  const perDay = s.perDayFree.replace("{limit}", String(FREE_AI_DAILY_LIMIT));
+  const available = isToolAvailable(t);
 
   const jsonLd = [
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      name: t.name,
+      name: label.name,
       applicationCategory: "UtilitiesApplication",
       operatingSystem: "Any (Web)",
-      description: t.description,
+      description: label.description,
       url: `${site.url}${toolHref(t)}`,
       offers: {
         "@type": "Offer",
@@ -99,9 +89,9 @@ export default async function ToolPage({
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: site.url },
-        { "@type": "ListItem", position: 2, name: cat.name, item: `${site.url}/${cat.slug}` },
-        { "@type": "ListItem", position: 3, name: t.name, item: `${site.url}${toolHref(t)}` },
+        { "@type": "ListItem", position: 1, name: s.home, item: site.url },
+        { "@type": "ListItem", position: 2, name: catLabel.name, item: `${site.url}/${cat.slug}` },
+        { "@type": "ListItem", position: 3, name: label.name, item: `${site.url}${toolHref(t)}` },
       ],
     },
     {
@@ -119,61 +109,76 @@ export default async function ToolPage({
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="mb-6 flex flex-wrap items-center gap-1.5 text-sm text-muted">
-        <Link href="/" className="hover:text-foreground">Home</Link>
+        <Link href="/" className="hover:text-foreground">{s.home}</Link>
         <Icon name="ChevronRight" className="h-4 w-4" />
-        <Link href={`/${cat.slug}`} className="hover:text-foreground">{cat.name}</Link>
+        <Link href={`/${cat.slug}`} className="hover:text-foreground">{catLabel.name}</Link>
         <Icon name="ChevronRight" className="h-4 w-4" />
-        <span className="text-foreground">{t.name}</span>
+        <span className="text-foreground">{label.name}</span>
       </nav>
 
-      {/* Header */}
       <div className="rounded-xl border border-border bg-surface p-6 sm:p-8">
         <div className="flex items-start gap-4">
-          <span className={cn("grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white", cat.gradient)}>
-            <Icon name={cat.icon} className="h-6 w-6" />
+          <span
+            className={cn(
+              "relative grid h-14 w-14 shrink-0 place-items-center rounded-xl ring-1",
+              present.bg,
+              present.ring,
+            )}
+            title={present.badge}
+          >
+            <Icon name={getToolIcon(t)} className={cn("h-6 w-6", present.fg)} />
+            <span className={cn("absolute -bottom-1 -right-1 rounded px-1 text-[9px] font-bold leading-tight text-white", TOOL_BADGE_BG[present.badge] ?? "bg-orange-500")}>
+              {present.badge}
+            </span>
           </span>
           <div>
-            <p className="section-label mb-1">{cat.name}</p>
-            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{t.name}</h1>
-            <p className="mt-2 max-w-2xl leading-relaxed text-muted">{t.description}</p>
+            <p className="section-label mb-1">{catLabel.name}</p>
+            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{label.name}</h1>
+            <p className="mt-2 max-w-2xl leading-relaxed text-muted">{label.description}</p>
             <div className="mt-4 flex flex-wrap gap-2">
             {t.clientSide ? (
               <>
-                <Badge tone="green"><Icon name="Lock" className="mr-1 h-3 w-3" /> Private</Badge>
-                <Badge tone="brand"><Icon name="Zap" className="mr-1 h-3 w-3" /> Instant</Badge>
+                <Badge tone="green"><Icon name="Lock" className="mr-1 h-3 w-3" /> {s.private}</Badge>
+                <Badge tone="brand"><Icon name="Zap" className="mr-1 h-3 w-3" /> {s.instant}</Badge>
               </>
             ) : (
               <>
-                <Badge tone="brand"><Icon name="Sparkles" className="mr-1 h-3 w-3" /> AI-Powered</Badge>
-                <Badge tone="amber"><Icon name="Zap" className="mr-1 h-3 w-3" /> {FREE_AI_DAILY_LIMIT}/day on Free</Badge>
+                <Badge tone="brand"><Icon name="Sparkles" className="mr-1 h-3 w-3" /> {s.aiPowered}</Badge>
+                {available ? (
+                  <Badge tone="amber"><Icon name="Zap" className="mr-1 h-3 w-3" /> {perDay}</Badge>
+                ) : (
+                  <Badge tone="amber"><Icon name="Sparkles" className="mr-1 h-3 w-3" /> {s.comingSoon}</Badge>
+                )}
               </>
             )}
-            {t.searchVolume === "high" && <Badge tone="amber"><Icon name="Zap" className="mr-1 h-3 w-3" /> Popular</Badge>}
+            {t.searchVolume === "high" && <Badge tone="amber"><Icon name="Zap" className="mr-1 h-3 w-3" /> {s.popular}</Badge>}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Tool */}
       <div className="tool-panel mt-8 shadow-sm">
-        <ToolRenderer category={cat.slug} slug={t.slug} />
+        {available ? (
+          <ToolRenderer category={cat.slug} slug={t.slug} />
+        ) : (
+          <ComingSoon
+            badge={s.comingSoon}
+            title={s.comingSoonTitle}
+            description={s.comingSoonBody}
+          />
+        )}
       </div>
 
-      {/* About */}
       <section className="mt-12 prose-tool">
-        <h2 className="text-xl font-bold">About the {t.name}</h2>
+        <h2 className="text-xl font-bold">{s.aboutTool.replace("{name}", label.name)}</h2>
         <p className="mt-3 text-muted">
-          {t.clientSide
-            ? messaging.toolAboutClient(t.name, t.description)
-            : messaging.toolAboutAi(t.name, t.description)}
+          {toolAboutText(content, label.name, label.description, t.clientSide)}
         </p>
       </section>
 
-      {/* FAQ */}
       <section className="mt-10">
-        <h2 className="text-xl font-bold">Frequently asked questions</h2>
+        <h2 className="text-xl font-bold">{s.faqTitle}</h2>
         <div className="mt-4 space-y-3">
           {faq.map((f) => (
             <details key={f.q} className="faq-item group rounded-xl border border-border bg-surface">
@@ -187,23 +192,25 @@ export default async function ToolPage({
         </div>
       </section>
 
-      {/* Related */}
       {related.length > 0 && (
         <section className="mt-12">
-          <h2 className="mb-4 text-xl font-bold">Related {cat.name.toLowerCase()}</h2>
+          <h2 className="mb-4 text-xl font-bold">{s.relatedTools.replace("{category}", catLabel.name.toLowerCase())}</h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {related.map((r) => (
-              <Link
-                key={r.slug}
-                href={toolHref(r)}
-                className="interactive-card flex items-center gap-3 rounded-xl border border-border bg-surface p-4"
-              >
-                <span className="grid h-9 w-9 place-items-center rounded-lg bg-brand/10 text-brand">
-                  <Icon name={cat.icon} className="h-4 w-4" />
-                </span>
-                <span className="text-sm font-medium">{r.name}</span>
-              </Link>
-            ))}
+            {related.map((r) => {
+              const rLabel = localizeTool(content, r);
+              return (
+                <Link
+                  key={r.slug}
+                  href={toolHref(r)}
+                  className="interactive-card flex items-center gap-3 rounded-xl border border-border bg-surface p-4"
+                >
+                  <span className="grid h-9 w-9 place-items-center rounded-lg bg-brand/10 text-brand">
+                    <Icon name={getToolIcon(r)} className="h-4 w-4" />
+                  </span>
+                  <span className="text-sm font-medium">{rLabel.name}</span>
+                </Link>
+              );
+            })}
           </div>
         </section>
       )}

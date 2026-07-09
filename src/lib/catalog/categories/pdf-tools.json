@@ -32,6 +32,15 @@
     { "name": "PDF Page Counter", "slug": "pdf-page-counter", "description": "Instantly count the number of pages in a PDF.", "searchVolume": "low", "competition": "low", "complexity": "easy", "clientSide": true },
     { "name": "Duplicate PDF Pages", "slug": "duplicate-pdf-pages", "description": "Copy and repeat selected pages within a PDF.", "searchVolume": "low", "competition": "low", "complexity": "easy", "clientSide": true },
     { "name": "PDF to Word", "slug": "pdf-to-word", "description": "Convert a PDF into an editable DOC/DOCX document.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": false },
-    { "name": "Word to PDF", "slug": "word-to-pdf", "description": "Convert DOC/DOCX documents into PDF files.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": false }
+    { "name": "Word to PDF", "slug": "word-to-pdf", "description": "Convert DOC/DOCX documents into PDF files.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": false },
+    { "name": "TXT to PDF", "slug": "txt-to-pdf", "description": "Convert plain text files into a formatted PDF document.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
+    { "name": "CSV to PDF", "slug": "csv-to-pdf", "description": "Turn CSV spreadsheet data into a readable PDF.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
+    { "name": "Excel to PDF", "slug": "excel-to-pdf", "description": "Convert CSV exports from Excel into PDF files.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
+    { "name": "PDF to Excel", "slug": "pdf-to-excel", "description": "Extract PDF table data and download as CSV for Excel.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
+    { "name": "EPUB to PDF", "slug": "epub-to-pdf", "description": "Convert EPUB ebooks to PDF for printing or sharing.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "CBZ to PDF", "slug": "cbz-to-pdf", "description": "Convert CBZ comic archives to a single PDF.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "PDF to CBZ", "slug": "pdf-to-cbz", "description": "Convert PDF pages into a CBZ comic archive.", "searchVolume": "low", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "PDF to PDF/A", "slug": "pdf-to-pdf-a", "description": "Prepare PDFs for long-term archival (PDF/A style export).", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "Bank Statement to Excel", "slug": "bank-statement-to-excel", "description": "Extract bank statement PDF data to CSV for Excel.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": true }
   ]
 }

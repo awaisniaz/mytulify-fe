@@ -32,6 +32,21 @@
     { "name": "Blur Image", "slug": "blur-image", "description": "Apply adjustable blur to all or part of an image.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
     { "name": "Pixelate Image", "slug": "pixelate-image", "description": "Pixelate or censor regions of an image.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
     { "name": "Image to PDF", "slug": "image-to-pdf", "description": "Convert images into a single downloadable PDF.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true },
-    { "name": "Circle Crop Image", "slug": "circle-crop-image", "description": "Crop an image into a transparent circle.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true }
+    { "name": "Circle Crop Image", "slug": "circle-crop-image", "description": "Crop an image into a transparent circle.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "JFIF to JPG", "slug": "jfif-to-jpg", "description": "Convert JFIF images to standard JPG format in your browser.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
+    { "name": "JFIF to PNG", "slug": "jfif-to-png", "description": "Convert JFIF images to lossless PNG format.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
+    { "name": "BMP to JPG", "slug": "bmp-to-jpg", "description": "Convert BMP bitmap images to compressed JPG files.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
+    { "name": "BMP to PDF", "slug": "bmp-to-pdf", "description": "Merge BMP images into a single PDF document.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
+    { "name": "AVIF to JPG", "slug": "avif-to-jpg", "description": "Convert modern AVIF images to widely supported JPG.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
+    { "name": "AVIF to WebP", "slug": "avif-to-webp", "description": "Convert AVIF images to efficient WebP format.", "searchVolume": "low", "competition": "low", "complexity": "easy", "clientSide": true },
+    { "name": "GIF Maker", "slug": "gif-maker", "description": "Create animated GIFs from multiple images in your browser.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
+    { "name": "GIF Resizer", "slug": "gif-resizer", "description": "Resize animated GIFs with presets or custom dimensions.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "GIF Rotator", "slug": "gif-rotator", "description": "Rotate or flip animated GIFs on every frame.", "searchVolume": "low", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "GIF Trimmer", "slug": "gif-trimmer", "description": "Trim GIF animations to a specific frame range.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "GIF Optimizer", "slug": "gif-optimizer", "description": "Compress and optimize GIF file size in your browser.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "GIF to Video", "slug": "gif-to-video", "description": "Convert animated GIFs to WebM video.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "GIF to PNG", "slug": "gif-to-png", "description": "Extract all GIF frames as PNG images in a ZIP.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "GIF to JPG", "slug": "gif-to-jpg", "description": "Extract all GIF frames as JPG images in a ZIP.", "searchVolume": "low", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "GIF to WebP", "slug": "gif-to-webp", "description": "Convert GIF animation frames to WebP images.", "searchVolume": "low", "competition": "low", "complexity": "medium", "clientSide": true }
   ]
 }

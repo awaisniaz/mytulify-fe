@@ -1,0 +1,81 @@
+{
+  "nav": {
+    "categories": "Categories",
+    "allTools": "All Tools",
+    "pricing": "Pricing",
+    "search": "Search",
+    "menu": "Menu",
+    "toolsCount": "{n} tools"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "managePro": "Manage Pro",
+    "upgradePro": "Upgrade to Pro"
+  },
+  "home": {
+    "explore": "Explore",
+    "pickCategory": "Pick a category",
+    "pickCategorySub": "{n}+ tools, organized for you.",
+    "seeAll": "See all",
+    "trending": "Trending",
+    "trendingTitle": "Most popular right now",
+    "valuePrivate": "Private",
+    "valuePrivateDesc": "Runs in your browser",
+    "valueInstant": "Instant",
+    "valueInstantDesc": "No waiting around",
+    "valueOnline": "Online",
+    "valueOnlineDesc": "Works everywhere",
+    "ctaTitle": "Start using tools now",
+    "browseAll": "Browse all tools",
+    "searchAll": "Search all tools",
+    "heroEverything": "everything",
+    "heroYouDo": "you do.",
+    "searchPlaceholder": "Search {n}+ tools…",
+    "go": "Go",
+    "allToolsArrow": "All tools →",
+    "toolsInCategory": "{n} tools"
+  },
+  "footer": {
+    "allTools": "All Tools",
+    "pricing": "Pricing",
+    "about": "About",
+    "privacy": "Privacy",
+    "copyright": "© {year} {name}"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "We couldn't find that page or tool.",
+    "goHome": "Go home",
+    "browseTools": "Browse tools"
+  },
+  "copy": {
+    "tagline": "{n}+ Online Tools",
+    "taglineWithTier": "{n}+ tools · Free tier + Pro",
+    "siteDescription": "{total}+ online tools across {cats} categories. {client}+ browser tools are free with no signup. AI & OCR tools include {aiLimit} free runs per day — Pro adds unlimited AI and removes ads.",
+    "heroBadge": "{n}+ tools · Free tier + Pro",
+    "heroTitleLead": "Online tools for",
+    "heroSubtitle": "{client}+ browser tools free & unlimited. AI & OCR: {aiLimit} runs/day on Free — Pro for unlimited & no ads.",
+    "footerNote": "{client}+ browser tools free · Pro for unlimited AI",
+    "homeValueFreeTitle": "Free tier",
+    "homeValueFreeDesc": "{client}+ browser tools · {aiLimit} AI runs/day",
+    "homeCtaSubtitle": "{client}+ tools work without signup. AI daily limits on Free — upgrade to Pro anytime."
+  },
+  "categories": {
+    "ai-tools": "AI-Powered Tools",
+    "handwriting-ocr": "Handwriting OCR",
+    "devops-tools": "DevOps Tools",
+    "health-tools": "Health & Fitness",
+    "text-tools": "Text Tools",
+    "developer-tools": "Developer Tools",
+    "security-password-tools": "Security & Password Tools",
+    "pdf-tools": "PDF Tools",
+    "image-tools": "Image Tools",
+    "color-tools": "Color Tools",
+    "calculators": "Calculators",
+    "unit-converters": "Unit Converters",
+    "seo-web-tools": "SEO & Web Tools",
+    "social-media-tools": "Social Media Tools",
+    "converters-generators": "Converters & Generators"
+  }
+}

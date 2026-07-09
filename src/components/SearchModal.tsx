@@ -4,11 +4,19 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
-import { AVAILABLE_TOOLS, CATEGORIES, TOTAL_TOOLS, toolHref } from "@/lib/catalog";
+import { toolHref, getToolIcon, getToolIconPresentation, isToolAvailable } from "@/lib/catalog";
+import type { SearchStrings, SearchTool } from "@/components/LazyEnhancements";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 
-export function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+type Props = {
+  open: boolean;
+  onClose: () => void;
+  tools: SearchTool[];
+  strings: SearchStrings;
+};
+
+export function SearchModal({ open, onClose, tools, strings }: Props) {
   const [q, setQ] = useState("");
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -17,17 +25,23 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
 
   const fuse = useMemo(
     () =>
-      new Fuse(AVAILABLE_TOOLS, {
-        keys: ["name", "description", "slug"],
+      new Fuse(tools, {
+        keys: ["name", "description", "slug", "categoryName"],
         threshold: 0.4,
       }),
-    [],
+    [tools],
   );
 
   const results = useMemo(() => {
-    if (!q.trim()) return AVAILABLE_TOOLS.filter((t) => t.searchVolume === "high").slice(0, 8);
+    if (!q.trim()) return tools.filter((t) => t.searchVolume === "high").slice(0, 8);
     return fuse.search(q).slice(0, 10).map((r) => r.item);
-  }, [q, fuse]);
+  }, [q, fuse, tools]);
+
+  const resultsLabel = q.trim()
+    ? results.length === 1
+      ? strings.resultsOne
+      : strings.resultsMany.replace("{n}", String(results.length))
+    : strings.trendingHint;
 
   useEffect(() => {
     if (open) {
@@ -81,7 +95,7 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Search tools"
+        aria-label={strings.ariaLabel}
         className="glass gradient-border relative w-full max-w-xl overflow-hidden rounded-2xl shadow-2xl shadow-brand/20 animate-scale-in"
       >
         <div className="input-glow flex items-center gap-3 border-b border-border px-4">
@@ -93,7 +107,7 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
               setQ(e.target.value);
               setActive(0);
             }}
-            placeholder={`Search ${TOTAL_TOOLS}+ tools…`}
+            placeholder={strings.placeholder}
             className="h-14 flex-1 bg-transparent text-base outline-none placeholder:text-muted"
           />
           {q && (
@@ -101,7 +115,7 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
               type="button"
               onClick={() => setQ("")}
               className="grid h-8 w-8 place-items-center rounded-lg text-muted transition-colors hover:bg-surface-2 hover:text-foreground"
-              aria-label="Clear search"
+              aria-label={strings.clear}
             >
               <Icon name="X" className="h-4 w-4" />
             </button>
@@ -111,9 +125,7 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
           </kbd>
         </div>
 
-        <div className="border-b border-border px-4 py-2 text-xs text-muted">
-          {q.trim() ? `${results.length} result${results.length !== 1 ? "s" : ""}` : "Trending tools — use ↑↓ and Enter"}
-        </div>
+        <div className="border-b border-border px-4 py-2 text-xs text-muted">{resultsLabel}</div>
 
         <div ref={listRef} className="max-h-[50vh] overflow-y-auto p-2">
           {results.length === 0 && (
@@ -121,12 +133,13 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
               <span className="grid h-12 w-12 place-items-center rounded-xl bg-surface-2 text-muted">
                 <Icon name="Search" className="h-6 w-6" />
               </span>
-              <p className="text-sm text-muted">No tools found for “{q}”</p>
+              <p className="text-sm text-muted">{strings.noResults.replace("{q}", q)}</p>
             </div>
           )}
           {results.map((t, i) => {
-            const cat = CATEGORIES.find((c) => c.slug === t.category);
+            const present = getToolIconPresentation(t);
             const selected = i === active;
+            const soon = !isToolAvailable(t);
             return (
               <Link
                 key={`${t.category}/${t.slug}`}
@@ -143,18 +156,23 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
               >
                 <span
                   className={cn(
-                    "grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gradient-to-br text-white transition-transform",
-                    cat?.gradient ?? "from-brand to-brand",
+                    "relative grid h-9 w-9 shrink-0 place-items-center rounded-lg ring-1 transition-transform",
+                    present.bg,
+                    present.ring,
                     selected && "scale-105",
                   )}
                 >
-                  <Icon name={cat?.icon ?? "Wrench"} className="h-4 w-4" />
+                  <Icon name={getToolIcon(t)} className={cn("h-4 w-4", present.fg)} />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="flex items-center gap-2">
                     <span className="block truncate font-medium">{t.name}</span>
-                    {cat && (
-                      <span className="hidden truncate text-xs text-muted sm:inline">{cat.name}</span>
+                    {soon ? (
+                      <span className="shrink-0 rounded bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-bold uppercase text-amber-700 dark:text-amber-400">
+                        {strings.comingSoon}
+                      </span>
+                    ) : (
+                      <span className="hidden truncate text-xs text-muted sm:inline">{t.categoryName}</span>
                     )}
                   </span>
                   <span className="block truncate text-xs text-muted">{t.description}</span>

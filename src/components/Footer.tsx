@@ -1,17 +1,23 @@
 import Link from "next/link";
 import { CATEGORIES, TOTAL_TOOLS } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { messaging } from "@/lib/messaging";
 import { SiteLogo } from "@/components/SiteLogo";
+import { getLocale } from "@/i18n/locale";
+import { getMessages } from "@/i18n/messages";
+import { getMessaging, categoryLabelFrom } from "@/i18n/messaging";
 
-export function Footer() {
+export async function Footer() {
+  const locale = await getLocale();
+  const t = await getMessages(locale);
+  const messaging = await getMessaging(locale);
+
   return (
     <footer className="mt-auto border-t border-border bg-surface">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_2fr]">
           <div>
-            <SiteLogo logoHeight={40} nameClassName="font-bold" />
-            <p className="mt-2 max-w-xs text-sm text-muted">{site.description}</p>
+            <SiteLogo logoHeight={24} nameClassName="font-bold text-sm sm:text-base" />
+            <p className="mt-2 max-w-xs text-sm text-muted">{messaging.siteDescription}</p>
             <p className="mt-3 text-sm font-medium text-muted">{messaging.footerNote}</p>
           </div>
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-3">
@@ -20,7 +26,7 @@ export function Footer() {
                 {group.map((c) => (
                   <li key={c.slug}>
                     <Link href={`/${c.slug}`} className="text-muted transition-colors hover:text-foreground">
-                      {c.name}
+                      {categoryLabelFrom(t, c.slug, c.name)}
                     </Link>
                   </li>
                 ))}
@@ -29,12 +35,12 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-sm text-muted sm:flex-row">
-          <p>© {new Date().getFullYear()} {site.name}</p>
+          <p>{t.footer.copyright(new Date().getFullYear(), site.name)}</p>
           <div className="flex items-center gap-5">
-            <Link href="/tools" className="hover:text-foreground">All Tools</Link>
-            <Link href="/pricing" className="hover:text-foreground">Pricing</Link>
-            <Link href="/about" className="hover:text-foreground">About</Link>
-            <Link href="/privacy" className="hover:text-foreground">Privacy</Link>
+            <Link href="/tools" className="hover:text-foreground">{t.footer.allTools}</Link>
+            <Link href="/pricing" className="hover:text-foreground">{t.footer.pricing}</Link>
+            <Link href="/about" className="hover:text-foreground">{t.footer.about}</Link>
+            <Link href="/privacy" className="hover:text-foreground">{t.footer.privacy}</Link>
           </div>
         </div>
       </div>

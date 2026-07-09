@@ -19,7 +19,7 @@ type SiteLogoProps = {
 
 /** Brand mark — transparent PNG from /public/logo.png */
 export function SiteLogo({
-  logoHeight = 44,
+  logoHeight = 30,
   showName = true,
   className,
   nameClassName,
@@ -32,7 +32,7 @@ export function SiteLogo({
       href="/"
       className={cn(
         "flex items-center font-extrabold tracking-tight",
-        gap === "tight" ? "gap-1" : "gap-2",
+        gap === "tight" ? "gap-0.5" : "gap-1.5",
         className,
       )}
     >
@@ -43,10 +43,10 @@ export function SiteLogo({
         height={logoHeight}
         priority
         className="w-auto shrink-0 object-contain"
-        style={{ height: logoHeight, width: "auto", maxWidth: "none" }}
+        style={{ height: logoHeight, width: "auto", maxHeight: logoHeight }}
       />
       {showName ? (
-        <span className={cn("text-lg leading-none sm:text-xl", nameClassName)}>{site.name}</span>
+        <span className={cn("text-base leading-none sm:text-lg", nameClassName)}>{site.name}</span>
       ) : null}
     </Link>
   );

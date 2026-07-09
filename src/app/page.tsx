@@ -1,13 +1,21 @@
 import Link from "next/link";
 import { CATEGORIES, featuredTools, TOTAL_TOOLS, getCategory } from "@/lib/catalog";
-import { messaging } from "@/lib/messaging";
 import { CategoryCard, SectionHeader, ToolCard } from "@/components/cards";
 import { HomeHero } from "@/components/home/HomeHero";
 import { Icon } from "@/components/ui/Icon";
+import { getLocale } from "@/i18n/locale";
+import { getMessages } from "@/i18n/messages";
+import { getMessaging } from "@/i18n/messaging";
+import { getContent, localizeCategory, localizeTool } from "@/i18n/content";
 
-export default function Home() {
+export default async function Home() {
+  const locale = await getLocale();
+  const t = await getMessages(locale);
+  const messaging = await getMessaging(locale);
+  const content = await getContent(locale);
   const featured = featuredTools(12);
   const [big1, big2, ...rest] = CATEGORIES;
+  const toolsCount = (n: number) => t.home.toolsInCategory(n);
 
   return (
     <>
@@ -15,37 +23,58 @@ export default function Home() {
 
       <section className="content-auto mx-auto max-w-7xl px-4 py-14 sm:px-6">
         <SectionHeader
-          label="Explore"
-          title="Pick a category"
-          subtitle={`${TOTAL_TOOLS}+ tools, organized for you.`}
+          label={t.home.explore}
+          title={t.home.pickCategory}
+          subtitle={t.home.pickCategorySub(TOTAL_TOOLS)}
           href="/tools"
-          linkText="See all"
+          linkText={t.home.seeAll}
         />
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {big1 && (
             <div className="sm:col-span-2 lg:row-span-2">
-              <CategoryCard category={big1} featured />
+              <CategoryCard
+                category={big1}
+                featured
+                categoryContent={localizeCategory(content, big1.slug, { name: big1.name, description: big1.description, tagline: big1.tagline })}
+                toolsCountLabel={toolsCount}
+              />
             </div>
           )}
           {big2 && (
             <div className="sm:col-span-2 lg:row-span-2">
-              <CategoryCard category={big2} featured />
+              <CategoryCard
+                category={big2}
+                featured
+                categoryContent={localizeCategory(content, big2.slug, { name: big2.name, description: big2.description, tagline: big2.tagline })}
+                toolsCountLabel={toolsCount}
+              />
             </div>
           )}
           {rest.map((c) => (
-            <CategoryCard key={c.slug} category={c} />
+            <CategoryCard
+              key={c.slug}
+              category={c}
+              categoryContent={localizeCategory(content, c.slug, { name: c.name, description: c.description, tagline: c.tagline })}
+            />
           ))}
         </div>
       </section>
 
       <section className="content-auto border-y border-border bg-surface-2/60 py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <SectionHeader label="Trending" title="Most popular right now" />
+          <SectionHeader label={t.home.trending} title={t.home.trendingTitle} />
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {featured.map((t) => {
-              const cat = getCategory(t.category!);
+            {featured.map((tool) => {
+              const cat = getCategory(tool.category!);
               return (
-                <ToolCard key={`${t.category}/${t.slug}`} tool={t} icon={cat?.icon} accent={cat?.gradient} />
+                <ToolCard
+                  key={`${tool.category}/${tool.slug}`}
+                  tool={tool}
+                  accent={cat?.gradient}
+                  label={localizeTool(content, tool)}
+                  hotLabel={content.strings.hot}
+                  comingSoonLabel={content.strings.comingSoon}
+                />
               );
             })}
           </div>
@@ -55,9 +84,9 @@ export default function Home() {
       <section className="content-auto mx-auto max-w-7xl px-4 py-14 sm:px-6">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            ["Lock", "Private", "Runs in your browser"],
-            ["Zap", "Instant", "No waiting around"],
-            ["Globe", "Online", "Works everywhere"],
+            ["Lock", t.home.valuePrivate, t.home.valuePrivateDesc],
+            ["Zap", t.home.valueInstant, t.home.valueInstantDesc],
+            ["Globe", t.home.valueOnline, t.home.valueOnlineDesc],
             ["Heart", messaging.homeValueFreeTitle, messaging.homeValueFreeDesc],
           ].map(([icon, title, desc]) => (
             <div key={title as string} className="rounded-2xl border border-border bg-surface p-5 text-center">
@@ -73,7 +102,7 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6">
         <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-brand via-orange-500 to-amber-500 px-8 py-14 text-center text-white sm:px-12">
-          <h2 className="text-3xl font-extrabold sm:text-4xl">Start using tools now</h2>
+          <h2 className="text-3xl font-extrabold sm:text-4xl">{t.home.ctaTitle}</h2>
           <p className="mx-auto mt-3 max-w-md text-white/85">
             {messaging.homeCtaSubtitle}
           </p>
@@ -82,14 +111,14 @@ export default function Home() {
               href="/tools"
               className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-brand shadow-lg"
             >
-              Browse all tools
+              {t.home.browseAll}
               <Icon name="ArrowRight" className="h-4 w-4" />
             </Link>
             <Link
               href="/tools"
               className="inline-flex items-center gap-2 rounded-xl border border-white/40 px-6 py-3 text-sm font-bold text-white"
             >
-              Search all tools
+              {t.home.searchAll}
               <Icon name="Search" className="h-4 w-4" />
             </Link>
           </div>

@@ -4,6 +4,9 @@ const TEST_CLIENT = "ca-pub-3940256099942544";
 const TEST_SLOT_LEFT = "1033173712";
 const TEST_SLOT_RIGHT = "6300978111";
 
+/** Filhal ads off — set true (or NEXT_PUBLIC_ADS_ENABLED=true) when AdSense is ready. */
+const ADS_LIVE = false;
+
 const envClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT?.trim();
 const envSlot = process.env.NEXT_PUBLIC_AD_SLOT?.trim() || "";
 
@@ -40,6 +43,7 @@ export const sideRails = {
 
 export const ads = {
   enabled:
+    ADS_LIVE &&
     process.env.NEXT_PUBLIC_ADS_ENABLED !== "false" &&
     Boolean(clientId) &&
     Boolean(sideRails.left || sideRails.right),

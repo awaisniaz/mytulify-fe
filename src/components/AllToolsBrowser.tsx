@@ -2,28 +2,42 @@
 
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ALL_TOOLS, CATEGORIES, TOTAL_TOOLS, getCategory } from "@/lib/catalog";
+import type { Tool } from "@/lib/catalog";
 import { ToolCard } from "@/components/cards";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
+import type { LocalizedTool } from "@/i18n/content";
 
-export function AllToolsBrowser() {
+export type ToolListItem = Tool & { label: LocalizedTool };
+
+type Props = {
+  tools: ToolListItem[];
+  categories: { slug: string; name: string; icon: string; gradient: string }[];
+  totalTools: number;
+  searchPlaceholder: string;
+  allLabel: string;
+  hotLabel: string;
+  clearLabel: string;
+  comingSoonLabel: string;
+};
+
+export function AllToolsBrowser({ tools, categories, totalTools, searchPlaceholder, allLabel, hotLabel, clearLabel, comingSoonLabel }: Props) {
   const params = useSearchParams();
   const [q, setQ] = useState(params.get("q") ?? "");
   const [active, setActive] = useState<string>("all");
 
-  const tools = useMemo(() => {
+  const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
-    return ALL_TOOLS.filter((t) => {
+    return tools.filter((t) => {
       if (active !== "all" && t.category !== active) return false;
       if (!query) return true;
       return (
-        t.name.toLowerCase().includes(query) ||
-        t.description.toLowerCase().includes(query) ||
+        t.label.name.toLowerCase().includes(query) ||
+        t.label.description.toLowerCase().includes(query) ||
         t.slug.replace(/-/g, " ").includes(query)
       );
     });
-  }, [q, active]);
+  }, [q, active, tools]);
 
   return (
     <div>
@@ -32,87 +46,56 @@ export function AllToolsBrowser() {
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder={`Search all ${TOTAL_TOOLS}+ tools…`}
+          placeholder={searchPlaceholder}
           className="h-11 flex-1 bg-transparent text-sm outline-none placeholder:text-muted"
         />
         {q && (
           <button
             type="button"
             onClick={() => setQ("")}
-            className="mr-1 grid h-8 w-8 place-items-center rounded-lg text-muted transition-colors hover:bg-surface-2 hover:text-foreground"
-            aria-label="Clear search"
+            className="mr-2 rounded-lg px-2 py-1 text-xs font-semibold text-muted hover:bg-surface-2"
           >
-            <Icon name="X" className="h-4 w-4" />
+            {clearLabel}
           </button>
         )}
       </div>
 
-      <div className="mt-5 flex flex-wrap gap-2">
-        <Chip active={active === "all"} onClick={() => setActive("all")}>
-          All ({ALL_TOOLS.length})
-        </Chip>
-        {CATEGORIES.map((c) => (
-          <Chip key={c.slug} active={active === c.slug} onClick={() => setActive(c.slug)} icon={c.icon}>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => setActive("all")}
+          className={cn("pill text-xs font-semibold", active === "all" && "ring-2 ring-brand")}
+        >
+          {allLabel} ({totalTools})
+        </button>
+        {categories.map((c) => (
+          <button
+            key={c.slug}
+            type="button"
+            onClick={() => setActive(c.slug)}
+            className={cn(
+              "pill inline-flex items-center gap-1.5 text-xs font-semibold",
+              active === c.slug && "ring-2 ring-brand",
+            )}
+          >
+            <Icon name={c.icon} className="h-3.5 w-3.5 text-brand" />
             {c.name}
-          </Chip>
+          </button>
         ))}
       </div>
 
-      <p className="mt-6 text-sm text-muted">
-        <span className="font-medium text-foreground">{tools.length}</span> tool{tools.length !== 1 ? "s" : ""}
-        {q && <> matching &ldquo;{q}&rdquo;</>}
+      <p className="mt-4 text-sm text-muted">
+        {filtered.length} {filtered.length === 1 ? "tool" : "tools"}
       </p>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {tools.map((t) => (
-          <ToolCard key={`${t.category}/${t.slug}`} tool={t} icon={getCategory(t.category!)?.icon} />
-        ))}
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {filtered.map((t) => {
+          const cat = categories.find((c) => c.slug === t.category);
+          return (
+            <ToolCard key={`${t.category}/${t.slug}`} tool={t} label={t.label} accent={cat?.gradient} hotLabel={hotLabel} comingSoonLabel={comingSoonLabel} />
+          );
+        })}
       </div>
-
-      {tools.length === 0 && (
-        <div className="mt-4 grid animate-fade-up place-items-center gap-3 rounded-2xl border border-dashed border-border bg-surface-2 p-16 text-center">
-          <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand/10 text-brand">
-            <Icon name="Search" className="h-7 w-7" />
-          </span>
-          <p className="font-medium">No tools found</p>
-          <p className="max-w-sm text-sm text-muted">Try a different keyword or clear the category filter.</p>
-          <button
-            type="button"
-            onClick={() => { setQ(""); setActive("all"); }}
-            className="mt-2 rounded-xl border border-border bg-surface px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-2"
-          >
-            Reset filters
-          </button>
-        </div>
-      )}
     </div>
-  );
-}
-
-function Chip({
-  active,
-  onClick,
-  children,
-  icon,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-  icon?: string;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        "flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm font-medium transition-all duration-200 active:scale-[0.98]",
-        active
-          ? "border-transparent bg-gradient-to-r from-brand to-brand-2 text-white shadow-lg shadow-brand/30"
-          : "glass border-border text-foreground hover:border-brand/30 hover:shadow-md",
-      )}
-    >
-      {icon && <Icon name={icon} className="h-4 w-4" />}
-      {children}
-    </button>
   );
 }

@@ -9,6 +9,9 @@ import {
   SalaryCalculator, PaycheckCalculator, SleepCalculator, StdDeviation,
 } from "@/components/tools/impl/calc";
 import { RandomNumber } from "@/components/tools/impl/data";
+import {
+  AfghanDateConverter, ZakatCalculator, TasbihCounter, SalaryTaxCalculator,
+} from "@/components/tools/impl/asli-gap";
 
 export default makeReg({
   "bmi-calculator": BmiCalculator,
@@ -41,4 +44,8 @@ export default makeReg({
   "sleep-calculator": SleepCalculator,
   "random-number-generator": RandomNumber,
   "standard-deviation-calculator": StdDeviation,
+  "zakat-calculator": ZakatCalculator,
+  "afghan-date-converter": AfghanDateConverter,
+  "tasbih-counter": TasbihCounter,
+  "salary-tax-calculator": SalaryTaxCalculator,
 });

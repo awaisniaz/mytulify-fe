@@ -5,8 +5,11 @@ import Link from "next/link";
 import { getStoredUser, logout } from "@/lib/auth/client";
 import { APP_EVENTS, type AuthUser } from "@/lib/auth/config";
 import { Icon } from "@/components/ui/Icon";
+import type { Messages } from "@/i18n/messages";
 
-export function UserMenu() {
+type AuthLabels = Messages["auth"];
+
+export function UserMenu({ labels }: { labels: AuthLabels }) {
   const [user, setUser] = useState<AuthUser | null>(null);
 
   useEffect(() => {
@@ -22,7 +25,7 @@ export function UserMenu() {
         href="/login"
         className="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-brand"
       >
-        Sign in
+        {labels.signIn}
       </Link>
     );
   }
@@ -46,17 +49,17 @@ export function UserMenu() {
         )}
         <Icon name="ChevronDown" className="h-4 w-4 text-muted group-open:rotate-180" />
       </summary>
-      <div className="absolute right-0 top-[calc(100%+0.5rem)] z-50 w-48 rounded-xl border border-border bg-surface p-1 shadow-xl">
+      <div className="absolute end-0 top-[calc(100%+0.5rem)] z-50 w-48 rounded-xl border border-border bg-surface p-1 shadow-xl">
         <p className="truncate px-3 py-2 text-xs text-muted">{user.email}</p>
         <Link href="/pricing" className="block rounded-lg px-3 py-2 text-sm font-medium hover:bg-surface-2">
-          {user.isPro ? "Manage Pro" : "Upgrade to Pro"}
+          {user.isPro ? labels.managePro : labels.upgradePro}
         </Link>
         <button
           type="button"
           onClick={() => void logout()}
-          className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-rose-500 hover:bg-surface-2"
+          className="w-full rounded-lg px-3 py-2 text-start text-sm font-medium text-rose-500 hover:bg-surface-2"
         >
-          Sign out
+          {labels.signOut}
         </button>
       </div>
     </details>

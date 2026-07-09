@@ -32,6 +32,10 @@
     { "name": "Salary Calculator", "slug": "salary-calculator", "description": "Convert pay between hourly, weekly, monthly, and annual rates.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
     { "name": "Sleep Calculator", "slug": "sleep-calculator", "description": "Suggest bedtimes or wake times based on 90-minute sleep cycles.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
     { "name": "Random Number Generator", "slug": "random-number-generator", "description": "Generate random numbers within a custom range with options.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Standard Deviation Calculator", "slug": "standard-deviation-calculator", "description": "Compute mean, variance, and standard deviation for a data set.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true }
+    { "name": "Standard Deviation Calculator", "slug": "standard-deviation-calculator", "description": "Compute mean, variance, and standard deviation for a data set.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "Zakat Calculator", "slug": "zakat-calculator", "description": "Calculate Zakat on gold, silver and wealth in your browser.", "searchVolume": "high", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "Afghan Date Converter", "slug": "afghan-date-converter", "description": "Convert Shamsi (Solar Hijri) dates to Gregorian and back.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
+    { "name": "Tasbih Counter", "slug": "tasbih-counter", "description": "Digital Tasbih counter for dhikr and Islamic remembrance.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
+    { "name": "Salary Tax Calculator", "slug": "salary-tax-calculator", "description": "Estimate income tax and net salary from gross pay.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true }
   ]
 }

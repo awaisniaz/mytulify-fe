@@ -130,3 +130,7 @@ export function searchTools(query: string, limit = 20): Tool[] {
 export function toolHref(tool: Tool): string {
   return `/${tool.category}/${tool.slug}`;
 }
+
+export { getToolIcon } from "./tool-icons";
+export { getToolIconPresentation, TOOL_BADGE_BG } from "./tool-icon-present";
+export type { ToolIconPresentation } from "./tool-icon-present";

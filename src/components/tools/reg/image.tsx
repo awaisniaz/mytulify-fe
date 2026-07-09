@@ -9,6 +9,10 @@ import {
 import { HeicToJpg, PngToSvg, CollageMaker } from "@/components/tools/impl/image-extra";
 import { ImageColorPicker } from "@/components/tools/impl/color";
 import { ImagesToPdf } from "@/components/tools/impl/pdf";
+import {
+  GifMaker, GifResizer, GifRotator, GifTrimmer, GifOptimizer,
+  GifToPng, GifToJpg, GifToWebp, GifToVideo,
+} from "@/components/tools/impl/asli-gap";
 
 export default makeReg({
   "resize-image": ResizeImage,
@@ -41,4 +45,19 @@ export default makeReg({
   "heic-to-jpg": HeicToJpg,
   "png-to-svg": PngToSvg,
   "collage-maker": CollageMaker,
+  "jfif-to-jpg": () => <ImageConvert to="jpeg" />,
+  "jfif-to-png": () => <ImageConvert to="png" />,
+  "bmp-to-jpg": () => <ImageConvert to="jpeg" />,
+  "bmp-to-pdf": ImagesToPdf,
+  "avif-to-jpg": () => <ImageConvert to="jpeg" />,
+  "avif-to-webp": () => <ImageConvert to="webp" />,
+  "gif-maker": GifMaker,
+  "gif-resizer": GifResizer,
+  "gif-rotator": GifRotator,
+  "gif-trimmer": GifTrimmer,
+  "gif-optimizer": GifOptimizer,
+  "gif-to-png": GifToPng,
+  "gif-to-jpg": GifToJpg,
+  "gif-to-webp": GifToWebp,
+  "gif-to-video": GifToVideo,
 });

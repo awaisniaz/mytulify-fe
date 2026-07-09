@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import type { Tool } from "@/lib/catalog";
 
 const SearchModal = dynamic(
   () => import("@/components/SearchModal").then((m) => m.SearchModal),
@@ -13,10 +14,29 @@ const SideAdsMount = dynamic(
   { ssr: false, loading: () => null },
 );
 
+export type SearchTool = Tool & { categoryName: string };
+
+export type SearchStrings = {
+  placeholder: string;
+  ariaLabel: string;
+  trendingHint: string;
+  noResults: string;
+  resultsOne: string;
+  resultsMany: string;
+  clear: string;
+  comingSoon: string;
+};
+
 /**
  * Loads after window load + idle — keeps search, ads, and heavy catalog off the critical path.
  */
-export function LazyEnhancements() {
+export function LazyEnhancements({
+  searchTools,
+  searchStrings,
+}: {
+  searchTools: SearchTool[];
+  searchStrings: SearchStrings;
+}) {
   const [ready, setReady] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [desktop, setDesktop] = useState(false);
@@ -65,7 +85,14 @@ export function LazyEnhancements() {
 
   return (
     <>
-      {searchOpen && <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />}
+      {searchOpen && (
+        <SearchModal
+          open={searchOpen}
+          onClose={() => setSearchOpen(false)}
+          tools={searchTools}
+          strings={searchStrings}
+        />
+      )}
       {desktop && <SideAdsMount />}
     </>
   );

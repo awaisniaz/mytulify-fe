@@ -1,0 +1,81 @@
+{
+  "nav": {
+    "categories": "زمرے",
+    "allTools": "تمام ٹولز",
+    "pricing": "قیمتیں",
+    "search": "تلاش",
+    "menu": "مینو",
+    "toolsCount": "{n} ٹولز"
+  },
+  "auth": {
+    "signIn": "سائن ان",
+    "signOut": "سائن آؤٹ",
+    "managePro": "Pro منظم کریں",
+    "upgradePro": "Pro میں اپ گریڈ"
+  },
+  "home": {
+    "explore": "دریافت کریں",
+    "pickCategory": "زمرہ منتخب کریں",
+    "pickCategorySub": "{n}+ ٹولز، آپ کے لیے ترتیب شدہ۔",
+    "seeAll": "سب دیکھیں",
+    "trending": "مقبول",
+    "trendingTitle": "اب سب سے زیادہ مقبول",
+    "valuePrivate": "نجی",
+    "valuePrivateDesc": "آپ کے براؤزر میں چلتا ہے",
+    "valueInstant": "فوری",
+    "valueInstantDesc": "انتظار نہیں",
+    "valueOnline": "آن لائن",
+    "valueOnlineDesc": "ہر جگہ کام کرتا ہے",
+    "ctaTitle": "ابھی ٹولز استعمال کریں",
+    "browseAll": "تمام ٹولز دیکھیں",
+    "searchAll": "تمام ٹولز تلاش کریں",
+    "heroEverything": "ہر کام",
+    "heroYouDo": "کے لیے۔",
+    "searchPlaceholder": "{n}+ ٹولز تلاش کریں…",
+    "go": "جائیں",
+    "allToolsArrow": "تمام ٹولز ←",
+    "toolsInCategory": "{n} ٹولز"
+  },
+  "footer": {
+    "allTools": "تمام ٹولز",
+    "pricing": "قیمتیں",
+    "about": "ہمارے بارے میں",
+    "privacy": "رازداری",
+    "copyright": "© {year} {name}"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "یہ صفحہ یا ٹول نہیں ملا۔",
+    "goHome": "ہوم پر جائیں",
+    "browseTools": "ٹولز دیکھیں"
+  },
+  "copy": {
+    "tagline": "{n}+ آن لائن ٹولز",
+    "taglineWithTier": "{n}+ ٹولز · مفت + Pro",
+    "siteDescription": "{cats} زمروں میں {total}+ آن لائن ٹولز۔ {client}+ براؤزر ٹولز بغیر سائن اپ مفت۔ AI و OCR پر روز {aiLimit} مفت رن — Pro سے لامحدود AI اور بغیر اشتہارات۔",
+    "heroBadge": "{n}+ ٹولز · مفت + Pro",
+    "heroTitleLead": "آن لائن ٹولز",
+    "heroSubtitle": "{client}+ براؤزر ٹولز مفت و لامحدود۔ AI و OCR: مفت پر روز {aiLimit} رن — Pro سے لامحدود و بغیر اشتہارات۔",
+    "footerNote": "{client}+ براؤزر ٹولز مفت · Pro سے لامحدود AI",
+    "homeValueFreeTitle": "مفت پلان",
+    "homeValueFreeDesc": "{client}+ براؤزر ٹولز · روز {aiLimit} AI رن",
+    "homeCtaSubtitle": "{client}+ ٹولز بغیر سائن اپ۔ مفت پر AI کی حد — Pro کسی وقت اپ گریڈ کریں۔"
+  },
+  "categories": {
+    "ai-tools": "AI ٹولز",
+    "handwriting-ocr": "ہینڈرائٹنگ OCR",
+    "devops-tools": "DevOps ٹولز",
+    "health-tools": "صحت و فٹنس",
+    "text-tools": "ٹیکسٹ ٹولز",
+    "developer-tools": "ڈیولپر ٹولز",
+    "security-password-tools": "سیکیورٹی و پاس ورڈ",
+    "pdf-tools": "PDF ٹولز",
+    "image-tools": "تصویر ٹولز",
+    "color-tools": "رنگ ٹولز",
+    "calculators": "کیلکولیٹر",
+    "unit-converters": "یونٹ کنورٹر",
+    "seo-web-tools": "SEO و ویب ٹولز",
+    "social-media-tools": "سوشل میڈیا ٹولز",
+    "converters-generators": "کنورٹر و جنریٹر"
+  }
+}

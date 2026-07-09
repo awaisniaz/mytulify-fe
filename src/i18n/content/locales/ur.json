@@ -1,0 +1,1749 @@
+{
+  "categories": {
+    "ai-tools": {
+      "name": "AI سے چلنے والے ٹولز",
+      "description": "ڈویلپرز کے لیے AI معاونین — کوڈ کی وضاحت کریں، ایس کیو ایل پیدا کریں، غلطیوں کو ڈیبگ کریں، کمٹ لکھیں، دستاویزات اور ٹیسٹ، ایک بڑے لینگویج ماڈل کے ذریعے تقویت یافتہ۔",
+      "tagline": "ڈویلپرز کے لیے AI معاون"
+    },
+    "calculators": {
+      "name": "کیلکولیٹر",
+      "description": "مالیاتی، صحت، ریاضی، تاریخ اور روزمرہ کے کیلکولیٹر جو مکمل طور پر براؤزر میں چلتے ہیں۔",
+      "tagline": "خزانہ، صحت اور ریاضی۔"
+    },
+    "color-tools": {
+      "name": "رنگین ٹولز",
+      "description": "براؤزر پر مبنی رنگ چننے والے، کنورٹرز، پیلیٹ اور گریڈینٹ جنریٹر۔",
+      "tagline": "پیلیٹ چنیں، تبدیل کریں اور بنائیں"
+    },
+    "converters-generators": {
+      "name": "کنورٹرز اور جنریٹرز",
+      "description": "ڈیولپرز، طلباء اور روزمرہ استعمال کرنے والوں کے لیے کلائنٹ سائیڈ ڈیٹا کنورٹرز اور یوٹیلیٹی جنریٹرز۔",
+      "tagline": "ڈیٹا کنورٹرز اور جنریٹرز"
+    },
+    "developer-tools": {
+      "name": "ڈویلپر ٹولز",
+      "description": "فارمیٹنگ، کنورٹنگ، انکوڈنگ اور ڈیٹا کا معائنہ کرنے کے لیے کلائنٹ سائیڈ کوڈنگ کی افادیت۔",
+      "tagline": "فارمیٹ، کنورٹ اور ڈیبگ کوڈ"
+    },
+    "devops-tools": {
+      "name": "DevOps ٹولز",
+      "description": "بنیادی ڈھانچے، CI/CD اور نیٹ ورکنگ کے لیے کلائنٹ سائیڈ جنریٹر اور تصدیق کنندگان — کنفیگرز، مینی فیسٹس اور اسکرپٹس جنہیں آپ سیدھے اپنے پروجیکٹ میں کاپی کر سکتے ہیں۔",
+      "tagline": "کنفیگس، مینی فیسٹس اور اسکرپٹس"
+    },
+    "health-tools": {
+      "name": "صحت اور تندرستی",
+      "description": "مفت صحت اور تندرستی کیلکولیٹر — ہائیڈریشن، میکروز، دل کی شرح کے زون، تربیت اور مزید۔ فوری، نجی اور مکمل طور پر آپ کے براؤزر میں چل رہا ہے۔",
+      "tagline": "تندرستی، غذائیت اور تندرستی"
+    },
+    "image-tools": {
+      "name": "تصویری ٹولز",
+      "description": "تصاویر کو تبدیل کرنے، سائز تبدیل کرنے، کمپریس کرنے، تراشنے اور ترمیم کرنے کے لیے براؤزر پر مبنی ٹولز۔",
+      "tagline": "تصاویر کا سائز تبدیل کریں، سکیڑیں اور تبدیل کریں۔"
+    },
+    "pdf-tools": {
+      "name": "پی ڈی ایف ٹولز",
+      "description": "پی ڈی ایف فائلوں کو ضم کرنے، تقسیم کرنے، تبدیل کرنے، کمپریس کرنے اور ترمیم کرنے کے لیے براؤزر پر مبنی ٹولز۔",
+      "tagline": "پی ڈی ایف کو ضم، تقسیم اور تبدیل کریں۔"
+    },
+    "security-password-tools": {
+      "name": "سیکیورٹی اور پاس ورڈ ٹولز",
+      "description": "پرائیویسی-پہلے، پاس ورڈز، ہیشنگ، انکرپشن اور کلیدی جنریشن کے لیے براؤزر میں ٹولز۔",
+      "tagline": "پاس ورڈز، ہیشنگ اور کرپٹو"
+    },
+    "seo-web-tools": {
+      "name": "SEO & Web Tools",
+      "description": "Client-side SEO utilities for generating, analyzing, and previewing on-page and technical SEO assets.",
+      "tagline": "On-page & technical SEO"
+    },
+    "social-media-tools": {
+      "name": "Social Media Tools",
+      "description": "Client-side helpers for crafting, styling, and mocking up social media content and posts.",
+      "tagline": "Captions, fonts & mockups"
+    },
+    "text-tools": {
+      "name": "Text Tools",
+      "description": "Browser-based utilities for counting, converting, cleaning, and transforming text.",
+      "tagline": "Write, clean & transform text"
+    },
+    "unit-converters": {
+      "name": "Unit Converters",
+      "description": "Instant client-side converters for length, weight, volume, temperature, and other measurement units.",
+      "tagline": "Convert any unit instantly"
+    }
+  },
+  "tools": {
+    "ai-tools/code-explainer": {
+      "name": "AI کوڈ کی وضاحت کرنے والا",
+      "description": "کوڈ چسپاں کریں اور ایک سادہ انگریزی وضاحت حاصل کریں، ممکنہ طور پر کیڑے نشان زد ہوں۔ ابتدائی یا ماہر گہرائی۔"
+    },
+    "ai-tools/sql-query-generator": {
+      "name": "AI SQL استفسار جنریٹر",
+      "description": "انگریزی میں سوال کی وضاحت کریں اور Postgres، MySQL، SQLite یا T-SQL کے لیے درست SQL حاصل کریں، جس کی آپ کو وضاحت کی گئی ہے۔"
+    },
+    "ai-tools/error-diagnoser": {
+      "name": "AI خرابی کی تشخیص کرنے والا",
+      "description": "ایک خرابی یا اسٹیک ٹریس پیسٹ کریں اور بنیادی وجہ کے علاوہ ایک فرق کے طور پر درست کوڈ کو درست کریں۔"
+    },
+    "ai-tools/code-review-assistant": {
+      "name": "اے آئی کوڈ ریویو اسسٹنٹ",
+      "description": "اپنے کوڈ کو سیکیورٹی، کارکردگی اور طرز کے حصوں میں تقسیم کرنے کے بارے میں تاثرات حاصل کریں۔"
+    },
+    "ai-tools/regex-generator": {
+      "name": "اے آئی ریجیکس جنریٹر",
+      "description": "وضاحت اور مثالوں کے ساتھ ایک سادہ انگریزی وضاحت کو کام کرنے والے باقاعدہ اظہار میں تبدیل کریں۔"
+    },
+    "ai-tools/commit-message-generator": {
+      "name": "AI کمٹ میسج جنریٹر",
+      "description": "گٹ ڈیف کو کلین کمٹ میسج میں تبدیل کریں — روایتی کمٹ، گٹ موجی یا سادہ انداز۔"
+    },
+    "ai-tools/readme-generator": {
+      "name": "AI README جنریٹر",
+      "description": "اپنے پراجیکٹ کی تفصیلات سے ایک پروفیشنل README.md بنائیں، پیکیج.json سے اسٹیک کا خود بخود پتہ لگاتے ہوئے۔"
+    },
+    "ai-tools/test-case-generator": {
+      "name": "AI ٹیسٹ کیس جنریٹر",
+      "description": "ایک فنکشن چسپاں کریں اور Jest، PyTest یا JUnit کورنگ ایج کیسز کے لیے ایک مکمل ٹیسٹ سوٹ حاصل کریں۔"
+    },
+    "ai-tools/docker-compose-generator": {
+      "name": "اے آئی ڈوکر کمپوز جنریٹر",
+      "description": "اپنی خدمات کی وضاحت کریں یا اسٹیک ٹیمپلیٹ (MERN, Laravel+MySQL+Redis, Django+Postgres) چنیں اور ایک درست docker-compose.yml حاصل کریں۔"
+    },
+    "ai-tools/cron-explainer": {
+      "name": "اے آئی کرون ایکسپریشن ایکسپلائنر",
+      "description": "سادہ انگریزی کو کرون ایکسپریشن میں تبدیل کریں یا کسی بھی کرون ایکسپریشن کی وضاحت کریں، ٹائم زون سے آگاہ اگلے رن اوقات کے ساتھ۔"
+    },
+    "calculators/bmi-calculator": {
+      "name": "BMI کیلکولیٹر",
+      "description": "میٹرک یا امپیریل یونٹس میں اونچائی اور وزن سے باڈی ماس انڈیکس کا حساب لگائیں۔"
+    },
+    "calculators/percentage-calculator": {
+      "name": "فیصد کیلکولیٹر",
+      "description": "فیصد، فیصد کی تبدیلی، اور ایک نمبر دوسرے کا کتنا فیصد ہے۔"
+    },
+    "calculators/age-calculator": {
+      "name": "عمر کیلکولیٹر",
+      "description": "تاریخ پیدائش سے سالوں، مہینوں، ہفتوں اور دنوں میں صحیح عمر کا حساب لگائیں۔"
+    },
+    "calculators/loan-calculator": {
+      "name": "قرض کیلکولیٹر",
+      "description": "کسی بھی قرض کے لیے ماہانہ ادائیگی، کل سود اور ادائیگی کا تخمینہ لگائیں۔"
+    },
+    "calculators/mortgage-calculator": {
+      "name": "رہن کیلکولیٹر",
+      "description": "ہوم لون کی ادائیگیوں کا حساب لگائیں بشمول پرنسپل، سود، ٹیکس اور انشورنس۔"
+    },
+    "calculators/compound-interest-calculator": {
+      "name": "مرکب سود کیلکولیٹر",
+      "description": "وقت اور شراکت کے ساتھ کمپاؤنڈنگ کے ساتھ پروجیکٹ کی سرمایہ کاری میں اضافہ۔"
+    },
+    "calculators/tip-calculator": {
+      "name": "ٹپ کیلکولیٹر",
+      "description": "ٹپ کی رقم کا حساب لگائیں اور کل بل کو متعدد لوگوں میں تقسیم کریں۔"
+    },
+    "calculators/discount-calculator": {
+      "name": "ڈسکاؤنٹ کیلکولیٹر",
+      "description": "فروخت کی قیمت اور اصل قیمت اور رعایت فیصد سے محفوظ کردہ رقم تلاش کریں۔"
+    },
+    "calculators/sales-tax-calculator": {
+      "name": "سیلز ٹیکس کیلکولیٹر",
+      "description": "قیمت میں سیلز ٹیکس شامل کریں یا مجموعی رقم سے ٹیکس نکالیں۔"
+    },
+    "calculators/calorie-calculator": {
+      "name": "کیلوری کیلکولیٹر",
+      "description": "دیکھ بھال، نقصان، یا فائدہ کے لیے روزانہ کیلوری کی ضروریات کا اندازہ لگائیں۔"
+    },
+    "calculators/bmr-calculator": {
+      "name": "بی ایم آر کیلکولیٹر",
+      "description": "باقی کیلوری جلانے کا اندازہ لگانے کے لیے بیسل میٹابولک ریٹ کا حساب لگائیں۔"
+    },
+    "calculators/tdee-calculator": {
+      "name": "TDEE کیلکولیٹر",
+      "description": "BMR اور سرگرمی کی سطح سے کل روزانہ توانائی کے اخراجات کا حساب لگائیں۔"
+    },
+    "calculators/body-fat-calculator": {
+      "name": "جسمانی چربی کیلکولیٹر",
+      "description": "امریکی بحریہ کے طریقہ کار کی پیمائش کا استعمال کرتے ہوئے جسم میں چربی کی فیصد کا اندازہ لگائیں۔"
+    },
+    "calculators/ideal-weight-calculator": {
+      "name": "مثالی وزن کیلکولیٹر",
+      "description": "قد، عمر اور جنس کی بنیاد پر صحت مند وزن کی حد تجویز کریں۔"
+    },
+    "calculators/due-date-calculator": {
+      "name": "مقررہ تاریخ کیلکولیٹر",
+      "description": "آخری ماہواری سے حمل کی مقررہ تاریخ کا اندازہ لگائیں۔"
+    },
+    "calculators/ovulation-calculator": {
+      "name": "اوولیشن کیلکولیٹر",
+      "description": "سائیکل ڈیٹا سے زرخیز کھڑکیوں اور بیضہ دانی کے دنوں کی پیش گوئی کریں۔"
+    },
+    "calculators/pregnancy-calculator": {
+      "name": "حمل کیلکولیٹر",
+      "description": "حمل کی پیشرفت، ہفتے کی گنتی، اور اہم سنگ میل کو ٹریک کریں۔"
+    },
+    "calculators/gpa-calculator": {
+      "name": "GPA کیلکولیٹر",
+      "description": "کورس کے درجات اور کریڈٹ اوقات سے گریڈ پوائنٹ اوسط کی گنتی کریں۔"
+    },
+    "calculators/grade-calculator": {
+      "name": "گریڈ کیلکولیٹر",
+      "description": "حتمی یا وزنی درجات اور پاس کرنے کے لیے درکار اسکور کا حساب لگائیں۔"
+    },
+    "calculators/fraction-calculator": {
+      "name": "فریکشن کیلکولیٹر",
+      "description": "حصوں کو شامل کریں، گھٹائیں، ضرب کریں، اور آسان بنائیں۔"
+    },
+    "calculators/scientific-calculator": {
+      "name": "سائنسی کیلکولیٹر",
+      "description": "ٹریگ، لاگز، ایکسپوننٹ، اور مستقل کے ساتھ مکمل فنکشن کیلکولیٹر۔"
+    },
+    "calculators/date-calculator": {
+      "name": "تاریخ کیلکولیٹر",
+      "description": "تاریخ میں دنوں کو شامل یا گھٹائیں اور دو تاریخوں کے درمیان وقفہ تلاش کریں۔"
+    },
+    "calculators/hours-calculator": {
+      "name": "گھنٹے کیلکولیٹر",
+      "description": "ٹائم شیٹس کے لیے دو بار کے درمیان کل گھنٹے اور منٹ کا حساب لگائیں۔"
+    },
+    "calculators/time-duration-calculator": {
+      "name": "وقت کی مدت کیلکولیٹر",
+      "description": "متعدد اکائیوں میں دو تاریخ کے اوقات کے درمیان گزرے ہوئے وقت کی پیمائش کریں۔"
+    },
+    "calculators/countdown-calculator": {
+      "name": "الٹی گنتی کیلکولیٹر",
+      "description": "کسی بھی ہدف کی تاریخ تک دن، گھنٹے اور منٹ گنیں۔"
+    },
+    "calculators/paycheck-calculator": {
+      "name": "پے چیک کیلکولیٹر",
+      "description": "ٹیکس اور عام کٹوتیوں کے بعد گھر لے جانے کی ادائیگی کا تخمینہ لگائیں۔"
+    },
+    "calculators/salary-calculator": {
+      "name": "تنخواہ کیلکولیٹر",
+      "description": "تنخواہ کو فی گھنٹہ، ہفتہ وار، ماہانہ اور سالانہ شرحوں کے درمیان تبدیل کریں۔"
+    },
+    "calculators/sleep-calculator": {
+      "name": "نیند کیلکولیٹر",
+      "description": "سونے کے اوقات یا جاگنے کے اوقات 90 منٹ کے نیند کے چکر کی بنیاد پر تجویز کریں۔"
+    },
+    "calculators/random-number-generator": {
+      "name": "رینڈم نمبر جنریٹر",
+      "description": "اختیارات کے ساتھ حسب ضرورت رینج کے اندر بے ترتیب نمبر بنائیں۔"
+    },
+    "calculators/standard-deviation-calculator": {
+      "name": "معیاری انحراف کیلکولیٹر",
+      "description": "ڈیٹا سیٹ کے لیے اوسط، تغیر، اور معیاری انحراف کی گنتی کریں۔"
+    },
+    "calculators/zakat-calculator": {
+      "name": "زکوٰۃ کیلکولیٹر",
+      "description": "اپنے براؤزر میں سونے، چاندی اور دولت کی زکوٰۃ کا حساب لگائیں۔"
+    },
+    "calculators/afghan-date-converter": {
+      "name": "افغان تاریخ کنورٹر",
+      "description": "شمسی (شمسی ہجری) کی تاریخوں کو گریگورین اور پیچھے میں تبدیل کریں۔"
+    },
+    "calculators/tasbih-counter": {
+      "name": "تسبیح کاؤنٹر",
+      "description": "ذکر اور اسلامی یاد کے لیے ڈیجیٹل تسبیح کاؤنٹر۔"
+    },
+    "calculators/salary-tax-calculator": {
+      "name": "تنخواہ ٹیکس کیلکولیٹر",
+      "description": "مجموعی تنخواہ سے انکم ٹیکس اور خالص تنخواہ کا تخمینہ لگائیں۔"
+    },
+    "color-tools/color-picker": {
+      "name": "رنگ چنندہ",
+      "description": "کوئی بھی رنگ چنیں اور اس کی HEX، RGB، اور HSL قدریں حاصل کریں۔"
+    },
+    "color-tools/hex-to-rgb": {
+      "name": "HEX سے RGB",
+      "description": "HEX کلر کوڈز کو RGB ویلیوز میں تبدیل کریں۔"
+    },
+    "color-tools/rgb-to-hex": {
+      "name": "RGB سے HEX",
+      "description": "RGB قدروں کو HEX کلر کوڈ میں تبدیل کریں۔"
+    },
+    "color-tools/hex-to-hsl": {
+      "name": "HEX سے HSL",
+      "description": "HEX رنگوں کو HSL فارمیٹ میں تبدیل کریں۔"
+    },
+    "color-tools/hsl-to-hex": {
+      "name": "HSL سے HEX",
+      "description": "HSL رنگین اقدار کو HEX کوڈ میں تبدیل کریں۔"
+    },
+    "color-tools/rgb-to-hsl": {
+      "name": "RGB سے HSL",
+      "description": "RGB رنگ کی قدروں کو HSL میں تبدیل کریں۔"
+    },
+    "color-tools/rgb-to-cmyk": {
+      "name": "RGB سے CMYK",
+      "description": "پرنٹنگ کے لیے RGB رنگوں کو CMYK میں تبدیل کریں۔"
+    },
+    "color-tools/cmyk-to-rgb": {
+      "name": "CMYK سے RGB",
+      "description": "CMYK پرنٹ رنگوں کو واپس RGB میں تبدیل کریں۔"
+    },
+    "color-tools/hex-to-cmyk": {
+      "name": "HEX سے CMYK",
+      "description": "HEX کلر کوڈ کو CMYK ویلیوز میں تبدیل کریں۔"
+    },
+    "color-tools/color-palette-generator": {
+      "name": "کلر پیلیٹ جنریٹر",
+      "description": "فوری طور پر ہم آہنگ رنگ پیلیٹ بنائیں۔"
+    },
+    "color-tools/gradient-generator": {
+      "name": "گریڈینٹ جنریٹر",
+      "description": "بصری طور پر CSS لکیری اور ریڈیل گریڈینٹ بنائیں۔"
+    },
+    "color-tools/color-contrast-checker": {
+      "name": "رنگ کنٹراسٹ چیکر",
+      "description": "دو رنگوں کے درمیان WCAG کنٹراسٹ کا تناسب چیک کریں۔"
+    },
+    "color-tools/color-shades-generator": {
+      "name": "کلر شیڈز جنریٹر",
+      "description": "بنیادی رنگ کے گہرے شیڈز بنائیں۔"
+    },
+    "color-tools/color-tints-generator": {
+      "name": "کلر ٹنٹ جنریٹر",
+      "description": "بنیادی رنگ کے ہلکے ٹنٹ بنائیں۔"
+    },
+    "color-tools/color-wheel": {
+      "name": "کلر وہیل",
+      "description": "ایک پہیے پر تکمیلی اور ہم آہنگی والے رنگوں کو دریافت کریں۔"
+    },
+    "color-tools/color-mixer": {
+      "name": "کلر مکسر",
+      "description": "دو رنگوں کو بلینڈ کریں اور ملے جلے نتیجے کا جائزہ لیں۔"
+    },
+    "color-tools/color-blindness-simulator": {
+      "name": "رنگین اندھا پن سمیلیٹر",
+      "description": "رنگوں کا پیش نظارہ کریں جیسا کہ رنگین وژن کی کمی کے ساتھ دیکھا گیا ہے۔"
+    },
+    "color-tools/random-color-generator": {
+      "name": "رینڈم کلر جنریٹر",
+      "description": "ان کے کوڈز کے ساتھ بے ترتیب رنگ پیدا کریں۔"
+    },
+    "color-tools/complementary-color-finder": {
+      "name": "تکمیلی رنگ فائنڈر",
+      "description": "کسی بھی ان پٹ رنگ کے لیے تکمیلی رنگ تلاش کریں۔"
+    },
+    "color-tools/analogous-color-generator": {
+      "name": "یکساں رنگ جنریٹر",
+      "description": "بنیادی رنگ سے یکساں رنگ سکیمیں بنائیں۔"
+    },
+    "color-tools/triadic-color-generator": {
+      "name": "ٹرائیڈک کلر جنریٹر",
+      "description": "سہ رنگی ہم آہنگی کی اسکیمیں بنائیں۔"
+    },
+    "color-tools/monochromatic-color-generator": {
+      "name": "یک رنگی کلر جنریٹر",
+      "description": "سنگل ہیو یک رنگی پیلیٹ بنائیں۔"
+    },
+    "color-tools/color-name-finder": {
+      "name": "رنگ کا نام تلاش کرنے والا",
+      "description": "کسی بھی HEX قدر کے لیے قریب ترین نام کا رنگ تلاش کریں۔"
+    },
+    "color-tools/css-gradient-background-generator": {
+      "name": "CSS گریڈینٹ بیک گراؤنڈ جنریٹر",
+      "description": "کاپی پیسٹ CSS گریڈینٹ پس منظر بنائیں۔"
+    },
+    "color-tools/box-shadow-generator": {
+      "name": "باکس شیڈو جنریٹر",
+      "description": "سی ایس ایس باکس شیڈو کوڈ بنائیں اور پیش نظارہ کریں۔"
+    },
+    "color-tools/text-shadow-generator": {
+      "name": "ٹیکسٹ شیڈو جنریٹر",
+      "description": "لائیو پیش نظارہ کے ساتھ سی ایس ایس ٹیکسٹ شیڈو اثرات بنائیں۔"
+    },
+    "color-tools/hex-color-to-image": {
+      "name": "ہیکس کلر ٹو امیج",
+      "description": "HEX کوڈ سے ٹھوس رنگین تصویر بنائیں۔"
+    },
+    "color-tools/color-from-image": {
+      "name": "تصویر سے رنگ",
+      "description": "اپ لوڈ کردہ تصویر سے براہ راست رنگ چنیں اور نکالیں۔"
+    },
+    "color-tools/hex-to-rgba": {
+      "name": "ہیکس سے RGBA",
+      "description": "الفا چینل کے ساتھ HEX رنگوں کو RGBA میں تبدیل کریں۔"
+    },
+    "color-tools/lighten-darken-color": {
+      "name": "ہلکا اور گہرا رنگ",
+      "description": "کسی رنگ کی ہلکی پن کو فیصد کے حساب سے اوپر یا نیچے ایڈجسٹ کریں۔"
+    },
+    "converters-generators/json-to-csv": {
+      "name": "JSON سے CSV کنورٹر",
+      "description": "JSON صفوں/آبجیکٹ کو ڈاؤن لوڈ کے قابل CSV میں تبدیل کریں۔"
+    },
+    "converters-generators/csv-to-json": {
+      "name": "CSV سے JSON کنورٹر",
+      "description": "ہیڈر میپنگ کے ساتھ CSV کو سٹرکچرڈ JSON میں پارس کریں۔"
+    },
+    "converters-generators/json-formatter": {
+      "name": "JSON فارمیٹر / بیوٹیفائر",
+      "description": "ٹری ویو کے ساتھ JSON کو خوبصورت پرنٹ، چھوٹا اور درست کریں۔"
+    },
+    "converters-generators/json-to-yaml": {
+      "name": "JSON سے YAML کنورٹر",
+      "description": "JSON اور YAML فارمیٹس کے درمیان تبدیل کریں۔"
+    },
+    "converters-generators/xml-to-json": {
+      "name": "XML سے JSON کنورٹر",
+      "description": "XML کو JSON اور پیچھے میں پارس کریں۔"
+    },
+    "converters-generators/base64-encoder-decoder": {
+      "name": "بیس 64 انکوڈر / ڈیکوڈر",
+      "description": "بیس 64 سے ٹیکسٹ اور فائلوں کو انکوڈ اور ڈی کوڈ کریں۔"
+    },
+    "converters-generators/qr-code-generator": {
+      "name": "کیو آر کوڈ جنریٹر",
+      "description": "URLs، متن اور رابطوں کے لیے ڈاؤن لوڈ کے قابل QR کوڈز بنائیں۔"
+    },
+    "converters-generators/barcode-generator": {
+      "name": "بارکوڈ جنریٹر",
+      "description": "Code128، EAN، اور UPC جیسے فارمیٹس میں بارکوڈز بنائیں۔"
+    },
+    "converters-generators/uuid-generator": {
+      "name": "UUID / GUID جنریٹر",
+      "description": "بڑی تعداد میں v4 (اور v1) UUIDs بنائیں۔"
+    },
+    "converters-generators/password-generator": {
+      "name": "پاس ورڈ جنریٹر",
+      "description": "حسب ضرورت قواعد کے ساتھ مضبوط بے ترتیب پاس ورڈ بنائیں۔"
+    },
+    "converters-generators/lorem-ipsum-generator": {
+      "name": "Lorem Ipsum جنریٹر",
+      "description": "الفاظ، جملوں، یا پیراگراف کے ذریعہ پلیس ہولڈر ٹیکسٹ بنائیں۔"
+    },
+    "converters-generators/hash-generator": {
+      "name": "ہیش جنریٹر (MD5 / SHA)",
+      "description": "متن کی MD5، SHA-1، اور SHA-256 ہیش کی گنتی کریں۔"
+    },
+    "converters-generators/case-converter": {
+      "name": "کیس کنورٹر",
+      "description": "متن کو اوپری، نیچے، عنوان، اونٹ اور سانپ کیس کے درمیان تبدیل کریں۔"
+    },
+    "converters-generators/timestamp-converter": {
+      "name": "یونکس ٹائم اسٹیمپ کنورٹر",
+      "description": "یونکس عہد اور انسان کے پڑھنے کے قابل تاریخوں کے درمیان تبدیل کریں۔"
+    },
+    "converters-generators/json-to-xml": {
+      "name": "JSON سے XML کنورٹر",
+      "description": "JSON ڈیٹا ڈھانچے کو XML میں تبدیل کریں۔"
+    },
+    "converters-generators/html-to-markdown": {
+      "name": "HTML سے مارک ڈاؤن کنورٹر",
+      "description": "HTML مارک اپ کو کلین مارک ڈاؤن میں تبدیل کریں۔"
+    },
+    "converters-generators/markdown-to-html": {
+      "name": "HTML کنورٹر پر مارک ڈاؤن",
+      "description": "لائیو پیش نظارہ کے ساتھ مارک ڈاؤن کو HTML میں رینڈر کریں۔"
+    },
+    "converters-generators/color-converter": {
+      "name": "کلر کنورٹر (HEX/RGB/HSL)",
+      "description": "رنگوں کو HEX، RGB، HSL، اور HSV کے درمیان تبدیل کریں۔"
+    },
+    "converters-generators/number-base-converter": {
+      "name": "نمبر بیس کنورٹر",
+      "description": "نمبروں کو بائنری، آکٹل، ڈیسیمل اور ہیکس کے درمیان تبدیل کریں۔"
+    },
+    "converters-generators/random-number-generator": {
+      "name": "رینڈم نمبر جنریٹر",
+      "description": "اپنی مرضی کی حد کے اندر بے ترتیب نمبر بنائیں۔"
+    },
+    "converters-generators/regex-tester": {
+      "name": "ریجیکس ٹیسٹر",
+      "description": "لائیو میچ ہائی لائٹنگ کے ساتھ ریگولر ایکسپریشنز کی جانچ کریں۔"
+    },
+    "converters-generators/jwt-decoder": {
+      "name": "جے ڈبلیو ٹی ڈیکوڈر",
+      "description": "JWT ہیڈر اور پے لوڈ کو ڈی کوڈ کریں اور دعوے دکھائیں۔"
+    },
+    "converters-generators/csv-to-tsv": {
+      "name": "CSV سے TSV کنورٹر",
+      "description": "CSV کو TSV اور Excel کے موافق فارمیٹس میں تبدیل کریں۔"
+    },
+    "converters-generators/sql-to-json": {
+      "name": "SQL سے JSON کنورٹر",
+      "description": "SQL INSERT بیانات کو JSON یا CSV میں تبدیل کریں۔"
+    },
+    "converters-generators/text-to-slug": {
+      "name": "سلگ جنریٹر کو متن",
+      "description": "کسی بھی متن کو URL سے محفوظ سلگ میں تبدیل کریں۔"
+    },
+    "converters-generators/random-string-generator": {
+      "name": "رینڈم سٹرنگ جنریٹر",
+      "description": "اپنی مرضی کے مطابق چارسیٹس کے ساتھ بے ترتیب تار اور API ٹوکن بنائیں۔"
+    },
+    "converters-generators/json-to-typescript": {
+      "name": "JSON سے TypeScript",
+      "description": "JSON نمونے سے TypeScript انٹرفیس بنائیں۔"
+    },
+    "converters-generators/cron-expression-generator": {
+      "name": "کرون ایکسپریشن جنریٹر",
+      "description": "سادہ انگریزی میں کرون شیڈولز بنائیں اور اس کی وضاحت کریں۔"
+    },
+    "converters-generators/list-randomizer": {
+      "name": "فہرست Randomizer",
+      "description": "پیسٹ کی گئی فہرست سے بے ترتیب آئٹمز کو شفل کریں یا چنیں۔"
+    },
+    "converters-generators/code-minifier": {
+      "name": "کوڈ منیفائر",
+      "description": "فائل کا سائز کم کرنے کے لیے HTML، CSS اور JavaScript کو چھوٹا کریں۔"
+    },
+    "converters-generators/invoice-generator": {
+      "name": "انوائس جنریٹر",
+      "description": "لائن آئٹمز، ٹیکس، اور فوری ڈاؤن لوڈ کے ساتھ پیشہ ورانہ پی ڈی ایف انوائس بنائیں — کوئی واٹر مارک نہیں۔"
+    },
+    "converters-generators/iban-validator": {
+      "name": "IBAN تصدیق کنندہ",
+      "description": "Mod-97 چیکسم کے ساتھ پاکستان، EU، UK اور 80+ ممالک کے لیے IBAN نمبروں کی توثیق کریں۔"
+    },
+    "developer-tools/json-formatter": {
+      "name": "JSON فارمیٹر",
+      "description": "نحو کو نمایاں کرنے کے ساتھ JSON کو خوبصورت، توثیق اور چھوٹا بنائیں۔"
+    },
+    "developer-tools/json-to-csv": {
+      "name": "JSON سے CSV کنورٹر",
+      "description": "JSON صفوں کو ڈاؤن لوڈ کے قابل CSV فائلوں میں تبدیل کریں۔"
+    },
+    "developer-tools/csv-to-json": {
+      "name": "CSV سے JSON کنورٹر",
+      "description": "CSV ڈیٹا کو سٹرکچرڈ JSON آؤٹ پٹ میں پارس کریں۔"
+    },
+    "developer-tools/base64-encoder-decoder": {
+      "name": "بیس 64 انکوڈر/ڈیکوڈر",
+      "description": "بیس 64 میں اور اس سے متن اور فائلوں کو انکوڈ اور ڈی کوڈ کریں۔"
+    },
+    "developer-tools/url-encoder-decoder": {
+      "name": "یو آر ایل انکوڈر/ڈیکوڈر",
+      "description": "فیصد انکوڈ اور ڈی کوڈ URLs اور استفسار کے پیرامیٹرز۔"
+    },
+    "developer-tools/jwt-decoder": {
+      "name": "جے ڈبلیو ٹی ڈیکوڈر",
+      "description": "JWT کو اس کے ہیڈر، پے لوڈ اور دستخط میں ڈی کوڈ کریں۔"
+    },
+    "developer-tools/regex-tester": {
+      "name": "ریجیکس ٹیسٹر",
+      "description": "براہ راست میچ کو نمایاں کرنے کے ساتھ نمونے کے متن کے خلاف باقاعدہ تاثرات کی جانچ کریں۔"
+    },
+    "developer-tools/timestamp-converter": {
+      "name": "ٹائم اسٹیمپ کنورٹر",
+      "description": "یونکس کے دور کے ٹائم اسٹیمپ کو انسانی پڑھنے کے قابل تاریخوں میں اور اس سے تبدیل کریں۔"
+    },
+    "developer-tools/uuid-generator": {
+      "name": "UUID جنریٹر",
+      "description": "v4 UUIDs اکیلے یا بڑی تعداد میں بنائیں۔"
+    },
+    "developer-tools/hex-to-rgb-converter": {
+      "name": "ہیکس سے آرجیبی کنورٹر",
+      "description": "رنگوں کو HEX، RGB اور HSL فارمیٹس کے درمیان تبدیل کریں۔"
+    },
+    "developer-tools/cron-expression-generator": {
+      "name": "کرون ایکسپریشن جنریٹر",
+      "description": "اگلے رن کے پیش نظارہ کے ساتھ کرون شیڈولز بنائیں اور اس کی وضاحت کریں۔"
+    },
+    "developer-tools/html-encoder-decoder": {
+      "name": "HTML انکوڈر/ڈیکوڈر",
+      "description": "متن میں HTML اداروں کو انکوڈ اور ڈی کوڈ کریں۔"
+    },
+    "developer-tools/html-minifier": {
+      "name": "ایچ ٹی ایم ایل منیفائر",
+      "description": "HTML کو سکڑنے کے لیے خالی جگہ اور تبصرے کو ہٹا دیں۔"
+    },
+    "developer-tools/css-minifier": {
+      "name": "سی ایس ایس منیفائر",
+      "description": "وائٹ اسپیس اور تبصرے اتار کر CSS کو کمپریس کریں۔"
+    },
+    "developer-tools/javascript-minifier": {
+      "name": "جاوا اسکرپٹ منیفائر",
+      "description": "فائل کا سائز کم کرنے کے لیے جاوا اسکرپٹ سورس کو کم کریں۔"
+    },
+    "developer-tools/json-to-yaml": {
+      "name": "JSON سے YAML کنورٹر",
+      "description": "JSON اور YAML فارمیٹس کے درمیان تبدیل کریں۔"
+    },
+    "developer-tools/sql-formatter": {
+      "name": "ایس کیو ایل فارمیٹر",
+      "description": "پڑھنے کی اہلیت کے لیے SQL استفسارات کو خوبصورت اور انڈینٹ کریں۔"
+    },
+    "developer-tools/number-base-converter": {
+      "name": "نمبر بیس کنورٹر",
+      "description": "نمبروں کو بائنری، آکٹل، ڈیسیمل اور ہیکس کے درمیان تبدیل کریں۔"
+    },
+    "developer-tools/color-picker": {
+      "name": "رنگ چنندہ",
+      "description": "رنگ اور آؤٹ پٹ HEX، RGB اور HSL اقدار کو منتخب کریں۔"
+    },
+    "developer-tools/qr-code-generator": {
+      "name": "کیو آر کوڈ جنریٹر",
+      "description": "متن یا URLs سے ڈاؤن لوڈ کے قابل QR کوڈز بنائیں۔"
+    },
+    "developer-tools/css-gradient-generator": {
+      "name": "سی ایس ایس گریڈینٹ جنریٹر",
+      "description": "کوڈ آؤٹ پٹ کے ساتھ بصری طور پر لکیری اور ریڈیل CSS گریڈینٹ بنائیں۔"
+    },
+    "developer-tools/box-shadow-generator": {
+      "name": "باکس شیڈو جنریٹر",
+      "description": "لائیو پیش نظارہ کے ساتھ سی ایس ایس باکس شیڈو کوڈ بنائیں۔"
+    },
+    "developer-tools/markdown-preview": {
+      "name": "مارک ڈاؤن کا پیش نظارہ",
+      "description": "HTML کے ساتھ ساتھ زندہ رہنے کے لیے مارک ڈاؤن کو رینڈر کریں۔"
+    },
+    "developer-tools/xml-formatter": {
+      "name": "XML فارمیٹر",
+      "description": "XML دستاویزات کو خوبصورت اور درست کریں۔"
+    },
+    "developer-tools/json-validator": {
+      "name": "JSON تصدیق کنندہ",
+      "description": "JSON نحو کی توثیق کریں اور غلطیوں کی نشاندہی کریں۔"
+    },
+    "developer-tools/slug-generator": {
+      "name": "سلگ جنریٹر",
+      "description": "متن سے SEO کے موافق یو آر ایل سلگس بنائیں۔"
+    },
+    "developer-tools/meta-tag-generator": {
+      "name": "میٹا ٹیگ جنریٹر",
+      "description": "SEO کے لیے HTML میٹا اور اوپن گراف ٹیگز بنائیں۔"
+    },
+    "developer-tools/rot13-encoder-decoder": {
+      "name": "ROT13 انکوڈر/ڈیکوڈر",
+      "description": "متن پر ROT13 حرف کے متبادل سائفر کا اطلاق کریں۔"
+    },
+    "developer-tools/chmod-calculator": {
+      "name": "Chmod کیلکولیٹر",
+      "description": "عددی اور علامتی یونکس فائل کی اجازتوں کی گنتی کریں۔"
+    },
+    "developer-tools/user-agent-parser": {
+      "name": "صارف ایجنٹ تجزیہ کار",
+      "description": "براؤزر، OS اور ڈیوائس میں صارف کے ایجنٹ کی تار کو پارس کریں۔"
+    },
+    "developer-tools/gitignore-generator": {
+      "name": "gitignore جنریٹر",
+      "description": "ایک سے زیادہ زبان، فریم ورک اور OS ٹیمپلیٹس کو ایک .gitignore میں ضم کریں، ڈپلیکیٹ پیٹرن ہٹا کر۔"
+    },
+    "developer-tools/regex-explainer": {
+      "name": "ریجیکس وضاحت کنندہ",
+      "description": "ایک ریگولر ایکسپریشن چسپاں کریں اور جو کچھ اس سے ملتا ہے اس کا سادہ انگریزی، ٹوکن بہ ٹوکن بریک ڈاؤن حاصل کریں۔"
+    },
+    "developer-tools/data-file-merger": {
+      "name": "ڈیٹا فائل انضمام",
+      "description": "ایک سے زیادہ JSON، CSV، TSV یا XML فائلوں کو ایک مشترکہ ڈیٹاسیٹ میں ضم کریں، JSON یا CSV کے طور پر قابل برآمد۔"
+    },
+    "developer-tools/duplicate-file-finder": {
+      "name": "ڈپلیکیٹ فائل فائنڈر",
+      "description": "پرانی کاپیوں کو حذف کرنے کے لیے محفوظ کے طور پر جھنڈا لگاتے ہوئے، اپنے براؤزر میں مقامی طور پر مواد ہیش کے ذریعے درست ڈپلیکیٹ فائلیں تلاش کریں۔"
+    },
+    "developer-tools/mock-data-generator": {
+      "name": "فرضی ڈیٹا جنریٹر",
+      "description": "API ٹیسٹنگ اور ڈیمو کے لیے JSON یا CSV کے بطور جعلی صارفین یا پروڈکٹس تیار کریں۔"
+    },
+    "developer-tools/pwa-manifest-generator": {
+      "name": "پی ڈبلیو اے مینی فیسٹ جنریٹر",
+      "description": "اپنی سائٹ کو ایک قابل انسٹال پروگریسو ویب ایپ میں تبدیل کرنے کے لیے manifest.json اور HTML ٹیگز بنائیں۔"
+    },
+    "devops-tools/ip-subnet-calculator": {
+      "name": "آئی پی سب نیٹ کیلکولیٹر",
+      "description": "بصری بٹ بریک ڈاؤن کے ساتھ، CIDR بلاک سے نیٹ ورک، براڈکاسٹ، ہوسٹ رینج اور ماسک کا حساب لگائیں۔"
+    },
+    "devops-tools/curl-command-builder": {
+      "name": "curl کمانڈ بلڈر",
+      "description": "ایک فارم سے curl کمانڈ بنائیں اور مساوی Python کی درخواستیں اور JS بازیافت کوڈ برآمد کریں۔"
+    },
+    "devops-tools/nginx-config-generator": {
+      "name": "Nginx کنفیگ جنریٹر",
+      "description": "ریورس پراکسی، SSL ختم کرنے، جامد سائٹس اور لوڈ بیلنسنگ کے لیے Nginx کنفیگرس تیار کریں۔"
+    },
+    "devops-tools/kubernetes-yaml-generator": {
+      "name": "Kubernetes YAML جنریٹر",
+      "description": "ایک سادہ فارم سے ایک مینی فیسٹ میں ایک منسلک تعیناتی، سروس اور داخل کریں۔"
+    },
+    "devops-tools/github-actions-generator": {
+      "name": "GitHub ایکشن جنریٹر",
+      "description": "ریڈی میڈ نوڈ، ازگر اور ڈوکر ٹیمپلیٹس سے CI ورک فلو YAML بنائیں۔"
+    },
+    "devops-tools/robots-txt-generator": {
+      "name": "robots.txt جنریٹر",
+      "description": "لائیو توثیق کے ساتھ اجازت/منظوری کے قواعد، کرال-تاخیر اور سائٹ کا نقشہ کے ساتھ ایک درست robots.txt بنائیں۔"
+    },
+    "devops-tools/env-validator": {
+      "name": "env توثیق کنندہ",
+      "description": ".env نحو کی توثیق کریں اور ممکنہ طور پر خفیہ راز اور API کیز کو جھنڈا لگائیں اس سے پہلے کہ آپ ان کا ارتکاب کریں۔"
+    },
+    "devops-tools/crontab-builder": {
+      "name": "کرونٹاب بلڈر",
+      "description": "ایک کرون ایکسپریشن بنائیں اور اسے حقیقی تجزیہ کار کے خلاف درست کریں، اگلے 5 رن اوقات کا پیش نظارہ۔"
+    },
+    "devops-tools/backup-script-generator": {
+      "name": "بیک اپ اسکرپٹ جنریٹر",
+      "description": "اختیاری S3 اپ لوڈ کے ساتھ Postgres، MySQL یا MongoDB کے لیے کرون ریڈی ڈیٹا بیس بیک اپ اسکرپٹ بنائیں۔"
+    },
+    "devops-tools/health-check-generator": {
+      "name": "ہیلتھ چیک کنفیگ جنریٹر",
+      "description": "اینڈ پوائنٹ سے اپ ٹائم مانیٹرز کے لیے ایک ریڈی ٹو پیسٹ ہیلتھ چیک اسکرپٹ اور JSON کنفیگریشن بنائیں۔"
+    },
+    "devops-tools/subnet-overlap-visualizer": {
+      "name": "سب نیٹ اوورلیپ ویژولائزر",
+      "description": "ایک سے زیادہ CIDR بلاکس یا IP رینجز کو پیسٹ کریں اور ان کی کوریج اور اوورلیپس کو بصری نقشے پر دیکھیں۔"
+    },
+    "devops-tools/ip-address-info": {
+      "name": "IP ایڈریس کی معلومات اور درجہ بندی",
+      "description": "کسی IP کو نجی، عوامی، CGNAT، لوپ بیک یا سادہ زبان کے سیاق و سباق اور ریورس-DNS کے ساتھ محفوظ کے طور پر درجہ بندی کریں۔"
+    },
+    "devops-tools/systemd-timer-explainer": {
+      "name": "سسٹمڈ ٹائمر وضاحت کنندہ",
+      "description": "اگلے 5 رن ٹائمز کے ساتھ، سادہ انگریزی میں سسٹمڈ OnCalendar اظہار کی وضاحت کریں اور بنائیں۔"
+    },
+    "health-tools/water-intake-calculator": {
+      "name": "پانی کی مقدار کا کیلکولیٹر",
+      "description": "لیٹر، کپ اور بوتلوں میں دکھائے گئے وزن، ورزش اور آب و ہوا کی بنیاد پر اپنی روزانہ کی پانی کی ضروریات کا اندازہ لگائیں۔"
+    },
+    "health-tools/macro-calculator": {
+      "name": "میکرو کیلکولیٹر",
+      "description": "اپنی روزمرہ کی کیلوریز کو پروٹین، کاربوہائیڈریٹ اور چکنائی میں ڈائیٹ اسٹائل کے پیش سیٹ اور فی کھانے کی خرابی کے ساتھ تقسیم کریں۔"
+    },
+    "health-tools/heart-rate-zone-calculator": {
+      "name": "دل کی شرح زون کیلکولیٹر",
+      "description": "اپنے آرام کرنے والے دل کی دھڑکن کے ساتھ کارونن طریقہ استعمال کرتے ہوئے اپنے 5 تربیتی دل کی شرح کے زون کا حساب لگائیں۔"
+    },
+    "health-tools/calories-burned-calculator": {
+      "name": "کیلوری جلنے والا کیلکولیٹر",
+      "description": "MET اقدار، آپ کے وزن اور دورانیے کا استعمال کرتے ہوئے درجنوں سرگرمیوں میں جلنے والی کیلوریز کا اندازہ لگائیں۔"
+    },
+    "health-tools/one-rep-max-calculator": {
+      "name": "ون ریپ میکس کیلکولیٹر",
+      "description": "اپنے 1RM کا اندازہ لفٹ اور ریپس سے لگائیں، جس میں زیادہ سے زیادہ فیصد کی تربیت کی میز کے ساتھ۔"
+    },
+    "health-tools/pace-calculator": {
+      "name": "رننگ پیس کیلکولیٹر",
+      "description": "فاصلے اور وقت کو رفتار فی کلومیٹر اور فی میل میں تبدیل کریں، علاوہ ازیں 5K، 10K، ہاف اور میراتھن کے اوقات۔"
+    },
+    "health-tools/bac-calculator": {
+      "name": "بلڈ الکحل (BAC) کیلکولیٹر",
+      "description": "وِڈمارک فارمولے اور وقت سے سوچے سمجھے اندازے کے ساتھ خون میں الکحل کی حراستی کا اندازہ لگائیں۔"
+    },
+    "health-tools/protein-intake-calculator": {
+      "name": "پروٹین انٹیک کیلکولیٹر",
+      "description": "جسمانی وزن اور اپنے مقصد کی بنیاد پر اپنے روزانہ پروٹین کے ہدف کی حد تلاش کریں۔"
+    },
+    "health-tools/waist-to-hip-ratio-calculator": {
+      "name": "کمر سے ہپ کا تناسب کیلکولیٹر",
+      "description": "اپنی کمر سے کولہے کے تناسب کا حساب لگائیں اور جنس کے لحاظ سے اپنے صحت کے خطرے کے زمرے کو دیکھیں۔"
+    },
+    "health-tools/body-surface-area-calculator": {
+      "name": "باڈی سرفیس ایریا کیلکولیٹر",
+      "description": "موسٹیلر اور ڈو بوئس فارمولوں کے ساتھ ساتھ جسم کی سطح کے رقبے کی گنتی کریں۔"
+    },
+    "image-tools/resize-image": {
+      "name": "تصویر کا سائز تبدیل کریں۔",
+      "description": "تصویر کے طول و عرض کو پکسلز یا فیصد سے تبدیل کریں۔"
+    },
+    "image-tools/compress-image": {
+      "name": "امیج کمپریس کریں۔",
+      "description": "کوالٹی کنٹرول کے ساتھ JPG/PNG/WebP فائل کا سائز سکڑیں۔"
+    },
+    "image-tools/crop-image": {
+      "name": "تصویر کو تراشیں۔",
+      "description": "تصاویر کو آزادانہ طور پر یا فکسڈ اسپیکٹ ریشوز پر تراشیں۔"
+    },
+    "image-tools/rotate-image": {
+      "name": "تصویر کو گھمائیں۔",
+      "description": "کسی تصویر کو 90 ڈگری یا کسی بھی زاویے سے گھمائیں۔"
+    },
+    "image-tools/flip-image": {
+      "name": "تصویر پلٹائیں۔",
+      "description": "کسی تصویر کو افقی یا عمودی طور پر آئینہ دیں۔"
+    },
+    "image-tools/webp-to-png": {
+      "name": "WebP سے PNG",
+      "description": "WebP تصاویر کو بغیر کسی نقصان کے PNG فارمیٹ میں تبدیل کریں۔"
+    },
+    "image-tools/webp-to-jpg": {
+      "name": "ویب پی سے جے پی جی",
+      "description": "WebP تصاویر کو وسیع پیمانے پر تعاون یافتہ JPG میں تبدیل کریں۔"
+    },
+    "image-tools/png-to-jpg": {
+      "name": "PNG سے JPG",
+      "description": "PNG تصاویر کو کمپریسڈ JPG فائلوں میں تبدیل کریں۔"
+    },
+    "image-tools/jpg-to-png": {
+      "name": "JPG سے PNG",
+      "description": "JPG امیجز کو بغیر کسی نقصان کے PNG فارمیٹ میں تبدیل کریں۔"
+    },
+    "image-tools/png-to-webp": {
+      "name": "PNG سے WebP",
+      "description": "PNG تصاویر کو چھوٹی WebP فائلوں میں تبدیل کریں۔"
+    },
+    "image-tools/jpg-to-webp": {
+      "name": "JPG سے WebP",
+      "description": "JPG تصاویر کو جدید WebP فارمیٹ میں تبدیل کریں۔"
+    },
+    "image-tools/heic-to-jpg": {
+      "name": "HEIC سے JPG",
+      "description": "آئی فون HEIC فوٹو کو JPG امیجز میں تبدیل کریں۔"
+    },
+    "image-tools/svg-to-png": {
+      "name": "SVG سے PNG",
+      "description": "کسی بھی سائز میں SVG ویکٹر فائلوں کو PNG پر راسٹرائز کریں۔"
+    },
+    "image-tools/png-to-svg": {
+      "name": "PNG سے SVG",
+      "description": "ایک قابل توسیع SVG ویکٹر میں ایک راسٹر PNG کو ٹریس کریں۔"
+    },
+    "image-tools/image-to-base64": {
+      "name": "بیس 64 کی تصویر",
+      "description": "ایک تصویر کو بیس 64 ڈیٹا URI سٹرنگ میں انکوڈ کریں۔"
+    },
+    "image-tools/base64-to-image": {
+      "name": "بیس 64 سے تصویر",
+      "description": "ڈاؤن لوڈ کے قابل تصویر میں ایک Base64 سٹرنگ کو واپس ڈی کوڈ کریں۔"
+    },
+    "image-tools/favicon-generator": {
+      "name": "فیوی کون جنریٹر",
+      "description": "ایک تصویر سے ملٹی سائز فیویکونز اور ICO فائلیں بنائیں۔"
+    },
+    "image-tools/image-to-ico": {
+      "name": "ICO میں تصویر",
+      "description": "PNG/JPG امیجز کو ونڈوز آئی سی او آئیکنز میں تبدیل کریں۔"
+    },
+    "image-tools/meme-generator": {
+      "name": "میم جنریٹر",
+      "description": "تصویر میں اوپر اور نیچے کے متن کیپشن شامل کریں۔"
+    },
+    "image-tools/add-watermark-to-image": {
+      "name": "تصویر میں واٹر مارک شامل کریں۔",
+      "description": "تصویروں پر متن یا لوگو واٹر مارکس کو اوورلے کریں۔"
+    },
+    "image-tools/image-color-picker": {
+      "name": "تصویری رنگ چنندہ",
+      "description": "تصویر کے کسی بھی پکسل سے HEX/RGB رنگ چنیں۔"
+    },
+    "image-tools/color-extractor-from-image": {
+      "name": "تصویر سے رنگ نکالنے والا",
+      "description": "تصویر سے ایک غالب رنگ پیلیٹ نکالیں۔"
+    },
+    "image-tools/collage-maker": {
+      "name": "کولیج بنانے والا",
+      "description": "ایک گرڈ کولاج میں متعدد تصاویر کو یکجا کریں۔"
+    },
+    "image-tools/combine-images": {
+      "name": "امیجز کو یکجا کریں۔",
+      "description": "امیجز کو افقی یا عمودی طور پر ایک ساتھ سلائی کریں۔"
+    },
+    "image-tools/passport-photo-maker": {
+      "name": "پاسپورٹ فوٹو میکر",
+      "description": "پاسپورٹ/ویزہ کی ضروریات کے مطابق فوٹو کاٹ کر سائز کریں۔"
+    },
+    "image-tools/grayscale-image": {
+      "name": "گرے اسکیل امیج",
+      "description": "رنگین تصویر کو سیاہ اور سفید میں تبدیل کریں۔"
+    },
+    "image-tools/blur-image": {
+      "name": "دھندلی تصویر",
+      "description": "کسی تصویر کے تمام یا حصے پر ایڈجسٹ بلر لگائیں۔"
+    },
+    "image-tools/pixelate-image": {
+      "name": "پکسلیٹ امیج",
+      "description": "کسی تصویر کے Pixelate یا سنسر والے علاقے۔"
+    },
+    "image-tools/image-to-pdf": {
+      "name": "پی ڈی ایف میں تصویر",
+      "description": "تصاویر کو ایک ہی ڈاؤن لوڈ کے قابل پی ڈی ایف میں تبدیل کریں۔"
+    },
+    "image-tools/circle-crop-image": {
+      "name": "سرکل کراپ تصویر",
+      "description": "تصویر کو ایک شفاف دائرے میں تراشیں۔"
+    },
+    "image-tools/jfif-to-jpg": {
+      "name": "JFIF سے JPG",
+      "description": "JFIF تصاویر کو اپنے براؤزر میں معیاری JPG فارمیٹ میں تبدیل کریں۔"
+    },
+    "image-tools/jfif-to-png": {
+      "name": "JFIF سے PNG",
+      "description": "JFIF تصاویر کو بغیر کسی نقصان کے PNG فارمیٹ میں تبدیل کریں۔"
+    },
+    "image-tools/bmp-to-jpg": {
+      "name": "BMP سے JPG",
+      "description": "BMP بٹ میپ امیجز کو کمپریسڈ JPG فائلوں میں تبدیل کریں۔"
+    },
+    "image-tools/bmp-to-pdf": {
+      "name": "بی ایم پی سے پی ڈی ایف",
+      "description": "BMP تصاویر کو ایک پی ڈی ایف دستاویز میں ضم کریں۔"
+    },
+    "image-tools/avif-to-jpg": {
+      "name": "AVIF سے JPG",
+      "description": "جدید AVIF تصاویر کو وسیع پیمانے پر تعاون یافتہ JPG میں تبدیل کریں۔"
+    },
+    "image-tools/avif-to-webp": {
+      "name": "AVIF سے WebP",
+      "description": "AVIF تصاویر کو موثر WebP فارمیٹ میں تبدیل کریں۔"
+    },
+    "image-tools/gif-maker": {
+      "name": "GIF بنانے والا",
+      "description": "اپنے براؤزر میں متعدد تصاویر سے اینیمیٹڈ GIF بنائیں۔"
+    },
+    "image-tools/gif-resizer": {
+      "name": "GIF ریسائزر",
+      "description": "اینیمیٹڈ GIFs کا سائز پہلے سیٹ یا حسب ضرورت طول و عرض کے ساتھ تبدیل کریں۔"
+    },
+    "image-tools/gif-rotator": {
+      "name": "GIF روٹیٹر",
+      "description": "ہر فریم پر متحرک GIFs کو گھمائیں یا پلٹائیں۔"
+    },
+    "image-tools/gif-trimmer": {
+      "name": "GIF ٹرمر",
+      "description": "GIF اینیمیشنز کو مخصوص فریم رینج میں تراشیں۔"
+    },
+    "image-tools/gif-optimizer": {
+      "name": "GIF آپٹیمائزر",
+      "description": "اپنے براؤزر میں GIF فائل کے سائز کو سکیڑیں اور بہتر بنائیں۔"
+    },
+    "image-tools/gif-to-video": {
+      "name": "GIF ٹو ویڈیو",
+      "description": "اینیمیٹڈ GIFs کو WebM ویڈیو میں تبدیل کریں۔"
+    },
+    "image-tools/gif-to-png": {
+      "name": "GIF سے PNG",
+      "description": "تمام GIF فریمز کو ایک زپ میں PNG تصاویر کے طور پر نکالیں۔"
+    },
+    "image-tools/gif-to-jpg": {
+      "name": "GIF سے JPG",
+      "description": "تمام GIF فریمز کو ایک زپ میں JPG امیجز کے طور پر نکالیں۔"
+    },
+    "image-tools/gif-to-webp": {
+      "name": "GIF سے WebP",
+      "description": "GIF اینیمیشن فریموں کو WebP امیجز میں تبدیل کریں۔"
+    },
+    "pdf-tools/merge-pdf": {
+      "name": "پی ڈی ایف کو ضم کریں۔",
+      "description": "کسی بھی ترتیب میں متعدد پی ڈی ایف فائلوں کو ایک دستاویز میں یکجا کریں۔"
+    },
+    "pdf-tools/split-pdf": {
+      "name": "پی ڈی ایف تقسیم کریں۔",
+      "description": "ایک پی ڈی ایف کو صفحہ کی حدود کے لحاظ سے متعدد فائلوں میں الگ کریں۔"
+    },
+    "pdf-tools/compress-pdf": {
+      "name": "پی ڈی ایف کو کمپریس کریں۔",
+      "description": "پڑھنے کے قابل معیار کو محفوظ رکھتے ہوئے پی ڈی ایف فائل کا سائز کم کریں۔"
+    },
+    "pdf-tools/rotate-pdf": {
+      "name": "پی ڈی ایف کو گھمائیں۔",
+      "description": "پی ڈی ایف کے ایک یا تمام صفحات کو گھمائیں اور مستقل طور پر محفوظ کریں۔"
+    },
+    "pdf-tools/delete-pdf-pages": {
+      "name": "پی ڈی ایف صفحات کو حذف کریں۔",
+      "description": "پی ڈی ایف دستاویز سے منتخب صفحات کو ہٹا دیں۔"
+    },
+    "pdf-tools/extract-pdf-pages": {
+      "name": "پی ڈی ایف صفحات نکالیں۔",
+      "description": "منتخب صفحات کو ایک نئی پی ڈی ایف فائل میں کھینچیں۔"
+    },
+    "pdf-tools/organize-pdf": {
+      "name": "پی ڈی ایف کو منظم کریں۔",
+      "description": "ڈریگ اینڈ ڈراپ کے ذریعے پی ڈی ایف صفحات کو دوبارہ ترتیب دیں، دوبارہ ترتیب دیں اور ترتیب دیں۔"
+    },
+    "pdf-tools/jpg-to-pdf": {
+      "name": "جے پی جی سے پی ڈی ایف",
+      "description": "جے پی جی اور دیگر تصاویر کو ایک پی ڈی ایف میں تبدیل کریں۔"
+    },
+    "pdf-tools/png-to-pdf": {
+      "name": "پی این جی سے پی ڈی ایف",
+      "description": "ایک یا زیادہ PNG تصاویر کو PDF دستاویز میں تبدیل کریں۔"
+    },
+    "pdf-tools/pdf-to-jpg": {
+      "name": "پی ڈی ایف سے جے پی جی",
+      "description": "ہر پی ڈی ایف صفحہ کو ڈاؤن لوڈ کے قابل JPG تصویر میں تبدیل کریں۔"
+    },
+    "pdf-tools/pdf-to-png": {
+      "name": "پی ڈی ایف سے پی این جی",
+      "description": "پی ڈی ایف صفحات کو اعلیٰ معیار کی PNG تصاویر کے طور پر پیش کریں۔"
+    },
+    "pdf-tools/images-to-pdf": {
+      "name": "پی ڈی ایف میں تصاویر",
+      "description": "بیچ ایک ترتیب شدہ پی ڈی ایف میں متعدد تصاویر کو یکجا کریں۔"
+    },
+    "pdf-tools/extract-images-from-pdf": {
+      "name": "پی ڈی ایف سے تصاویر نکالیں۔",
+      "description": "پی ڈی ایف فائل سے تمام ایمبیڈڈ امیجز کو نکالیں۔"
+    },
+    "pdf-tools/add-page-numbers-to-pdf": {
+      "name": "پی ڈی ایف میں صفحہ نمبر شامل کریں۔",
+      "description": "پی ڈی ایف میں حسب ضرورت صفحہ نمبر داخل کریں۔"
+    },
+    "pdf-tools/add-watermark-to-pdf": {
+      "name": "پی ڈی ایف میں واٹر مارک شامل کریں۔",
+      "description": "پی ڈی ایف صفحات پر ٹیکسٹ یا امیج واٹر مارکس پر ڈاک ٹکٹ۔"
+    },
+    "pdf-tools/crop-pdf": {
+      "name": "پی ڈی ایف کو تراشیں۔",
+      "description": "مارجن کو تراشیں اور پی ڈی ایف صفحات کے دکھائی دینے والے حصے کو تراشیں۔"
+    },
+    "pdf-tools/protect-pdf": {
+      "name": "پی ڈی ایف کی حفاظت کریں۔",
+      "description": "پی ڈی ایف کو لاک کرنے کے لیے پاس ورڈ اور انکرپشن شامل کریں۔"
+    },
+    "pdf-tools/unlock-pdf": {
+      "name": "پی ڈی ایف کو غیر مقفل کریں۔",
+      "description": "پی ڈی ایف فائل سے معلوم پاس ورڈ کو ہٹا دیں۔"
+    },
+    "pdf-tools/sign-pdf": {
+      "name": "پی ڈی ایف پر دستخط کریں۔",
+      "description": "پی ڈی ایف پر دستخط بنائیں، ٹائپ کریں یا اپ لوڈ کریں۔"
+    },
+    "pdf-tools/edit-pdf": {
+      "name": "پی ڈی ایف میں ترمیم کریں۔",
+      "description": "پی ڈی ایف میں متن، تصاویر، شکلیں اور تشریحات شامل کریں۔"
+    },
+    "pdf-tools/fill-pdf-form": {
+      "name": "پی ڈی ایف فارم بھریں۔",
+      "description": "انٹرایکٹو پی ڈی ایف فارم فیلڈز کو پُر کریں اور چپٹا کریں۔"
+    },
+    "pdf-tools/flatten-pdf": {
+      "name": "پی ڈی ایف فلیٹ کریں۔",
+      "description": "تشریحات کو ضم کریں اور فیلڈز کو جامد مواد میں بنائیں۔"
+    },
+    "pdf-tools/resize-pdf": {
+      "name": "پی ڈی ایف کا سائز تبدیل کریں۔",
+      "description": "پی ڈی ایف صفحات کو A4، خط، یا حسب ضرورت طول و عرض میں پیمانہ کریں۔"
+    },
+    "pdf-tools/reverse-pdf-pages": {
+      "name": "پی ڈی ایف صفحات کو ریورس کریں۔",
+      "description": "پی ڈی ایف دستاویز کے صفحہ آرڈر کو پلٹائیں۔"
+    },
+    "pdf-tools/split-pdf-in-half": {
+      "name": "پی ڈی ایف کو نصف میں تقسیم کریں۔",
+      "description": "ہر پی ڈی ایف صفحہ کو عمودی یا افقی طور پر دو حصوں میں کاٹ دیں۔"
+    },
+    "pdf-tools/extract-text-from-pdf": {
+      "name": "پی ڈی ایف سے متن نکالیں۔",
+      "description": "تمام منتخب متن کو پی ڈی ایف سے سادہ متن کے طور پر کاپی کریں۔"
+    },
+    "pdf-tools/pdf-page-counter": {
+      "name": "پی ڈی ایف پیج کاؤنٹر",
+      "description": "پی ڈی ایف میں صفحات کی تعداد کو فوری طور پر شمار کریں۔"
+    },
+    "pdf-tools/duplicate-pdf-pages": {
+      "name": "پی ڈی ایف صفحات کی نقل",
+      "description": "پی ڈی ایف میں منتخب صفحات کو کاپی اور دہرائیں۔"
+    },
+    "pdf-tools/pdf-to-word": {
+      "name": "پی ڈی ایف ٹو ورڈ",
+      "description": "پی ڈی ایف کو قابل تدوین DOC/DOCX دستاویز میں تبدیل کریں۔"
+    },
+    "pdf-tools/word-to-pdf": {
+      "name": "لفظ سے پی ڈی ایف",
+      "description": "DOC/DOCX دستاویزات کو PDF فائلوں میں تبدیل کریں۔"
+    },
+    "pdf-tools/txt-to-pdf": {
+      "name": "TXT سے PDF",
+      "description": "سادہ ٹیکسٹ فائلوں کو فارمیٹ شدہ پی ڈی ایف دستاویز میں تبدیل کریں۔"
+    },
+    "pdf-tools/csv-to-pdf": {
+      "name": "CSV سے PDF",
+      "description": "CSV اسپریڈشیٹ ڈیٹا کو پڑھنے کے قابل PDF میں تبدیل کریں۔"
+    },
+    "pdf-tools/excel-to-pdf": {
+      "name": "ایکسل سے پی ڈی ایف",
+      "description": "ایکسل سے CSV برآمدات کو PDF فائلوں میں تبدیل کریں۔"
+    },
+    "pdf-tools/pdf-to-excel": {
+      "name": "ایکسل سے پی ڈی ایف",
+      "description": "پی ڈی ایف ٹیبل ڈیٹا نکالیں اور ایکسل کے لیے CSV کے بطور ڈاؤن لوڈ کریں۔"
+    },
+    "pdf-tools/epub-to-pdf": {
+      "name": "EPUB سے PDF",
+      "description": "پرنٹنگ یا شیئرنگ کے لیے EPUB ای بکس کو پی ڈی ایف میں تبدیل کریں۔"
+    },
+    "pdf-tools/cbz-to-pdf": {
+      "name": "سی بی زیڈ سے پی ڈی ایف",
+      "description": "CBZ کامک آرکائیوز کو ایک پی ڈی ایف میں تبدیل کریں۔"
+    },
+    "pdf-tools/pdf-to-cbz": {
+      "name": "پی ڈی ایف ٹو سی بی زیڈ",
+      "description": "PDF صفحات کو CBZ کامک آرکائیو میں تبدیل کریں۔"
+    },
+    "pdf-tools/pdf-to-pdf-a": {
+      "name": "PDF سے PDF/A",
+      "description": "طویل مدتی آرکائیو (پی ڈی ایف/اے اسٹائل ایکسپورٹ) کے لیے پی ڈی ایف تیار کریں۔"
+    },
+    "pdf-tools/bank-statement-to-excel": {
+      "name": "ایکسل کو بینک اسٹیٹمنٹ",
+      "description": "ایکسل کے لیے بینک اسٹیٹمنٹ پی ڈی ایف ڈیٹا کو CSV میں نکالیں۔"
+    },
+    "security-password-tools/password-generator": {
+      "name": "پاس ورڈ جنریٹر",
+      "description": "ایڈجسٹ لمبائی اور کریکٹر سیٹ کے ساتھ مضبوط بے ترتیب پاس ورڈ بنائیں۔"
+    },
+    "security-password-tools/password-strength-checker": {
+      "name": "پاس ورڈ کی طاقت کی جانچ کرنے والا",
+      "description": "براؤزر میں پاس ورڈ کی طاقت اور کریک ٹائم کا اندازہ لگائیں۔"
+    },
+    "security-password-tools/md5-hash-generator": {
+      "name": "MD5 ہیش جنریٹر",
+      "description": "کسی بھی ان پٹ ٹیکسٹ کے MD5 ہیش کا حساب لگائیں۔"
+    },
+    "security-password-tools/sha256-hash-generator": {
+      "name": "SHA-256 ہیش جنریٹر",
+      "description": "Web Crypto API کے ذریعے SHA-256 ہیشز بنائیں۔"
+    },
+    "security-password-tools/sha1-hash-generator": {
+      "name": "SHA-1 ہیش جنریٹر",
+      "description": "ٹیکسٹ ان پٹ کے لیے SHA-1 ہیش کی گنتی کریں۔"
+    },
+    "security-password-tools/sha512-hash-generator": {
+      "name": "SHA-512 ہیش جنریٹر",
+      "description": "متن کے لیے SHA-512 ہیشز بنائیں۔"
+    },
+    "security-password-tools/bcrypt-generator": {
+      "name": "Bcrypt جنریٹر",
+      "description": "پاس ورڈز کو bcrypt کے ساتھ ہیش کریں اور ایڈجسٹ راؤنڈز کے ساتھ ان کی تصدیق کریں۔"
+    },
+    "security-password-tools/bulk-password-generator": {
+      "name": "بلک پاس ورڈ جنریٹر",
+      "description": "ایکسپورٹ کے لیے ایک ساتھ بہت سے مضبوط پاس ورڈ بنائیں۔"
+    },
+    "security-password-tools/passphrase-generator": {
+      "name": "پاسفریز جنریٹر",
+      "description": "یادگار ڈائس ویئر طرز کے لفظ پاسفریز بنائیں۔"
+    },
+    "security-password-tools/aes-encrypt-decrypt": {
+      "name": "AES ٹیکسٹ انکرپٹ/ڈیکرپٹ",
+      "description": "AES-GCM اور پاس فریز کے ساتھ متن کو خفیہ اور ڈکرپٹ کریں، مکمل طور پر کلائنٹ سائیڈ۔"
+    },
+    "security-password-tools/hmac-generator": {
+      "name": "HMAC جنریٹر",
+      "description": "منتخب کردہ ہیش اور خفیہ کلید کے ساتھ HMAC دستخطوں کی گنتی کریں۔"
+    },
+    "security-password-tools/htpasswd-generator": {
+      "name": "htpasswd جنریٹر",
+      "description": "bcrypt یا APR1 کے ساتھ Apache/Nginx htpasswd اندراجات بنائیں۔"
+    },
+    "security-password-tools/secure-uuid-generator": {
+      "name": "محفوظ UUID جنریٹر",
+      "description": "خفیہ طور پر محفوظ v4 UUIDs بنائیں۔"
+    },
+    "security-password-tools/api-key-generator": {
+      "name": "API کلیدی جنریٹر",
+      "description": "بے ترتیب API کیز اور خفیہ ٹوکنز بنائیں۔"
+    },
+    "security-password-tools/random-token-generator": {
+      "name": "بے ترتیب ٹوکن جنریٹر",
+      "description": "قابل ترتیب لمبائی اور چارسیٹ کے محفوظ بے ترتیب ٹوکن تیار کریں۔"
+    },
+    "security-password-tools/totp-generator": {
+      "name": "TOTP / 2FA کوڈ جنریٹر",
+      "description": "2FA ٹیسٹنگ کے لیے خفیہ سے وقت پر مبنی OTP کوڈز بنائیں۔"
+    },
+    "security-password-tools/hash-identifier": {
+      "name": "ہیش شناخت کنندہ",
+      "description": "دی گئی ہیش سٹرنگ سے ممکنہ ہیش الگورتھم کا پتہ لگائیں۔"
+    },
+    "security-password-tools/crc32-generator": {
+      "name": "CRC32 چیکسم جنریٹر",
+      "description": "متن یا ڈیٹا کے لیے CRC32 چیکسم کی گنتی کریں۔"
+    },
+    "security-password-tools/base64-hash-generator": {
+      "name": "بیس 64 ہیش جنریٹر",
+      "description": "Hash input and output the digest in Base64 form."
+    },
+    "security-password-tools/pin-generator": {
+      "name": "پن جنریٹر",
+      "description": "Generate random numeric PIN codes of chosen length."
+    },
+    "security-password-tools/wifi-qr-code-generator": {
+      "name": "وائی فائی کیو آر کوڈ جنریٹر",
+      "description": "Create a QR code that shares WiFi credentials for easy connection."
+    },
+    "security-password-tools/csrf-token-generator": {
+      "name": "CSRF ٹوکن جنریٹر",
+      "description": "Generate random anti-CSRF tokens for forms."
+    },
+    "security-password-tools/ntlm-hash-generator": {
+      "name": "NTLM ہیش جنریٹر",
+      "description": "Compute NTLM hashes from password input."
+    },
+    "security-password-tools/encryption-key-generator": {
+      "name": "خفیہ کاری کلیدی جنریٹر",
+      "description": "Generate random AES keys in 128/192/256-bit lengths."
+    },
+    "security-password-tools/caesar-cipher": {
+      "name": "سیزر سائفر ٹول",
+      "description": "Encrypt and decrypt text using a shift-based Caesar cipher."
+    },
+    "security-password-tools/rot47-encoder-decoder": {
+      "name": "ROT47 انکوڈر/ڈیکوڈر",
+      "description": "Apply the ROT47 substitution cipher to text."
+    },
+    "security-password-tools/password-entropy-calculator": {
+      "name": "پاس ورڈ اینٹروپی کیلکولیٹر",
+      "description": "Calculate the bits of entropy in a password."
+    },
+    "security-password-tools/salt-generator": {
+      "name": "سالٹ جنریٹر",
+      "description": "Generate random cryptographic salts in hex or Base64."
+    },
+    "security-password-tools/argon2-hash-generator": {
+      "name": "Argon2 ہیش جنریٹر",
+      "description": "Hash passwords with Argon2id, with tunable parameters."
+    },
+    "security-password-tools/jwt-verifier": {
+      "name": "JWT دستخطی تصدیق کنندہ",
+      "description": "Verify a JWT signature against a provided secret or key."
+    },
+    "seo-web-tools/meta-tag-generator": {
+      "name": "Meta Tag Generator",
+      "description": "Generate title, description, and meta tags HTML from form inputs."
+    },
+    "seo-web-tools/meta-tags-analyzer": {
+      "name": "Meta Tags Analyzer",
+      "description": "Parse pasted HTML to extract and audit meta tags for SEO issues."
+    },
+    "seo-web-tools/keyword-density-checker": {
+      "name": "Keyword Density Checker",
+      "description": "Count word frequency and density percentages in pasted text or HTML."
+    },
+    "seo-web-tools/robots-txt-generator": {
+      "name": "Robots.txt Generator",
+      "description": "Build a valid robots.txt file from allow/disallow and sitemap inputs."
+    },
+    "seo-web-tools/xml-sitemap-generator": {
+      "name": "XML Sitemap Generator",
+      "description": "Create an XML sitemap from a list of URLs with priority and frequency."
+    },
+    "seo-web-tools/schema-markup-generator": {
+      "name": "Schema Markup Generator",
+      "description": "Generate JSON-LD structured data for articles, products, FAQs, and more."
+    },
+    "seo-web-tools/open-graph-generator": {
+      "name": "Open Graph Generator",
+      "description": "Produce Open Graph (og:) meta tags for social link previews."
+    },
+    "seo-web-tools/twitter-card-generator": {
+      "name": "Twitter Card Generator",
+      "description": "Build Twitter/X card meta tags and preview the card."
+    },
+    "seo-web-tools/serp-snippet-preview": {
+      "name": "SERP Snippet Preview",
+      "description": "Preview how a page appears in Google results with pixel-width checks."
+    },
+    "seo-web-tools/htaccess-generator": {
+      "name": ".htaccess Generator",
+      "description": "Generate .htaccess rules for redirects, caching, and security."
+    },
+    "seo-web-tools/url-encoder-decoder": {
+      "name": "URL Encoder / Decoder",
+      "description": "Percent-encode and decode URLs and query strings."
+    },
+    "seo-web-tools/url-slug-generator": {
+      "name": "URL Slug Generator",
+      "description": "Convert titles into clean SEO-friendly slugs with stop-word removal."
+    },
+    "seo-web-tools/word-counter": {
+      "name": "Word Counter",
+      "description": "Count words, characters, sentences, and reading time in text."
+    },
+    "seo-web-tools/character-counter": {
+      "name": "Character Counter",
+      "description": "Count characters with and without spaces in real time."
+    },
+    "seo-web-tools/code-to-text-ratio-checker": {
+      "name": "Code to Text Ratio Checker",
+      "description": "Calculate the ratio of visible text to HTML code from pasted markup."
+    },
+    "seo-web-tools/robots-meta-tag-generator": {
+      "name": "Robots Meta Tag Generator",
+      "description": "Generate index/noindex/follow robots meta directives."
+    },
+    "seo-web-tools/canonical-tag-generator": {
+      "name": "Canonical Tag Generator",
+      "description": "Create rel=canonical link tags to prevent duplicate content."
+    },
+    "seo-web-tools/hreflang-tag-generator": {
+      "name": "Hreflang Tag Generator",
+      "description": "Generate hreflang tags for multilingual and regional targeting."
+    },
+    "seo-web-tools/keyword-combiner": {
+      "name": "Keyword Combiner",
+      "description": "Combine and permute keyword lists into broad/phrase/exact match."
+    },
+    "seo-web-tools/utm-builder": {
+      "name": "UTM Campaign URL Builder",
+      "description": "Build tracking URLs with UTM source, medium, and campaign params."
+    },
+    "seo-web-tools/html-tag-stripper": {
+      "name": "HTML Tag Stripper",
+      "description": "Remove HTML tags to extract plain text from markup."
+    },
+    "seo-web-tools/meta-description-length-checker": {
+      "name": "Meta Description Length Checker",
+      "description": "Check title and meta description pixel and character length limits."
+    },
+    "seo-web-tools/text-diff-checker": {
+      "name": "Text Compare / Diff Checker",
+      "description": "Highlight differences between two blocks of text or content."
+    },
+    "seo-web-tools/robots-txt-validator": {
+      "name": "Robots.txt Validator",
+      "description": "Validate robots.txt syntax and test URL allow/block rules."
+    },
+    "seo-web-tools/faq-schema-generator": {
+      "name": "FAQ Schema Generator",
+      "description": "Generate FAQPage JSON-LD from question/answer pairs."
+    },
+    "seo-web-tools/breadcrumb-schema-generator": {
+      "name": "Breadcrumb Schema Generator",
+      "description": "Create BreadcrumbList structured data from a page path."
+    },
+    "seo-web-tools/favicon-generator": {
+      "name": "Favicon Generator",
+      "description": "Generate multi-size favicons and the link tags from an image."
+    },
+    "seo-web-tools/redirect-checker": {
+      "name": "Redirect Generator",
+      "description": "Build and explain 301/302 redirect rules for common server configs."
+    },
+    "seo-web-tools/email-extractor": {
+      "name": "Email Extractor",
+      "description": "Extract or scan pasted text/HTML for exposed email addresses."
+    },
+    "seo-web-tools/readability-checker": {
+      "name": "Readability Score Checker",
+      "description": "Compute Flesch reading ease and grade-level scores for text."
+    },
+    "seo-web-tools/domain-name-finder": {
+      "name": "Domain Name Finder",
+      "description": "Suggest available domain names from your project description — only shows domains that look free to register."
+    },
+    "seo-web-tools/llms-txt-generator": {
+      "name": "LLMs.txt Generator",
+      "description": "Build an llms.txt file so AI crawlers (ChatGPT, Claude, Google) discover your best pages."
+    },
+    "seo-web-tools/security-headers-generator": {
+      "name": "Security Headers Generator",
+      "description": "Generate HSTS, CSP, X-Frame-Options and other OWASP headers for Nginx, Apache, or Cloudflare."
+    },
+    "seo-web-tools/ads-txt-generator": {
+      "name": "ads.txt Generator",
+      "description": "Create a valid ads.txt file for Google AdSense and ad networks."
+    },
+    "social-media-tools/fake-tweet-generator": {
+      "name": "Fake Tweet Generator",
+      "description": "Create realistic X/Twitter post mockups downloadable as images."
+    },
+    "social-media-tools/instagram-font-generator": {
+      "name": "Instagram Font Generator",
+      "description": "Convert text into copy-paste Unicode fancy fonts for bios and captions."
+    },
+    "social-media-tools/instagram-hashtag-generator": {
+      "name": "Instagram Hashtag Generator",
+      "description": "Suggest and group relevant hashtags from keywords or topics."
+    },
+    "social-media-tools/twitter-character-counter": {
+      "name": "Twitter Character Counter",
+      "description": "Count characters against the 280-limit with weighted counting."
+    },
+    "social-media-tools/fake-instagram-post-generator": {
+      "name": "Fake Instagram Post Generator",
+      "description": "Generate realistic Instagram post mockups with custom likes and avatar."
+    },
+    "social-media-tools/instagram-bio-generator": {
+      "name": "Instagram Bio Generator",
+      "description": "Build stylish IG bios with line breaks, fonts, and symbols."
+    },
+    "social-media-tools/instagram-caption-generator": {
+      "name": "Instagram Caption Generator",
+      "description": "Generate caption ideas from a topic plus hashtags and emojis."
+    },
+    "social-media-tools/youtube-tag-extractor": {
+      "name": "YouTube Tag Extractor",
+      "description": "Extract video tags from a YouTube URL or page source."
+    },
+    "social-media-tools/youtube-thumbnail-downloader": {
+      "name": "YouTube Thumbnail Downloader",
+      "description": "Grab all thumbnail sizes from a YouTube video URL."
+    },
+    "social-media-tools/instagram-line-break-generator": {
+      "name": "Instagram Line Break Generator",
+      "description": "Add invisible spacing so captions keep line breaks on Instagram."
+    },
+    "social-media-tools/emoji-picker": {
+      "name": "Emoji Picker",
+      "description": "Searchable emoji keyboard for copying emojis into posts."
+    },
+    "social-media-tools/fake-facebook-post-generator": {
+      "name": "Fake Facebook Post Generator",
+      "description": "Create Facebook post mockups with reactions and comments."
+    },
+    "social-media-tools/tweet-to-image": {
+      "name": "Tweet to Image",
+      "description": "Turn real or custom tweet text into a shareable styled image."
+    },
+    "social-media-tools/tiktok-hashtag-generator": {
+      "name": "TikTok Hashtag Generator",
+      "description": "Generate trending-style hashtags and captions for TikTok."
+    },
+    "social-media-tools/strikethrough-text-generator": {
+      "name": "Strikethrough Text Generator",
+      "description": "Create strikethrough and underline Unicode text for social."
+    },
+    "social-media-tools/glitch-text-generator": {
+      "name": "Glitch Text Generator",
+      "description": "Generate zalgo/glitch styled text for posts and usernames."
+    },
+    "social-media-tools/small-text-generator": {
+      "name": "Small Text Generator",
+      "description": "Convert text to superscript and small-caps Unicode characters."
+    },
+    "social-media-tools/discord-font-generator": {
+      "name": "Discord Font Generator",
+      "description": "Produce fancy and formatted text usable in Discord chats."
+    },
+    "social-media-tools/twitter-bio-generator": {
+      "name": "Twitter Bio Generator",
+      "description": "Build X/Twitter bios with fonts, line breaks, and emojis."
+    },
+    "social-media-tools/linkedin-text-formatter": {
+      "name": "LinkedIn Text Formatter",
+      "description": "Add bold/italic Unicode formatting to LinkedIn posts."
+    },
+    "social-media-tools/whatsapp-link-generator": {
+      "name": "WhatsApp Link Generator",
+      "description": "Create wa.me click-to-chat links with prefilled messages."
+    },
+    "social-media-tools/social-media-image-sizes": {
+      "name": "Social Media Image Sizes",
+      "description": "Reference of current image/video dimensions per platform."
+    },
+    "social-media-tools/bold-text-generator": {
+      "name": "Bold Text Generator",
+      "description": "Convert text into bold Unicode for platforms without formatting."
+    },
+    "social-media-tools/cursive-text-generator": {
+      "name": "Cursive Text Generator",
+      "description": "Generate cursive and italic Unicode text styles."
+    },
+    "social-media-tools/upside-down-text-generator": {
+      "name": "Upside Down Text Generator",
+      "description": "Flip text into upside-down characters for fun posts."
+    },
+    "social-media-tools/twitch-text-generator": {
+      "name": "Twitch Text Generator",
+      "description": "Create stylized text and name ideas for Twitch profiles."
+    },
+    "social-media-tools/fake-instagram-dm-generator": {
+      "name": "Fake Instagram DM Generator",
+      "description": "Mock up Instagram DM chat and profile screenshots."
+    },
+    "social-media-tools/hashtag-counter": {
+      "name": "Hashtag Counter",
+      "description": "Count hashtags in text and flag platform over-limits."
+    },
+    "social-media-tools/social-preview-tester": {
+      "name": "Social Preview Tester",
+      "description": "Preview how a link will look when shared across platforms."
+    },
+    "social-media-tools/aesthetic-username-generator": {
+      "name": "Aesthetic Username Generator",
+      "description": "Generate decorated usernames with symbols and aesthetic fonts."
+    },
+    "text-tools/word-counter": {
+      "name": "Word Counter",
+      "description": "Count words, characters, sentences, paragraphs with reading and speaking time estimates."
+    },
+    "text-tools/character-counter": {
+      "name": "Character Counter",
+      "description": "Count characters with and without spaces in real time for tweets and bios."
+    },
+    "text-tools/case-converter": {
+      "name": "Case Converter",
+      "description": "Convert text to UPPERCASE, lowercase, Title Case, Sentence case and more."
+    },
+    "text-tools/lorem-ipsum-generator": {
+      "name": "Lorem Ipsum Generator",
+      "description": "Generate placeholder dummy text by paragraphs, sentences or words."
+    },
+    "text-tools/remove-line-breaks": {
+      "name": "Remove Line Breaks",
+      "description": "Strip or merge line breaks and extra newlines from pasted text."
+    },
+    "text-tools/remove-extra-spaces": {
+      "name": "Remove Extra Spaces",
+      "description": "Remove duplicate, leading and trailing whitespace from text."
+    },
+    "text-tools/find-and-replace-text": {
+      "name": "Find and Replace Text",
+      "description": "Find and replace words or patterns in bulk text, with regex support."
+    },
+    "text-tools/reverse-text": {
+      "name": "Reverse Text",
+      "description": "Reverse characters, words or lines of any input text."
+    },
+    "text-tools/text-repeater": {
+      "name": "Text Repeater",
+      "description": "Repeat a string or line a chosen number of times."
+    },
+    "text-tools/word-frequency-counter": {
+      "name": "Word Frequency Counter",
+      "description": "Count how often each word appears and rank them by frequency."
+    },
+    "text-tools/remove-duplicate-lines": {
+      "name": "Remove Duplicate Lines",
+      "description": "Delete duplicate lines from a list while preserving order."
+    },
+    "text-tools/sort-text-lines": {
+      "name": "Sort Text Lines",
+      "description": "Sort lines alphabetically, numerically or reverse their order."
+    },
+    "text-tools/text-to-slug": {
+      "name": "Text to Slug",
+      "description": "Convert a title or phrase into a clean URL-friendly slug."
+    },
+    "text-tools/binary-translator": {
+      "name": "Binary Translator",
+      "description": "Convert text to binary and binary back to readable text."
+    },
+    "text-tools/morse-code-translator": {
+      "name": "Morse Code Translator",
+      "description": "Encode and decode between text and Morse code, with optional audio."
+    },
+    "text-tools/fancy-text-generator": {
+      "name": "Fancy Text Generator",
+      "description": "Turn text into stylish Unicode fonts for social media bios."
+    },
+    "text-tools/bionic-reading-converter": {
+      "name": "Bionic Reading Converter",
+      "description": "Bold the leading part of each word to aid faster reading."
+    },
+    "text-tools/text-to-handwriting": {
+      "name": "Text to Handwriting",
+      "description": "Render typed text as realistic handwriting on paper."
+    },
+    "text-tools/title-case-converter": {
+      "name": "Title Case Converter",
+      "description": "Apply proper title capitalization rules to headlines."
+    },
+    "text-tools/text-diff-checker": {
+      "name": "Text Diff Checker",
+      "description": "Highlight additions and deletions between two blocks of text."
+    },
+    "text-tools/whitespace-remover": {
+      "name": "Whitespace Remover",
+      "description": "Strip all whitespace or collapse multiple spaces into one."
+    },
+    "text-tools/add-line-numbers": {
+      "name": "Add Line Numbers",
+      "description": "Prepend sequential line numbers to each line of text."
+    },
+    "text-tools/text-to-ascii-art": {
+      "name": "Text to ASCII Art",
+      "description": "Convert words into large ASCII banner art."
+    },
+    "text-tools/nato-phonetic-alphabet-converter": {
+      "name": "NATO Phonetic Alphabet",
+      "description": "Spell text using the NATO phonetic alphabet."
+    },
+    "text-tools/strikethrough-text-generator": {
+      "name": "Strikethrough Text Generator",
+      "description": "Add strikethrough or underline Unicode styling to text."
+    },
+    "text-tools/upside-down-text-generator": {
+      "name": "Upside Down Text",
+      "description": "Flip text into upside-down Unicode characters."
+    },
+    "text-tools/remove-punctuation": {
+      "name": "Remove Punctuation",
+      "description": "Strip punctuation marks from text for clean processing."
+    },
+    "text-tools/text-to-speech": {
+      "name": "Text to Speech",
+      "description": "Read typed text aloud using the browser speech synthesis API."
+    },
+    "text-tools/sentence-counter": {
+      "name": "Sentence Counter",
+      "description": "Count sentences and average sentence length in text."
+    },
+    "text-tools/capitalize-each-word": {
+      "name": "Capitalize Each Word",
+      "description": "Capitalize the first letter of every word in the input."
+    },
+    "unit-converters/length-converter": {
+      "name": "Length Converter",
+      "description": "Convert between meters, feet, miles, kilometers, inches, and more."
+    },
+    "unit-converters/weight-converter": {
+      "name": "Weight Converter",
+      "description": "Convert mass units like kilograms, pounds, ounces, and grams."
+    },
+    "unit-converters/temperature-converter": {
+      "name": "Temperature Converter",
+      "description": "Convert between Celsius, Fahrenheit, and Kelvin."
+    },
+    "unit-converters/volume-converter": {
+      "name": "Volume Converter",
+      "description": "Convert liters, gallons, cups, milliliters, and other volume units."
+    },
+    "unit-converters/area-converter": {
+      "name": "Area Converter",
+      "description": "Convert square meters, acres, hectares, square feet, and more."
+    },
+    "unit-converters/speed-converter": {
+      "name": "Speed Converter",
+      "description": "Convert mph, km/h, m/s, knots, and other speed units."
+    },
+    "unit-converters/time-converter": {
+      "name": "Time Converter",
+      "description": "Convert seconds, minutes, hours, days, weeks, and years."
+    },
+    "unit-converters/pressure-converter": {
+      "name": "Pressure Converter",
+      "description": "Convert pascals, bar, psi, atm, and mmHg."
+    },
+    "unit-converters/energy-converter": {
+      "name": "Energy Converter",
+      "description": "Convert joules, calories, kilowatt-hours, and BTU."
+    },
+    "unit-converters/power-converter": {
+      "name": "Power Converter",
+      "description": "Convert watts, kilowatts, horsepower, and BTU/hour."
+    },
+    "unit-converters/force-converter": {
+      "name": "Force Converter",
+      "description": "Convert newtons, pounds-force, kilogram-force, and dynes."
+    },
+    "unit-converters/angle-converter": {
+      "name": "Angle Converter",
+      "description": "Convert degrees, radians, gradians, and arcminutes."
+    },
+    "unit-converters/data-storage-converter": {
+      "name": "Data Storage Converter",
+      "description": "Convert bytes, kilobytes, megabytes, gigabytes, and terabytes."
+    },
+    "unit-converters/data-transfer-rate-converter": {
+      "name": "Data Transfer Rate Converter",
+      "description": "Convert bps, Kbps, Mbps, Gbps, and MB/s."
+    },
+    "unit-converters/fuel-consumption-converter": {
+      "name": "Fuel Consumption Converter",
+      "description": "Convert MPG, km/L, and L/100km fuel economy units."
+    },
+    "unit-converters/density-converter": {
+      "name": "Density Converter",
+      "description": "Convert kg/m3, g/cm3, lb/ft3, and other density units."
+    },
+    "unit-converters/frequency-converter": {
+      "name": "Frequency Converter",
+      "description": "Convert hertz, kilohertz, megahertz, and gigahertz."
+    },
+    "unit-converters/cooking-measurement-converter": {
+      "name": "Cooking Measurement Converter",
+      "description": "Convert cups, tablespoons, teaspoons, grams, and ounces for recipes."
+    },
+    "unit-converters/shoe-size-converter": {
+      "name": "Shoe Size Converter",
+      "description": "Convert shoe sizes between US, UK, EU, and centimeters."
+    },
+    "unit-converters/ring-size-converter": {
+      "name": "Ring Size Converter",
+      "description": "Convert ring sizes across US, UK, EU, and diameter charts."
+    },
+    "unit-converters/roman-numeral-converter": {
+      "name": "Roman Numeral Converter",
+      "description": "Convert numbers to Roman numerals and back."
+    },
+    "unit-converters/number-to-words-converter": {
+      "name": "Number to Words Converter",
+      "description": "Spell out numbers in words for checks and documents."
+    },
+    "unit-converters/binary-to-decimal-converter": {
+      "name": "Binary to Decimal Converter",
+      "description": "Convert numbers between binary, decimal, hex, and octal."
+    },
+    "unit-converters/hex-to-rgb-converter": {
+      "name": "Hex to RGB Color Converter",
+      "description": "Convert colors between HEX, RGB, and HSL formats."
+    },
+    "unit-converters/bra-size-converter": {
+      "name": "Bra Size Converter",
+      "description": "Convert bra sizes between US, UK, EU, and FR systems."
+    },
+    "unit-converters/clothing-size-converter": {
+      "name": "Clothing Size Converter",
+      "description": "Convert clothing sizes across US, UK, EU, and international charts."
+    },
+    "unit-converters/inches-to-cm-converter": {
+      "name": "Inches to CM Converter",
+      "description": "Dedicated converter between inches and centimeters."
+    },
+    "unit-converters/kg-to-lbs-converter": {
+      "name": "KG to Lbs Converter",
+      "description": "Dedicated converter between kilograms and pounds."
+    },
+    "unit-converters/liters-to-gallons-converter": {
+      "name": "Liters to Gallons Converter",
+      "description": "Dedicated converter between liters and US/UK gallons."
+    },
+    "unit-converters/time-zone-converter": {
+      "name": "Time Zone Converter",
+      "description": "Convert a time between different world time zones."
+    }
+  },
+  "strings": {
+    "home": "گھر",
+    "category": "زمرہ",
+    "hot": "گرم",
+    "private": "نجی",
+    "instant": "فوری",
+    "aiPowered": "اے آئی سے چلنے والا",
+    "popular": "مقبول",
+    "perDayFree": "مفت میں {limit}/دن",
+    "comingSoon": "جلد آ رہا ہے",
+    "comingSoonTitle": "یہ ٹول جلد دستیاب ہوگا",
+    "comingSoonBody": "ہم اس AI ٹول پر کام کر رہے ہیں۔ یہ جلد یہاں دستیاب ہوگا — بعد میں دوبارہ چیک کریں۔",
+    "faqTitle": "اکثر پوچھے گئے سوالات",
+    "aboutTool": "{name} کے بارے میں",
+    "relatedTools": "متعلقہ {زمرہ}",
+    "exploreOther": "دیگر زمرے دریافت کریں۔",
+    "toolsCount": "{n} ٹولز",
+    "toolsPageTitle": "تمام {n}+ ٹولز",
+    "toolsPageSub": "{cats} زمروں میں تلاش اور فلٹر کریں۔",
+    "searchAllTools": "تمام {n}+ ٹولز تلاش کریں…",
+    "searchTrendingHint": "مشہور ٹولز — ↑↓ اور Enter استعمال کریں",
+    "searchNoResults": "”{q}“ کے لیے کوئی ٹول نہیں ملا",
+    "searchResultsOne": "1 نتیجہ",
+    "searchResultsMany": "{n} نتائج",
+    "searchClear": "تلاش صاف کریں",
+    "browseTools": "تمام ٹولز کو براؤز کریں۔",
+    "faqIsFreeQ": "کیا {name} استعمال کرنے کے لیے مفت ہے؟",
+    "faqIsFreeAClient": "جی ہاں ہمارے مفت پلان پر {name} مفت ہے — لامحدود استعمال، کوئی سائن اپ، اور کوئی واٹر مارک نہیں۔ براؤزر ٹولز کو کبھی بھی ادائیگی کی ضرورت نہیں ہوتی ہے۔",
+    "faqIsFreeAAi": "ہاں، روزانہ کی حدود کے ساتھ۔ {name} میں مفت پلان پر فی دن {limit} مفت رنز شامل ہیں۔ لامحدود AI رنز اور اشتہارات کے بغیر پرو میں اپ گریڈ کریں۔",
+    "faqSafeQ": "کیا میرا ڈیٹا {name} کے ساتھ محفوظ ہے؟",
+    "faqSafeA": "بالکل۔ {name} مکمل طور پر آپ کے براؤزر میں چلتا ہے — آپ کا ڈیٹا کبھی بھی کسی سرور پر اپ لوڈ نہیں ہوتا ہے۔",
+    "faqDataQ": "میرا ڈیٹا {name} کے ذریعے کیسے ہینڈل کیا جاتا ہے؟",
+    "faqDataA": "{name} آپ کا ان پٹ ہمارے سرور کو بھیجتا ہے، جو نتیجہ پیدا کرنے کے لیے محفوظ طریقے سے AI ماڈل کو کال کرتا ہے۔ ہم آپ کے ان پٹس کو اسٹور نہیں کرتے ہیں — لیکن راز یا حساس ڈیٹا کو پیسٹ کرنے سے گریز کریں، اور اس پر انحصار کرنے سے پہلے ہمیشہ AI آؤٹ پٹ کا جائزہ لیں۔",
+    "faqHowQ": "{name} کیسے کام کرتا ہے؟",
+    "faqHowAClient": "{desc} بس اپنا ان پٹ درج کریں اور نتیجہ آپ کے آلے پر فوری طور پر تیار ہو جائے گا۔",
+    "faqHowAAi": "{desc} اپنا ان پٹ درج کریں اور ایک AI ماڈل چند سیکنڈ میں نتیجہ تیار کرتا ہے۔",
+    "toolAboutClient": "{name} Mytulify کا ایک آن لائن ٹول ہے۔ {desc} یہ مکمل طور پر آپ کے براؤزر میں چلتا ہے — تیز، نجی، اور مفت پلان پر لامحدود۔ کوئی اکاؤنٹ یا انسٹالیشن کی ضرورت نہیں ہے۔",
+    "toolAboutAi": "{name} Mytulify کا ایک AI سے چلنے والا ٹول ہے۔ {desc} مفت پلان میں روزانہ {limit} رنز شامل ہیں۔ پرو لامحدود رنز کو کھولتا ہے۔ ہمارے سرور پر ان پٹ پر کارروائی کی جاتی ہے - راز چسپاں کرنے سے گریز کریں۔",
+    "toolMetaTitle": "{name} — آن لائن ٹول",
+    "toolMetaClient": "{desc} مفت براؤزر ٹول — آپ کے براؤزر میں مقامی طور پر چلتا ہے، سائن اپ کی ضرورت نہیں ہے۔",
+    "toolMetaAi": "{desc} AI سے چلنے والا ٹول — {limit} مفت رنز/دن مفت؛ لامحدود کے لیے پرو۔",
+    "categoryTitle": "{name} — {count} آن لائن ٹولز",
+    "categoryDescription": "{desc} {count} ٹولز — براؤزر ٹولز مفت؛ مفت پلان پر AI ٹولز کی روزانہ کی حدیں ہوسکتی ہیں۔",
+    "aboutPage": {
+      "label": "ہمارے بارے میں",
+      "title": "Mytulify کے بارے میں",
+      "intro": "{total}+ آن لائن ٹولز — {کلائنٹ}+ آپ کے براؤزر میں مفت چلائیں؛ AI اور OCR میں یومیہ مفت الاؤنس شامل ہے یا پرو کے ساتھ لامحدود۔",
+      "statTools": "کل ٹولز",
+      "statCategories": "زمرے",
+      "statBrowser": "صرف براؤزر",
+      "offerTitle": "جو ہم پیش کرتے ہیں۔",
+      "offerBody": "Mytulify {cats} زمروں پر پھیلا ہوا ہے — PDF اور امیج یوٹیلیٹیز، ٹیکسٹ، SEO، ڈویلپر، کلر ٹولز، کیلکولیٹر اور یونٹ کنورٹرز۔",
+      "privacyTitle": "رازداری پہلے",
+      "privacyBody": "زیادہ تر ٹولز — {کلائنٹ} کا {total} — مکمل طور پر آپ کے براؤزر میں چلتے ہیں۔ آپ کی فائلیں، متن اور ڈیٹا کبھی بھی آپ کے آلے کو نہیں چھوڑتا ہے۔",
+      "aiTitle": "AI سے چلنے والے ٹولز",
+      "aiBody": "ہمارے {ai} AI ٹولز (بشمول ہینڈ رائٹنگ OCR) نتائج پیدا کرنے کے لیے ہمارے سرور کو ان پٹ بھیجتے ہیں۔ ہم پروسیسنگ کے بعد اس ان پٹ کو اسٹور نہیں کرتے ہیں۔",
+      "pricingTitle": "مفت اور پرو",
+      "pricingBody": "{client}+ براؤزر ٹولز بغیر سائن اپ کے مفت رہتے ہیں۔ AI اور OCR ٹولز مفت میں روزانہ {limit} چلانے کی اجازت دیتے ہیں۔ پرو لامحدود AI، OCR، اور اشتہار سے پاک تجربہ شامل کرتا ہے۔",
+      "cta": "تمام ٹولز کو براؤز کریں۔"
+    }
+  }
+}

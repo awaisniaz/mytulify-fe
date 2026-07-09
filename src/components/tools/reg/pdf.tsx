@@ -10,6 +10,10 @@ import {
   ProtectPdf, UnlockPdf, PdfToJpg, PdfToPng, ExtractImagesFromPdf, ExtractTextFromPdf,
   PdfToWord, WordToPdf,
 } from "@/components/tools/impl/pdf-advanced";
+import {
+  TxtToPdf, CsvToPdf, ExcelToPdf, PdfToExcel, EpubToPdf, CbzToPdf, PdfToCbz, PdfToPdfA,
+  BankStatementToExcel,
+} from "@/components/tools/impl/asli-gap";
 
 export default makeReg({
   "merge-pdf": MergePdf,
@@ -42,4 +46,13 @@ export default makeReg({
   "extract-text-from-pdf": ExtractTextFromPdf,
   "pdf-to-word": PdfToWord,
   "word-to-pdf": WordToPdf,
+  "txt-to-pdf": TxtToPdf,
+  "csv-to-pdf": CsvToPdf,
+  "excel-to-pdf": ExcelToPdf,
+  "pdf-to-excel": PdfToExcel,
+  "epub-to-pdf": EpubToPdf,
+  "cbz-to-pdf": CbzToPdf,
+  "pdf-to-cbz": PdfToCbz,
+  "pdf-to-pdf-a": PdfToPdfA,
+  "bank-statement-to-excel": BankStatementToExcel,
 });
