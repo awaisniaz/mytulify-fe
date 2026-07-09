@@ -46,6 +46,9 @@ export async function generateMetadata(): Promise<Metadata> {
       url: site.url,
     }),
     robots: { index: true, follow: true },
+    other: {
+      monetag: process.env.MONETAG_SITE_ID ?? "30db1df687f8615565490f41f36dce91",
+    },
   };
 }
 
