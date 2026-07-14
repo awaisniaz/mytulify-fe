@@ -1269,8 +1269,8 @@
       "description": "Combine and permute keyword lists into broad/phrase/exact match."
     },
     "seo-web-tools/utm-builder": {
-      "name": "UTM Campaign URL Builder",
-      "description": "Build tracking URLs with UTM source, medium, and campaign params."
+      "name": "UTM Builder",
+      "description": "Generate trackable campaign URLs with UTM source, medium, and name parameters."
     },
     "seo-web-tools/html-tag-stripper": {
       "name": "HTML Tag Stripper",
@@ -1278,7 +1278,11 @@
     },
     "seo-web-tools/meta-description-length-checker": {
       "name": "Meta Description Length Checker",
-      "description": "Check title and meta description pixel and character length limits."
+      "description": "Check meta description length with a live Google search preview — free, no signup."
+    },
+    "seo-web-tools/meta-title-length-checker": {
+      "name": "Meta Title Length Checker",
+      "description": "Check if your page title is the right length for Google — avoid truncation and improve CTR."
     },
     "seo-web-tools/text-diff-checker": {
       "name": "Text Compare / Diff Checker",

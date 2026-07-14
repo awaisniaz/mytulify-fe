@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ALL_TOOLS, getCategory, getTool, getToolIcon, getToolIconPresentation, TOOL_BADGE_BG, isToolAvailable, relatedTools, toolHref } from "@/lib/catalog";
+import { ALL_TOOLS, getCategory, getTool, getToolIcon, getToolIconPresentation, TOOL_BADGE_BG, isToolAvailable, relatedTools, toolHref, type Tool } from "@/lib/catalog";
 import { ToolRenderer } from "@/components/tools/ToolRenderer";
 import { ComingSoon } from "@/components/tools/reg/_util";
 import { Icon } from "@/components/ui/Icon";
@@ -12,11 +12,22 @@ import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
 import { socialMeta } from "@/lib/seo";
 import { getLocale } from "@/i18n/locale";
 import {
-  buildFaq, getContent, localizeCategory, localizeTool, toolAboutText, toolMeta,
+  buildFaq, getContent, localizeCategory, localizeTool, toolAboutParagraphs, toolMeta,
 } from "@/i18n/content";
 
 export function generateStaticParams() {
   return ALL_TOOLS.map((t) => ({ category: t.category!, tool: t.slug }));
+}
+
+function resolveRelated(keys: string[] | undefined, tool: Tool, limit = 6): Tool[] {
+  if (!keys?.length) return relatedTools(tool, limit);
+  const resolved = keys
+    .map((key) => {
+      const [category, slug] = key.split("/");
+      return category && slug ? getTool(category, slug) : undefined;
+    })
+    .filter((item): item is Tool => item != null && item.slug !== tool.slug);
+  return resolved.length ? resolved.slice(0, limit) : relatedTools(tool, limit);
 }
 
 export async function generateMetadata({
@@ -30,13 +41,13 @@ export async function generateMetadata({
   const locale = await getLocale();
   const content = await getContent(locale);
   const label = localizeTool(content, t);
-  const meta = toolMeta(content, label.name, label.description, t.clientSide);
+  const meta = toolMeta(content, label, t.clientSide);
   return {
-    title: meta.title,
+    title: meta.absolute ? { absolute: meta.title } : meta.title,
     description: meta.description,
     alternates: { canonical: toolHref(t) },
     ...socialMeta({
-      title: `${label.name} · ${site.name}`,
+      title: meta.absolute ? meta.title : `${label.name} · ${site.name}`,
       description: meta.description,
       url: toolHref(t),
     }),
@@ -60,8 +71,9 @@ export default async function ToolPage({
     description: cat.description,
     tagline: cat.tagline,
   });
-  const related = relatedTools(t, 6);
-  const faq = buildFaq(content, label.name, label.description, t.clientSide);
+  const related = resolveRelated(label.related, t, 6);
+  const faq = buildFaq(content, label, t.clientSide);
+  const about = toolAboutParagraphs(content, label, t.clientSide);
   const present = getToolIconPresentation(t);
   const s = content.strings;
   const perDay = s.perDayFree.replace("{limit}", String(FREE_AI_DAILY_LIMIT));
@@ -172,9 +184,21 @@ export default async function ToolPage({
 
       <section className="mt-12 prose-tool">
         <h2 className="text-xl font-bold">{s.aboutTool.replace("{name}", label.name)}</h2>
-        <p className="mt-3 text-muted">
-          {toolAboutText(content, label.name, label.description, t.clientSide)}
-        </p>
+        <div className="mt-3 space-y-3 text-muted">
+          {about.map((paragraph) => (
+            <p key={paragraph.slice(0, 48)} className="leading-relaxed">{paragraph}</p>
+          ))}
+        </div>
+        {label.howTo && (
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold text-foreground">{label.howTo.title}</h3>
+            <ol className="mt-3 list-decimal space-y-2 pl-5 text-muted">
+              {label.howTo.steps.map((step) => (
+                <li key={step.slice(0, 48)} className="leading-relaxed">{step}</li>
+              ))}
+            </ol>
+          </div>
+        )}
       </section>
 
       <section className="mt-10">
@@ -200,7 +224,7 @@ export default async function ToolPage({
               const rLabel = localizeTool(content, r);
               return (
                 <Link
-                  key={r.slug}
+                  key={`${r.category}/${r.slug}`}
                   href={toolHref(r)}
                   className="interactive-card flex items-center gap-3 rounded-xl border border-border bg-surface p-4"
                 >

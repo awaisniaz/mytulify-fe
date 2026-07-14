@@ -1,4 +1,27 @@
-export type LocalizedTool = { name: string; description: string };
+export type ToolFaqItem = { q: string; a: string };
+
+export type ToolHowTo = {
+  title: string;
+  steps: string[];
+};
+
+export type LocalizedTool = {
+  name: string;
+  description: string;
+  /** Full document title (bypasses the site title template). */
+  metaTitle?: string;
+  /** Unique meta description for SERP CTR. */
+  metaDescription?: string;
+  /** Unique supporting paragraphs shown below the tool. */
+  about?: string[];
+  /** Optional how-to mini-guide under the about section. */
+  howTo?: ToolHowTo;
+  /** Custom FAQ; when set, replaces the generic FAQ template. */
+  faq?: ToolFaqItem[];
+  /** Prefer these tools in the related section (`category/slug`). */
+  related?: string[];
+};
+
 export type LocalizedCategory = { name: string; description: string; tagline: string };
 
 export type ContentStrings = {

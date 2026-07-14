@@ -1,5 +1,6 @@
 /** Auto-generated — run: node scripts/generate-tool-icons.mjs */
 export const TOOL_ICON_MAP: Record<string, string> = {
+  "ai-form-builder": "Sparkles",
   "code-explainer": "ScanText",
   "sql-query-generator": "ScanText",
   "error-diagnoser": "ScanText",
@@ -282,6 +283,7 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "utm-builder": "Search",
   "html-tag-stripper": "Search",
   "meta-description-length-checker": "Ruler",
+  "meta-title-length-checker": "Ruler",
   "text-diff-checker": "GitCompare",
   "robots-txt-validator": "Search",
   "faq-schema-generator": "Braces",

@@ -105,8 +105,20 @@
       "description": "Generate a professional README.md from your project details, auto-detecting the stack from package.json."
     },
     "ai-tools/test-case-generator": {
-      "name": "AI Test Case Generator",
-      "description": "Paste a function and get a thorough test suite for Jest, PyTest or JUnit covering edge cases."
+      "name": "Test Case Generator",
+      "description": "Paste a function and get a thorough test suite for Jest, PyTest or JUnit covering edge cases.",
+      "metaTitle": "Free Online Test Case Generator | Mytulify",
+      "metaDescription": "Generate structured test cases instantly for free. No signup required — ideal for QA testers and developers.",
+      "about": [
+        "The Test Case Generator turns a function or feature description into structured test cases you can drop into Jest, PyTest, or JUnit. It is built for QA testers and developers who need coverage for happy paths, edge cases, and failure modes without writing every scenario from scratch.",
+        "Paste your code or briefly describe the behavior you want to verify, pick a framework style, and generate cases instantly. Review the output, then adapt assertions to match your project conventions before committing."
+      ],
+      "related": [
+        "ai-tools/code-explainer",
+        "ai-tools/regex-generator",
+        "developer-tools/regex-tester",
+        "ai-tools/sql-query-generator"
+      ]
     },
     "ai-tools/docker-compose-generator": {
       "name": "AI Docker Compose Generator",
@@ -1269,8 +1281,42 @@
       "description": "Combine and permute keyword lists into broad/phrase/exact match."
     },
     "seo-web-tools/utm-builder": {
-      "name": "UTM Campaign URL Builder",
-      "description": "Build tracking URLs with UTM source, medium, and campaign params."
+      "name": "UTM Builder",
+      "description": "Generate trackable campaign URLs with UTM source, medium, and name parameters.",
+      "metaTitle": "Free UTM Builder Tool for Google Analytics | Mytulify",
+      "metaDescription": "Generate trackable UTM links for your marketing campaigns in seconds. Free UTM builder with campaign source, medium, and name fields — no signup.",
+      "about": [
+        "UTM parameters are tags you append to a URL so analytics tools like Google Analytics 4 can credit the right campaign. Common fields are utm_source (where traffic comes from), utm_medium (email, cpc, social), and utm_campaign (the promotion name). Optional term and content tags help compare ads or creatives.",
+        "Without consistent UTM naming, paid and organic channels blur together in reports. A clear naming scheme lets you measure which email, ad, or social post drove clicks and conversions — and cut spend on what does not work."
+      ],
+      "howTo": {
+        "title": "How to use this UTM builder",
+        "steps": [
+          "Paste the destination URL you want people to land on.",
+          "Fill in campaign source, medium, and name (add term or content if you need finer splits).",
+          "Copy the generated tracking link and use it in ads, emails, or social posts."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What are UTM parameters?",
+          "a": "UTM parameters are query-string tags (utm_source, utm_medium, utm_campaign, and optional utm_term / utm_content) that tell Google Analytics which campaign sent a visitor to your site."
+        },
+        {
+          "q": "Why do UTM links matter for GA4?",
+          "a": "GA4 uses UTMs to attribute sessions and conversions to campaigns. Consistent tags make channel and campaign reports accurate so you can optimize spend and creative."
+        },
+        {
+          "q": "Is this UTM builder free?",
+          "a": "Yes. The UTM Builder runs in your browser on Mytulify’s Free plan — unlimited use, no signup, and your URLs never leave your device."
+        }
+      ],
+      "related": [
+        "seo-web-tools/meta-tag-generator",
+        "seo-web-tools/url-slug-generator",
+        "seo-web-tools/open-graph-generator",
+        "seo-web-tools/meta-description-length-checker"
+      ]
     },
     "seo-web-tools/html-tag-stripper": {
       "name": "HTML Tag Stripper",
@@ -1278,7 +1324,76 @@
     },
     "seo-web-tools/meta-description-length-checker": {
       "name": "Meta Description Length Checker",
-      "description": "Check title and meta description pixel and character length limits."
+      "description": "Check meta description length with a live Google search preview — free, no signup.",
+      "metaTitle": "Meta Description Length Checker – Free SEO Tool (2026) | Mytulify",
+      "metaDescription": "Check your meta description length instantly. See a live Google search preview and know if your description is too long, too short, or perfect for SEO. Free, no signup.",
+      "about": [
+        "A meta description is the short blurb that often appears under your title in Google search results. It does not directly rank pages by itself, but a clear, compelling description improves click-through rate — which can help visibility over time. Aim for roughly 150–160 characters so the full message fits on desktop without awkward cutoffs.",
+        "If your description is too long, Google truncates it with an ellipsis and your call to action may disappear. If it is too short, you waste valuable SERP real estate and give searchers less reason to click. Use this checker to see length and a live preview before you publish."
+      ],
+      "howTo": {
+        "title": "How to use this tool",
+        "steps": [
+          "Paste or type your meta description into the field.",
+          "Watch the character count and status (too short, ideal, or too long).",
+          "Review the Google-style preview, then tighten wording until the length is in the ideal range."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is the ideal meta description length?",
+          "a": "Most SEOs target about 150–160 characters. Exact display width varies by device and Google’s UI, so use the live preview here as a practical guide rather than a hard pixel rule."
+        },
+        {
+          "q": "What happens if my meta description is too long?",
+          "a": "Google typically truncates long descriptions with an ellipsis. Important keywords or your call to action may get cut off, which can hurt click-through rate."
+        },
+        {
+          "q": "Does Google always show my meta description?",
+          "a": "Not always. Google may rewrite the snippet from page content if it thinks another passage better matches the query. A strong, accurate meta description still improves your odds of a useful snippet."
+        }
+      ],
+      "related": [
+        "seo-web-tools/meta-title-length-checker",
+        "text-tools/title-case-converter",
+        "seo-web-tools/serp-snippet-preview",
+        "seo-web-tools/meta-tag-generator",
+        "seo-web-tools/utm-builder"
+      ]
+    },
+    "seo-web-tools/meta-title-length-checker": {
+      "name": "Meta Title Length Checker",
+      "description": "Check if your page title is the right length for Google — avoid truncation and improve CTR.",
+      "metaTitle": "Meta Title Length Checker – Free SEO Tool | Mytulify",
+      "metaDescription": "Check if your page title is the right length for Google search results. Avoid truncation and improve click-through rate. Free, instant, no signup.",
+      "about": [
+        "Your meta title (the HTML title tag) is one of the strongest on-page SEO signals and the first line people see in search results. Most SEOs aim for about 50–60 characters, or roughly 600 pixels of width, so Google does not cut the title short on desktop.",
+        "Titles that run long get truncated with an ellipsis, which can hide your brand or value proposition. Titles that are too short leave unused SERP space and often underperform on clarity. Use this free checker to measure length and preview how the title may appear before you ship."
+      ],
+      "howTo": {
+        "title": "How to use this tool",
+        "steps": [
+          "Paste your proposed page title into the title field.",
+          "Check the character count against the 50–60 character ideal range.",
+          "Adjust wording until the preview looks clear and complete, then update your title tag."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is the ideal meta title length?",
+          "a": "A practical target is 50–60 characters (about 600px). Google measures display width, not just characters, so keep important words near the front."
+        },
+        {
+          "q": "Why do titles get cut off in Google?",
+          "a": "Search results have limited pixel width. When a title exceeds that space, Google truncates it. Shorter, front-loaded titles stay readable and clickable."
+        }
+      ],
+      "related": [
+        "seo-web-tools/meta-description-length-checker",
+        "text-tools/title-case-converter",
+        "seo-web-tools/serp-snippet-preview",
+        "seo-web-tools/meta-tag-generator"
+      ]
     },
     "seo-web-tools/text-diff-checker": {
       "name": "Text Compare / Diff Checker",
@@ -1522,7 +1637,19 @@
     },
     "text-tools/title-case-converter": {
       "name": "Title Case Converter",
-      "description": "Apply proper title capitalization rules to headlines."
+      "description": "Convert any text to proper title case for headlines, blog posts, and book titles.",
+      "metaTitle": "Title Case Converter – Capitalize Titles Instantly | Mytulify",
+      "metaDescription": "Convert any text to proper title case in one click. Free online title case converter for headlines, blog titles, and more.",
+      "about": [
+        "Title case capitalizes the main words in a headline while usually leaving short connectors (like “and,” “or,” or “the” mid-phrase) in lowercase, depending on the style guide you follow. It is the standard look for blog titles, book titles, article headlines, and many product names.",
+        "Sentence case only capitalizes the first word and proper nouns — common in UI copy and some news styles. Use this converter when you want polished title case for marketing headlines or SEO titles, then pair it with our meta title and description length checkers before publishing."
+      ],
+      "related": [
+        "seo-web-tools/meta-title-length-checker",
+        "seo-web-tools/meta-description-length-checker",
+        "text-tools/case-converter",
+        "seo-web-tools/url-slug-generator"
+      ]
     },
     "text-tools/text-diff-checker": {
       "name": "Text Diff Checker",

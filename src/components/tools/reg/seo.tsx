@@ -3,7 +3,8 @@
 import { makeReg } from "./_util";
 import {
   MetaTagGenerator, OpenGraphGenerator, TwitterCardGenerator, KeywordDensity, RobotsTxtGenerator,
-  SitemapGenerator, SchemaGenerator, UtmBuilder, SerpPreview, CanonicalTag, RobotsMetaTag, HreflangTag,
+  SitemapGenerator, SchemaGenerator, UtmBuilder, SerpPreview, MetaDescriptionLengthChecker,
+  MetaTitleLengthChecker, CanonicalTag, RobotsMetaTag, HreflangTag,
   HtmlTagStripper, EmailExtractor, CodeTextRatio, KeywordCombiner, ReadabilityChecker, HtaccessGenerator,
   MetaTagsAnalyzer, RobotsValidator,
 } from "@/components/tools/impl/seo";
@@ -34,7 +35,8 @@ export default makeReg({
   "keyword-combiner": KeywordCombiner,
   "utm-builder": UtmBuilder,
   "html-tag-stripper": HtmlTagStripper,
-  "meta-description-length-checker": SerpPreview,
+  "meta-description-length-checker": MetaDescriptionLengthChecker,
+  "meta-title-length-checker": MetaTitleLengthChecker,
   "text-diff-checker": DiffChecker,
   "faq-schema-generator": () => <SchemaGenerator kind="faq" />,
   "breadcrumb-schema-generator": () => <SchemaGenerator kind="breadcrumb" />,

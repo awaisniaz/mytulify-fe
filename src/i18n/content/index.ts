@@ -2,7 +2,7 @@ import type { Tool } from "@/lib/catalog";
 import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
 import type { Locale } from "../config";
 import { DEFAULT_LOCALE } from "../config";
-import type { ContentBundle, LocalizedCategory, LocalizedTool } from "./types";
+import type { ContentBundle, LocalizedCategory, LocalizedTool, ToolFaqItem } from "./types";
 import enContent from "./locales/en.json";
 
 const cache = new Map<Locale, ContentBundle>();
@@ -28,8 +28,19 @@ export async function getContent(locale: Locale): Promise<ContentBundle> {
 }
 
 export function localizeTool(content: ContentBundle, tool: Tool): LocalizedTool {
-  const hit = content.tools[toolContentKey(tool)];
-  return { name: hit?.name ?? tool.name, description: hit?.description ?? tool.description };
+  const key = toolContentKey(tool);
+  const hit = content.tools[key];
+  const en = fallback.tools[key];
+  return {
+    name: hit?.name ?? tool.name,
+    description: hit?.description ?? tool.description,
+    metaTitle: hit?.metaTitle ?? en?.metaTitle,
+    metaDescription: hit?.metaDescription ?? en?.metaDescription,
+    about: hit?.about ?? en?.about,
+    howTo: hit?.howTo ?? en?.howTo,
+    faq: hit?.faq ?? en?.faq,
+    related: hit?.related ?? en?.related,
+  };
 }
 
 export function localizeCategory(content: ContentBundle, slug: string, en: LocalizedCategory): LocalizedCategory {
@@ -48,8 +59,15 @@ function fmt(template: string, vars: Record<string, string | number>) {
   );
 }
 
-export function buildFaq(content: ContentBundle, name: string, desc: string, clientSide: boolean) {
+export function buildFaq(
+  content: ContentBundle,
+  label: LocalizedTool,
+  clientSide: boolean,
+): ToolFaqItem[] {
+  if (label.faq?.length) return label.faq;
   const s = content.strings;
+  const name = label.name;
+  const desc = label.description;
   return [
     {
       q: fmt(s.faqIsFreeQ, { name }),
@@ -67,6 +85,20 @@ export function buildFaq(content: ContentBundle, name: string, desc: string, cli
   ];
 }
 
+export function toolAboutParagraphs(
+  content: ContentBundle,
+  label: LocalizedTool,
+  clientSide: boolean,
+): string[] {
+  if (label.about?.length) return label.about;
+  const s = content.strings;
+  const text = clientSide
+    ? fmt(s.toolAboutClient, { name: label.name, desc: label.description, limit: FREE_AI_DAILY_LIMIT })
+    : fmt(s.toolAboutAi, { name: label.name, desc: label.description, limit: FREE_AI_DAILY_LIMIT });
+  return [text];
+}
+
+/** @deprecated Prefer toolAboutParagraphs — kept for any external callers. */
 export function toolAboutText(content: ContentBundle, name: string, desc: string, clientSide: boolean) {
   const s = content.strings;
   return clientSide
@@ -74,13 +106,15 @@ export function toolAboutText(content: ContentBundle, name: string, desc: string
     : fmt(s.toolAboutAi, { name, desc, limit: FREE_AI_DAILY_LIMIT });
 }
 
-export function toolMeta(content: ContentBundle, name: string, desc: string, clientSide: boolean) {
+export function toolMeta(content: ContentBundle, label: LocalizedTool, clientSide: boolean) {
   const s = content.strings;
   return {
-    title: fmt(s.toolMetaTitle, { name }),
-    description: clientSide
-      ? fmt(s.toolMetaClient, { desc })
-      : fmt(s.toolMetaAi, { desc, limit: FREE_AI_DAILY_LIMIT }),
+    title: label.metaTitle ?? fmt(s.toolMetaTitle, { name: label.name }),
+    absolute: Boolean(label.metaTitle),
+    description: label.metaDescription
+      ?? (clientSide
+        ? fmt(s.toolMetaClient, { desc: label.description })
+        : fmt(s.toolMetaAi, { desc: label.description, limit: FREE_AI_DAILY_LIMIT })),
   };
 }
 

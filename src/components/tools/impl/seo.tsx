@@ -193,25 +193,65 @@ export function UtmBuilder() {
 }
 
 /* ------------------------------ SERP preview ------------------------------- */
-export function SerpPreview() {
-  const [d, setD] = React.useState({ title: "Your page title goes here — Brand", url: "https://example.com/page", desc: "This is what your meta description will look like in Google search results. Keep it under 160 characters." });
+type LengthFocus = "both" | "title" | "description";
+
+function lengthLabel(len: number, idealMin: number, idealMax: number, unit: string) {
+  if (len === 0) return `Enter a ${unit}`;
+  if (len < idealMin) return "Too short";
+  if (len <= idealMax) return "Ideal length";
+  return "Too long — will truncate";
+}
+
+export function SerpPreview({ focus = "both" }: { focus?: LengthFocus }) {
+  const [d, setD] = React.useState({
+    title: "Your page title goes here — Brand",
+    url: "https://example.com/page",
+    desc: "This is what your meta description will look like in Google search results. Keep it under 160 characters.",
+  });
+  const showTitle = focus !== "description";
+  const showDesc = focus !== "title";
+
   return (
     <div className="space-y-4">
-      <Field label="Title"><Input value={d.title} onChange={(e) => setD({ ...d, title: e.target.value })} /></Field>
+      {showTitle && (
+        <Field label="Title" hint={`${d.title.length}/60 · ${lengthLabel(d.title.length, 50, 60, "title")}`}>
+          <Input value={d.title} onChange={(e) => setD({ ...d, title: e.target.value })} />
+        </Field>
+      )}
       <Field label="URL"><Input value={d.url} onChange={(e) => setD({ ...d, url: e.target.value })} /></Field>
-      <Field label="Description"><Textarea value={d.desc} onChange={(e) => setD({ ...d, desc: e.target.value })} rows={3} className="font-sans" /></Field>
+      {showDesc && (
+        <Field label="Meta description" hint={`${d.desc.length}/160 · ${lengthLabel(d.desc.length, 150, 160, "description")}`}>
+          <Textarea value={d.desc} onChange={(e) => setD({ ...d, desc: e.target.value })} rows={3} className="font-sans" />
+        </Field>
+      )}
       <div className="rounded-xl border border-border bg-white p-4">
         <p className="text-sm text-[#202124]">{d.url}</p>
-        <p className="truncate text-xl text-[#1a0dab]">{d.title}</p>
-        <p className="text-sm text-[#4d5156]">{d.desc.slice(0, 160)}{d.desc.length > 160 && "…"}</p>
+        <p className="truncate text-xl text-[#1a0dab]">{d.title || "Page title preview"}</p>
+        <p className="text-sm text-[#4d5156]">
+          {(d.desc || "Meta description preview").slice(0, 160)}
+          {d.desc.length > 160 && "…"}
+        </p>
       </div>
-      <div className="grid grid-cols-2 gap-3">
-        <Stat label="Title length" value={`${d.title.length}/60`} />
-        <Stat label="Desc length" value={`${d.desc.length}/160`} />
+      <div className={`grid gap-3 ${showTitle && showDesc ? "grid-cols-2" : "grid-cols-1"}`}>
+        {showTitle && (
+          <Stat
+            label={`Title · ${lengthLabel(d.title.length, 50, 60, "title")}`}
+            value={`${d.title.length}/60`}
+          />
+        )}
+        {showDesc && (
+          <Stat
+            label={`Description · ${lengthLabel(d.desc.length, 150, 160, "description")}`}
+            value={`${d.desc.length}/160`}
+          />
+        )}
       </div>
     </div>
   );
 }
+
+export const MetaDescriptionLengthChecker = () => <SerpPreview focus="description" />;
+export const MetaTitleLengthChecker = () => <SerpPreview focus="title" />;
 
 /* ------------------------------ Small helpers ------------------------------ */
 export function TagPair({ make, label1 = "Field", label2 = "Field 2", placeholder1 = "", placeholder2 = "", build }: {
