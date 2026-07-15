@@ -7,6 +7,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { LazyEnhancementsShell } from "@/components/LazyEnhancementsShell";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { AhrefsAnalytics } from "@/components/analytics/AhrefsAnalytics";
 import { themeScript } from "@/lib/theme-script";
 import { getLocale } from "@/i18n/locale";
 import { getMessaging } from "@/i18n/messaging";
@@ -95,6 +96,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       </head>
       <body className="flex min-h-full flex-col">
         <GoogleAnalytics />
+        <AhrefsAnalytics />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
