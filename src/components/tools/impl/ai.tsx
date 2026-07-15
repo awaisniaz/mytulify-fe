@@ -249,9 +249,8 @@ export function AiTool({ slug }: { slug: string }) {
       <p className="flex items-start gap-2 text-xs text-muted">
         <Icon name="Info" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
         <span>
-          This tool sends your input to our server, which securely calls an AI model to generate the
-          result. Don&apos;t paste secrets or sensitive data. Output may contain mistakes — always review
-          before using.
+          Runs on Mytulify&apos;s servers via Groq (free tier + Pro limits). Don&apos;t paste secrets or
+          sensitive data. Output may contain mistakes — always review before using.
         </span>
       </p>
     </div>

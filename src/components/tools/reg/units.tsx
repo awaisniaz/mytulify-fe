@@ -7,7 +7,6 @@ import {
   LENGTH, WEIGHT, VOLUME, AREA, SPEED, TIME, PRESSURE, ENERGY, POWER, FORCE, ANGLE,
   DATA, DATARATE, DENSITY, FREQUENCY, COOKING,
 } from "@/components/tools/impl/unit-converter";
-import { ColorConverter } from "@/components/tools/impl/color";
 
 export default makeReg({
   "length-converter": () => <FactorConverter units={LENGTH} from="Meter" to="Foot" />,
@@ -32,7 +31,6 @@ export default makeReg({
   "roman-numeral-converter": RomanConverter,
   "number-to-words-converter": NumberToWords,
   "binary-to-decimal-converter": BaseConverter,
-  "hex-to-rgb-converter": ColorConverter,
   "inches-to-cm-converter": () => <FactorConverter units={LENGTH} from="Inch" to="Centimeter" defaultValue={12} />,
   "kg-to-lbs-converter": () => <FactorConverter units={WEIGHT} from="Kilogram" to="Pound" />,
   "liters-to-gallons-converter": () => <FactorConverter units={VOLUME} from="Liter" to="Gallon (US)" />,

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import Link from "next/link";
 import { AVAILABLE_TOOLS, getCategory, getTool, getToolIcon, getToolIconPresentation, TOOL_BADGE_BG, isToolAvailable, relatedTools, toolHref, type Tool } from "@/lib/catalog";
+import { TOOL_CANONICAL_REDIRECTS } from "@/lib/catalog/canonical-redirects";
 import { ToolRenderer } from "@/components/tools/ToolRenderer";
 import { ComingSoon } from "@/components/tools/reg/_util";
 import { Icon } from "@/components/ui/Icon";
@@ -18,6 +19,11 @@ import {
 export function generateStaticParams() {
   // Indexable + live tool routes only (coming-soon stay reachable but are not SSG'd for crawl).
   return AVAILABLE_TOOLS.map((t) => ({ category: t.category!, tool: t.slug }));
+}
+
+function enforceCanonical(category: string, tool: string) {
+  const dest = TOOL_CANONICAL_REDIRECTS[`${category}/${tool}`];
+  if (dest) permanentRedirect(`/${dest}`);
 }
 
 function resolveRelated(keys: string[] | undefined, tool: Tool, limit = 4): Tool[] {
@@ -47,6 +53,7 @@ export async function generateMetadata({
   params: Promise<{ category: string; tool: string }>;
 }): Promise<Metadata> {
   const { category, tool } = await params;
+  enforceCanonical(category, tool);
   const t = getTool(category, tool);
   if (!t) return {};
   const locale = await getLocale();
@@ -71,6 +78,7 @@ export default async function ToolPage({
   params: Promise<{ category: string; tool: string }>;
 }) {
   const { category, tool } = await params;
+  enforceCanonical(category, tool);
   const t = getTool(category, tool);
   if (!t) notFound();
   const cat = getCategory(category)!;

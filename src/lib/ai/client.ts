@@ -11,6 +11,7 @@ export class AiNotConfiguredError extends Error {
   }
 }
 
+/** Groq OpenAI-compatible base URL — used by this Next.js app (frontend) for now. */
 const GROQ_BASE_URL = process.env.GROQ_BASE_URL ?? "https://api.groq.com/openai/v1";
 const DEFAULT_GROQ_MODEL = "llama-3.3-70b-versatile";
 const DEFAULT_GROQ_VISION_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
@@ -32,7 +33,7 @@ function parseApiKeys(): string[] {
   }
   const raw = process.env.GROQ_API_KEYS || process.env.GROQ_API_KEY || "";
   return raw
-    .split(/[,\n]+/)
+    .split(/[,\s,]+/)
     .map((k) => k.trim())
     .filter(Boolean);
 }
@@ -52,6 +53,21 @@ export function getChatModel(vision = false): string {
   return process.env.GROQ_MODEL?.trim() || DEFAULT_GROQ_MODEL;
 }
 
+/** Safe status for UI/ops — never includes API keys. */
+export function getAiStatus() {
+  const provider = getAiProvider();
+  const keys = parseApiKeys();
+  return {
+    configured: keys.length > 0,
+    provider,
+    keyCount: keys.length,
+    textModel: getChatModel(false),
+    visionModel: getChatModel(true),
+    /** Where AI runs today (migrate to tools-hub-backend later). */
+    runtime: "nextjs-frontend" as const,
+  };
+}
+
 function makeClient(apiKey: string): OpenAI {
   const provider = getAiProvider();
   if (provider === "groq") {
@@ -69,22 +85,22 @@ function isRateLimited(err: unknown): boolean {
 export function aiConfigErrorMessage(): string {
   const provider = getAiProvider();
   return provider === "openai"
-    ? "This AI tool isn't configured yet. Set OPENAI_API_KEY on the server to enable it."
-    : "This AI tool isn't configured yet. Set GROQ_API_KEYS (and AI_PROVIDER=groq) on the server to enable it.";
+    ? "This AI tool isn't configured yet. Set OPENAI_API_KEY in the frontend .env."
+    : "This AI tool isn't configured yet. Set GROQ_API_KEYS in the frontend .env (AI_PROVIDER=groq).";
 }
 
 export function aiAuthErrorMessage(): string {
   const provider = getAiProvider();
   return provider === "openai"
     ? "The configured OPENAI_API_KEY is invalid."
-    : "A configured GROQ_API_KEY is invalid.";
+    : "A configured GROQ_API_KEY is invalid or revoked.";
 }
 
 type ChatCreateParams = Parameters<OpenAI["chat"]["completions"]["create"]>[0];
 
 /**
- * Chat completion with provider selection and Groq multi-key rotation on 429.
- * Always returns a non-streaming completion.
+ * Chat completion via Groq (default) or OpenAI.
+ * Runs inside this Next.js app — not tools-hub-backend (for now).
  */
 export async function createChatCompletion(
   params: Omit<ChatCreateParams, "model" | "stream"> & { model?: string },
@@ -108,14 +124,11 @@ export async function createChatCompletion(
         model,
         stream: false,
       });
-      // Advance cursor so the next request starts on a different key.
       keyCursor = index + 1;
       return completion;
     } catch (err) {
       lastError = err;
-      if (isRateLimited(err) && attempt < keys.length - 1) {
-        continue;
-      }
+      if (isRateLimited(err) && attempt < keys.length - 1) continue;
       throw err;
     }
   }
