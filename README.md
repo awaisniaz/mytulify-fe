@@ -1,6 +1,6 @@
-# Mytulify — 398+ Online Tools (Free tier + Pro)
+# Mytulify — 436+ Online Tools (Free tier + Pro)
 
-A fast, privacy-first hub of **398 online tools** across **15 categories**, built with
+A fast, privacy-first hub of **436+ online tools** across **15 categories**, built with
 Next.js 16, React 19, TypeScript and Tailwind CSS v4. Most browser tools are **free & unlimited**;
 AI and OCR tools include a **free daily allowance** — **Pro** unlocks unlimited runs and removes ads.
 Fully SEO-optimised (per-tool metadata, JSON-LD, sitemap, robots, Open Graph images).
@@ -25,7 +25,7 @@ Fully SEO-optimised (per-tool metadata, JSON-LD, sitemap, robots, Open Graph ima
 | Social Media Tools | Fancy fonts, fake tweet/IG mockups, hashtags, captions |
 | Converters & Generators | QR, barcode, UUID, JSON↔CSV/YAML/XML, minifiers |
 
-> **All 398 tools are now fully interactive.** PDF protect/unlock and PDF↔Word use browser-based approaches with documented limitations.
+> **434+ tools are fully interactive.** Two PDF converters (`pdf-to-word`, `word-to-pdf`) remain coming soon; protect/unlock use browser-based approaches with documented limitations.
 
 ## Architecture
 
@@ -38,7 +38,7 @@ src/
     [category]/[tool]/page.tsx  Tool page (SSG, SoftwareApplication + FAQ JSON-LD)
     tools/page.tsx              Searchable all-tools browser
     sitemap.ts / robots.ts      SEO infra (auto-generated from the catalog)
-  lib/catalog/                  398-tool catalog: typed JSON per category + helpers
+  lib/catalog/                  Live tool catalog: typed JSON per category + helpers
   components/
     Header / Footer / SearchModal / ThemeToggle / cards
     tools/
@@ -61,19 +61,12 @@ JSON, then map its slug to a component in the matching `reg/<category>.tsx`.
 ```
 
 ```bash
-# Frontend only
+# Frontend
 npm install
 npm run dev              # http://localhost:3000
 
 # Backend (separate terminal, sibling folder)
-cd ../tools-hub-backend && npm install && npm run dev   # :4000
-
-# Or both from tools-hub:
-npm run dev:all
-
-# First-time payments setup (syncs secrets across both repos)
-npm run setup:payments
-npm run payments:check
+cd ../tools-hub-backend && npm install && npm run dev
 ```
 
 ```bash
@@ -84,7 +77,7 @@ npm run brand:check
 ```
 
 Set `NEXT_PUBLIC_SITE_URL` to your domain so canonical URLs / sitemap / OG tags are correct.
-Backend URL defaults to `http://localhost:4000` via `NEXT_PUBLIC_API_URL` in `.env.local`.
+Set `NEXT_PUBLIC_API_URL` to the backend (default `http://localhost:4003`).
 
 ## Tech
 

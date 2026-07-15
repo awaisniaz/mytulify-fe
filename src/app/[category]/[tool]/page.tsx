@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ALL_TOOLS, getCategory, getTool, getToolIcon, getToolIconPresentation, TOOL_BADGE_BG, isToolAvailable, relatedTools, toolHref, type Tool } from "@/lib/catalog";
+import { AVAILABLE_TOOLS, getCategory, getTool, getToolIcon, getToolIconPresentation, TOOL_BADGE_BG, isToolAvailable, relatedTools, toolHref, type Tool } from "@/lib/catalog";
 import { ToolRenderer } from "@/components/tools/ToolRenderer";
 import { ComingSoon } from "@/components/tools/reg/_util";
 import { Icon } from "@/components/ui/Icon";
@@ -16,18 +16,29 @@ import {
 } from "@/i18n/content";
 
 export function generateStaticParams() {
-  return ALL_TOOLS.map((t) => ({ category: t.category!, tool: t.slug }));
+  // Indexable + live tool routes only (coming-soon stay reachable but are not SSG'd for crawl).
+  return AVAILABLE_TOOLS.map((t) => ({ category: t.category!, tool: t.slug }));
 }
 
-function resolveRelated(keys: string[] | undefined, tool: Tool, limit = 6): Tool[] {
+function resolveRelated(keys: string[] | undefined, tool: Tool, limit = 4): Tool[] {
   if (!keys?.length) return relatedTools(tool, limit);
   const resolved = keys
     .map((key) => {
       const [category, slug] = key.split("/");
       return category && slug ? getTool(category, slug) : undefined;
     })
-    .filter((item): item is Tool => item != null && item.slug !== tool.slug);
-  return resolved.length ? resolved.slice(0, limit) : relatedTools(tool, limit);
+    .filter((item): item is Tool => item != null && item.slug !== tool.slug && isToolAvailable(item));
+  if (resolved.length >= Math.min(2, limit)) return resolved.slice(0, limit);
+  const fallback = relatedTools(tool, limit);
+  const seen = new Set(resolved.map((t) => `${t.category}/${t.slug}`));
+  for (const t of fallback) {
+    if (resolved.length >= limit) break;
+    const key = `${t.category}/${t.slug}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    resolved.push(t);
+  }
+  return resolved.slice(0, limit);
 }
 
 export async function generateMetadata({
@@ -71,7 +82,7 @@ export default async function ToolPage({
     description: cat.description,
     tagline: cat.tagline,
   });
-  const related = resolveRelated(label.related, t, 6);
+  const related = resolveRelated(label.related, t, 4);
   const faq = buildFaq(content, label, t.clientSide);
   const about = toolAboutParagraphs(content, label, t.clientSide);
   const present = getToolIconPresentation(t);

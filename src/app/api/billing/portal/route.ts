@@ -1,5 +1,6 @@
 import { getStripe } from "@/lib/billing/stripe";
 import { getSubscriptionByKey } from "@/lib/billing/keys";
+import { SITE_URL } from "@/lib/env";
 
 export const dynamic = "force-dynamic";
 
@@ -16,11 +17,10 @@ export async function POST(request: Request) {
   }
 
   const stripe = getStripe();
-  const base = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
 
   const portal = await stripe.billingPortal.sessions.create({
     customer: sub.stripeCustomerId,
-    return_url: `${base}/pricing`,
+    return_url: `${SITE_URL}/pricing`,
   });
 
   return Response.json({ url: portal.url });

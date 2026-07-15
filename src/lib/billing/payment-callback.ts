@@ -1,7 +1,4 @@
-const API = (process.env.BACKEND_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000").replace(
-  /\/$/,
-  "",
-);
+import { BACKEND_URL } from "@/lib/env";
 
 /** Tell backend to finalize order and issue license (Pakistan gateways). */
 export async function completeOrderFromCallback(orderRef: string, gateway: string): Promise<void> {
@@ -9,7 +6,7 @@ export async function completeOrderFromCallback(orderRef: string, gateway: strin
   if (!key) return;
 
   try {
-    await fetch(`${API}/api/v1/payments/internal/complete`, {
+    await fetch(`${BACKEND_URL}/api/v1/payments/internal/complete`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

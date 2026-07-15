@@ -36,7 +36,7 @@ export function ProUnlockForm() {
     }
   }
 
-  return (
+  return ( null );
     <div className="rounded-2xl border border-border bg-surface p-6">
       <h3 className="font-bold">Already have a Pro license?</h3>
       <p className="mt-1 text-sm text-muted">Enter your key to unlock unlimited AI on this device.</p>
@@ -61,5 +61,5 @@ export function ProUnlockForm() {
         <p className={cn("mt-3 text-sm", status === "ok" ? "text-emerald-600" : "text-rose-500")}>{msg}</p>
       )}
     </div>
-  );
+  
 }

@@ -1,6 +1,7 @@
 import { getStripe, mapStripeStatus } from "@/lib/billing/stripe";
 import { upsertSubscription, updateSubscriptionStatus, getSubscriptionByCustomerId } from "@/lib/billing/keys";
 import { revokeProOnBackend, syncProToBackend } from "@/lib/billing/backend-sync";
+import { BACKEND_URL } from "@/lib/env";
 import type Stripe from "stripe";
 
 export const dynamic = "force-dynamic";
@@ -58,10 +59,9 @@ export async function POST(request: Request) {
 
         const orderRef = session.metadata?.order_ref;
         if (orderRef) {
-          const api = process.env.BACKEND_URL ?? process.env.NEXT_PUBLIC_API_URL;
           const key = process.env.INTERNAL_API_KEY;
-          if (api && key) {
-            void fetch(`${api.replace(/\/$/, "")}/api/v1/payments/internal/complete`, {
+          if (key) {
+            void fetch(`${BACKEND_URL}/api/v1/payments/internal/complete`, {
               method: "POST",
               headers: { "Content-Type": "application/json", "X-Internal-Key": key },
               body: JSON.stringify({ orderRef, gateway: "stripe" }),

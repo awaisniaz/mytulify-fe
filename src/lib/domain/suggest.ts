@@ -1,4 +1,4 @@
-import OpenAI from "openai";
+import { createChatCompletion, isAiConfigured } from "@/lib/ai/client";
 
 export type NameIdea = {
   base: string;
@@ -17,7 +17,7 @@ export function parseTlds(raw?: string): string[] {
   return list.length ? [...new Set(list)] : DEFAULT_TLDS;
 }
 
-/** Fallback when OpenAI is unavailable — keyword mashups from description. */
+/** Fallback when AI is unavailable — keyword mashups from description. */
 export function heuristicNames(description: string, keywords: string): NameIdea[] {
   const text = `${description} ${keywords}`.toLowerCase();
   const words = [...new Set(text.match(/[a-z]{3,12}/g) ?? [])].slice(0, 12);
@@ -46,22 +46,26 @@ export function heuristicNames(description: string, keywords: string): NameIdea[
   }
 
   const seen = new Set<string>();
-  return ideas.filter((n) => {
-    const b = n.base.replace(/[^a-z0-9]/g, "");
-    if (b.length < 3 || seen.has(b)) return false;
-    seen.add(b);
-    n.base = b;
-    return true;
-  }).slice(0, 14);
+  return ideas
+    .filter((n) => {
+      const b = n.base.replace(/[^a-z0-9]/g, "");
+      if (b.length < 3 || seen.has(b)) return false;
+      seen.add(b);
+      n.base = b;
+      return true;
+    })
+    .slice(0, 14);
 }
 
 export async function generateNameIdeas(input: {
   description: string;
   keywords?: string;
   style?: string;
-  apiKey: string;
 }): Promise<NameIdea[]> {
-  const client = new OpenAI({ apiKey: input.apiKey });
+  if (!isAiConfigured()) {
+    return heuristicNames(input.description, input.keywords ?? "");
+  }
+
   const styleHint =
     input.style === "short"
       ? "Prefer very short names (4–8 letters)."
@@ -69,8 +73,7 @@ export async function generateNameIdeas(input: {
         ? "Prefer clear, descriptive names that explain the product."
         : "Mix brandable coined names and descriptive names.";
 
-  const completion = await client.chat.completions.create({
-    model: process.env.OPENAI_MODEL ?? "gpt-4o",
+  const completion = await createChatCompletion({
     temperature: 0.7,
     max_tokens: 1200,
     response_format: { type: "json_object" },
@@ -106,7 +109,10 @@ Rules: lowercase letters and numbers only, 3–15 chars, no hyphens, must relate
     .filter((n) => n.base.length >= 3 && n.base.length <= 15 && !seen.has(n.base) && seen.add(n.base));
 }
 
-export function expandToDomains(bases: NameIdea[], tlds: string[]): { domain: string; base: string; style: string; reason: string }[] {
+export function expandToDomains(
+  bases: NameIdea[],
+  tlds: string[],
+): { domain: string; base: string; style: string; reason: string }[] {
   const rows: { domain: string; base: string; style: string; reason: string }[] = [];
   for (const idea of bases) {
     for (const tld of tlds) {

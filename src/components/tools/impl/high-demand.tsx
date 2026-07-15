@@ -51,7 +51,7 @@ export function LlmsTxtGenerator() {
     <div className="space-y-4">
       <Notice tone="info">Trending for AI SEO in 2026 — helps ChatGPT, Claude & Google AI find your best pages.</Notice>
       <Field label="Site / project name"><Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Mytulify" /></Field>
-      <Field label="Short description"><Textarea value={desc} onChange={(e) => setDesc(e.target.value)} rows={2} className="font-sans" placeholder="398+ online tools for PDF, SEO, developers…" /></Field>
+      <Field label="Short description"><Textarea value={desc} onChange={(e) => setDesc(e.target.value)} rows={2} className="font-sans" placeholder="Online tools for PDF, SEO, developers…" /></Field>
       <Field label="Important URLs" hint="One per line (or use sitemap below)">
         <Textarea value={urls} onChange={(e) => setUrls(e.target.value)} rows={5} className="font-mono text-sm" placeholder={"https://yoursite.com/\nhttps://yoursite.com/pricing"} />
       </Field>

@@ -1,22 +1,20 @@
-import { TOTAL_TOOLS, TOTAL_CATEGORIES, TOTAL_SERVER_SIDE_TOOLS } from "@/lib/catalog";
+import { TOTAL_TOOLS, TOTAL_CATEGORIES, TOTAL_BROWSER_TOOLS } from "@/lib/catalog";
 import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
 import type { Locale } from "./config";
 import { getMessages, type Messages } from "./messages";
-
-const CLIENT_TOOLS = TOTAL_TOOLS - TOTAL_SERVER_SIDE_TOOLS;
 
 function fromCopy(t: Messages["copy"]) {
   return {
     tagline: t.tagline(TOTAL_TOOLS),
     taglineWithTier: t.taglineWithTier(TOTAL_TOOLS),
-    siteDescription: t.siteDescription(TOTAL_TOOLS, TOTAL_CATEGORIES, CLIENT_TOOLS, FREE_AI_DAILY_LIMIT),
+    siteDescription: t.siteDescription(TOTAL_TOOLS, TOTAL_CATEGORIES, TOTAL_BROWSER_TOOLS, FREE_AI_DAILY_LIMIT),
     heroBadge: t.heroBadge(TOTAL_TOOLS),
     heroTitleLead: t.heroTitleLead,
-    heroSubtitle: t.heroSubtitle(CLIENT_TOOLS, FREE_AI_DAILY_LIMIT),
-    footerNote: t.footerNote(CLIENT_TOOLS),
+    heroSubtitle: t.heroSubtitle(TOTAL_BROWSER_TOOLS, FREE_AI_DAILY_LIMIT),
+    footerNote: t.footerNote(TOTAL_BROWSER_TOOLS),
     homeValueFreeTitle: t.homeValueFreeTitle,
-    homeValueFreeDesc: t.homeValueFreeDesc(CLIENT_TOOLS, FREE_AI_DAILY_LIMIT),
-    homeCtaSubtitle: t.homeCtaSubtitle(CLIENT_TOOLS),
+    homeValueFreeDesc: t.homeValueFreeDesc(TOTAL_BROWSER_TOOLS, FREE_AI_DAILY_LIMIT),
+    homeCtaSubtitle: t.homeCtaSubtitle(TOTAL_BROWSER_TOOLS),
   };
 }
 

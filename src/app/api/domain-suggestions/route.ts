@@ -1,4 +1,8 @@
-import OpenAI from "openai";
+import {
+  OpenAI,
+  aiAuthErrorMessage,
+  isAiConfigured,
+} from "@/lib/ai/client";
 import {
   checkDomainsBatch,
   registrarSearchUrl,
@@ -59,18 +63,20 @@ export async function POST(request: Request) {
   const style = body.style ?? "mixed";
 
   let bases = heuristicNames(description, keywords);
-  const apiKey = process.env.OPENAI_API_KEY;
+  const aiConfigured = isAiConfigured();
+  let aiUsed = false;
 
-  if (apiKey) {
+  if (aiConfigured) {
     try {
-      const aiBases = await generateNameIdeas({ description, keywords, style, apiKey });
+      const aiBases = await generateNameIdeas({ description, keywords, style });
       if (aiBases.length) {
+        aiUsed = true;
         const seen = new Set(bases.map((b) => b.base));
         bases = [...bases, ...aiBases.filter((b) => !seen.has(b.base) && seen.add(b.base))];
       }
     } catch (err) {
       if (err instanceof OpenAI.AuthenticationError) {
-        return Response.json({ error: "The configured OPENAI_API_KEY is invalid." }, { status: 502 });
+        return Response.json({ error: aiAuthErrorMessage() }, { status: 502 });
       }
       /* fall back to heuristic names only */
     }
@@ -108,7 +114,7 @@ export async function POST(request: Request) {
       summary: {
         available: availableOnly.length,
         checked: allChecked.length,
-        aiUsed: Boolean(apiKey),
+        aiUsed,
         tlds,
       },
     }),

@@ -4,20 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:backend": "npm run dev --prefix ../tools-hub-backend",
-    "dev:all": "npm run dev --prefix ../tools-hub-backend & npm run dev",
-    "setup:payments": "node scripts/setup-payments.mjs",
-    "stripe:bootstrap": "node scripts/stripe-bootstrap.mjs",
     "stripe:webhook": "stripe listen --forward-to localhost:3000/api/billing/webhook --events checkout.session.completed,customer.subscription.updated,customer.subscription.deleted,invoice.payment_failed",
-    "payments:check": "node scripts/check-payments.mjs",
     "brand:check": "node scripts/check-brand.mjs",
     "icons:generate": "node scripts/generate-tool-icons.mjs",
     "i18n:generate": "node scripts/generate-i18n.mjs",
     "i18n:content": "node --env-file=.env.local scripts/generate-i18n-content.mjs",
     "build": "next build",
-    "build:backend": "npm run build --prefix ../tools-hub-backend",
     "start": "next start",
-    "start:backend": "npm run start --prefix ../tools-hub-backend",
     "lint": "eslint"
   },
   "dependencies": {

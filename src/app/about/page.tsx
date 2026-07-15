@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { TOTAL_CATEGORIES, TOTAL_SERVER_SIDE_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
+import { TOTAL_CATEGORIES, TOTAL_AI_OCR_TOOLS, TOTAL_BROWSER_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { Icon } from "@/components/ui/Icon";
 import { getLocale } from "@/i18n/locale";
@@ -10,10 +10,9 @@ import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   const content = await getContent(locale);
-  const clientSideTools = TOTAL_TOOLS - TOTAL_SERVER_SIDE_TOOLS;
   const intro = content.strings.aboutPage.intro
     .replace("{total}", String(TOTAL_TOOLS))
-    .replace("{client}", String(clientSideTools));
+    .replace("{client}", String(TOTAL_BROWSER_TOOLS));
   return {
     title: content.strings.aboutPage.title,
     description: `Learn about ${site.name} — ${intro}`,
@@ -25,11 +24,10 @@ export default async function AboutPage() {
   const locale = await getLocale();
   const content = await getContent(locale);
   const a = content.strings.aboutPage;
-  const clientSideTools = TOTAL_TOOLS - TOTAL_SERVER_SIDE_TOOLS;
 
   const intro = a.intro
     .replace("{total}", String(TOTAL_TOOLS))
-    .replace("{client}", String(clientSideTools));
+    .replace("{client}", String(TOTAL_BROWSER_TOOLS));
 
   const sections = [
     {
@@ -40,18 +38,18 @@ export default async function AboutPage() {
     {
       icon: "Lock",
       title: a.privacyTitle,
-      body: a.privacyBody.replace("{client}", String(clientSideTools)).replace("{total}", String(TOTAL_TOOLS)),
+      body: a.privacyBody.replace("{client}", String(TOTAL_BROWSER_TOOLS)).replace("{total}", String(TOTAL_TOOLS)),
     },
     {
       icon: "Sparkles",
       title: a.aiTitle,
-      body: a.aiBody.replace("{ai}", String(TOTAL_SERVER_SIDE_TOOLS)),
+      body: a.aiBody.replace("{ai}", String(TOTAL_AI_OCR_TOOLS)),
     },
     {
       icon: "Heart",
       title: a.pricingTitle,
       body: a.pricingBody
-        .replace("{client}", String(clientSideTools))
+        .replace("{client}", String(TOTAL_BROWSER_TOOLS))
         .replace("{limit}", String(FREE_AI_DAILY_LIMIT)),
     },
   ];
@@ -79,7 +77,7 @@ export default async function AboutPage() {
         {[
           [String(TOTAL_TOOLS), a.statTools, "Wrench"],
           [String(TOTAL_CATEGORIES), a.statCategories, "LayoutGrid"],
-          [String(clientSideTools), a.statBrowser, "Lock"],
+          [String(TOTAL_BROWSER_TOOLS), a.statBrowser, "Lock"],
         ].map(([val, label, icon]) => (
           <div key={label as string} className="glass interactive-card rounded-2xl p-5 text-center">
             <Icon name={icon as string} className="mx-auto h-5 w-5 text-brand" />

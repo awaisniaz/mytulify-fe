@@ -3,40 +3,275 @@
   "slug": "seo-web-tools",
   "description": "Client-side SEO utilities for generating, analyzing, and previewing on-page and technical SEO assets.",
   "tools": [
-    { "name": "Meta Tag Generator", "slug": "meta-tag-generator", "description": "Generate title, description, and meta tags HTML from form inputs.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true },
-    { "name": "Meta Tags Analyzer", "slug": "meta-tags-analyzer", "description": "Parse pasted HTML to extract and audit meta tags for SEO issues.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "Keyword Density Checker", "slug": "keyword-density-checker", "description": "Count word frequency and density percentages in pasted text or HTML.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Robots.txt Generator", "slug": "robots-txt-generator", "description": "Build a valid robots.txt file from allow/disallow and sitemap inputs.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "XML Sitemap Generator", "slug": "xml-sitemap-generator", "description": "Create an XML sitemap from a list of URLs with priority and frequency.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "Schema Markup Generator", "slug": "schema-markup-generator", "description": "Generate JSON-LD structured data for articles, products, FAQs, and more.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "Open Graph Generator", "slug": "open-graph-generator", "description": "Produce Open Graph (og:) meta tags for social link previews.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Twitter Card Generator", "slug": "twitter-card-generator", "description": "Build Twitter/X card meta tags and preview the card.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "SERP Snippet Preview", "slug": "serp-snippet-preview", "description": "Preview how a page appears in Google results with pixel-width checks.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": ".htaccess Generator", "slug": "htaccess-generator", "description": "Generate .htaccess rules for redirects, caching, and security.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "URL Encoder / Decoder", "slug": "url-encoder-decoder", "description": "Percent-encode and decode URLs and query strings.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "URL Slug Generator", "slug": "url-slug-generator", "description": "Convert titles into clean SEO-friendly slugs with stop-word removal.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Word Counter", "slug": "word-counter", "description": "Count words, characters, sentences, and reading time in text.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true },
-    { "name": "Character Counter", "slug": "character-counter", "description": "Count characters with and without spaces in real time.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Code to Text Ratio Checker", "slug": "code-to-text-ratio-checker", "description": "Calculate the ratio of visible text to HTML code from pasted markup.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Robots Meta Tag Generator", "slug": "robots-meta-tag-generator", "description": "Generate index/noindex/follow robots meta directives.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Canonical Tag Generator", "slug": "canonical-tag-generator", "description": "Create rel=canonical link tags to prevent duplicate content.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Hreflang Tag Generator", "slug": "hreflang-tag-generator", "description": "Generate hreflang tags for multilingual and regional targeting.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Keyword Combiner", "slug": "keyword-combiner", "description": "Combine and permute keyword lists into broad/phrase/exact match.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "UTM Builder", "slug": "utm-builder", "description": "Generate trackable campaign URLs with UTM source, medium, and name parameters.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "HTML Tag Stripper", "slug": "html-tag-stripper", "description": "Remove HTML tags to extract plain text from markup.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Meta Description Length Checker", "slug": "meta-description-length-checker", "description": "Check meta description length with a live Google search preview.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Meta Title Length Checker", "slug": "meta-title-length-checker", "description": "Check if your page title is the right length for Google search results.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Text Compare / Diff Checker", "slug": "text-diff-checker", "description": "Highlight differences between two blocks of text or content.", "searchVolume": "high", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Robots.txt Validator", "slug": "robots-txt-validator", "description": "Validate robots.txt syntax and test URL allow/block rules.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "FAQ Schema Generator", "slug": "faq-schema-generator", "description": "Generate FAQPage JSON-LD from question/answer pairs.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Breadcrumb Schema Generator", "slug": "breadcrumb-schema-generator", "description": "Create BreadcrumbList structured data from a page path.", "searchVolume": "low", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Favicon Generator", "slug": "favicon-generator", "description": "Generate multi-size favicons and the link tags from an image.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "Redirect Generator", "slug": "redirect-checker", "description": "Build and explain 301/302 redirect rules for common server configs.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Email Extractor", "slug": "email-extractor", "description": "Extract or scan pasted text/HTML for exposed email addresses.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Readability Score Checker", "slug": "readability-checker", "description": "Compute Flesch reading ease and grade-level scores for text.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Domain Name Finder", "slug": "domain-name-finder", "description": "Suggest available domain names from your project description — only shows domains that look free to register.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": false },
-    { "name": "LLMs.txt Generator", "slug": "llms-txt-generator", "description": "Build an llms.txt file so AI crawlers (ChatGPT, Claude, Google) discover your best pages.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Security Headers Generator", "slug": "security-headers-generator", "description": "Generate HSTS, CSP, X-Frame-Options and other OWASP headers for Nginx, Apache, or Cloudflare.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "ads.txt Generator", "slug": "ads-txt-generator", "description": "Create a valid ads.txt file for Google AdSense and ad networks.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true }
+    {
+      "name": "Meta Tag Generator",
+      "slug": "meta-tag-generator",
+      "description": "Generate title, description, and meta tags HTML from form inputs.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Meta Tags Analyzer",
+      "slug": "meta-tags-analyzer",
+      "description": "Parse pasted HTML to extract and audit meta tags for SEO issues.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Keyword Density Checker",
+      "slug": "keyword-density-checker",
+      "description": "Count word frequency and density percentages in pasted text or HTML.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Robots.txt Generator",
+      "slug": "robots-txt-generator",
+      "description": "Build a valid robots.txt file from allow/disallow and sitemap inputs.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "XML Sitemap Generator",
+      "slug": "xml-sitemap-generator",
+      "description": "Create an XML sitemap from a list of URLs with priority and frequency.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Schema Markup Generator",
+      "slug": "schema-markup-generator",
+      "description": "Generate JSON-LD structured data for articles, products, FAQs, and more.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Open Graph Generator",
+      "slug": "open-graph-generator",
+      "description": "Produce Open Graph (og:) meta tags for social link previews.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Twitter Card Generator",
+      "slug": "twitter-card-generator",
+      "description": "Build Twitter/X card meta tags and preview the card.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "SERP Snippet Preview",
+      "slug": "serp-snippet-preview",
+      "description": "Preview how a page appears in Google results with pixel-width checks.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": ".htaccess Generator",
+      "slug": "htaccess-generator",
+      "description": "Generate .htaccess rules for redirects, caching, and security.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "URL Slug Generator",
+      "slug": "url-slug-generator",
+      "description": "Convert titles into clean SEO-friendly slugs with stop-word removal.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Code to Text Ratio Checker",
+      "slug": "code-to-text-ratio-checker",
+      "description": "Calculate the ratio of visible text to HTML code from pasted markup.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Robots Meta Tag Generator",
+      "slug": "robots-meta-tag-generator",
+      "description": "Generate index/noindex/follow robots meta directives.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Canonical Tag Generator",
+      "slug": "canonical-tag-generator",
+      "description": "Create rel=canonical link tags to prevent duplicate content.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Hreflang Tag Generator",
+      "slug": "hreflang-tag-generator",
+      "description": "Generate hreflang tags for multilingual and regional targeting.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Keyword Combiner",
+      "slug": "keyword-combiner",
+      "description": "Combine and permute keyword lists into broad/phrase/exact match.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "UTM Builder",
+      "slug": "utm-builder",
+      "description": "Generate trackable campaign URLs with UTM source, medium, and name parameters.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "HTML Tag Stripper",
+      "slug": "html-tag-stripper",
+      "description": "Remove HTML tags to extract plain text from markup.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Meta Description Length Checker",
+      "slug": "meta-description-length-checker",
+      "description": "Check meta description length with a live Google search preview.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Meta Title Length Checker",
+      "slug": "meta-title-length-checker",
+      "description": "Check if your page title is the right length for Google search results.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Robots.txt Validator",
+      "slug": "robots-txt-validator",
+      "description": "Validate robots.txt syntax and test URL allow/block rules.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "FAQ Schema Generator",
+      "slug": "faq-schema-generator",
+      "description": "Generate FAQPage JSON-LD from question/answer pairs.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Breadcrumb Schema Generator",
+      "slug": "breadcrumb-schema-generator",
+      "description": "Create BreadcrumbList structured data from a page path.",
+      "searchVolume": "low",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Redirect Generator",
+      "slug": "redirect-checker",
+      "description": "Build and explain 301/302 redirect rules for common server configs.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Email Extractor",
+      "slug": "email-extractor",
+      "description": "Extract or scan pasted text/HTML for exposed email addresses.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Readability Score Checker",
+      "slug": "readability-checker",
+      "description": "Compute Flesch reading ease and grade-level scores for text.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Domain Name Finder",
+      "slug": "domain-name-finder",
+      "description": "Suggest available domain names from your project description — only shows domains that look free to register.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": false
+    },
+    {
+      "name": "LLMs.txt Generator",
+      "slug": "llms-txt-generator",
+      "description": "Build an llms.txt file so AI crawlers (ChatGPT, Claude, Google) discover your best pages.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Security Headers Generator",
+      "slug": "security-headers-generator",
+      "description": "Generate HSTS, CSP, X-Frame-Options and other OWASP headers for Nginx, Apache, or Cloudflare.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "ads.txt Generator",
+      "slug": "ads-txt-generator",
+      "description": "Create a valid ads.txt file for Google AdSense and ad networks.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    }
   ]
 }

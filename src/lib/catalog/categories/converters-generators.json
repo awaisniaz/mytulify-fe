@@ -3,37 +3,140 @@
   "slug": "converters-generators",
   "description": "Client-side data converters and utility generators for developers, students, and everyday users.",
   "tools": [
-    { "name": "JSON to CSV Converter", "slug": "json-to-csv", "description": "Convert JSON arrays/objects into downloadable CSV.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "CSV to JSON Converter", "slug": "csv-to-json", "description": "Parse CSV into structured JSON with header mapping.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "JSON Formatter / Beautifier", "slug": "json-formatter", "description": "Pretty-print, minify, and validate JSON with tree view.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "JSON to YAML Converter", "slug": "json-to-yaml", "description": "Convert between JSON and YAML formats.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "XML to JSON Converter", "slug": "xml-to-json", "description": "Parse XML into JSON and back.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Base64 Encoder / Decoder", "slug": "base64-encoder-decoder", "description": "Encode and decode text and files to/from Base64.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "QR Code Generator", "slug": "qr-code-generator", "description": "Generate downloadable QR codes for URLs, text, and contacts.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "Barcode Generator", "slug": "barcode-generator", "description": "Create barcodes in formats like Code128, EAN, and UPC.", "searchVolume": "high", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "UUID / GUID Generator", "slug": "uuid-generator", "description": "Generate v4 (and v1) UUIDs in bulk.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Password Generator", "slug": "password-generator", "description": "Create strong random passwords with custom rules.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true },
-    { "name": "Lorem Ipsum Generator", "slug": "lorem-ipsum-generator", "description": "Generate placeholder text by words, sentences, or paragraphs.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Hash Generator (MD5 / SHA)", "slug": "hash-generator", "description": "Compute MD5, SHA-1, and SHA-256 hashes of text.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Case Converter", "slug": "case-converter", "description": "Convert text between upper, lower, title, camel, and snake case.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Unix Timestamp Converter", "slug": "timestamp-converter", "description": "Convert between Unix epoch and human-readable dates.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "JSON to XML Converter", "slug": "json-to-xml", "description": "Convert JSON data structures into XML.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "HTML to Markdown Converter", "slug": "html-to-markdown", "description": "Convert HTML markup into clean Markdown.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Markdown to HTML Converter", "slug": "markdown-to-html", "description": "Render Markdown into HTML with live preview.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Color Converter (HEX / RGB / HSL)", "slug": "color-converter", "description": "Convert colors between HEX, RGB, HSL, and HSV.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Number Base Converter", "slug": "number-base-converter", "description": "Convert numbers between binary, octal, decimal, and hex.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Random Number Generator", "slug": "random-number-generator", "description": "Generate random numbers within a custom range.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true },
-    { "name": "Regex Tester", "slug": "regex-tester", "description": "Test regular expressions with live match highlighting.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "JWT Decoder", "slug": "jwt-decoder", "description": "Decode JWT header and payload and show claims.", "searchVolume": "high", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "CSV to TSV Converter", "slug": "csv-to-tsv", "description": "Convert CSV to TSV and Excel-friendly formats.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "SQL to JSON Converter", "slug": "sql-to-json", "description": "Convert SQL INSERT statements into JSON or CSV.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Text to Slug Generator", "slug": "text-to-slug", "description": "Turn any text into a URL-safe slug.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Random String Generator", "slug": "random-string-generator", "description": "Generate random strings and API tokens with custom charsets.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "JSON to TypeScript", "slug": "json-to-typescript", "description": "Generate TypeScript interfaces from a JSON sample.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Cron Expression Generator", "slug": "cron-expression-generator", "description": "Build and explain cron schedules in plain English.", "searchVolume": "high", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "List Randomizer", "slug": "list-randomizer", "description": "Shuffle or pick random items from a pasted list.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Code Minifier", "slug": "code-minifier", "description": "Minify HTML, CSS, and JavaScript to reduce file size.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "Invoice Generator", "slug": "invoice-generator", "description": "Create professional PDF invoices with line items, tax, and instant download — no watermark.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "IBAN Validator", "slug": "iban-validator", "description": "Validate IBAN numbers for Pakistan, EU, UK and 80+ countries with mod-97 checksum.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true }
+    {
+      "name": "XML to JSON Converter",
+      "slug": "xml-to-json",
+      "description": "Parse XML into JSON and back.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Barcode Generator",
+      "slug": "barcode-generator",
+      "description": "Create barcodes in formats like Code128, EAN, and UPC.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Hash Generator (MD5 / SHA)",
+      "slug": "hash-generator",
+      "description": "Compute MD5, SHA-1, and SHA-256 hashes of text.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "JSON to XML Converter",
+      "slug": "json-to-xml",
+      "description": "Convert JSON data structures into XML.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "HTML to Markdown Converter",
+      "slug": "html-to-markdown",
+      "description": "Convert HTML markup into clean Markdown.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Markdown to HTML Converter",
+      "slug": "markdown-to-html",
+      "description": "Render Markdown into HTML with live preview.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Color Converter (HEX / RGB / HSL)",
+      "slug": "color-converter",
+      "description": "Convert colors between HEX, RGB, HSL, and HSV.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "CSV to TSV Converter",
+      "slug": "csv-to-tsv",
+      "description": "Convert CSV to TSV and Excel-friendly formats.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "SQL to JSON Converter",
+      "slug": "sql-to-json",
+      "description": "Convert SQL INSERT statements into JSON or CSV.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Random String Generator",
+      "slug": "random-string-generator",
+      "description": "Generate random strings and API tokens with custom charsets.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "JSON to TypeScript",
+      "slug": "json-to-typescript",
+      "description": "Generate TypeScript interfaces from a JSON sample.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "List Randomizer",
+      "slug": "list-randomizer",
+      "description": "Shuffle or pick random items from a pasted list.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Code Minifier",
+      "slug": "code-minifier",
+      "description": "Minify HTML, CSS, and JavaScript to reduce file size.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Invoice Generator",
+      "slug": "invoice-generator",
+      "description": "Create professional PDF invoices with line items, tax, and instant download — no watermark.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "IBAN Validator",
+      "slug": "iban-validator",
+      "description": "Validate IBAN numbers for Pakistan, EU, UK and 80+ countries with mod-97 checksum.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    }
   ]
 }

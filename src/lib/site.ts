@@ -1,11 +1,12 @@
 import { TOTAL_TOOLS, TOTAL_CATEGORIES } from "./catalog";
 import { messaging } from "./messaging";
+import { SITE_URL } from "./env";
 
 export const site = {
   name: "Mytulify",
   tagline: messaging.tagline,
   description: messaging.siteDescription,
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://mytulify.com",
+  url: SITE_URL,
   locale: "en_US",
   twitter: "@mytulify",
   supportEmail: "support@mytulify.com",

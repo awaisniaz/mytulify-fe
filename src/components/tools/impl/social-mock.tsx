@@ -133,7 +133,7 @@ export function FakeFacebook() {
 /* --------------------------- Fake Instagram DM ----------------------------- */
 export function FakeInstagramDm() {
   const [name, setName] = React.useState("janedoe");
-  const [msgs, setMsgs] = React.useState("hey! did you see the new tools site?\nyeah it's amazing 🔥\nright?? 330+ free tools");
+  const [msgs, setMsgs] = React.useState("hey! did you see the new tools site?\nyeah it's amazing 🔥\nright?? so many free tools");
   const lines = msgs.split("\n");
   return (
     <div className="grid gap-6 lg:grid-cols-2">

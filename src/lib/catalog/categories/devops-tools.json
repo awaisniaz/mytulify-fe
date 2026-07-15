@@ -3,18 +3,113 @@
   "slug": "devops-tools",
   "description": "Client-side generators and validators for infrastructure, CI/CD and networking — configs, manifests and scripts you can copy straight into your project.",
   "tools": [
-    { "name": "IP Subnet Calculator", "slug": "ip-subnet-calculator", "description": "Calculate network, broadcast, host range and mask from a CIDR block, with a visual bit breakdown.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "curl Command Builder", "slug": "curl-command-builder", "description": "Build a curl command from a form and export the equivalent Python requests and JS fetch code.", "searchVolume": "high", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Nginx Config Generator", "slug": "nginx-config-generator", "description": "Generate Nginx configs for reverse proxy, SSL termination, static sites and load balancing.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "Kubernetes YAML Generator", "slug": "kubernetes-yaml-generator", "description": "Generate a linked Deployment, Service and Ingress in one manifest from a simple form.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "GitHub Actions Generator", "slug": "github-actions-generator", "description": "Generate a CI workflow YAML from ready-made Node, Python and Docker templates.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "robots.txt Generator", "slug": "robots-txt-generator", "description": "Build a valid robots.txt with allow/disallow rules, crawl-delay and sitemap, with live validation.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true },
-    { "name": ".env Validator", "slug": "env-validator", "description": "Validate .env syntax and flag likely leaked secrets and API keys before you commit them.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Crontab Builder", "slug": "crontab-builder", "description": "Build a cron expression and validate it against a real parser, with the next 5 run times previewed.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "Backup Script Generator", "slug": "backup-script-generator", "description": "Generate a cron-ready database backup script for Postgres, MySQL or MongoDB, with an optional S3 upload.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Health Check Config Generator", "slug": "health-check-generator", "description": "Generate a ready-to-paste health-check script and JSON config for uptime monitors from an endpoint.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Subnet Overlap Visualizer", "slug": "subnet-overlap-visualizer", "description": "Paste multiple CIDR blocks or IP ranges and see their coverage and overlaps on a visual map.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "IP Address Info & Classifier", "slug": "ip-address-info", "description": "Classify an IP as private, public, CGNAT, loopback or reserved with plain-language context and reverse-DNS.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "Systemd Timer Explainer", "slug": "systemd-timer-explainer", "description": "Explain and build systemd OnCalendar expressions in plain English, with the next 5 run times.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true }
+    {
+      "name": "IP Subnet Calculator",
+      "slug": "ip-subnet-calculator",
+      "description": "Calculate network, broadcast, host range and mask from a CIDR block, with a visual bit breakdown.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "curl Command Builder",
+      "slug": "curl-command-builder",
+      "description": "Build a curl command from a form and export the equivalent Python requests and JS fetch code.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Nginx Config Generator",
+      "slug": "nginx-config-generator",
+      "description": "Generate Nginx configs for reverse proxy, SSL termination, static sites and load balancing.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Kubernetes YAML Generator",
+      "slug": "kubernetes-yaml-generator",
+      "description": "Generate a linked Deployment, Service and Ingress in one manifest from a simple form.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "GitHub Actions Generator",
+      "slug": "github-actions-generator",
+      "description": "Generate a CI workflow YAML from ready-made Node, Python and Docker templates.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": ".env Validator",
+      "slug": "env-validator",
+      "description": "Validate .env syntax and flag likely leaked secrets and API keys before you commit them.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Crontab Builder",
+      "slug": "crontab-builder",
+      "description": "Build a cron expression and validate it against a real parser, with the next 5 run times previewed.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Backup Script Generator",
+      "slug": "backup-script-generator",
+      "description": "Generate a cron-ready database backup script for Postgres, MySQL or MongoDB, with an optional S3 upload.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Health Check Config Generator",
+      "slug": "health-check-generator",
+      "description": "Generate a ready-to-paste health-check script and JSON config for uptime monitors from an endpoint.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Subnet Overlap Visualizer",
+      "slug": "subnet-overlap-visualizer",
+      "description": "Paste multiple CIDR blocks or IP ranges and see their coverage and overlaps on a visual map.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "IP Address Info & Classifier",
+      "slug": "ip-address-info",
+      "description": "Classify an IP as private, public, CGNAT, loopback or reserved with plain-language context and reverse-DNS.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Systemd Timer Explainer",
+      "slug": "systemd-timer-explainer",
+      "description": "Explain and build systemd OnCalendar expressions in plain English, with the next 5 run times.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    }
   ]
 }

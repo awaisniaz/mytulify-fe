@@ -1,4 +1,11 @@
-import OpenAI from "openai";
+import {
+  AiNotConfiguredError,
+  OpenAI,
+  aiAuthErrorMessage,
+  aiConfigErrorMessage,
+  createChatCompletion,
+  isAiConfigured,
+} from "@/lib/ai/client";
 import { getAiTool, type AiInput } from "@/lib/ai/tools";
 import {
   checkAiAllowance,
@@ -12,9 +19,6 @@ export const maxDuration = 60;
 /** Always run on-demand — never cache AI responses. */
 export const dynamic = "force-dynamic";
 
-/** Overridable without a code change; gpt-4o is a safe, widely-available default. */
-const MODEL = process.env.OPENAI_MODEL ?? "gpt-4o";
-
 function json(body: unknown, status = 200) {
   return Response.json(body, { status });
 }
@@ -27,15 +31,8 @@ export async function POST(
   const tool = getAiTool(slug);
   if (!tool) return json({ error: "Unknown tool." }, 404);
 
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    return json(
-      {
-        error:
-          "This AI tool isn't configured yet. Set the OPENAI_API_KEY environment variable on the server to enable it.",
-      },
-      503,
-    );
+  if (!isAiConfigured()) {
+    return json({ error: aiConfigErrorMessage() }, 503);
   }
 
   const allowance = await checkAiAllowance(request);
@@ -65,8 +62,6 @@ export async function POST(
     }
   }
 
-  const client = new OpenAI({ apiKey });
-
   // Vision: if the tool has image fields with data-URL values, attach them.
   const images = tool.fields
     .filter((f) => f.type === "image")
@@ -82,15 +77,17 @@ export async function POST(
       : tool.buildUser(input);
 
   try {
-    const completion = await client.chat.completions.create({
-      model: MODEL,
-      max_tokens: tool.maxTokens,
-      temperature: 0.3,
-      messages: [
-        { role: "system", content: tool.system(input) },
-        { role: "user", content: userContent },
-      ],
-    });
+    const completion = await createChatCompletion(
+      {
+        max_tokens: tool.maxTokens,
+        temperature: 0.3,
+        messages: [
+          { role: "system", content: tool.system(input) },
+          { role: "user", content: userContent },
+        ],
+      },
+      { vision: images.length > 0 },
+    );
 
     const text = completion.choices[0]?.message?.content?.trim() ?? "";
 
@@ -101,8 +98,11 @@ export async function POST(
 
     return new Response(JSON.stringify({ text }), { status: 200, headers });
   } catch (err) {
+    if (err instanceof AiNotConfiguredError) {
+      return json({ error: aiConfigErrorMessage() }, 503);
+    }
     if (err instanceof OpenAI.AuthenticationError) {
-      return json({ error: "The configured OPENAI_API_KEY is invalid." }, 502);
+      return json({ error: aiAuthErrorMessage() }, 502);
     }
     if (err instanceof OpenAI.RateLimitError) {
       return json({ error: "Rate limit reached. Please try again in a moment." }, 429);

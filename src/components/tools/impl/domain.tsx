@@ -95,7 +95,7 @@ export function DomainNameFinder() {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={5}
-          placeholder="e.g. Mytulify is a hub of 398+ online tools for PDF, images, SEO and developers."
+          placeholder="e.g. Mytulify is a hub of online tools for PDF, images, SEO and developers."
           className="font-sans"
         />
       </Field>

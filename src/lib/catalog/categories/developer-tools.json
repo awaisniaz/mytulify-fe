@@ -3,41 +3,302 @@
   "slug": "developer-tools",
   "description": "Client-side coding utilities for formatting, converting, encoding and inspecting data.",
   "tools": [
-    { "name": "JSON Formatter", "slug": "json-formatter", "description": "Beautify, validate and minify JSON with syntax highlighting.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "JSON to CSV Converter", "slug": "json-to-csv", "description": "Convert JSON arrays into downloadable CSV files.", "searchVolume": "high", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "CSV to JSON Converter", "slug": "csv-to-json", "description": "Parse CSV data into structured JSON output.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Base64 Encoder/Decoder", "slug": "base64-encoder-decoder", "description": "Encode and decode text and files to and from Base64.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "URL Encoder/Decoder", "slug": "url-encoder-decoder", "description": "Percent-encode and decode URLs and query parameters.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "JWT Decoder", "slug": "jwt-decoder", "description": "Decode a JWT into its header, payload and signature.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "Regex Tester", "slug": "regex-tester", "description": "Test regular expressions against sample text with live match highlighting.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "Timestamp Converter", "slug": "timestamp-converter", "description": "Convert Unix epoch timestamps to and from human-readable dates.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "UUID Generator", "slug": "uuid-generator", "description": "Generate v4 UUIDs singly or in bulk.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Hex to RGB Converter", "slug": "hex-to-rgb-converter", "description": "Convert colors between HEX, RGB and HSL formats.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Cron Expression Generator", "slug": "cron-expression-generator", "description": "Build and explain cron schedules with next-run preview.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "HTML Encoder/Decoder", "slug": "html-encoder-decoder", "description": "Encode and decode HTML entities in text.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "HTML Minifier", "slug": "html-minifier", "description": "Remove whitespace and comments to shrink HTML.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "CSS Minifier", "slug": "css-minifier", "description": "Compress CSS by stripping whitespace and comments.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "JavaScript Minifier", "slug": "javascript-minifier", "description": "Minify JavaScript source to reduce file size.", "searchVolume": "medium", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "JSON to YAML Converter", "slug": "json-to-yaml", "description": "Convert between JSON and YAML formats.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "SQL Formatter", "slug": "sql-formatter", "description": "Beautify and indent SQL queries for readability.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Number Base Converter", "slug": "number-base-converter", "description": "Convert numbers between binary, octal, decimal and hex.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Color Picker", "slug": "color-picker", "description": "Pick colors and output HEX, RGB and HSL values.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true },
-    { "name": "QR Code Generator", "slug": "qr-code-generator", "description": "Generate downloadable QR codes from text or URLs.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "CSS Gradient Generator", "slug": "css-gradient-generator", "description": "Visually build linear and radial CSS gradients with code output.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Box Shadow Generator", "slug": "box-shadow-generator", "description": "Generate CSS box-shadow code with a live preview.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Markdown Preview", "slug": "markdown-preview", "description": "Render Markdown to live HTML side by side.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "XML Formatter", "slug": "xml-formatter", "description": "Beautify and validate XML documents.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "JSON Validator", "slug": "json-validator", "description": "Validate JSON syntax and pinpoint errors.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Slug Generator", "slug": "slug-generator", "description": "Create SEO-friendly URL slugs from text.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Meta Tag Generator", "slug": "meta-tag-generator", "description": "Build HTML meta and Open Graph tags for SEO.", "searchVolume": "medium", "competition": "medium", "complexity": "easy", "clientSide": true },
-    { "name": "ROT13 Encoder/Decoder", "slug": "rot13-encoder-decoder", "description": "Apply the ROT13 letter-substitution cipher to text.", "searchVolume": "low", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Chmod Calculator", "slug": "chmod-calculator", "description": "Compute numeric and symbolic Unix file permissions.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "User Agent Parser", "slug": "user-agent-parser", "description": "Parse a user-agent string into browser, OS and device.", "searchVolume": "low", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": ".gitignore Generator", "slug": "gitignore-generator", "description": "Merge multiple language, framework and OS templates into one .gitignore, with duplicate patterns removed.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true },
-    { "name": "Regex Explainer", "slug": "regex-explainer", "description": "Paste a regular expression and get a plain-English, token-by-token breakdown of what it matches.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": true },
-    { "name": "Data File Merger", "slug": "data-file-merger", "description": "Merge multiple JSON, CSV, TSV or XML files into one combined dataset, exportable as JSON or CSV.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Duplicate File Finder", "slug": "duplicate-file-finder", "description": "Find exact duplicate files by content hash locally in your browser, flagging older copies as safe to delete.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
-    { "name": "Mock Data Generator", "slug": "mock-data-generator", "description": "Generate fake users or products as JSON or CSV for API testing and demos.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true },
-    { "name": "PWA Manifest Generator", "slug": "pwa-manifest-generator", "description": "Build manifest.json and HTML tags to turn your site into an installable Progressive Web App.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true }
+    {
+      "name": "JSON Formatter",
+      "slug": "json-formatter",
+      "description": "Beautify, validate and minify JSON with syntax highlighting.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "JSON to CSV Converter",
+      "slug": "json-to-csv",
+      "description": "Convert JSON arrays into downloadable CSV files.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "CSV to JSON Converter",
+      "slug": "csv-to-json",
+      "description": "Parse CSV data into structured JSON output.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Base64 Encoder/Decoder",
+      "slug": "base64-encoder-decoder",
+      "description": "Encode and decode text and files to and from Base64.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "URL Encoder/Decoder",
+      "slug": "url-encoder-decoder",
+      "description": "Percent-encode and decode URLs and query parameters.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "JWT Decoder",
+      "slug": "jwt-decoder",
+      "description": "Decode a JWT into its header, payload and signature.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Regex Tester",
+      "slug": "regex-tester",
+      "description": "Test regular expressions against sample text with live match highlighting.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Timestamp Converter",
+      "slug": "timestamp-converter",
+      "description": "Convert Unix epoch timestamps to and from human-readable dates.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "UUID Generator",
+      "slug": "uuid-generator",
+      "description": "Generate v4 UUIDs singly or in bulk.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Hex to RGB Converter",
+      "slug": "hex-to-rgb-converter",
+      "description": "Convert colors between HEX, RGB and HSL formats.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Cron Expression Generator",
+      "slug": "cron-expression-generator",
+      "description": "Build and explain cron schedules with next-run preview.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "HTML Encoder/Decoder",
+      "slug": "html-encoder-decoder",
+      "description": "Encode and decode HTML entities in text.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "HTML Minifier",
+      "slug": "html-minifier",
+      "description": "Remove whitespace and comments to shrink HTML.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "CSS Minifier",
+      "slug": "css-minifier",
+      "description": "Compress CSS by stripping whitespace and comments.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "JavaScript Minifier",
+      "slug": "javascript-minifier",
+      "description": "Minify JavaScript source to reduce file size.",
+      "searchVolume": "medium",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "JSON to YAML Converter",
+      "slug": "json-to-yaml",
+      "description": "Convert between JSON and YAML formats.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "SQL Formatter",
+      "slug": "sql-formatter",
+      "description": "Beautify and indent SQL queries for readability.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Number Base Converter",
+      "slug": "number-base-converter",
+      "description": "Convert numbers between binary, octal, decimal and hex.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "QR Code Generator",
+      "slug": "qr-code-generator",
+      "description": "Generate downloadable QR codes from text or URLs.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "CSS Gradient Generator",
+      "slug": "css-gradient-generator",
+      "description": "Visually build linear and radial CSS gradients with code output.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Markdown Preview",
+      "slug": "markdown-preview",
+      "description": "Render Markdown to live HTML side by side.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "XML Formatter",
+      "slug": "xml-formatter",
+      "description": "Beautify and validate XML documents.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "JSON Validator",
+      "slug": "json-validator",
+      "description": "Validate JSON syntax and pinpoint errors.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Slug Generator",
+      "slug": "slug-generator",
+      "description": "Create SEO-friendly URL slugs from text.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "ROT13 Encoder/Decoder",
+      "slug": "rot13-encoder-decoder",
+      "description": "Apply the ROT13 letter-substitution cipher to text.",
+      "searchVolume": "low",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Chmod Calculator",
+      "slug": "chmod-calculator",
+      "description": "Compute numeric and symbolic Unix file permissions.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "User Agent Parser",
+      "slug": "user-agent-parser",
+      "description": "Parse a user-agent string into browser, OS and device.",
+      "searchVolume": "low",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": ".gitignore Generator",
+      "slug": "gitignore-generator",
+      "description": "Merge multiple language, framework and OS templates into one .gitignore, with duplicate patterns removed.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Regex Explainer",
+      "slug": "regex-explainer",
+      "description": "Paste a regular expression and get a plain-English, token-by-token breakdown of what it matches.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "hard",
+      "clientSide": true
+    },
+    {
+      "name": "Data File Merger",
+      "slug": "data-file-merger",
+      "description": "Merge multiple JSON, CSV, TSV or XML files into one combined dataset, exportable as JSON or CSV.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Duplicate File Finder",
+      "slug": "duplicate-file-finder",
+      "description": "Find exact duplicate files by content hash locally in your browser, flagging older copies as safe to delete.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Mock Data Generator",
+      "slug": "mock-data-generator",
+      "description": "Generate fake users or products as JSON or CSV for API testing and demos.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "PWA Manifest Generator",
+      "slug": "pwa-manifest-generator",
+      "description": "Build manifest.json and HTML tags to turn your site into an installable Progressive Web App.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    }
   ]
 }

@@ -1,4 +1,9 @@
-import OpenAI from "openai";
+import {
+  AiNotConfiguredError,
+  aiConfigErrorMessage,
+  createChatCompletion,
+  isAiConfigured,
+} from "@/lib/ai/client";
 import {
   checkAiAllowance,
   incrementUsage,
@@ -9,8 +14,6 @@ import { parseFormSchema } from "@/lib/forms/schema";
 
 export const maxDuration = 60;
 export const dynamic = "force-dynamic";
-
-const MODEL = process.env.OPENAI_MODEL ?? "gpt-4o";
 
 const SYSTEM = `You are an expert form designer for Mytulify. Users worldwide need printable and fillable forms for any country, language, and purpose (legal, business, education, medical, government, housing, employment).
 
@@ -48,12 +51,8 @@ type Body = {
 };
 
 export async function POST(request: Request) {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    return Response.json(
-      { error: "AI form builder is not configured. Set OPENAI_API_KEY on the server." },
-      { status: 503 },
-    );
+  if (!isAiConfigured()) {
+    return Response.json({ error: aiConfigErrorMessage() }, { status: 503 });
   }
 
   const allowance = await checkAiAllowance(request);
@@ -77,41 +76,47 @@ export async function POST(request: Request) {
 
   const mode = body.mode ?? "generate";
   const language = body.language?.trim() || "en";
-  const client = new OpenAI({ apiKey });
 
   try {
-    let completion: OpenAI.Chat.Completions.ChatCompletion;
+    let raw: string | undefined;
 
     if (mode === "scan") {
       if (!body.image?.startsWith("data:")) {
         return Response.json({ error: "Please upload a form image." }, { status: 400 });
       }
-      completion = await client.chat.completions.create({
-        model: MODEL,
-        temperature: 0.2,
-        response_format: { type: "json_object" },
-        messages: [
-          { role: "system", content: SYSTEM + "\n\nExtract every field from the uploaded form image. Preserve labels as shown. Infer field types from layout." },
-          {
-            role: "user",
-            content: [
-              {
-                type: "text",
-                text: `Recreate this form digitally. Target language for any missing labels: ${language}. Return the JSON schema.`,
-              },
-              { type: "image_url", image_url: { url: body.image } },
-            ],
-          },
-        ],
-      });
+      const completion = await createChatCompletion(
+        {
+          temperature: 0.2,
+          response_format: { type: "json_object" },
+          messages: [
+            {
+              role: "system",
+              content:
+                SYSTEM +
+                "\n\nExtract every field from the uploaded form image. Preserve labels as shown. Infer field types from layout.",
+            },
+            {
+              role: "user",
+              content: [
+                {
+                  type: "text",
+                  text: `Recreate this form digitally. Target language for any missing labels: ${language}. Return the JSON schema.`,
+                },
+                { type: "image_url", image_url: { url: body.image } },
+              ],
+            },
+          ],
+        },
+        { vision: true },
+      );
+      raw = completion.choices[0]?.message?.content?.trim();
     } else {
       const requirements = body.requirements?.trim();
       if (!requirements) {
         return Response.json({ error: "Please describe what form you need." }, { status: 400 });
       }
       const context = body.context?.trim();
-      completion = await client.chat.completions.create({
-        model: MODEL,
+      const completion = await createChatCompletion({
         temperature: 0.3,
         response_format: { type: "json_object" },
         messages: [
@@ -128,9 +133,9 @@ Generate all necessary fields.`,
           },
         ],
       });
+      raw = completion.choices[0]?.message?.content?.trim();
     }
 
-    const raw = completion.choices[0]?.message?.content?.trim();
     if (!raw) return Response.json({ error: "Empty AI response." }, { status: 502 });
 
     const parsed = parseFormSchema(JSON.parse(raw));
@@ -142,7 +147,13 @@ Generate all necessary fields.`,
 
     return new Response(JSON.stringify({ schema: parsed }), { status: 200, headers });
   } catch (err) {
+    if (err instanceof AiNotConfiguredError) {
+      return Response.json({ error: aiConfigErrorMessage() }, { status: 503 });
+    }
     const msg = err instanceof Error ? err.message : "Generation failed.";
-    return Response.json({ error: msg.includes("JSON") ? "Could not parse form structure. Try again." : msg }, { status: 502 });
+    return Response.json(
+      { error: msg.includes("JSON") ? "Could not parse form structure. Try again." : msg },
+      { status: 502 },
+    );
   }
 }

@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button, Input } from "@/components/ui/primitives";
 import { Icon } from "@/components/ui/Icon";
 import { API_URL } from "@/lib/auth/config";
 import { authHeaders, getStoredUser } from "@/lib/auth/client";
-import { PRO_PRICE_PKR, PRO_PRICE_USD } from "@/lib/billing/plans";
+import type { BillingInterval } from "@/lib/billing/plans-api";
 import { cn } from "@/lib/utils";
 
 type Gateway = {
@@ -16,26 +16,43 @@ type Gateway = {
   amount: number;
 };
 
-export function PaymentCheckout({ className }: { className?: string }) {
+type Props = {
+  className?: string;
+  planSlug?: string;
+  interval?: BillingInterval;
+};
+
+export function PaymentCheckout({
+  className,
+  planSlug = "pro",
+  interval = "month",
+}: Props) {
   const [gateways, setGateways] = useState<Gateway[]>([]);
   const [email, setEmail] = useState("");
   const [selected, setSelected] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const periodLabel = interval === "year" ? "/year" : "/month";
+
   useEffect(() => {
     const user = getStoredUser();
     if (user?.email) setEmail(user.email);
 
-    fetch(`${API_URL}/api/v1/payments/methods`)
+    setGateways([]);
+    setSelected("");
+    setError("");
+
+    fetch(`${API_URL}/api/v1/payments/methods?plan=${encodeURIComponent(planSlug)}&interval=${interval}`)
       .then((r) => r.json())
-      .then((d: { methods?: Gateway[] }) => {
+      .then((d: { methods?: Gateway[]; error?: string }) => {
         const list = d.methods ?? [];
         setGateways(list);
         if (list[0]) setSelected(list[0].id);
+        if (!list.length && d.error) setError(d.error);
       })
       .catch(() => setError("Could not load payment methods. Is the backend running?"));
-  }, []);
+  }, [planSlug, interval]);
 
   async function checkout() {
     if (!selected || !email.trim()) {
@@ -49,7 +66,12 @@ export function PaymentCheckout({ className }: { className?: string }) {
       const res = await fetch(`${API_URL}/api/v1/payments/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json", ...authHeaders() },
-        body: JSON.stringify({ gateway: selected, email: email.trim() }),
+        body: JSON.stringify({
+          gateway: selected,
+          email: email.trim(),
+          plan: planSlug,
+          interval,
+        }),
       });
       const data = (await res.json()) as {
         type?: string;
@@ -70,18 +92,26 @@ export function PaymentCheckout({ className }: { className?: string }) {
       }
 
       if (data.type === "form" && data.action && data.fields) {
-        sessionStorage.setItem("ts_checkout_form", JSON.stringify({ action: data.action, fields: data.fields }));
+        sessionStorage.setItem(
+          "ts_checkout_form",
+          JSON.stringify({ action: data.action, fields: data.fields }),
+        );
         window.location.href = "/pricing/pay";
         return;
       }
 
       setError("Unexpected checkout response");
     } catch {
-      setError("Network error. Check backend is running on port 4000.");
+      setError("Network error. Is the backend running?");
     } finally {
       setLoading(false);
     }
   }
+
+  const emptyHint = useMemo(() => {
+    if (error) return error;
+    return "No payment gateways configured. Add Lemon Squeezy, PayFast, or JazzCash keys in tools-hub-backend/.env";
+  }, [error]);
 
   if (gateways.length === 0 && !error) {
     return (
@@ -94,7 +124,7 @@ export function PaymentCheckout({ className }: { className?: string }) {
   if (gateways.length === 0) {
     return (
       <p className="mt-8 rounded-xl border border-dashed border-amber-300 bg-amber-50 py-3 text-center text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200">
-        {error || "No payment gateways configured. Add Stripe or PayFast keys in tools-hub-backend/.env"}
+        {emptyHint}
       </p>
     );
   }
@@ -131,8 +161,8 @@ export function PaymentCheckout({ className }: { className?: string }) {
               <span className="block text-sm font-bold">{g.name}</span>
               <span className="block text-xs text-muted">{g.description}</span>
               <span className="mt-1 block text-xs font-semibold text-brand">
-                {g.currency === "PKR" ? `Rs ${g.amount || PRO_PRICE_PKR}` : `$${g.amount || PRO_PRICE_USD}`}
-                /month
+                {g.currency === "PKR" ? `Rs ${g.amount}` : `$${g.amount}`}
+                {periodLabel}
               </span>
             </span>
           </button>

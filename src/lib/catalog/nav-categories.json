@@ -1,17 +1,107 @@
 [
-  { "slug": "ai-tools", "name": "AI-Powered Tools", "icon": "Sparkles", "gradient": "from-indigo-500 to-fuchsia-600", "toolCount": 10 },
-  { "slug": "handwriting-ocr", "name": "Handwriting OCR", "icon": "ScanText", "gradient": "from-violet-500 to-indigo-600", "toolCount": 31 },
-  { "slug": "devops-tools", "name": "DevOps Tools", "icon": "Server", "gradient": "from-cyan-500 to-sky-600", "toolCount": 13 },
-  { "slug": "health-tools", "name": "Health & Fitness", "icon": "Activity", "gradient": "from-rose-500 to-pink-600", "toolCount": 10 },
-  { "slug": "text-tools", "name": "Text Tools", "icon": "Type", "gradient": "from-sky-500 to-blue-600", "toolCount": 30 },
-  { "slug": "developer-tools", "name": "Developer Tools", "icon": "Code2", "gradient": "from-violet-500 to-purple-600", "toolCount": 36 },
-  { "slug": "security-password-tools", "name": "Security & Password Tools", "icon": "ShieldCheck", "gradient": "from-rose-500 to-red-600", "toolCount": 30 },
-  { "slug": "pdf-tools", "name": "PDF Tools", "icon": "FileText", "gradient": "from-orange-500 to-amber-600", "toolCount": 39 },
-  { "slug": "image-tools", "name": "Image Tools", "icon": "Image", "gradient": "from-emerald-500 to-green-600", "toolCount": 45 },
-  { "slug": "color-tools", "name": "Color Tools", "icon": "Palette", "gradient": "from-fuchsia-500 to-pink-600", "toolCount": 30 },
-  { "slug": "calculators", "name": "Calculators", "icon": "Calculator", "gradient": "from-teal-500 to-cyan-600", "toolCount": 34 },
-  { "slug": "unit-converters", "name": "Unit Converters", "icon": "Ruler", "gradient": "from-indigo-500 to-blue-600", "toolCount": 30 },
-  { "slug": "seo-web-tools", "name": "SEO & Web Tools", "icon": "Search", "gradient": "from-lime-500 to-green-600", "toolCount": 33 },
-  { "slug": "social-media-tools", "name": "Social Media Tools", "icon": "Share2", "gradient": "from-pink-500 to-rose-600", "toolCount": 30 },
-  { "slug": "converters-generators", "name": "Converters & Generators", "icon": "Repeat", "gradient": "from-amber-500 to-orange-600", "toolCount": 32 }
+  {
+    "slug": "ai-tools",
+    "name": "AI-Powered Tools",
+    "icon": "Sparkles",
+    "gradient": "from-indigo-500 to-fuchsia-600",
+    "toolCount": 11
+  },
+  {
+    "slug": "handwriting-ocr",
+    "name": "Handwriting OCR",
+    "icon": "ScanText",
+    "gradient": "from-violet-500 to-indigo-600",
+    "toolCount": 31
+  },
+  {
+    "slug": "devops-tools",
+    "name": "DevOps Tools",
+    "icon": "Server",
+    "gradient": "from-cyan-500 to-sky-600",
+    "toolCount": 12
+  },
+  {
+    "slug": "health-tools",
+    "name": "Health & Fitness",
+    "icon": "Activity",
+    "gradient": "from-rose-500 to-pink-600",
+    "toolCount": 10
+  },
+  {
+    "slug": "text-tools",
+    "name": "Text Tools",
+    "icon": "Type",
+    "gradient": "from-sky-500 to-blue-600",
+    "toolCount": 30
+  },
+  {
+    "slug": "developer-tools",
+    "name": "Developer Tools",
+    "icon": "Code2",
+    "gradient": "from-violet-500 to-purple-600",
+    "toolCount": 33
+  },
+  {
+    "slug": "security-password-tools",
+    "name": "Security & Password Tools",
+    "icon": "ShieldCheck",
+    "gradient": "from-rose-500 to-red-600",
+    "toolCount": 30
+  },
+  {
+    "slug": "pdf-tools",
+    "name": "PDF Tools",
+    "icon": "FileText",
+    "gradient": "from-orange-500 to-amber-600",
+    "toolCount": 39
+  },
+  {
+    "slug": "image-tools",
+    "name": "Image Tools",
+    "icon": "Image",
+    "gradient": "from-emerald-500 to-green-600",
+    "toolCount": 45
+  },
+  {
+    "slug": "color-tools",
+    "name": "Color Tools",
+    "icon": "Palette",
+    "gradient": "from-fuchsia-500 to-pink-600",
+    "toolCount": 30
+  },
+  {
+    "slug": "calculators",
+    "name": "Calculators",
+    "icon": "Calculator",
+    "gradient": "from-teal-500 to-cyan-600",
+    "toolCount": 34
+  },
+  {
+    "slug": "unit-converters",
+    "name": "Unit Converters",
+    "icon": "Ruler",
+    "gradient": "from-indigo-500 to-blue-600",
+    "toolCount": 29
+  },
+  {
+    "slug": "seo-web-tools",
+    "name": "SEO & Web Tools",
+    "icon": "Search",
+    "gradient": "from-lime-500 to-green-600",
+    "toolCount": 30
+  },
+  {
+    "slug": "social-media-tools",
+    "name": "Social Media Tools",
+    "icon": "Share2",
+    "gradient": "from-pink-500 to-rose-600",
+    "toolCount": 28
+  },
+  {
+    "slug": "converters-generators",
+    "name": "Converters & Generators",
+    "icon": "Repeat",
+    "gradient": "from-amber-500 to-orange-600",
+    "toolCount": 15
+  }
 ]

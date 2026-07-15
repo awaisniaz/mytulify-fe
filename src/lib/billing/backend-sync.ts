@@ -1,3 +1,5 @@
+import { BACKEND_URL } from "@/lib/env";
+
 /** Sync Pro subscription to the separate auth backend (user accounts). */
 export async function syncProToBackend(input: {
   email: string;
@@ -5,12 +7,11 @@ export async function syncProToBackend(input: {
   stripeCustomerId?: string;
   isPro: boolean;
 }): Promise<void> {
-  const apiUrl = process.env.BACKEND_URL ?? process.env.NEXT_PUBLIC_API_URL;
   const internalKey = process.env.INTERNAL_API_KEY;
-  if (!apiUrl || !internalKey) return;
+  if (!internalKey) return;
 
   try {
-    await fetch(`${apiUrl.replace(/\/$/, "")}/api/v1/billing/internal/provision`, {
+    await fetch(`${BACKEND_URL}/api/v1/billing/internal/provision`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -24,12 +25,11 @@ export async function syncProToBackend(input: {
 }
 
 export async function revokeProOnBackend(stripeCustomerId: string): Promise<void> {
-  const apiUrl = process.env.BACKEND_URL ?? process.env.NEXT_PUBLIC_API_URL;
   const internalKey = process.env.INTERNAL_API_KEY;
-  if (!apiUrl || !internalKey) return;
+  if (!internalKey) return;
 
   try {
-    await fetch(`${apiUrl.replace(/\/$/, "")}/api/v1/billing/internal/revoke`, {
+    await fetch(`${BACKEND_URL}/api/v1/billing/internal/revoke`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

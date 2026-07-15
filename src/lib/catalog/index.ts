@@ -83,6 +83,12 @@ export const TOTAL_TOOLS = ALL_TOOLS.length;
 export const TOTAL_AVAILABLE_TOOLS = AVAILABLE_TOOLS.length;
 export const TOTAL_CATEGORIES = CATEGORIES.length;
 export const TOTAL_SERVER_SIDE_TOOLS = ALL_TOOLS.filter((t) => !t.clientSide).length;
+/** Browser-only tools — free & unlimited on Free plan. */
+export const TOTAL_BROWSER_TOOLS = TOTAL_TOOLS - TOTAL_SERVER_SIDE_TOOLS;
+/** AI-Powered + Handwriting OCR tools (usage-limited on Free). */
+export const TOTAL_AI_OCR_TOOLS = ALL_TOOLS.filter(
+  (t) => t.category === "ai-tools" || t.category === "handwriting-ocr",
+).length;
 
 export function getCategory(slug: string): Category | undefined {
   return CATEGORIES.find((c) => c.slug === slug);
@@ -109,11 +115,53 @@ export function trendingTools(limit = 8): Tool[] {
 
 export function relatedTools(tool: Tool, limit = 6): Tool[] {
   const cat = getCategory(tool.category ?? "");
-  if (!cat) return [];
-  const others = cat.tools.filter((t) => t.slug !== tool.slug);
-  const available = others.filter(isToolAvailable);
-  const pool = available.length >= limit ? available : others;
-  return pool.slice(0, limit);
+  const picked: Tool[] = [];
+  const seen = new Set<string>([`${tool.category}/${tool.slug}`]);
+
+  const push = (t: Tool | undefined) => {
+    if (!t?.category || !isToolAvailable(t)) return;
+    const key = `${t.category}/${t.slug}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    picked.push(t);
+  };
+
+  // 1) Same category, ranked by search volume / competition.
+  if (cat) {
+    const sameCat = cat.tools
+      .filter((t) => t.slug !== tool.slug && isToolAvailable(t))
+      .sort((a, b) => score(b) - score(a));
+    for (const t of sameCat) {
+      if (picked.length >= Math.min(4, limit)) break;
+      push(t);
+    }
+  }
+
+  // 2) Cross-category discovery: tools that share slug keywords / adjacent SEO clusters.
+  const tokens = tool.slug.split("-").filter((w) => w.length > 2);
+  const cross = AVAILABLE_TOOLS
+    .filter((t) => t.category !== tool.category && isToolAvailable(t))
+    .map((t) => {
+      const hit = tokens.filter((tok) => t.slug.includes(tok)).length;
+      return { t, hit: hit + score(t) * 0.1 };
+    })
+    .filter((x) => x.hit > 0)
+    .sort((a, b) => b.hit - a.hit);
+
+  for (const { t } of cross) {
+    if (picked.length >= limit) break;
+    push(t);
+  }
+
+  // 3) Fill remaining slots from global trending so every page has 2–4+ links.
+  if (picked.length < Math.min(4, limit)) {
+    for (const t of featuredTools(24)) {
+      if (picked.length >= Math.min(4, limit)) break;
+      push(t);
+    }
+  }
+
+  return picked.slice(0, limit);
 }
 
 export function searchTools(query: string, limit = 20): Tool[] {
