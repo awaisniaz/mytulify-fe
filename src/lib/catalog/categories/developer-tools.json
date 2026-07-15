@@ -299,6 +299,24 @@
       "competition": "low",
       "complexity": "easy",
       "clientSide": true
+    },
+    {
+      "name": "YAML to JSON Converter",
+      "slug": "yaml-to-json",
+      "description": "Convert YAML to pretty-printed JSON instantly in your browser.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "PX to REM Converter",
+      "slug": "px-to-rem-converter",
+      "description": "Convert CSS pixels to rem (and back) with a customizable root font size.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
     }
   ]
 }

@@ -263,6 +263,15 @@
       "competition": "medium",
       "complexity": "medium",
       "clientSide": true
+    },
+    {
+      "name": "Currency Converter",
+      "slug": "currency-converter",
+      "description": "Convert between USD, EUR, PKR, INR, AED and more with live mid-market rates.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
     }
   ]
 }

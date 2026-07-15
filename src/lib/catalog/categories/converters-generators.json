@@ -137,6 +137,33 @@
       "competition": "low",
       "complexity": "easy",
       "clientSide": true
+    },
+    {
+      "name": "Email Signature Generator",
+      "slug": "email-signature-generator",
+      "description": "Create a professional HTML email signature with name, title, contact, and brand color.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "vCard Generator",
+      "slug": "vcard-generator",
+      "description": "Generate a downloadable .vcf contact card for phones and email clients.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "ICS Calendar Generator",
+      "slug": "ics-calendar-generator",
+      "description": "Build a .ics calendar event file for Google Calendar, Outlook, and Apple Calendar.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
     }
   ]
 }

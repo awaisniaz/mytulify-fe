@@ -14,6 +14,7 @@ import { MetaTagGenerator } from "@/components/tools/impl/seo";
 import { GitignoreGenerator } from "@/components/tools/impl/devops";
 import { RegexExplainer, DataFileMerger, DuplicateFileFinder } from "@/components/tools/impl/devx";
 import { MockDataGenerator, PwaManifestGenerator } from "@/components/tools/impl/high-demand";
+import { PxRemConverter } from "@/components/tools/impl/demand-extra";
 
 export default makeReg({
   "json-formatter": JsonFormatter,
@@ -21,6 +22,8 @@ export default makeReg({
   "json-to-csv": JsonToCsv,
   "csv-to-json": CsvToJson,
   "json-to-yaml": () => <JsonYaml dir="j2y" />,
+  "yaml-to-json": () => <JsonYaml dir="y2j" />,
+  "px-to-rem-converter": PxRemConverter,
   "base64-encoder-decoder": Base64Tool,
   "url-encoder-decoder": UrlTool,
   "html-encoder-decoder": HtmlEntitiesTool,

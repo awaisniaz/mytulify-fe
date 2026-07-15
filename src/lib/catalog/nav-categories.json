@@ -39,7 +39,7 @@
     "name": "Developer Tools",
     "icon": "Code2",
     "gradient": "from-violet-500 to-purple-600",
-    "toolCount": 33
+    "toolCount": 35
   },
   {
     "slug": "security-password-tools",
@@ -74,14 +74,14 @@
     "name": "Calculators",
     "icon": "Calculator",
     "gradient": "from-teal-500 to-cyan-600",
-    "toolCount": 34
+    "toolCount": 36
   },
   {
     "slug": "unit-converters",
     "name": "Unit Converters",
     "icon": "Ruler",
     "gradient": "from-indigo-500 to-blue-600",
-    "toolCount": 29
+    "toolCount": 30
   },
   {
     "slug": "seo-web-tools",
@@ -102,6 +102,6 @@
     "name": "Converters & Generators",
     "icon": "Repeat",
     "gradient": "from-amber-500 to-orange-600",
-    "toolCount": 15
+    "toolCount": 18
   }
 ]

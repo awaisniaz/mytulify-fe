@@ -36,6 +36,8 @@
     { "name": "Zakat Calculator", "slug": "zakat-calculator", "description": "Calculate Zakat on gold, silver and wealth in your browser.", "searchVolume": "high", "competition": "low", "complexity": "medium", "clientSide": true },
     { "name": "Afghan Date Converter", "slug": "afghan-date-converter", "description": "Convert Shamsi (Solar Hijri) dates to Gregorian and back.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
     { "name": "Tasbih Counter", "slug": "tasbih-counter", "description": "Digital Tasbih counter for dhikr and Islamic remembrance.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Salary Tax Calculator", "slug": "salary-tax-calculator", "description": "Estimate income tax and net salary from gross pay.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true }
+    { "name": "Salary Tax Calculator", "slug": "salary-tax-calculator", "description": "Estimate income tax and net salary from gross pay.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
+    { "name": "EMI Calculator", "slug": "emi-calculator", "description": "Calculate monthly EMI, total interest, and payment for home, car, or personal loans.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true },
+    { "name": "VAT / GST Calculator", "slug": "vat-gst-calculator", "description": "Add or extract VAT and GST from any amount with a custom tax rate.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true }
   ]
 }

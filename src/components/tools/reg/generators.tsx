@@ -12,6 +12,9 @@ import { QrGenerator, BarcodeGenerator } from "@/components/tools/impl/generator
 import { CaseConverter, LoremIpsum, SlugTool } from "@/components/tools/impl/text";
 import { PasswordGenerator, HashGenerator } from "@/components/tools/impl/security";
 import { InvoiceGenerator, IbanValidator } from "@/components/tools/impl/high-demand";
+import {
+  EmailSignatureGenerator, VcardGenerator, IcsCalendarGenerator,
+} from "@/components/tools/impl/demand-extra";
 
 export default makeReg({
   "json-to-csv": JsonToCsv,
@@ -46,4 +49,7 @@ export default makeReg({
   "code-minifier": () => <Minifier kind="js" />,
   "invoice-generator": InvoiceGenerator,
   "iban-validator": IbanValidator,
+  "email-signature-generator": EmailSignatureGenerator,
+  "vcard-generator": VcardGenerator,
+  "ics-calendar-generator": IcsCalendarGenerator,
 });

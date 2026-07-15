@@ -7,6 +7,7 @@ import {
   LENGTH, WEIGHT, VOLUME, AREA, SPEED, TIME, PRESSURE, ENERGY, POWER, FORCE, ANGLE,
   DATA, DATARATE, DENSITY, FREQUENCY, COOKING,
 } from "@/components/tools/impl/unit-converter";
+import { CurrencyConverter } from "@/components/tools/impl/demand-extra";
 
 export default makeReg({
   "length-converter": () => <FactorConverter units={LENGTH} from="Meter" to="Foot" />,
@@ -35,6 +36,7 @@ export default makeReg({
   "kg-to-lbs-converter": () => <FactorConverter units={WEIGHT} from="Kilogram" to="Pound" />,
   "liters-to-gallons-converter": () => <FactorConverter units={VOLUME} from="Liter" to="Gallon (US)" />,
   "time-zone-converter": TimeZoneConverter,
+  "currency-converter": CurrencyConverter,
   "ring-size-converter": RingSizeConverter,
   "bra-size-converter": BraSizeConverter,
   "clothing-size-converter": ClothingSizeConverter,
