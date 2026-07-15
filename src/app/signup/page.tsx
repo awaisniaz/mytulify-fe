@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Sign up",
   description: `Create a free ${site.name} account`,
   robots: { index: false, follow: false },
+  alternates: { canonical: "/signup" },
 };
 
 export default function SignupPage() {

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { TOTAL_CATEGORIES, TOTAL_AI_OCR_TOOLS, TOTAL_BROWSER_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
 import { site } from "@/lib/site";
+import { socialMeta } from "@/lib/seo";
 import { Icon } from "@/components/ui/Icon";
 import { getLocale } from "@/i18n/locale";
 import { getContent } from "@/i18n/content";
@@ -13,10 +14,18 @@ export async function generateMetadata(): Promise<Metadata> {
   const intro = content.strings.aboutPage.intro
     .replace("{total}", String(TOTAL_TOOLS))
     .replace("{client}", String(TOTAL_BROWSER_TOOLS));
+  const title = content.strings.aboutPage.title;
+  const description = `Learn about ${site.name} — ${intro}`;
   return {
-    title: content.strings.aboutPage.title,
-    description: `Learn about ${site.name} — ${intro}`,
+    title,
+    description,
     alternates: { canonical: "/about" },
+    robots: { index: true, follow: true },
+    ...socialMeta({
+      title: `${title} · ${site.name}`,
+      description,
+      url: "/about",
+    }),
   };
 }
 

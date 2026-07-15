@@ -69,6 +69,11 @@
       "name": "Unit Converters",
       "description": "Instant client-side converters for length, weight, volume, temperature, and other measurement units.",
       "tagline": "Convert any unit instantly"
+    },
+    "handwriting-ocr": {
+      "name": "Handwriting OCR",
+      "description": "AI-powered handwriting-to-text OCR for 30+ languages. Upload a photo and get accurate editable text in seconds.",
+      "tagline": "Handwriting to text in 30+ languages"
     }
   },
   "tools": {
@@ -1814,6 +1819,270 @@
     "unit-converters/time-zone-converter": {
       "name": "Time Zone Converter",
       "description": "Convert a time between different world time zones."
+    },
+    "unit-converters/currency-converter": {
+      "name": "Currency Converter",
+      "description": "Convert between USD, EUR, PKR, INR, AED and more with live mid-market rates.",
+      "metaTitle": "Free Currency Converter – Live Exchange Rates | Mytulify",
+      "metaDescription": "Convert currencies instantly with live mid-market rates (USD, EUR, PKR, INR, AED and more). Free online currency converter — no signup.",
+      "about": [
+        "A currency converter multiplies an amount by the latest exchange rate between two currencies. Mid-market rates (from sources like the ECB) are useful for estimates; banks and card networks may add a markup when you pay abroad.",
+        "Use this free tool to compare USD, EUR, GBP, PKR, INR, AED, SAR and other major pairs before travel, freelancing invoices, or cross-border shopping."
+      ],
+      "howTo": {
+        "title": "How to convert currencies",
+        "steps": [
+          "Enter the amount you want to convert.",
+          "Choose the from and to currencies.",
+          "Read the live result, rate, and as-of date — tap refresh to update."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Are these live exchange rates?",
+          "a": "Yes. Rates are fetched from Frankfurter (ECB mid-market data). They are indicative — your bank or payment provider may use a different rate."
+        },
+        {
+          "q": "Is the currency converter free?",
+          "a": "Yes. It runs in your browser on Mytulify’s Free plan with unlimited use and no signup."
+        }
+      ],
+      "related": [
+        "unit-converters/time-zone-converter",
+        "calculators/percentage-calculator",
+        "calculators/vat-gst-calculator"
+      ]
+    },
+    "developer-tools/px-to-rem-converter": {
+      "name": "PX to REM Converter",
+      "description": "Convert CSS pixels to rem (and back) with a customizable root font size.",
+      "metaTitle": "PX to REM Converter – Free CSS Tool | Mytulify",
+      "metaDescription": "Convert px to rem and rem to px instantly. Set your root font size and copy ready-to-use CSS. Free browser tool — no signup.",
+      "about": [
+        "Rem units scale with the root (html) font size, usually 16px in browsers. Converting px to rem keeps spacing and type fluid when users change default font size or you adjust a design system base.",
+        "Enter pixels or rem values and a root size to get matching CSS. Useful for Tailwind, custom properties, and accessible typography."
+      ],
+      "howTo": {
+        "title": "How to use this converter",
+        "steps": [
+          "Set your root font size (default 16px).",
+          "Type a pixel or rem value — the other field updates automatically.",
+          "Copy the CSS snippet into your stylesheet."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What root size should I use?",
+          "a": "Most sites use 16px. If your html { font-size } differs, enter that value so rem math matches your design."
+        },
+        {
+          "q": "Is rem the same as em?",
+          "a": "Rem is relative to the root element; em is relative to the parent’s font size. This tool treats both as equal only when the parent matches the root."
+        }
+      ],
+      "related": [
+        "developer-tools/css-minifier",
+        "developer-tools/css-gradient-generator",
+        "color-tools/box-shadow-generator"
+      ]
+    },
+    "developer-tools/yaml-to-json": {
+      "name": "YAML to JSON Converter",
+      "description": "Convert YAML to pretty-printed JSON instantly in your browser.",
+      "metaTitle": "YAML to JSON Converter – Free Online Tool | Mytulify",
+      "metaDescription": "Paste YAML and get clean, pretty-printed JSON instantly. Free browser converter — private, no signup, no upload.",
+      "about": [
+        "YAML is common for configs (Docker Compose, Kubernetes, CI). JSON is the interchange format for APIs and many tools. Converting YAML to JSON lets you validate structure and paste into JSON-only editors.",
+        "This converter runs entirely in your browser — your configs never leave your device."
+      ],
+      "howTo": {
+        "title": "How to convert YAML to JSON",
+        "steps": [
+          "Paste valid YAML into the input pane.",
+          "Review the pretty-printed JSON output.",
+          "Copy or download the result."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Does this upload my YAML?",
+          "a": "No. Conversion happens locally in your browser."
+        },
+        {
+          "q": "What if my YAML is invalid?",
+          "a": "You will see a parse error. Fix indentation and syntax, then try again."
+        }
+      ],
+      "related": [
+        "developer-tools/json-to-yaml",
+        "developer-tools/json-formatter",
+        "developer-tools/json-validator"
+      ]
+    },
+    "calculators/emi-calculator": {
+      "name": "EMI Calculator",
+      "description": "Calculate monthly EMI, total interest, and payment for home, car, or personal loans.",
+      "metaTitle": "EMI Calculator – Free Loan EMI Tool | Mytulify",
+      "metaDescription": "Calculate monthly EMI, total interest, and total payment for any loan. Free EMI calculator for home, car, and personal loans — no signup.",
+      "about": [
+        "EMI (Equated Monthly Installment) spreads a loan into fixed monthly payments covering principal and interest. The standard reducing-balance formula uses monthly interest rate and tenure in months.",
+        "Use this calculator to compare tenures and rates before you borrow — so you know total interest and monthly cash-flow impact."
+      ],
+      "howTo": {
+        "title": "How to calculate EMI",
+        "steps": [
+          "Enter the loan principal.",
+          "Enter the annual interest rate and tenure in years.",
+          "Read monthly EMI, total interest, and total payment."
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is EMI calculated?",
+          "a": "EMI = [P × r × (1+r)^n] / [(1+r)^n − 1], where P is principal, r is monthly rate, and n is number of months."
+        },
+        {
+          "q": "Is this EMI calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup required."
+        }
+      ],
+      "related": [
+        "calculators/loan-calculator",
+        "calculators/mortgage-calculator",
+        "calculators/compound-interest-calculator"
+      ]
+    },
+    "calculators/vat-gst-calculator": {
+      "name": "VAT / GST Calculator",
+      "description": "Add or extract VAT and GST from any amount with a custom tax rate.",
+      "metaTitle": "VAT / GST Calculator – Free Tax Tool | Mytulify",
+      "metaDescription": "Add or extract VAT and GST from any price with a custom rate. Free online VAT calculator for invoices and shopping — no signup.",
+      "about": [
+        "VAT and GST are consumption taxes added to goods and services. Sometimes you have a net (ex-tax) price and need gross; sometimes you have a tax-inclusive total and need to extract the tax portion.",
+        "Enter your amount and rate to see net, tax, and gross instantly — useful for freelancers, shops, and cross-border invoices."
+      ],
+      "howTo": {
+        "title": "How to use this calculator",
+        "steps": [
+          "Choose add tax (net → gross) or extract tax (gross → net).",
+          "Enter the amount and VAT/GST percentage.",
+          "Read net, tax, and gross results."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What rates should I use?",
+          "a": "Use the rate that applies in your country or state (for example 5%, 12%, 18%, 20%). This tool does not give legal tax advice."
+        },
+        {
+          "q": "Is my data private?",
+          "a": "Yes. All math runs in your browser; nothing is uploaded."
+        }
+      ],
+      "related": [
+        "calculators/sales-tax-calculator",
+        "calculators/discount-calculator",
+        "calculators/percentage-calculator"
+      ]
+    },
+    "converters-generators/email-signature-generator": {
+      "name": "Email Signature Generator",
+      "description": "Create a professional HTML email signature with name, title, contact, and brand color.",
+      "metaTitle": "Free Email Signature Generator – HTML Signature | Mytulify",
+      "metaDescription": "Build a professional HTML email signature with name, title, phone, and brand color. Free generator — copy into Gmail, Outlook, and more.",
+      "about": [
+        "A clear email signature builds trust and makes it easy to reply or visit your site. HTML signatures work in Gmail, Outlook, Apple Mail, and most clients when pasted correctly.",
+        "Fill in your details, preview the layout, then copy HTML or plain text into your mail settings."
+      ],
+      "howTo": {
+        "title": "How to create an email signature",
+        "steps": [
+          "Enter your name, title, company, and contact details.",
+          "Pick an accent color that matches your brand.",
+          "Copy the HTML into your email client’s signature settings."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Will this work in Gmail?",
+          "a": "Yes. Paste the HTML via Gmail Settings → See all settings → Signature (use “Insert HTML” / rich paste depending on client)."
+        },
+        {
+          "q": "Is it free?",
+          "a": "Yes — unlimited browser use, no signup."
+        }
+      ],
+      "related": [
+        "converters-generators/vcard-generator",
+        "seo-web-tools/meta-tag-generator",
+        "social-media-tools/linkedin-text-formatter"
+      ]
+    },
+    "converters-generators/vcard-generator": {
+      "name": "vCard Generator",
+      "description": "Generate a downloadable .vcf contact card for phones and email clients.",
+      "metaTitle": "Free vCard Generator – Create .vcf Contact | Mytulify",
+      "metaDescription": "Create a downloadable vCard (.vcf) with name, phone, email, and website. Free online contact card generator — no signup.",
+      "about": [
+        "vCard (.vcf) is the standard contact file format for iPhone, Android, Outlook, and Google Contacts. Sharing a vCard beats typing numbers by hand.",
+        "Fill in contact fields and download a ready-to-import .vcf file — generated entirely in your browser."
+      ],
+      "howTo": {
+        "title": "How to make a vCard",
+        "steps": [
+          "Enter first name, last name, and optional org/title.",
+          "Add email, phone, and website.",
+          "Download contact.vcf and open it on your phone or computer."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is a .vcf file?",
+          "a": "A vCard file stores contact details so apps can import them with one tap."
+        },
+        {
+          "q": "Is my contact data uploaded?",
+          "a": "No. The file is built locally in your browser."
+        }
+      ],
+      "related": [
+        "converters-generators/email-signature-generator",
+        "converters-generators/ics-calendar-generator",
+        "developer-tools/qr-code-generator"
+      ]
+    },
+    "converters-generators/ics-calendar-generator": {
+      "name": "ICS Calendar Generator",
+      "description": "Build a .ics calendar event file for Google Calendar, Outlook, and Apple Calendar.",
+      "metaTitle": "Free ICS Calendar Generator – Create .ics Events | Mytulify",
+      "metaDescription": "Create a downloadable .ics calendar event for Google Calendar, Outlook, and Apple Calendar. Free online ICS generator — no signup.",
+      "about": [
+        "ICS (iCalendar) files let you share meetings and reminders that open in Google Calendar, Outlook, and Apple Calendar. Perfect for webinars, launches, and team syncs.",
+        "Set the title, start/end time, location, and description, then download event.ics — built privately in your browser."
+      ],
+      "howTo": {
+        "title": "How to create an ICS file",
+        "steps": [
+          "Enter the event title and optional location/description.",
+          "Pick start and end date-times.",
+          "Download the .ics file and open or attach it."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Will this work with Google Calendar?",
+          "a": "Yes. Open or import the .ics file in Google Calendar, Outlook, or Apple Calendar."
+        },
+        {
+          "q": "Is it free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify."
+        }
+      ],
+      "related": [
+        "converters-generators/vcard-generator",
+        "calculators/countdown-calculator",
+        "developer-tools/cron-expression-generator"
+      ]
     }
   },
   "strings": {

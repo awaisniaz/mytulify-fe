@@ -69,6 +69,11 @@
       "name": "Unit Converters",
       "description": "Instant client-side converters for length, weight, volume, temperature, and other measurement units.",
       "tagline": "Convert any unit instantly"
+    },
+    "handwriting-ocr": {
+      "name": "ہینڈ رائٹنگ OCR",
+      "description": "۳۰+ زبانوں کے لیے AI سے چلنے والا ہینڈ رائٹنگ سے ٹیکسٹ OCR۔ فوٹو اپ لوڈ کریں اور سیکنڈوں میں درست قابلِ ترمیم متن حاصل کریں۔",
+      "tagline": "۳۰+ زبانوں میں ہینڈ رائٹنگ سے ٹیکسٹ"
     }
   },
   "tools": {

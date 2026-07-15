@@ -31,7 +31,7 @@ export function localizeTool(content: ContentBundle, tool: Tool): LocalizedTool 
   const key = toolContentKey(tool);
   const hit = content.tools[key];
   const en = fallback.tools[key];
-  return {
+  const base: LocalizedTool = {
     name: hit?.name ?? tool.name,
     description: hit?.description ?? tool.description,
     metaTitle: hit?.metaTitle ?? en?.metaTitle,
@@ -41,6 +41,39 @@ export function localizeTool(content: ContentBundle, tool: Tool): LocalizedTool 
     faq: hit?.faq ?? en?.faq,
     related: hit?.related ?? en?.related,
   };
+
+  // Unique SERP copy for OCR language pages when no hand-written SEO override exists.
+  if (tool.category === "handwriting-ocr" && !base.metaTitle) {
+    const name = base.name;
+    base.metaTitle = `${name} – Free Online OCR | Mytulify`;
+    base.metaDescription =
+      base.metaDescription ??
+      `${base.description} Upload a photo and get editable text in seconds. Free AI OCR on Mytulify — ${FREE_AI_DAILY_LIMIT} runs/day, no signup.`;
+    if (!base.about?.length) {
+      base.about = [
+        `${name} uses AI vision to turn a photo of handwriting into editable digital text. ${base.description}`,
+        "Upload a clear photo or scan, wait a few seconds, then copy or download the transcription. The Free plan includes limited daily AI runs; Pro unlocks unlimited OCR.",
+      ];
+    }
+    if (!base.faq?.length) {
+      base.faq = [
+        {
+          q: `Is ${name} free?`,
+          a: `Yes. Free accounts get ${FREE_AI_DAILY_LIMIT} AI/OCR runs per day on Mytulify. Upgrade to Pro for unlimited handwriting OCR.`,
+        },
+        {
+          q: "What image quality works best?",
+          a: "Use a well-lit, sharp photo with the writing filling most of the frame. Avoid heavy glare or blur for the most accurate transcription.",
+        },
+        {
+          q: "Is my handwriting photo stored?",
+          a: "Images are processed to generate your result and are not kept as a long-term archive. Avoid uploading sensitive documents you would not send to any online service.",
+        },
+      ];
+    }
+  }
+
+  return base;
 }
 
 export function localizeCategory(content: ContentBundle, slug: string, en: LocalizedCategory): LocalizedCategory {
@@ -109,8 +142,8 @@ export function toolAboutText(content: ContentBundle, name: string, desc: string
 export function toolMeta(content: ContentBundle, label: LocalizedTool, clientSide: boolean) {
   const s = content.strings;
   return {
-    title: label.metaTitle ?? fmt(s.toolMetaTitle, { name: label.name }),
-    absolute: Boolean(label.metaTitle),
+    title: label.metaTitle ?? `${label.name} — Free Online Tool | Mytulify`,
+    absolute: true,
     description: label.metaDescription
       ?? (clientSide
         ? fmt(s.toolMetaClient, { desc: label.description })

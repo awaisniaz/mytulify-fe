@@ -18,6 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title,
     description,
     alternates: { canonical: "/tools" },
+    robots: { index: true, follow: true },
     ...socialMeta({ title: `${title} · ${site.name}`, description, url: "/tools" }),
   };
 }

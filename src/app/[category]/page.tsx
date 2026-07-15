@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { CATEGORIES, getCategory } from "@/lib/catalog";
+import { CATEGORIES, getCategory, isToolAvailable } from "@/lib/catalog";
 import { ToolCard } from "@/components/cards";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
@@ -31,11 +31,12 @@ export async function generateMetadata({
     description: c.description,
     tagline: c.tagline,
   });
-  const meta = categoryMeta(content, catLabel.name, catLabel.description, c.tools.length);
+  const meta = categoryMeta(content, catLabel.name, catLabel.description, c.tools.filter(isToolAvailable).length);
   return {
     title: meta.title,
     description: meta.description,
     alternates: { canonical: `/${c.slug}` },
+    robots: { index: true, follow: true },
     ...socialMeta({ title: `${meta.title} · ${site.name}`, description: meta.description, url: `/${c.slug}` }),
   };
 }
@@ -58,6 +59,7 @@ export default async function CategoryPage({
     tagline: c.tagline,
   });
   const s = content.strings;
+  const listedTools = c.tools.filter(isToolAvailable);
 
   const jsonLd = [
     {
@@ -76,8 +78,8 @@ export default async function CategoryPage({
       url: `${site.url}/${c.slug}`,
       mainEntity: {
         "@type": "ItemList",
-        numberOfItems: c.tools.length,
-        itemListElement: c.tools.map((t, i) => {
+        numberOfItems: listedTools.length,
+        itemListElement: listedTools.map((t, i) => {
           const label = localizeTool(content, t);
           return {
             "@type": "ListItem",

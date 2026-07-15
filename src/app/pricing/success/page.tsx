@@ -7,7 +7,9 @@ import { socialMeta } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Payment successful",
+  description: `Your ${brand.proProduct} license is ready on ${site.name}.`,
   robots: { index: false, follow: false },
+  alternates: { canonical: "/pricing/success" },
   ...socialMeta({
     title: `Pro activated · ${site.name}`,
     description: `Your ${brand.proProduct} license is ready.`,

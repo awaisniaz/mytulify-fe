@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Sign in",
   description: `Sign in to ${site.name}`,
   robots: { index: false, follow: false },
+  alternates: { canonical: "/login" },
 };
 
 export default function LoginPage() {

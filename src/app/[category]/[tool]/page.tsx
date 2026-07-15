@@ -60,10 +60,14 @@ export async function generateMetadata({
   const content = await getContent(locale);
   const label = localizeTool(content, t);
   const meta = toolMeta(content, label, t.clientSide);
+  const available = isToolAvailable(t);
   return {
     title: meta.absolute ? { absolute: meta.title } : meta.title,
     description: meta.description,
     alternates: { canonical: toolHref(t) },
+    robots: available
+      ? { index: true, follow: true }
+      : { index: false, follow: true },
     ...socialMeta({
       title: meta.absolute ? meta.title : `${label.name} · ${site.name}`,
       description: meta.description,
@@ -98,43 +102,55 @@ export default async function ToolPage({
   const perDay = s.perDayFree.replace("{limit}", String(FREE_AI_DAILY_LIMIT));
   const available = isToolAvailable(t);
 
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      name: label.name,
-      applicationCategory: "UtilitiesApplication",
-      operatingSystem: "Any (Web)",
-      description: label.description,
-      url: `${site.url}${toolHref(t)}`,
-      offers: {
-        "@type": "Offer",
-        price: "0",
-        priceCurrency: "USD",
-        description: t.clientSide
-          ? "Free plan — unlimited browser use"
-          : `Free plan — ${FREE_AI_DAILY_LIMIT} AI runs per day; Pro for unlimited`,
-      },
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: s.home, item: site.url },
-        { "@type": "ListItem", position: 2, name: catLabel.name, item: `${site.url}/${cat.slug}` },
-        { "@type": "ListItem", position: 3, name: label.name, item: `${site.url}${toolHref(t)}` },
-      ],
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: faq.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
-      })),
-    },
-  ];
+  const jsonLd = available
+    ? [
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: label.name,
+          applicationCategory: "UtilitiesApplication",
+          operatingSystem: "Any (Web)",
+          description: label.description,
+          url: `${site.url}${toolHref(t)}`,
+          offers: {
+            "@type": "Offer",
+            price: "0",
+            priceCurrency: "USD",
+            description: t.clientSide
+              ? "Free plan — unlimited browser use"
+              : `Free plan — ${FREE_AI_DAILY_LIMIT} AI runs per day; Pro for unlimited`,
+          },
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: s.home, item: site.url },
+            { "@type": "ListItem", position: 2, name: catLabel.name, item: `${site.url}/${cat.slug}` },
+            { "@type": "ListItem", position: 3, name: label.name, item: `${site.url}${toolHref(t)}` },
+          ],
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faq.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        },
+      ]
+    : [
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: s.home, item: site.url },
+            { "@type": "ListItem", position: 2, name: catLabel.name, item: `${site.url}/${cat.slug}` },
+            { "@type": "ListItem", position: 3, name: label.name, item: `${site.url}${toolHref(t)}` },
+          ],
+        },
+      ];
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">

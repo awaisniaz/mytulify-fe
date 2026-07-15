@@ -1,12 +1,32 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CATEGORIES, featuredTools, TOTAL_TOOLS, getCategory } from "@/lib/catalog";
 import { CategoryCard, SectionHeader, ToolCard } from "@/components/cards";
 import { HomeHero } from "@/components/home/HomeHero";
 import { Icon } from "@/components/ui/Icon";
+import { site } from "@/lib/site";
+import { socialMeta } from "@/lib/seo";
 import { getLocale } from "@/i18n/locale";
 import { getMessages } from "@/i18n/messages";
 import { getMessaging } from "@/i18n/messaging";
 import { getContent, localizeCategory, localizeTool } from "@/i18n/content";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const messaging = await getMessaging(locale);
+  const title = `${site.name} — ${messaging.tagline}`;
+  return {
+    title: { absolute: title },
+    description: messaging.siteDescription,
+    alternates: { canonical: "/" },
+    robots: { index: true, follow: true },
+    ...socialMeta({
+      title,
+      description: messaging.siteDescription,
+      url: "/",
+    }),
+  };
+}
 
 export default async function Home() {
   const locale = await getLocale();
