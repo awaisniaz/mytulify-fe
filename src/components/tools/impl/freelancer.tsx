@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { Input, Select, Textarea, Button } from "@/components/ui/primitives";
 import { Field, Stat, Notice, Output } from "@/components/tools/shared";
-import { createPdfWriter } from "@/lib/pdf-doc";
+import { exportBrandedPdf } from "@/lib/pdf-doc";
 import { download } from "@/lib/utils";
 
 const n = (v: string) => parseFloat(v);
@@ -35,6 +35,37 @@ function InvoiceLink() {
   );
 }
 
+function WatermarkFields({
+  enabled,
+  setEnabled,
+  text,
+  setText,
+}: {
+  enabled: boolean;
+  setEnabled: (v: boolean) => void;
+  text: string;
+  setText: (v: string) => void;
+}) {
+  return (
+    <Row>
+      <Field label="PDF watermark">
+        <Select value={enabled ? "yes" : "no"} onChange={(e) => setEnabled(e.target.value === "yes")}>
+          <option value="no">No watermark</option>
+          <option value="yes">Add watermark</option>
+        </Select>
+      </Field>
+      <Field label="Watermark text" hint="Shown diagonally, light opacity">
+        <Input
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          disabled={!enabled}
+          placeholder="DRAFT · CONFIDENTIAL"
+        />
+      </Field>
+    </Row>
+  );
+}
+
 /* ============================ 1. Contract ============================ */
 export function ContractGenerator() {
   const [freelancer, setFreelancer] = React.useState("Alex Freelance LLC");
@@ -46,6 +77,8 @@ export function ContractGenerator() {
   const [revisions, setRevisions] = React.useState("2");
   const [lateFee, setLateFee] = React.useState("1.5");
   const [ip, setIp] = React.useState("transfers");
+  const [wmOn, setWmOn] = React.useState(false);
+  const [wmText, setWmText] = React.useState("DRAFT");
   const [busy, setBusy] = React.useState(false);
 
   const ipText =
@@ -62,45 +95,59 @@ export function ContractGenerator() {
         ? `100% ($${amount}) due upon project completion and delivery.`
         : `50% ($${(n(amount) / 2).toFixed(2)}) upfront; 50% upon completion.`;
 
-  const body = `FREELANCE SERVICES AGREEMENT
+  const preview = `Parties: ${freelancer} (“Freelancer”) and ${client} (“Client”).
 
-This Agreement is between ${freelancer || "[Freelancer]"} ("Freelancer") and ${client || "[Client]"} ("Client").
+Scope: ${scope}
 
-1. SCOPE OF WORK
-${scope || "[Describe deliverables]"}
+Timeline: completion by ${deadline}
+Payment: $${amount} — ${scheduleText}
+Late fee: ${lateFee}% / month on unpaid balances
+Revisions: ${revisions} round(s)
+IP: ${ipText}
 
-2. TIMELINE
-Work is targeted for completion by ${deadline || "[date]"}, subject to timely Client feedback.
-
-3. PAYMENT
-Total fee: $${amount || "0"}.
-Payment schedule: ${scheduleText}
-Late payments may incur a fee of ${lateFee || "0"}% per month on unpaid balances.
-
-4. REVISIONS
-Up to ${revisions || "0"} rounds of revisions are included. Additional revisions may be billed separately.
-
-5. INTELLECTUAL PROPERTY
-${ipText}
-
-6. TERMINATION
-Either party may terminate with written notice. Client pays for work completed through the termination date. Deposits are non-refundable once work has started, unless otherwise agreed in writing.
-
-7. GENERAL
-This document is a practical template, not legal advice. Have a qualified attorney review for your jurisdiction before signing.
-
-Signatures
-Freelancer: ________________________ Date: ________
-Client: ____________________________ Date: ________`;
+Termination: either party may terminate with written notice; Client pays for completed work.
+General: template only — not legal advice. Signatures appear at the bottom of the PDF.`;
 
   async function exportPdf() {
     setBusy(true);
     try {
-      const w = await createPdfWriter();
-      w.draw("FREELANCE SERVICES AGREEMENT", { size: 16, bold: true });
-      w.gap(6);
-      for (const line of body.split("\n")) w.draw(line || " ", { size: 10, gap: 3 });
-      await w.save("freelance-contract.pdf");
+      await exportBrandedPdf({
+        title: "Freelance Services Agreement",
+        subtitle: "Professional services contract template",
+        meta: [
+          { label: "Freelancer", value: freelancer },
+          { label: "Client", value: client },
+          { label: "Date", value: new Date().toLocaleDateString() },
+        ],
+        sections: [
+          { heading: "1. Scope of work", body: scope || "[Describe deliverables]" },
+          {
+            heading: "2. Timeline",
+            body: `Work is targeted for completion by ${deadline || "[date]"}, subject to timely Client feedback.`,
+          },
+          {
+            heading: "3. Payment",
+            body: `Total fee: $${amount || "0"}.\nPayment schedule: ${scheduleText}\nLate payments may incur a fee of ${lateFee || "0"}% per month on unpaid balances.`,
+          },
+          {
+            heading: "4. Revisions",
+            body: `Up to ${revisions || "0"} rounds of revisions are included. Additional revisions may be billed separately.`,
+          },
+          { heading: "5. Intellectual property", body: ipText },
+          {
+            heading: "6. Termination",
+            body: "Either party may terminate with written notice. Client pays for work completed through the termination date. Deposits are non-refundable once work has started, unless otherwise agreed in writing.",
+          },
+          {
+            heading: "7. General",
+            body: "This document is a practical template, not legal advice. Have a qualified attorney review for your jurisdiction before signing.",
+          },
+        ],
+        signatures: ["Freelancer signature", "Client signature"],
+        watermark: wmOn ? wmText : undefined,
+        footerLeft: `${freelancer || "Freelancer"} · Contract`,
+        filename: "freelance-contract.pdf",
+      });
     } finally {
       setBusy(false);
     }
@@ -157,11 +204,12 @@ Client: ____________________________ Date: ________`;
           </Select>
         </Field>
       </Row>
+      <WatermarkFields enabled={wmOn} setEnabled={setWmOn} text={wmText} setText={setWmText} />
       <Field label="Live preview">
-        <Preview>{body}</Preview>
+        <Preview>{preview}</Preview>
       </Field>
       <Button type="button" onClick={() => void exportPdf()} disabled={busy}>
-        {busy ? "Generating…" : "Download PDF contract"}
+        {busy ? "Generating…" : "Download designed PDF"}
       </Button>
     </div>
   );
@@ -194,6 +242,8 @@ export function ProposalGenerator() {
   const [timeline, setTimeline] = React.useState("Week 1: Discovery\nWeek 2–3: Design\nWeek 4–5: Build\nWeek 6: Launch");
   const [pricing, setPricing] = React.useState("Discovery & strategy — $500\nDesign — $1,500\nDevelopment — $2,000\nTotal — $4,000");
   const [about, setAbout] = React.useState<string>(PROPOSAL_TEMPLATES.web.about);
+  const [wmOn, setWmOn] = React.useState(false);
+  const [wmText, setWmText] = React.useState("PROPOSAL");
   const [busy, setBusy] = React.useState(false);
 
   function applyTemplate(key: keyof typeof PROPOSAL_TEMPLATES | "blank") {
@@ -205,8 +255,7 @@ export function ProposalGenerator() {
     setAbout(t.about);
   }
 
-  const body = `PROJECT PROPOSAL
-Prepared for: ${client}
+  const body = `Prepared for: ${client}
 Date: ${new Date().toLocaleDateString()}
 
 1. EXECUTIVE SUMMARY
@@ -229,11 +278,29 @@ Next step: Reply to confirm, and we’ll send a contract and kickoff checklist.`
   async function exportPdf() {
     setBusy(true);
     try {
-      const w = await createPdfWriter();
-      w.draw("PROJECT PROPOSAL", { size: 16, bold: true });
-      w.gap(4);
-      for (const line of body.split("\n")) w.draw(line || " ", { size: 10, gap: 3 });
-      await w.save("freelance-proposal.pdf");
+      await exportBrandedPdf({
+        title: "Project Proposal",
+        subtitle: "Prepared for your review",
+        meta: [
+          { label: "Prepared for", value: client },
+          { label: "Date", value: new Date().toLocaleDateString() },
+        ],
+        sections: [
+          { heading: "1. Executive summary", body: summary },
+          { heading: "2. Project scope", body: scope },
+          { heading: "3. Timeline & milestones", body: timeline },
+          { heading: "4. Investment", body: pricing },
+          { heading: "5. About", body: about },
+          {
+            heading: "Next step",
+            body: "Reply to confirm, and we’ll send a contract and kickoff checklist.",
+          },
+        ],
+        signatures: ["Client approval", "Freelancer"],
+        watermark: wmOn ? wmText : undefined,
+        footerLeft: `Proposal for ${client}`,
+        filename: "freelance-proposal.pdf",
+      });
     } finally {
       setBusy(false);
     }
@@ -274,11 +341,12 @@ Next step: Reply to confirm, and we’ll send a contract and kickoff checklist.`
       <Field label="About you">
         <Textarea value={about} onChange={(e) => setAbout(e.target.value)} rows={3} className="font-sans text-sm" />
       </Field>
+      <WatermarkFields enabled={wmOn} setEnabled={setWmOn} text={wmText} setText={setWmText} />
       <Field label="Live preview">
         <Preview>{body}</Preview>
       </Field>
       <Button type="button" onClick={() => void exportPdf()} disabled={busy}>
-        {busy ? "Generating…" : "Download PDF proposal"}
+        {busy ? "Generating…" : "Download designed PDF"}
       </Button>
     </div>
   );
@@ -292,40 +360,52 @@ export function NdaGenerator() {
   const [term, setTerm] = React.useState("2");
   const [mutual, setMutual] = React.useState(true);
   const [jurisdiction, setJurisdiction] = React.useState("State of Delaware, USA");
+  const [wmOn, setWmOn] = React.useState(true);
+  const [wmText, setWmText] = React.useState("CONFIDENTIAL");
   const [busy, setBusy] = React.useState(false);
 
-  const body = `NON-DISCLOSURE AGREEMENT (${mutual ? "MUTUAL" : "ONE-WAY"})
-
-This Agreement is entered into by ${disclosing || "[Disclosing Party]"} ("Disclosing Party") and ${receiving || "[Receiving Party]"} ("Receiving Party").
-
-1. PURPOSE
-Confidential Information may be shared for: ${purpose}
-
-2. OBLIGATIONS
-The Receiving Party${mutual ? " and Disclosing Party (each as a receiving party)" : ""} agree to keep Confidential Information secret, use it only for the stated purpose, and not disclose it to third parties without prior written consent, except as required by law.
-
-3. TERM
-Confidentiality obligations last ${term || "2"} year(s) from the date of disclosure, or until the information becomes public through no fault of the receiving party.
-
-4. EXCLUSIONS
-Information that is public, independently developed, or rightfully received from another source without duty of confidentiality is not covered.
-
-5. GOVERNING LAW
-This Agreement is governed by the laws of ${jurisdiction || "[jurisdiction]"}.
-
-This template is not legal advice. Review with counsel before use.
-
-Disclosing Party: ____________________ Date: ________
-Receiving Party: _____________________ Date: ________`;
+  const body = `Type: ${mutual ? "Mutual" : "One-way"} NDA
+Parties: ${disclosing} ↔ ${receiving}
+Purpose: ${purpose}
+Term: ${term} year(s)
+Jurisdiction: ${jurisdiction}
+Signatures appear at the bottom of the PDF.`;
 
   async function exportPdf() {
     setBusy(true);
     try {
-      const w = await createPdfWriter();
-      w.draw("NON-DISCLOSURE AGREEMENT", { size: 16, bold: true });
-      w.gap(6);
-      for (const line of body.split("\n")) w.draw(line || " ", { size: 10, gap: 3 });
-      await w.save("nda.pdf");
+      await exportBrandedPdf({
+        title: "Non-Disclosure Agreement",
+        subtitle: mutual ? "Mutual confidentiality agreement" : "One-way confidentiality agreement",
+        meta: [
+          { label: "Disclosing party", value: disclosing },
+          { label: "Receiving party", value: receiving },
+          { label: "Date", value: new Date().toLocaleDateString() },
+        ],
+        sections: [
+          { heading: "1. Purpose", body: `Confidential Information may be shared for: ${purpose}` },
+          {
+            heading: "2. Obligations",
+            body: `The Receiving Party${mutual ? " and Disclosing Party (each as a receiving party)" : ""} agree to keep Confidential Information secret, use it only for the stated purpose, and not disclose it to third parties without prior written consent, except as required by law.`,
+          },
+          {
+            heading: "3. Term",
+            body: `Confidentiality obligations last ${term || "2"} year(s) from the date of disclosure, or until the information becomes public through no fault of the receiving party.`,
+          },
+          {
+            heading: "4. Exclusions",
+            body: "Information that is public, independently developed, or rightfully received from another source without duty of confidentiality is not covered.",
+          },
+          {
+            heading: "5. Governing law",
+            body: `This Agreement is governed by the laws of ${jurisdiction || "[jurisdiction]"}. This template is not legal advice. Review with counsel before use.`,
+          },
+        ],
+        signatures: ["Disclosing party", "Receiving party"],
+        watermark: wmOn ? wmText : undefined,
+        footerLeft: "NDA · Confidential",
+        filename: "nda.pdf",
+      });
     } finally {
       setBusy(false);
     }
@@ -359,11 +439,12 @@ Receiving Party: _____________________ Date: ________`;
       <Field label="Governing jurisdiction">
         <Input value={jurisdiction} onChange={(e) => setJurisdiction(e.target.value)} placeholder="e.g. Province of Punjab, Pakistan" />
       </Field>
+      <WatermarkFields enabled={wmOn} setEnabled={setWmOn} text={wmText} setText={setWmText} />
       <Field label="Live preview">
         <Preview>{body}</Preview>
       </Field>
       <Button type="button" onClick={() => void exportPdf()} disabled={busy}>
-        {busy ? "Generating…" : "Download NDA PDF"}
+        {busy ? "Generating…" : "Download designed PDF"}
       </Button>
     </div>
   );
@@ -666,6 +747,8 @@ export function ClientOnboardingForm() {
   const [includeBudget, setIncludeBudget] = React.useState(true);
   const [includeBrand, setIncludeBrand] = React.useState(true);
   const [extra, setExtra] = React.useState("Anything else we should know?");
+  const [wmOn, setWmOn] = React.useState(false);
+  const [wmText, setWmText] = React.useState("INTAKE FORM");
   const [busy, setBusy] = React.useState(false);
 
   const questions = [
@@ -689,11 +772,28 @@ export function ClientOnboardingForm() {
   async function exportPdf() {
     setBusy(true);
     try {
-      const w = await createPdfWriter();
-      w.draw(`${business} — Client Onboarding`, { size: 16, bold: true });
-      w.gap(8);
-      for (const line of text.split("\n")) w.draw(line || " ", { size: 10, gap: 3 });
-      await w.save("client-onboarding.pdf");
+      await exportBrandedPdf({
+        title: "Client Onboarding",
+        subtitle: `${business} · Intake questionnaire`,
+        meta: [
+          { label: "From", value: business },
+          { label: "Date", value: new Date().toLocaleDateString() },
+        ],
+        sections: [
+          {
+            heading: "Instructions",
+            body: "Please complete every section and return this form before kickoff. Leave blank lines for handwritten answers if printing.",
+          },
+          ...questions.map((q, i) => ({
+            heading: `${i + 1}. ${q}`,
+            body: "\n\n\n_______________________________________________\n_______________________________________________",
+          })),
+        ],
+        signatures: ["Client completed by"],
+        watermark: wmOn ? wmText : undefined,
+        footerLeft: `${business} · Onboarding`,
+        filename: "client-onboarding.pdf",
+      });
     } finally {
       setBusy(false);
     }
@@ -740,12 +840,13 @@ h1{font-size:1.5rem}</style></head><body>
       <Field label="Custom closing question">
         <Input value={extra} onChange={(e) => setExtra(e.target.value)} />
       </Field>
+      <WatermarkFields enabled={wmOn} setEnabled={setWmOn} text={wmText} setText={setWmText} />
       <Field label="Preview">
         <Preview>{text}</Preview>
       </Field>
       <div className="flex flex-wrap gap-2">
         <Button type="button" onClick={() => void exportPdf()} disabled={busy}>
-          {busy ? "Generating…" : "Download PDF"}
+          {busy ? "Generating…" : "Download designed PDF"}
         </Button>
         <Button type="button" variant="secondary" onClick={exportHtml}>
           Download HTML form
@@ -766,38 +867,51 @@ export function ChangeOrderGenerator() {
   const [work, setWork] = React.useState("Add a blog section with CMS templates and category filters (not in original scope).");
   const [cost, setCost] = React.useState("1200");
   const [days, setDays] = React.useState("7");
+  const [wmOn, setWmOn] = React.useState(false);
+  const [wmText, setWmText] = React.useState("CHANGE ORDER");
   const [busy, setBusy] = React.useState(false);
 
-  const body = `SCOPE CHANGE ORDER
-
-Project: ${project}
+  const body = `Project: ${project}
 Original agreement: ${originalRef}
 Date: ${new Date().toLocaleDateString()}
 
-1. ADDITIONAL WORK REQUESTED
-${work}
+Additional work: ${work}
+Additional cost: $${cost}
+Timeline: +${days} day(s)
 
-2. ADDITIONAL COST
-$${cost || "0"} (due per the payment terms of the original agreement unless noted otherwise).
-
-3. TIMELINE IMPACT
-Estimated +${days || "0"} calendar day(s) added to the project schedule.
-
-4. APPROVAL
-Work outside the original scope will not begin until this change order is signed by both parties.
-"Just one more thing" requests without a signed change order are not included.
-
-Client approval: ________________________ Date: ________
-Freelancer: ____________________________ Date: ________`;
+Signatures appear at the bottom of the PDF.`;
 
   async function exportPdf() {
     setBusy(true);
     try {
-      const w = await createPdfWriter();
-      w.draw("SCOPE CHANGE ORDER", { size: 16, bold: true });
-      w.gap(6);
-      for (const line of body.split("\n")) w.draw(line || " ", { size: 10, gap: 3 });
-      await w.save("change-order.pdf");
+      await exportBrandedPdf({
+        title: "Scope Change Order",
+        subtitle: "Authorization for work outside the original agreement",
+        meta: [
+          { label: "Project", value: project },
+          { label: "Original agreement", value: originalRef },
+          { label: "Date", value: new Date().toLocaleDateString() },
+        ],
+        sections: [
+          { heading: "1. Additional work requested", body: work },
+          {
+            heading: "2. Additional cost",
+            body: `$${cost || "0"} (due per the payment terms of the original agreement unless noted otherwise).`,
+          },
+          {
+            heading: "3. Timeline impact",
+            body: `Estimated +${days || "0"} calendar day(s) added to the project schedule.`,
+          },
+          {
+            heading: "4. Approval",
+            body: 'Work outside the original scope will not begin until this change order is signed by both parties. "Just one more thing" requests without a signed change order are not included.',
+          },
+        ],
+        signatures: ["Client approval", "Freelancer"],
+        watermark: wmOn ? wmText : undefined,
+        footerLeft: "Change order · Out of scope",
+        filename: "change-order.pdf",
+      });
     } finally {
       setBusy(false);
     }
@@ -826,11 +940,12 @@ Freelancer: ____________________________ Date: ________`;
           <Input type="number" value={days} onChange={(e) => setDays(e.target.value)} />
         </Field>
       </Row>
+      <WatermarkFields enabled={wmOn} setEnabled={setWmOn} text={wmText} setText={setWmText} />
       <Field label="Live preview">
         <Preview>{body}</Preview>
       </Field>
       <Button type="button" onClick={() => void exportPdf()} disabled={busy}>
-        {busy ? "Generating…" : "Download change order PDF"}
+        {busy ? "Generating…" : "Download designed PDF"}
       </Button>
     </div>
   );
