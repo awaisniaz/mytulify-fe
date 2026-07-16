@@ -36,9 +36,11 @@ export async function Footer() {
         </div>
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-sm text-muted sm:flex-row">
           <p>{t.footer.copyright(new Date().getFullYear(), site.name)}</p>
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             <Link href="/tools" className="hover:text-foreground">{t.footer.allTools}</Link>
+            <Link href="/blog" className="hover:text-foreground">{t.footer.blog}</Link>
             <Link href="/pricing" className="hover:text-foreground">{t.footer.pricing}</Link>
+            <Link href="/request-tool" className="hover:text-foreground">{t.footer.requestTool}</Link>
             <Link href="/about" className="hover:text-foreground">{t.footer.about}</Link>
             <Link href="/privacy" className="hover:text-foreground">{t.footer.privacy}</Link>
           </div>

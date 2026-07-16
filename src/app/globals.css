@@ -177,6 +177,56 @@ html[dir="rtl"] h3 {
 
 .prose-tool h2 { font-size: 1.25rem; font-weight: 700; }
 
+.prose-blog {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.prose-blog :where(h2, h3) {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  color: var(--foreground);
+  letter-spacing: -0.02em;
+}
+.prose-blog h2 { font-size: 1.35rem; }
+.prose-blog h3 { font-size: 1.15rem; }
+.prose-blog p { margin: 0.9rem 0; }
+.prose-blog ul, .prose-blog ol {
+  margin: 0.9rem 0;
+  padding-left: 1.25rem;
+}
+.prose-blog li { margin: 0.35rem 0; }
+.prose-blog a {
+  color: var(--brand);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-blog strong { color: var(--foreground); font-weight: 650; }
+.prose-blog table {
+  width: 100%;
+  margin: 1.25rem 0;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+.prose-blog th, .prose-blog td {
+  border: 1px solid var(--border);
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+}
+.prose-blog th {
+  background: var(--surface-2);
+  color: var(--foreground);
+  font-weight: 600;
+}
+.prose-blog code {
+  border-radius: 0.35rem;
+  background: var(--surface-2);
+  padding: 0.1rem 0.35rem;
+  font-size: 0.875em;
+}
+
 .pill {
   display: inline-flex;
   align-items: center;

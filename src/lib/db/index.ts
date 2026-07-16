@@ -22,6 +22,16 @@ CREATE TABLE IF NOT EXISTS subscriptions (
 );
 CREATE INDEX IF NOT EXISTS idx_sub_license_key ON subscriptions(license_key);
 CREATE INDEX IF NOT EXISTS idx_sub_stripe_sub ON subscriptions(stripe_subscription_id);
+
+CREATE TABLE IF NOT EXISTS tool_requests (
+  id TEXT PRIMARY KEY NOT NULL,
+  tool_name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  category TEXT,
+  email TEXT,
+  created_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_tool_requests_created ON tool_requests(created_at);
 `;
 
 async function initDb(): Promise<void> {

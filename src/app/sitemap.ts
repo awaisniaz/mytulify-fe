@@ -4,6 +4,7 @@ import { existsSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { AVAILABLE_TOOLS, CATEGORIES, toolHref } from "@/lib/catalog";
+import { getAllPosts, postFileMtime } from "@/lib/blog";
 import { site } from "@/lib/site";
 
 const ROOT = process.cwd();
@@ -34,6 +35,8 @@ const STATIC_PAGES: { path: string; file: string; priority: number }[] = [
   { path: "/pricing", file: "src/app/pricing/page.tsx", priority: 0.8 },
   { path: "/about", file: "src/app/about/page.tsx", priority: 0.8 },
   { path: "/privacy", file: "src/app/privacy/page.tsx", priority: 0.8 },
+  { path: "/blog", file: "src/app/blog/page.tsx", priority: 0.8 },
+  { path: "/request-tool", file: "src/app/request-tool/page.tsx", priority: 0.6 },
 ];
 
 function fileMtime(rel: string): Date | null {
@@ -249,5 +252,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     };
   });
 
-  return [...staticPages, ...categoryPages, ...toolPages];
+  const blogPosts = getAllPosts().map((p) => {
+    const updated = p.updatedDate ? new Date(p.updatedDate) : null;
+    return {
+      url: `${site.url}/blog/${p.slug}`,
+      lastModified: maxDate(
+        updated && !Number.isNaN(updated.getTime()) ? updated : null,
+        gitFileLastmod(p.fileRel),
+        postFileMtime(p.fileRel),
+      ),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    };
+  });
+
+  return [...staticPages, ...categoryPages, ...toolPages, ...blogPosts];
 }

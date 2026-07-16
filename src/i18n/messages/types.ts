@@ -3,7 +3,9 @@ export type RawMessages = {
   nav: {
     categories: string;
     allTools: string;
+    blog: string;
     pricing: string;
+    requestTool: string;
     search: string;
     menu: string;
     toolsCount: string;
@@ -39,7 +41,9 @@ export type RawMessages = {
   };
   footer: {
     allTools: string;
+    blog: string;
     pricing: string;
+    requestTool: string;
     about: string;
     privacy: string;
     copyright: string;
@@ -69,7 +73,9 @@ export type Messages = {
   nav: {
     categories: string;
     allTools: string;
+    blog: string;
     pricing: string;
+    requestTool: string;
     search: string;
     menu: string;
     toolsCount: (n: number) => string;
@@ -105,7 +111,9 @@ export type Messages = {
   };
   footer: {
     allTools: string;
+    blog: string;
     pricing: string;
+    requestTool: string;
     about: string;
     privacy: string;
     copyright: (year: number, name: string) => string;

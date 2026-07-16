@@ -2,7 +2,9 @@
   "nav": {
     "categories": "Categories",
     "allTools": "All Tools",
+    "blog": "Blog",
     "pricing": "Pricing",
+    "requestTool": "Request a Tool",
     "search": "Search",
     "menu": "Menu",
     "toolsCount": "{n} tools"
@@ -38,7 +40,9 @@
   },
   "footer": {
     "allTools": "All Tools",
+    "blog": "Blog",
     "pricing": "Pricing",
+    "requestTool": "Request a Tool",
     "about": "About",
     "privacy": "Privacy",
     "copyright": "© {year} {name}"
@@ -53,9 +57,9 @@
     "tagline": "{n}+ Online Tools",
     "taglineWithTier": "{n}+ tools · Free tier + Pro",
     "siteDescription": "{total}+ online tools across {cats} categories. {client}+ browser tools are free with no signup. AI & OCR tools include {aiLimit} free runs per day — Pro adds unlimited AI and removes ads.",
-    "heroBadge": "{n}+ tools · Free tier + Pro",
+    "heroBadge": "{n}+ online tools · Free tier + Pro",
     "heroTitleLead": "Online tools for",
-    "heroSubtitle": "{client}+ browser tools free & unlimited. AI & OCR: {aiLimit} runs/day on Free — Pro for unlimited & no ads.",
+    "heroSubtitle": "{client}+ browser tools free & unlimited across the largest free toolkit of its kind. AI & OCR: {aiLimit} runs/day on Free — Pro for unlimited & no ads.",
     "footerNote": "{client}+ browser tools free · Pro for unlimited AI",
     "homeValueFreeTitle": "Free tier",
     "homeValueFreeDesc": "{client}+ browser tools · {aiLimit} AI runs/day",

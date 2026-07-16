@@ -86,6 +86,7 @@ import {
   Wrench,
   X,
   Zap,
+  Clock,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -105,6 +106,7 @@ const ICONS: Record<string, LucideIcon> = {
   Calendar,
   CaseSensitive,
   Check,
+  Clock,
   ChevronDown,
   ChevronRight,
   Clipboard,

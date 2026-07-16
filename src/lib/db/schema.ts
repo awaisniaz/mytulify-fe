@@ -24,3 +24,20 @@ export type Subscription = typeof subscriptions.$inferSelect;
 export type NewSubscription = typeof subscriptions.$inferInsert;
 
 export type SubscriptionStatus = "active" | "canceled" | "past_due" | "incomplete";
+
+/** User-submitted tool ideas from /request-tool. */
+export const toolRequests = sqliteTable(
+  "tool_requests",
+  {
+    id: text("id").primaryKey(),
+    toolName: text("tool_name").notNull(),
+    description: text("description").notNull(),
+    category: text("category"),
+    email: text("email"),
+    createdAt: integer("created_at").notNull(),
+  },
+  (t) => [index("idx_tool_requests_created").on(t.createdAt)],
+);
+
+export type ToolRequest = typeof toolRequests.$inferSelect;
+export type NewToolRequest = typeof toolRequests.$inferInsert;

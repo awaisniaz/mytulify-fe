@@ -51,8 +51,14 @@ export async function Header() {
           <Link href="/tools" className="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-foreground">
             {t.nav.allTools}
           </Link>
+          <Link href="/blog" className="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-foreground">
+            {t.nav.blog}
+          </Link>
           <Link href="/pricing" className="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-brand">
             {t.nav.pricing}
+          </Link>
+          <Link href="/request-tool" className="rounded-lg px-3 py-2 text-sm font-medium text-muted/80 transition-colors hover:text-brand">
+            {t.nav.requestTool}
           </Link>
         </nav>
 
@@ -92,8 +98,14 @@ export async function Header() {
               <Link href="/tools" className="block rounded-xl p-3 font-bold hover:bg-surface-2">
                 {t.nav.allTools}
               </Link>
+              <Link href="/blog" className="block rounded-xl p-3 font-bold hover:bg-surface-2">
+                {t.nav.blog}
+              </Link>
               <Link href="/pricing" className="block rounded-xl p-3 font-bold hover:bg-surface-2">
                 {t.nav.pricing}
+              </Link>
+              <Link href="/request-tool" className="block rounded-xl p-3 text-sm font-semibold text-muted hover:bg-surface-2 hover:text-foreground">
+                {t.nav.requestTool}
               </Link>
               {NAV_CATEGORIES.map((c) => (
                 <Link key={c.slug} href={`/${c.slug}`} className="flex items-center gap-3 rounded-xl p-3 hover:bg-surface-2">

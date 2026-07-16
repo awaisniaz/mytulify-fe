@@ -32,7 +32,11 @@ export async function HomeHero() {
               <span className="text-brand">{t.home.heroEverything}</span> {t.home.heroYouDo}
             </h1>
 
-            <p className="mt-4 max-w-md text-base leading-relaxed text-muted">
+            <p className="mt-3 text-lg font-bold tracking-tight text-foreground sm:text-xl">
+              {TOTAL_TOOLS}+ free tools — and growing
+            </p>
+
+            <p className="mt-3 max-w-md text-base leading-relaxed text-muted">
               {messaging.heroSubtitle}
             </p>
 

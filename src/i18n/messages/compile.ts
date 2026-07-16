@@ -12,7 +12,9 @@ export function compileMessages(raw: RawMessages): Messages {
     nav: {
       categories: raw.nav.categories,
       allTools: raw.nav.allTools,
+      blog: raw.nav.blog,
       pricing: raw.nav.pricing,
+      requestTool: raw.nav.requestTool,
       search: raw.nav.search,
       menu: raw.nav.menu,
       toolsCount: (n) => fmt(raw.nav.toolsCount, { n }),
@@ -43,7 +45,9 @@ export function compileMessages(raw: RawMessages): Messages {
     },
     footer: {
       allTools: raw.footer.allTools,
+      blog: raw.footer.blog,
       pricing: raw.footer.pricing,
+      requestTool: raw.footer.requestTool,
       about: raw.footer.about,
       privacy: raw.footer.privacy,
       copyright: (year, name) => fmt(raw.footer.copyright, { year, name }),

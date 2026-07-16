@@ -2,7 +2,9 @@
   "nav": {
     "categories": "زمرے",
     "allTools": "تمام ٹولز",
+    "blog": "بلاگ",
     "pricing": "قیمتیں",
+    "requestTool": "ٹول کی درخواست",
     "search": "تلاش",
     "menu": "مینو",
     "toolsCount": "{n} ٹولز"
@@ -38,7 +40,9 @@
   },
   "footer": {
     "allTools": "تمام ٹولز",
+    "blog": "بلاگ",
     "pricing": "قیمتیں",
+    "requestTool": "ٹول کی درخواست",
     "about": "ہمارے بارے میں",
     "privacy": "رازداری",
     "copyright": "© {year} {name}"
