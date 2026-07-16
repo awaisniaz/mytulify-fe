@@ -1,9 +1,11 @@
 import {
   AiNotConfiguredError,
+  OpenAI,
   aiConfigErrorMessage,
   createChatCompletion,
   isAiConfigured,
 } from "@/lib/ai/client";
+import { parseJsonLoose } from "@/lib/ai/parse-json";
 import {
   checkAiAllowance,
   incrementUsage,
@@ -35,12 +37,13 @@ Return ONLY valid JSON (no markdown) matching this shape:
 }
 
 Rules:
-- Include ALL fields a user would realistically need for the described purpose and country.
-- Use culturally appropriate labels (e.g. CNIC for Pakistan, Aadhaar for India, SSN/EIN for US, Emirates ID for UAE, NIN for Nigeria, PESEL for Poland).
-- For legal/business forms include standard sections (declarations, dates, signatures).
-- Add a "signature" field when the form would normally be signed.
+- Include the important fields a user needs (aim for 8–22 fields — complete but not huge).
+- Use ONLY these type values: text, textarea, email, number, date, phone, cnic, select, checkbox, radio, signature.
+- Use culturally appropriate labels (e.g. CNIC for Pakistan, Aadhaar for India, SSN/EIN for US, Emirates ID for UAE).
+- For legal/business forms include declarations, dates, and a signature field when appropriate.
 - Labels and placeholders must be in the language the user requested.
-- ids must be unique lowercase snake_case English (not translated).`;
+- ids must be unique lowercase snake_case English (not translated).
+- Output one complete JSON object only.`;
 
 type Body = {
   mode?: "generate" | "scan";
@@ -49,6 +52,23 @@ type Body = {
   context?: string;
   image?: string;
 };
+
+function friendlyAiError(err: unknown): string {
+  if (err instanceof AiNotConfiguredError) return aiConfigErrorMessage();
+  if (err instanceof OpenAI.APIError) {
+    if (err.status === 429) {
+      return "AI rate limit hit. Wait a minute and try again.";
+    }
+    if (err.status === 401 || err.status === 403) {
+      return "AI API key is invalid. Check GROQ_API_KEYS in the server .env.";
+    }
+    return err.message || "AI provider error.";
+  }
+  if (err instanceof SyntaxError || (err instanceof Error && /JSON|parse/i.test(err.message))) {
+    return "Could not parse form structure. Try a shorter description and generate again.";
+  }
+  return err instanceof Error ? err.message : "Generation failed.";
+}
 
 export async function POST(request: Request) {
   if (!isAiConfigured()) {
@@ -87,6 +107,7 @@ export async function POST(request: Request) {
       const completion = await createChatCompletion(
         {
           temperature: 0.2,
+          max_tokens: 8192,
           response_format: { type: "json_object" },
           messages: [
             {
@@ -118,6 +139,7 @@ export async function POST(request: Request) {
       const context = body.context?.trim();
       const completion = await createChatCompletion({
         temperature: 0.3,
+        max_tokens: 8192,
         response_format: { type: "json_object" },
         messages: [
           { role: "system", content: SYSTEM },
@@ -129,7 +151,7 @@ Language for all labels: ${language}
 User requirements: ${requirements}
 ${context ? `Additional context: ${context}` : ""}
 
-Generate all necessary fields.`,
+Generate all necessary fields as valid JSON.`,
           },
         ],
       });
@@ -138,7 +160,35 @@ Generate all necessary fields.`,
 
     if (!raw) return Response.json({ error: "Empty AI response." }, { status: 502 });
 
-    const parsed = parseFormSchema(JSON.parse(raw));
+    let parsed;
+    try {
+      parsed = parseFormSchema(parseJsonLoose(raw));
+    } catch (firstErr) {
+      // One retry with a stricter, shorter prompt when JSON is broken/truncated
+      if (mode !== "generate") throw firstErr;
+      const requirements = body.requirements?.trim() || "contact form";
+      const retry = await createChatCompletion({
+        temperature: 0.1,
+        max_tokens: 4096,
+        response_format: { type: "json_object" },
+        messages: [
+          {
+            role: "system",
+            content:
+              'Return ONLY a JSON object: {"title":"...","description":"...","language":"' +
+              language +
+              '","fields":[{"id":"name","type":"text","label":"...","required":true}]}. Use 6-14 fields. Types: text,textarea,email,number,date,phone,cnic,select,checkbox,radio,signature.',
+          },
+          {
+            role: "user",
+            content: `Language: ${language}. Form: ${requirements}`,
+          },
+        ],
+      });
+      const retryRaw = retry.choices[0]?.message?.content?.trim();
+      if (!retryRaw) throw firstErr;
+      parsed = parseFormSchema(parseJsonLoose(retryRaw));
+    }
 
     const headers: HeadersInit = { "Content-Type": "application/json" };
     if (!allowance.isPro) {
@@ -150,10 +200,6 @@ Generate all necessary fields.`,
     if (err instanceof AiNotConfiguredError) {
       return Response.json({ error: aiConfigErrorMessage() }, { status: 503 });
     }
-    const msg = err instanceof Error ? err.message : "Generation failed.";
-    return Response.json(
-      { error: msg.includes("JSON") ? "Could not parse form structure. Try again." : msg },
-      { status: 502 },
-    );
+    return Response.json({ error: friendlyAiError(err) }, { status: 502 });
   }
 }

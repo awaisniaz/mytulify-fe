@@ -188,7 +188,14 @@ export function AiFormBuilder() {
       });
       const data = await res.json().catch(() => ({} as { error?: string; schema?: FormSchema }));
       if (!res.ok) throw new Error(data.error ?? `Server error (${res.status})`);
-      setSchema({ ...data.schema, branding: { ...schema.branding, ...data.schema.branding } });
+      if (!data.schema?.fields?.length) {
+        throw new Error("AI ne form fields return nahi kiye. Description thodi clear likhein aur dobara try karein.");
+      }
+      setSchema({
+        ...data.schema,
+        language: data.schema.language || language,
+        branding: { ...schema.branding, ...data.schema.branding },
+      });
       setValues({});
       setTab("brand");
       notifyUsageUpdated();
@@ -224,13 +231,21 @@ export function AiFormBuilder() {
 
   const exportPdf = async (filled: boolean) => {
     const el = filled ? fillPreviewRef.current : previewRef.current;
-    if (!el) return;
+    if (!el) {
+      setError("Form preview ready nahi. Pehle form generate/load karein.");
+      return;
+    }
+    if (!hasFields) {
+      setError("Pehle form fields add karein, phir PDF download karein.");
+      return;
+    }
     setBusy(true);
+    setError("");
     try {
       const slug = schema.title.replace(/[^a-z0-9]+/gi, "-").slice(0, 40) || "form";
       await exportElementToPdf(el, `${slug}${filled ? "-filled" : ""}.pdf`);
     } catch (e) {
-      setError((e as Error).message);
+      setError((e as Error).message || "PDF export fail ho gaya. Page refresh karke dobara try karein.");
     } finally {
       setBusy(false);
     }

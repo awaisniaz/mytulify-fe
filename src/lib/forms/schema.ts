@@ -141,23 +141,65 @@ function slugify(s: string) {
     .slice(0, 40) || "field";
 }
 
+const TYPE_ALIASES: Record<string, FormFieldType> = {
+  text: "text",
+  string: "text",
+  short_text: "text",
+  textarea: "textarea",
+  long_text: "textarea",
+  paragraph: "textarea",
+  email: "email",
+  number: "number",
+  integer: "number",
+  date: "date",
+  phone: "phone",
+  tel: "phone",
+  telephone: "phone",
+  mobile: "phone",
+  cnic: "cnic",
+  id: "cnic",
+  national_id: "cnic",
+  select: "select",
+  dropdown: "select",
+  checkbox: "checkbox",
+  check: "checkbox",
+  boolean: "checkbox",
+  radio: "radio",
+  multiple_choice: "radio",
+  signature: "signature",
+  sign: "signature",
+};
+
+function normalizeFieldType(raw: unknown): FormFieldType {
+  if (typeof raw !== "string") return "text";
+  const key = raw.trim().toLowerCase().replace(/[\s-]+/g, "_");
+  return TYPE_ALIASES[key] ?? "text";
+}
+
 export function parseFormSchema(raw: unknown): FormSchema {
   if (!raw || typeof raw !== "object") throw new Error("Invalid form data");
   const o = raw as Record<string, unknown>;
-  const title = typeof o.title === "string" && o.title.trim() ? o.title.trim() : "Untitled form";
-  const language = typeof o.language === "string" ? o.language : "en";
-  const description = typeof o.description === "string" ? o.description : "";
-  const fieldsRaw = Array.isArray(o.fields) ? o.fields : [];
+  // Some models nest under { form: {...} } or { schema: {...} }
+  const nested =
+    o.fields == null && typeof o.form === "object" && o.form
+      ? (o.form as Record<string, unknown>)
+      : o.fields == null && typeof o.schema === "object" && o.schema
+        ? (o.schema as Record<string, unknown>)
+        : o;
+  const title =
+    typeof nested.title === "string" && nested.title.trim() ? nested.title.trim() : "Untitled form";
+  const language = typeof nested.language === "string" ? nested.language : "en";
+  const description = typeof nested.description === "string" ? nested.description : "";
+  const fieldsRaw = Array.isArray(nested.fields) ? nested.fields : [];
   const seen = new Set<string>();
   const fields: FormField[] = fieldsRaw.map((item, i) => {
     const f = item as Record<string, unknown>;
     const label = typeof f.label === "string" && f.label.trim() ? f.label.trim() : `Field ${i + 1}`;
     let id = typeof f.id === "string" && f.id.trim() ? f.id.trim() : slugify(label);
+    id = slugify(id) || `field_${i + 1}`;
     if (seen.has(id)) id = `${id}_${i}`;
     seen.add(id);
-    const type = (typeof f.type === "string" ? f.type : "text") as FormFieldType;
-    const validTypes: FormFieldType[] = FIELD_TYPES.map((t) => t.value);
-    const fieldType = validTypes.includes(type) ? type : "text";
+    const fieldType = normalizeFieldType(f.type);
     const options = Array.isArray(f.options)
       ? f.options
           .filter((x): x is string => typeof x === "string" && x.trim().length > 0)
@@ -169,7 +211,12 @@ export function parseFormSchema(raw: unknown): FormSchema {
       label,
       required: !!f.required,
       placeholder: typeof f.placeholder === "string" ? f.placeholder : undefined,
-      options: options?.length ? options : fieldType === "select" || fieldType === "radio" ? ["Option 1", "Option 2"] : undefined,
+      options:
+        options?.length
+          ? options
+          : fieldType === "select" || fieldType === "radio"
+            ? ["Option 1", "Option 2"]
+            : undefined,
     };
   });
   if (!fields.length) throw new Error("No form fields were generated. Try a more detailed description.");

@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { Input, Select, Textarea, Button } from "@/components/ui/primitives";
 import { Field, Notice, Output, CopyButton } from "@/components/tools/shared";
 import { validateIban, formatIban } from "@/lib/iban";
+import { exportBrandedPdf } from "@/lib/pdf-doc";
 import { download } from "@/lib/utils";
 
 /* --------------------------- LLMs.txt Generator ---------------------------- */
@@ -274,35 +274,42 @@ export function InvoiceGenerator() {
   async function pdf() {
     setLoading(true);
     try {
-      const doc = await PDFDocument.create();
-      const page = doc.addPage([595, 842]);
-      const font = await doc.embedFont(StandardFonts.Helvetica);
-      const bold = await doc.embedFont(StandardFonts.HelveticaBold);
-      let y = 800;
-      const draw = (text: string, size = 11, f = font) => {
-        page.drawText(text, { x: 50, y, size, font: f, color: rgb(0.1, 0.1, 0.1) });
-        y -= size + 6;
-      };
-      draw("INVOICE", 22, bold);
-      draw(`#${invNo} · ${new Date().toLocaleDateString()}`, 10);
-      y -= 10;
-      draw("From:", 12, bold);
-      draw(from.name || "—"); draw(from.email); draw(from.address);
-      y -= 8;
-      draw("Bill to:", 12, bold);
-      draw(to.name || "—"); draw(to.email); draw(to.address);
-      y -= 10;
-      draw("Description          Qty    Price    Total", 10, bold);
-      for (const it of items) {
-        const line = `${it.desc.slice(0, 20).padEnd(20)} ${String(it.qty).padStart(3)}  $${it.price.toFixed(2).padStart(8)}  $${(it.qty * it.price).toFixed(2).padStart(8)}`;
-        draw(line, 10);
-      }
-      y -= 8;
-      draw(`Subtotal: $${sub.toFixed(2)}`, 11);
-      if (tax) draw(`Tax (${tax}%): $${taxAmt.toFixed(2)}`, 11);
-      draw(`Total: $${total.toFixed(2)}`, 14, bold);
-      const bytes = await doc.save();
-      download(new Blob([bytes.buffer as ArrayBuffer], { type: "application/pdf" }), `invoice-${invNo}.pdf`);
+      const lines = items
+        .filter((it) => it.desc.trim() || it.qty || it.price)
+        .map((it) => {
+          const lineTotal = (it.qty * it.price).toFixed(2);
+          return `${it.desc || "Item"}  ·  qty ${it.qty}  ·  $${it.price.toFixed(2)}  ·  $${lineTotal}`;
+        })
+        .join("\n");
+
+      const fromBlock = [from.name, from.email, from.address].filter(Boolean).join("\n") || "—";
+      const toBlock = [to.name, to.email, to.address].filter(Boolean).join("\n") || "—";
+      const totals = [
+        `Subtotal: $${sub.toFixed(2)}`,
+        tax ? `Tax (${tax}%): $${taxAmt.toFixed(2)}` : "",
+        `Total due: $${total.toFixed(2)}`,
+      ]
+        .filter(Boolean)
+        .join("\n");
+
+      await exportBrandedPdf({
+        title: "Invoice",
+        subtitle: `Professional invoice generated with Mytulify`,
+        meta: [
+          { label: "Invoice #", value: invNo || "INV-001" },
+          { label: "Date", value: new Date().toLocaleDateString() },
+          { label: "Amount due", value: `$${total.toFixed(2)}` },
+        ],
+        sections: [
+          { heading: "From", body: fromBlock },
+          { heading: "Bill to", body: toBlock },
+          { heading: "Line items", body: lines || "No items" },
+          { heading: "Totals", body: totals },
+        ],
+        signatures: ["Authorized signature"],
+        footerLeft: "Mytulify · Invoice Generator",
+        filename: `invoice-${(invNo || "INV-001").replace(/[^\w.-]+/g, "-")}.pdf`,
+      });
     } finally {
       setLoading(false);
     }

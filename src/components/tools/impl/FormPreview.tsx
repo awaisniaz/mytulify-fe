@@ -357,10 +357,12 @@ export const FormPreview = React.forwardRef<
         )}
 
         <div
-          className={cn(
-            "mt-8 gap-5",
-            b.fieldsLayout === "two-column" ? "grid sm:grid-cols-2" : "space-y-5",
-          )}
+          className={cn("mt-8 gap-5", b.fieldsLayout === "two-column" ? "grid grid-cols-2" : "space-y-5")}
+          style={
+            b.fieldsLayout === "two-column"
+              ? { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem" }
+              : { display: "flex", flexDirection: "column", gap: "1.25rem" }
+          }
         >
           {schema.fields.map((field) => (
             <FieldPreview

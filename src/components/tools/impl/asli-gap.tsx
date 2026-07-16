@@ -98,34 +98,6 @@ async function zipBlobs(entries: { name: string; blob: Blob }[], zipName: string
   download(await zip.generateAsync({ type: "blob" }), zipName);
 }
 
-function wrapPdfText(doc: PDFDocument, text: string, fontSize = 11) {
-  return doc.embedFont(StandardFonts.Helvetica).then((font) => {
-    const margin = 50;
-    const lineH = fontSize + 3;
-    let page = doc.addPage();
-    let y = page.getHeight() - margin;
-    const maxW = page.getWidth() - margin * 2;
-    for (const raw of text.split(/\r?\n/)) {
-      const words = raw.split(/\s+/);
-      let line = "";
-      for (const w of words) {
-        const test = line ? `${line} ${w}` : w;
-        if (font.widthOfTextAtSize(test, fontSize) > maxW && line) {
-          if (y < margin) { page = doc.addPage(); y = page.getHeight() - margin; }
-          page.drawText(line, { x: margin, y, size: fontSize, font, color: rgb(0, 0, 0) });
-          y -= lineH;
-          line = w;
-        } else line = test;
-      }
-      if (line) {
-        if (y < margin) { page = doc.addPage(); y = page.getHeight() - margin; }
-        page.drawText(line, { x: margin, y, size: fontSize, font, color: rgb(0, 0, 0) });
-        y -= lineH;
-      }
-    }
-  });
-}
-
 /* ------------------------------ PDF: text / csv ----------------------------- */
 export function TxtToPdf() {
   const [busy, setBusy] = React.useState(false);
@@ -134,9 +106,15 @@ export function TxtToPdf() {
     if (!f) return;
     setBusy(true);
     try {
-      const doc = await PDFDocument.create();
-      await wrapPdfText(doc, await f.text());
-      await savePdf(doc, f.name.replace(/\.[^.]+$/i, ".pdf"));
+      const text = await f.text();
+      const { exportBrandedPdf } = await import("@/lib/pdf-doc");
+      await exportBrandedPdf({
+        title: f.name.replace(/\.[^.]+$/i, "") || "Document",
+        subtitle: "Converted from plain text",
+        sections: [{ body: text || "(empty file)" }],
+        footerLeft: "Mytulify · TXT to PDF",
+        filename: f.name.replace(/\.[^.]+$/i, ".pdf"),
+      });
     } finally {
       setBusy(false);
     }
@@ -256,9 +234,14 @@ export function EpubToPdf() {
         .join("\n\n")
         .replace(/\s+\n/g, "\n")
         .trim();
-      const doc = await PDFDocument.create();
-      await wrapPdfText(doc, text || "(No readable text found in EPUB)");
-      await savePdf(doc, f.name.replace(/\.epub$/i, ".pdf"));
+      const { exportBrandedPdf } = await import("@/lib/pdf-doc");
+      await exportBrandedPdf({
+        title: f.name.replace(/\.epub$/i, "") || "Ebook",
+        subtitle: "Converted from EPUB",
+        sections: [{ body: text || "(No readable text found in EPUB)" }],
+        footerLeft: "Mytulify · EPUB to PDF",
+        filename: f.name.replace(/\.epub$/i, ".pdf"),
+      });
     } finally {
       setBusy(false);
     }
@@ -267,7 +250,7 @@ export function EpubToPdf() {
     <div className="space-y-4">
       <FileDrop accept=".epub,application/epub+zip" onFiles={onFiles} label="Drop an EPUB ebook" />
       {busy && <Notice tone="info">Converting…</Notice>}
-      <Notice tone="info">Text content is extracted and laid out as a simple PDF. Images and complex formatting may be omitted.</Notice>
+      <Notice tone="info">Text content is extracted and laid out as a branded PDF. Images and complex formatting may be omitted.</Notice>
     </div>
   );
 }
