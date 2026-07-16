@@ -266,17 +266,19 @@ export function AiFormBuilder() {
 
   return (
     <div className="space-y-6">
-      {/* Off-screen print canvases — document layout for PDF (never browser inputs) */}
+      {/* Print canvases stay in-viewport (clipped) so layout/CSS compute correctly for PDF */}
       {hasFields ? (
         <div
           aria-hidden
           style={{
             position: "fixed",
-            left: -10000,
+            left: 0,
             top: 0,
             width: 794,
             pointerEvents: "none",
             zIndex: -1,
+            clipPath: "inset(100%)",
+            overflow: "hidden",
           }}
         >
           <FormPreview ref={printBlankRef} schema={schema} values={{}} printMode />
