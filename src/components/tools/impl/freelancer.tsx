@@ -6,6 +6,13 @@ import { Input, Select, Textarea, Button } from "@/components/ui/primitives";
 import { Field, Stat, Notice, Output } from "@/components/tools/shared";
 import { exportBrandedPdf } from "@/lib/pdf-doc";
 import { download } from "@/lib/utils";
+import {
+  DEFAULT_DOC_BRAND,
+  DocBrandControls,
+  toPdfTheme,
+  toPdfWatermark,
+  type DocBrandState,
+} from "./DocBrandControls";
 
 const n = (v: string) => parseFloat(v);
 const fmt = (x: number, d = 2) =>
@@ -35,37 +42,6 @@ function InvoiceLink() {
   );
 }
 
-function WatermarkFields({
-  enabled,
-  setEnabled,
-  text,
-  setText,
-}: {
-  enabled: boolean;
-  setEnabled: (v: boolean) => void;
-  text: string;
-  setText: (v: string) => void;
-}) {
-  return (
-    <Row>
-      <Field label="PDF watermark">
-        <Select value={enabled ? "yes" : "no"} onChange={(e) => setEnabled(e.target.value === "yes")}>
-          <option value="no">No watermark</option>
-          <option value="yes">Add watermark</option>
-        </Select>
-      </Field>
-      <Field label="Watermark text" hint="Shown diagonally, light opacity">
-        <Input
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          disabled={!enabled}
-          placeholder="DRAFT · CONFIDENTIAL"
-        />
-      </Field>
-    </Row>
-  );
-}
-
 /* ============================ 1. Contract ============================ */
 export function ContractGenerator() {
   const [freelancer, setFreelancer] = React.useState("Alex Freelance LLC");
@@ -77,8 +53,7 @@ export function ContractGenerator() {
   const [revisions, setRevisions] = React.useState("2");
   const [lateFee, setLateFee] = React.useState("1.5");
   const [ip, setIp] = React.useState("transfers");
-  const [wmOn, setWmOn] = React.useState(false);
-  const [wmText, setWmText] = React.useState("DRAFT");
+  const [brand, setBrand] = React.useState<DocBrandState>(DEFAULT_DOC_BRAND);
   const [busy, setBusy] = React.useState(false);
 
   const ipText =
@@ -145,7 +120,8 @@ General: template only — not legal advice. Signatures appear at the bottom of 
           },
         ],
         signatures: ["Freelancer signature", "Client signature"],
-        watermark: wmOn ? wmText : undefined,
+        theme: toPdfTheme(brand),
+        watermark: toPdfWatermark(brand),
         footerLeft: `${freelancer || "Freelancer"} · Contract`,
         filename: "freelance-contract.pdf",
       });
@@ -205,7 +181,7 @@ General: template only — not legal advice. Signatures appear at the bottom of 
           </Select>
         </Field>
       </Row>
-      <WatermarkFields enabled={wmOn} setEnabled={setWmOn} text={wmText} setText={setWmText} />
+      <DocBrandControls value={brand} onChange={setBrand} />
       <Field label="Live preview">
         <Preview>{preview}</Preview>
       </Field>
@@ -243,8 +219,7 @@ export function ProposalGenerator() {
   const [timeline, setTimeline] = React.useState("Week 1: Discovery\nWeek 2–3: Design\nWeek 4–5: Build\nWeek 6: Launch");
   const [pricing, setPricing] = React.useState("Discovery & strategy — $500\nDesign — $1,500\nDevelopment — $2,000\nTotal — $4,000");
   const [about, setAbout] = React.useState<string>(PROPOSAL_TEMPLATES.web.about);
-  const [wmOn, setWmOn] = React.useState(false);
-  const [wmText, setWmText] = React.useState("PROPOSAL");
+  const [brand, setBrand] = React.useState<DocBrandState>({ ...DEFAULT_DOC_BRAND, watermarkText: "PROPOSAL" });
   const [busy, setBusy] = React.useState(false);
 
   function applyTemplate(key: keyof typeof PROPOSAL_TEMPLATES | "blank") {
@@ -299,7 +274,8 @@ Next step: Reply to confirm, and we’ll send a contract and kickoff checklist.`
           },
         ],
         signatures: ["Client approval", "Freelancer"],
-        watermark: wmOn ? wmText : undefined,
+        theme: toPdfTheme(brand),
+        watermark: toPdfWatermark(brand),
         footerLeft: `Proposal for ${client}`,
         filename: "freelance-proposal.pdf",
       });
@@ -343,7 +319,7 @@ Next step: Reply to confirm, and we’ll send a contract and kickoff checklist.`
       <Field label="About you">
         <Textarea value={about} onChange={(e) => setAbout(e.target.value)} rows={3} className="font-sans text-sm" />
       </Field>
-      <WatermarkFields enabled={wmOn} setEnabled={setWmOn} text={wmText} setText={setWmText} />
+      <DocBrandControls value={brand} onChange={setBrand} />
       <Field label="Live preview">
         <Preview>{body}</Preview>
       </Field>
@@ -362,8 +338,11 @@ export function NdaGenerator() {
   const [term, setTerm] = React.useState("2");
   const [mutual, setMutual] = React.useState(true);
   const [jurisdiction, setJurisdiction] = React.useState("State of Delaware, USA");
-  const [wmOn, setWmOn] = React.useState(true);
-  const [wmText, setWmText] = React.useState("CONFIDENTIAL");
+  const [brand, setBrand] = React.useState<DocBrandState>({
+    ...DEFAULT_DOC_BRAND,
+    watermarkEnabled: true,
+    watermarkText: "CONFIDENTIAL",
+  });
   const [busy, setBusy] = React.useState(false);
 
   const body = `Type: ${mutual ? "Mutual" : "One-way"} NDA
@@ -405,7 +384,8 @@ Signatures appear at the bottom of the PDF.`;
           },
         ],
         signatures: ["Disclosing party", "Receiving party"],
-        watermark: wmOn ? wmText : undefined,
+        theme: toPdfTheme(brand),
+        watermark: toPdfWatermark(brand),
         footerLeft: "NDA · Confidential",
         filename: "nda.pdf",
       });
@@ -442,7 +422,7 @@ Signatures appear at the bottom of the PDF.`;
       <Field label="Governing jurisdiction">
         <Input value={jurisdiction} onChange={(e) => setJurisdiction(e.target.value)} placeholder="e.g. Province of Punjab, Pakistan" />
       </Field>
-      <WatermarkFields enabled={wmOn} setEnabled={setWmOn} text={wmText} setText={setWmText} />
+      <DocBrandControls value={brand} onChange={setBrand} />
       <Field label="Live preview">
         <Preview>{body}</Preview>
       </Field>
@@ -750,8 +730,7 @@ export function ClientOnboardingForm() {
   const [includeBudget, setIncludeBudget] = React.useState(true);
   const [includeBrand, setIncludeBrand] = React.useState(true);
   const [extra, setExtra] = React.useState("Anything else we should know?");
-  const [wmOn, setWmOn] = React.useState(false);
-  const [wmText, setWmText] = React.useState("INTAKE FORM");
+  const [brand, setBrand] = React.useState<DocBrandState>({ ...DEFAULT_DOC_BRAND, watermarkText: "INTAKE FORM" });
   const [busy, setBusy] = React.useState(false);
 
   const questions = [
@@ -794,7 +773,8 @@ export function ClientOnboardingForm() {
           })),
         ],
         signatures: ["Client completed by"],
-        watermark: wmOn ? wmText : undefined,
+        theme: toPdfTheme(brand),
+        watermark: toPdfWatermark(brand),
         footerLeft: `${business} · Onboarding`,
         filename: "client-onboarding.pdf",
       });
@@ -844,7 +824,7 @@ h1{font-size:1.5rem}</style></head><body>
       <Field label="Custom closing question">
         <Input value={extra} onChange={(e) => setExtra(e.target.value)} />
       </Field>
-      <WatermarkFields enabled={wmOn} setEnabled={setWmOn} text={wmText} setText={setWmText} />
+      <DocBrandControls value={brand} onChange={setBrand} />
       <Field label="Preview">
         <Preview>{text}</Preview>
       </Field>
@@ -871,8 +851,7 @@ export function ChangeOrderGenerator() {
   const [work, setWork] = React.useState("Add a blog section with CMS templates and category filters (not in original scope).");
   const [cost, setCost] = React.useState("1200");
   const [days, setDays] = React.useState("7");
-  const [wmOn, setWmOn] = React.useState(false);
-  const [wmText, setWmText] = React.useState("CHANGE ORDER");
+  const [brand, setBrand] = React.useState<DocBrandState>({ ...DEFAULT_DOC_BRAND, watermarkText: "CHANGE ORDER" });
   const [busy, setBusy] = React.useState(false);
 
   const body = `Project: ${project}
@@ -913,7 +892,8 @@ Signatures appear at the bottom of the PDF.`;
           },
         ],
         signatures: ["Client approval", "Freelancer"],
-        watermark: wmOn ? wmText : undefined,
+        theme: toPdfTheme(brand),
+        watermark: toPdfWatermark(brand),
         footerLeft: "Change order · Out of scope",
         filename: "change-order.pdf",
       });
@@ -945,7 +925,7 @@ Signatures appear at the bottom of the PDF.`;
           <Input type="number" value={days} onChange={(e) => setDays(e.target.value)} />
         </Field>
       </Row>
-      <WatermarkFields enabled={wmOn} setEnabled={setWmOn} text={wmText} setText={setWmText} />
+      <DocBrandControls value={brand} onChange={setBrand} />
       <Field label="Live preview">
         <Preview>{body}</Preview>
       </Field>

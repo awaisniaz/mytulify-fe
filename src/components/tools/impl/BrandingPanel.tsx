@@ -290,6 +290,65 @@ export function BrandingPanel({ branding, onChange, compact }: Props) {
           />
         )}
       </Section>
+
+      <Section title="Watermark" defaultOpen={!compact}>
+        <label className="flex items-center gap-2 text-xs text-muted">
+          <input
+            type="checkbox"
+            checked={!!b.watermarkEnabled}
+            onChange={(e) => patch({ watermarkEnabled: e.target.checked })}
+          />
+          Show watermark on form / PDF
+        </label>
+        <Input
+          placeholder="Watermark text (e.g. DRAFT · CONFIDENTIAL)"
+          value={b.watermarkText ?? ""}
+          disabled={!b.watermarkEnabled}
+          onChange={(e) => patch({ watermarkText: e.target.value })}
+        />
+        <Row label={`Opacity (${Math.round((b.watermarkOpacity ?? 0.14) * 100)}%)`}>
+          <input
+            type="range"
+            min={5}
+            max={40}
+            step={1}
+            disabled={!b.watermarkEnabled}
+            value={Math.round((b.watermarkOpacity ?? 0.14) * 100)}
+            onChange={(e) => patch({ watermarkOpacity: Number(e.target.value) / 100 })}
+            className="w-full accent-brand disabled:opacity-40"
+          />
+        </Row>
+        {b.watermarkImageDataUrl ? (
+          <div className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={b.watermarkImageDataUrl}
+              alt="Watermark"
+              className="h-14 max-w-[160px] object-contain opacity-70"
+            />
+            <button
+              type="button"
+              className="text-xs text-muted underline"
+              onClick={() => patch({ watermarkImageDataUrl: undefined })}
+            >
+              Remove watermark image
+            </button>
+          </div>
+        ) : (
+          <div className={!b.watermarkEnabled ? "pointer-events-none opacity-40" : undefined}>
+            <FileDrop
+              accept="image/png,image/jpeg,image/jpg,image/webp"
+              label="Upload watermark image (optional)"
+              onFiles={async (files) => {
+                if (files[0]) patch({ watermarkImageDataUrl: await readAsDataURL(files[0]), watermarkEnabled: true });
+              }}
+            />
+          </div>
+        )}
+        <p className="text-[11px] text-muted">
+          Use text, image, or both. Appears diagonally on preview and downloaded PDFs.
+        </p>
+      </Section>
     </div>
   );
 }

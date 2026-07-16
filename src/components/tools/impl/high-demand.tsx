@@ -6,6 +6,13 @@ import { Field, Notice, Output, CopyButton } from "@/components/tools/shared";
 import { validateIban, formatIban } from "@/lib/iban";
 import { exportInvoicePdf } from "@/lib/pdf-doc";
 import { download } from "@/lib/utils";
+import {
+  DEFAULT_DOC_BRAND,
+  DocBrandControls,
+  toPdfTheme,
+  toPdfWatermark,
+  type DocBrandState,
+} from "./DocBrandControls";
 
 /* --------------------------- LLMs.txt Generator ---------------------------- */
 export function LlmsTxtGenerator() {
@@ -265,6 +272,7 @@ export function InvoiceGenerator() {
   const [items, setItems] = React.useState<LineItem[]>([{ desc: "Service", qty: 1, price: 100 }]);
   const [tax, setTax] = React.useState(0);
   const [invNo, setInvNo] = React.useState("INV-001");
+  const [brand, setBrand] = React.useState<DocBrandState>(DEFAULT_DOC_BRAND);
   const [loading, setLoading] = React.useState(false);
 
   const sub = items.reduce((s, i) => s + i.qty * i.price, 0);
@@ -281,8 +289,10 @@ export function InvoiceGenerator() {
         items,
         taxPercent: tax,
         notes: "Payment is due upon receipt unless otherwise agreed in writing.",
-        footerLeft: "Mytulify · Invoice Generator",
+        footerLeft: from.name ? `${from.name} · Invoice` : "Mytulify · Invoice Generator",
         filename: `invoice-${(invNo || "INV-001").replace(/[^\w.-]+/g, "-")}.pdf`,
+        theme: toPdfTheme(brand),
+        watermark: toPdfWatermark(brand),
       });
     } finally {
       setLoading(false);
@@ -291,7 +301,9 @@ export function InvoiceGenerator() {
 
   return (
     <div className="space-y-4">
-      <Notice tone="info">High-volume business tool — create & download PDF invoices. No watermark.</Notice>
+      <Notice tone="info">
+        Create a branded PDF invoice — customize colors and optional text/image watermark before download.
+      </Notice>
       <Field label="Invoice #"><Input value={invNo} onChange={(e) => setInvNo(e.target.value)} /></Field>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
@@ -318,6 +330,7 @@ export function InvoiceGenerator() {
       <Button variant="secondary" size="sm" onClick={() => setItems([...items, { desc: "", qty: 1, price: 0 }])}>+ Line item</Button>
       <Field label="Tax %"><Input type="number" min={0} max={100} value={tax} onChange={(e) => setTax(Number(e.target.value) || 0)} /></Field>
       <p className="text-lg font-bold">Total: ${total.toFixed(2)}</p>
+      <DocBrandControls value={brand} onChange={setBrand} />
       <Button onClick={pdf} disabled={loading}>{loading ? "Generating…" : "Download PDF invoice"}</Button>
     </div>
   );

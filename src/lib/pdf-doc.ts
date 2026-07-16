@@ -1,5 +1,20 @@
-import { PDFDocument, StandardFonts, degrees, rgb, type PDFFont, type PDFPage } from "pdf-lib";
+import {
+  PDFDocument,
+  StandardFonts,
+  degrees,
+  rgb,
+  type PDFFont,
+  type PDFImage,
+  type PDFPage,
+  type RGB,
+} from "pdf-lib";
 import { download } from "@/lib/utils";
+import {
+  hexToRgb,
+  normalizeWatermark,
+  type PdfThemeOptions,
+  type PdfWatermarkOptions,
+} from "@/lib/pdf-theme";
 
 const PAGE_W = 595;
 const PAGE_H = 842;
@@ -11,15 +26,16 @@ const SIDE_ACCENT = 5;
 const CONTENT_BOTTOM = FOOTER_H + 24;
 const MAX_W = PAGE_W - MARGIN_X * 2 - 8;
 
-const BRAND = rgb(0.06, 0.46, 0.43); // deep teal
-const BRAND_DARK = rgb(0.04, 0.28, 0.27);
+const DEFAULT_BRAND = rgb(0.06, 0.46, 0.43);
+const DEFAULT_ACCENT = rgb(0.85, 0.55, 0.18);
 const INK = rgb(0.09, 0.11, 0.14);
 const MUTED = rgb(0.42, 0.45, 0.5);
 const RULE = rgb(0.86, 0.88, 0.91);
 const SOFT = rgb(0.95, 0.97, 0.97);
 const SOFT_ALT = rgb(0.98, 0.985, 0.99);
 const WHITE = rgb(1, 1, 1);
-const AMBER = rgb(0.85, 0.55, 0.18);
+
+export type { PdfThemeOptions, PdfWatermarkOptions };
 
 export type PdfDocOptions = {
   title: string;
@@ -30,7 +46,9 @@ export type PdfDocOptions = {
   sections: { heading?: string; body: string }[];
   footerLeft?: string;
   footerRight?: string;
-  watermark?: string;
+  /** Text (legacy) or { text, imageDataUrl, opacity } */
+  watermark?: string | PdfWatermarkOptions;
+  theme?: PdfThemeOptions;
   signatures?: string[];
   filename: string;
 };
@@ -47,6 +65,8 @@ export type InvoicePdfOptions = {
   currencySymbol?: string;
   filename?: string;
   footerLeft?: string;
+  watermark?: string | PdfWatermarkOptions;
+  theme?: PdfThemeOptions;
 };
 
 export type TablePdfOptions = {
@@ -57,7 +77,82 @@ export type TablePdfOptions = {
   hasHeader?: boolean;
   filename: string;
   footerLeft?: string;
+  watermark?: string | PdfWatermarkOptions;
+  theme?: PdfThemeOptions;
 };
+
+type ThemeColors = { brand: RGB; brandDark: RGB; accent: RGB };
+
+function resolveTheme(theme?: PdfThemeOptions): ThemeColors {
+  const brand = hexToRgb(theme?.primary, DEFAULT_BRAND);
+  const accent = hexToRgb(theme?.accent, DEFAULT_ACCENT);
+  // Darken primary ~40% for headings
+  const brandDark = rgb(brand.red * 0.55, brand.green * 0.55, brand.blue * 0.55);
+  return { brand, brandDark, accent };
+}
+
+async function dataUrlToPngBytes(dataUrl: string): Promise<ArrayBuffer> {
+  // Convert webp/gif/etc to PNG via canvas for pdf-lib
+  if (typeof document === "undefined") {
+    const res = await fetch(dataUrl);
+    return res.arrayBuffer();
+  }
+  const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const el = new Image();
+    el.onload = () => resolve(el);
+    el.onerror = () => reject(new Error("watermark image load failed"));
+    el.src = dataUrl;
+  });
+  const canvas = document.createElement("canvas");
+  canvas.width = img.naturalWidth || img.width;
+  canvas.height = img.naturalHeight || img.height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("canvas unavailable");
+  ctx.drawImage(img, 0, 0);
+  const pngUrl = canvas.toDataURL("image/png");
+  const res = await fetch(pngUrl);
+  return res.arrayBuffer();
+}
+
+async function embedWatermarkImage(doc: PDFDocument, dataUrl: string): Promise<PDFImage | undefined> {
+  try {
+    const lower = dataUrl.slice(0, 48).toLowerCase();
+    if (lower.includes("image/png") || lower.startsWith("data:image/png")) {
+      const res = await fetch(dataUrl);
+      return doc.embedPng(await res.arrayBuffer());
+    }
+    if (lower.includes("image/jpeg") || lower.includes("image/jpg") || lower.startsWith("data:image/jpeg")) {
+      const res = await fetch(dataUrl);
+      return doc.embedJpg(await res.arrayBuffer());
+    }
+    const pngBytes = await dataUrlToPngBytes(dataUrl);
+    return doc.embedPng(pngBytes);
+  } catch {
+    try {
+      const pngBytes = await dataUrlToPngBytes(dataUrl);
+      return doc.embedPng(pngBytes);
+    } catch {
+      return undefined;
+    }
+  }
+}
+
+type PreparedWatermark = {
+  text?: string;
+  image?: PDFImage;
+  opacity: number;
+};
+
+async function prepareWatermark(
+  doc: PDFDocument,
+  wm?: string | PdfWatermarkOptions,
+): Promise<PreparedWatermark | undefined> {
+  const n = normalizeWatermark(wm);
+  if (!n) return undefined;
+  const image = n.imageDataUrl ? await embedWatermarkImage(doc, n.imageDataUrl) : undefined;
+  if (!n.text && !image) return undefined;
+  return { text: n.text, image, opacity: n.opacity ?? 0.16 };
+}
 
 type Fonts = { regular: PDFFont; bold: PDFFont };
 
@@ -107,52 +202,71 @@ function safeText(s: string) {
     });
 }
 
-function drawWatermark(page: PDFPage, font: PDFFont, text: string) {
-  const label = safeText(text).slice(0, 36);
-  page.drawText(label, {
-    x: 100,
-    y: 380,
-    size: 48,
-    font,
-    color: rgb(0.82, 0.86, 0.88),
-    opacity: 0.18,
-    rotate: degrees(34),
-  });
+function drawWatermarkLayer(page: PDFPage, font: PDFFont, wm: PreparedWatermark) {
+  const opacity = wm.opacity;
+  if (wm.image) {
+    const maxW = 320;
+    const scale = Math.min(maxW / wm.image.width, 220 / wm.image.height);
+    const w = wm.image.width * scale;
+    const h = wm.image.height * scale;
+    page.drawImage(wm.image, {
+      x: (PAGE_W - w) / 2,
+      y: (PAGE_H - h) / 2,
+      width: w,
+      height: h,
+      opacity,
+      rotate: degrees(28),
+    });
+  }
+  if (wm.text?.trim()) {
+    const label = safeText(wm.text).slice(0, 40);
+    page.drawText(label, {
+      x: 90,
+      y: 360,
+      size: wm.image ? 28 : 48,
+      font,
+      color: rgb(0.72, 0.76, 0.8),
+      opacity: wm.image ? Math.min(opacity + 0.04, 0.4) : opacity,
+      rotate: degrees(34),
+    });
+  }
 }
 
-function drawPageFrame(page: PDFPage) {
-  // Left accent rail
+function drawPageFrame(page: PDFPage, theme: ThemeColors) {
   page.drawRectangle({
     x: 0,
     y: 0,
     width: SIDE_ACCENT,
     height: PAGE_H,
-    color: BRAND,
+    color: theme.brand,
   });
-  // Top brand bar
   page.drawRectangle({
     x: 0,
     y: PAGE_H - 10,
     width: PAGE_W,
     height: 10,
-    color: BRAND,
+    color: theme.brand,
   });
   page.drawRectangle({
     x: 0,
     y: PAGE_H - 14,
     width: PAGE_W,
     height: 4,
-    color: AMBER,
+    color: theme.accent,
   });
 }
 
 function drawFooter(
   page: PDFPage,
   fonts: Fonts,
-  opts: { footerLeft: string; footerRight: string; watermark?: string },
+  opts: {
+    footerLeft: string;
+    footerRight: string;
+    watermark?: PreparedWatermark;
+  },
 ) {
-  if (opts.watermark?.trim()) {
-    drawWatermark(page, fonts.bold, opts.watermark.trim());
+  if (opts.watermark) {
+    drawWatermarkLayer(page, fonts.bold, opts.watermark);
   }
 
   page.drawLine({
@@ -180,7 +294,7 @@ function drawFooter(
   });
 }
 
-function drawSignatures(page: PDFPage, fonts: Fonts, labels: string[]) {
+function drawSignatures(page: PDFPage, fonts: Fonts, labels: string[], theme: ThemeColors) {
   const blockH = 28 + Math.ceil(labels.length / 2) * 52;
   let y = CONTENT_BOTTOM + blockH;
 
@@ -189,14 +303,14 @@ function drawSignatures(page: PDFPage, fonts: Fonts, labels: string[]) {
     y,
     size: 8,
     font: fonts.bold,
-    color: BRAND,
+    color: theme.brand,
   });
   page.drawRectangle({
     x: MARGIN_X + fonts.bold.widthOfTextAtSize("AUTHORIZATION", 8) + 8,
     y: y + 2,
     width: 28,
     height: 2,
-    color: AMBER,
+    color: theme.accent,
   });
   y -= 22;
 
@@ -250,6 +364,8 @@ export async function exportBrandedPdf(options: PdfDocOptions): Promise<void> {
   const regular = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
   const fonts: Fonts = { regular, bold };
+  const theme = resolveTheme(options.theme);
+  const watermark = await prepareWatermark(doc, options.watermark);
 
   type Op =
     | { kind: "hero" }
@@ -309,7 +425,7 @@ export async function exportBrandedPdf(options: PdfDocOptions): Promise<void> {
           y,
           size: 8,
           font: bold,
-          color: BRAND,
+          color: theme.brand,
         });
         y -= 18;
         const title = safeText(options.title);
@@ -323,14 +439,14 @@ export async function exportBrandedPdf(options: PdfDocOptions): Promise<void> {
           y: y + 10,
           width: 64,
           height: 3.5,
-          color: BRAND,
+          color: theme.brand,
         });
         page.drawRectangle({
           x: MARGIN_X + 70,
           y: y + 11,
           width: 18,
           height: 2,
-          color: AMBER,
+          color: theme.accent,
         });
         y -= 14;
         break;
@@ -367,7 +483,7 @@ export async function exportBrandedPdf(options: PdfDocOptions): Promise<void> {
               y: y - 4,
               size: 7,
               font: bold,
-              color: BRAND,
+              color: theme.brand,
             });
             const val = safeText(m.value);
             const clipped =
@@ -402,14 +518,14 @@ export async function exportBrandedPdf(options: PdfDocOptions): Promise<void> {
           y: y - 6,
           width: 3,
           height: 22,
-          color: BRAND,
+          color: theme.brand,
         });
         page.drawText(label, {
           x: MARGIN_X + 8,
           y: y,
           size: 8.5,
           font: bold,
-          color: BRAND_DARK,
+          color: theme.brandDark,
         });
         y -= 24;
         break;
@@ -444,17 +560,17 @@ export async function exportBrandedPdf(options: PdfDocOptions): Promise<void> {
   }
 
   if (sigCount > 0 && options.signatures) {
-    drawSignatures(pages[pages.length - 1]!, fonts, options.signatures);
+    drawSignatures(pages[pages.length - 1]!, fonts, options.signatures, theme);
   }
 
   const pageCount = pages.length;
   const footerLeft = options.footerLeft ?? "Mytulify · Designed document";
   pages.forEach((p, i) => {
-    drawPageFrame(p);
+    drawPageFrame(p, theme);
     drawFooter(p, fonts, {
       footerLeft,
       footerRight: options.footerRight ?? `Page ${i + 1} of ${pageCount}`,
-      watermark: options.watermark,
+      watermark,
     });
   });
 
@@ -470,6 +586,8 @@ export async function exportInvoicePdf(options: InvoicePdfOptions): Promise<void
   const regular = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
   const fonts: Fonts = { regular, bold };
+  const theme = resolveTheme(options.theme);
+  const watermark = await prepareWatermark(doc, options.watermark);
   const sym = options.currencySymbol ?? "$";
   const money = (n: number) => `${sym}${n.toFixed(2)}`;
 
@@ -480,7 +598,7 @@ export async function exportInvoicePdf(options: InvoicePdfOptions): Promise<void
   const total = sub + taxAmt;
 
   const page = doc.addPage([PAGE_W, PAGE_H]);
-  drawPageFrame(page);
+  drawPageFrame(page, theme);
 
   let y = PAGE_H - 48;
 
@@ -497,7 +615,7 @@ export async function exportInvoicePdf(options: InvoicePdfOptions): Promise<void
     y: y - 10,
     width: 52,
     height: 3.5,
-    color: BRAND,
+    color: theme.brand,
   });
 
   // Invoice meta card (right)
@@ -517,7 +635,7 @@ export async function exportInvoicePdf(options: InvoicePdfOptions): Promise<void
     y: y - 4,
     size: 7,
     font: bold,
-    color: BRAND,
+    color: theme.brand,
   });
   page.drawText(safeText(options.invoiceNo || "INV-001"), {
     x: cardX + 12,
@@ -553,7 +671,7 @@ export async function exportInvoicePdf(options: InvoicePdfOptions): Promise<void
       y,
       size: 7.5,
       font: bold,
-      color: BRAND,
+      color: theme.brand,
     });
     let py = y - 14;
     const lines = [party.name, party.email, party.address]
@@ -587,7 +705,7 @@ export async function exportInvoicePdf(options: InvoicePdfOptions): Promise<void
     y: y - 6,
     width: MAX_W + 8,
     height: 22,
-    color: BRAND,
+    color: theme.brand,
   });
   cols.forEach((c) => {
     const label = c.label;
@@ -678,14 +796,14 @@ export async function exportInvoicePdf(options: InvoicePdfOptions): Promise<void
       y: ry,
       size: r.bold ? 11 : 9,
       font: r.bold ? bold : regular,
-      color: r.accent ? BRAND_DARK : MUTED,
+      color: r.accent ? theme.brandDark : MUTED,
     });
     page.drawText(r.value, {
       x: panelX + panelW - 12 - (r.bold ? bold : regular).widthOfTextAtSize(r.value, r.bold ? 12 : 9.5),
       y: ry,
       size: r.bold ? 12 : 9.5,
       font: r.bold ? bold : regular,
-      color: r.accent ? BRAND : INK,
+      color: r.accent ? theme.brand : INK,
     });
   });
 
@@ -696,7 +814,7 @@ export async function exportInvoicePdf(options: InvoicePdfOptions): Promise<void
       y,
       size: 7.5,
       font: bold,
-      color: BRAND,
+      color: theme.brand,
     });
     y -= 12;
     for (const line of wrap(safeText(options.notes), 9, regular, MAX_W * 0.55)) {
@@ -724,6 +842,7 @@ export async function exportInvoicePdf(options: InvoicePdfOptions): Promise<void
   drawFooter(page, fonts, {
     footerLeft: options.footerLeft ?? "Mytulify · Invoice",
     footerRight: "Thank you for your business",
+    watermark,
   });
 
   const bytes = await doc.save();
@@ -740,6 +859,8 @@ export async function exportTablePdf(options: TablePdfOptions): Promise<void> {
   const regular = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
   const fonts: Fonts = { regular, bold };
+  const theme = resolveTheme(options.theme);
+  const watermark = await prepareWatermark(doc, options.watermark);
 
   const raw = options.rows.map((r) => r.map((c) => safeText(c)));
   if (!raw.length) raw.push(["(empty)"]);
@@ -761,10 +882,11 @@ export async function exportTablePdf(options: TablePdfOptions): Promise<void> {
   let y = PAGE_H - 52;
 
   const paintChrome = (p: PDFPage, pageNum: number, pageCount: number) => {
-    drawPageFrame(p);
+    drawPageFrame(p, theme);
     drawFooter(p, fonts, {
       footerLeft: options.footerLeft ?? "Mytulify · Table export",
       footerRight: `Page ${pageNum} of ${pageCount}`,
+      watermark,
     });
   };
 
@@ -774,7 +896,7 @@ export async function exportTablePdf(options: TablePdfOptions): Promise<void> {
     y,
     size: 8,
     font: bold,
-    color: BRAND,
+    color: theme.brand,
   });
   y -= 18;
   page.drawText(safeText(options.title), {
@@ -785,7 +907,7 @@ export async function exportTablePdf(options: TablePdfOptions): Promise<void> {
     color: INK,
   });
   y -= 12;
-  page.drawRectangle({ x: MARGIN_X, y: y + 4, width: 48, height: 3, color: BRAND });
+  page.drawRectangle({ x: MARGIN_X, y: y + 4, width: 48, height: 3, color: theme.brand });
   y -= 16;
   if (options.subtitle) {
     page.drawText(safeText(options.subtitle), {
@@ -805,7 +927,7 @@ export async function exportTablePdf(options: TablePdfOptions): Promise<void> {
       y: y - 5,
       width: MAX_W + 4,
       height: rowH,
-      color: BRAND,
+      color: theme.brand,
     });
     const headers = rows[0]!;
     for (let c = 0; c < colCount; c++) {

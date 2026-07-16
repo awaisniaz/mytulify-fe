@@ -48,6 +48,12 @@ export type FormBranding = {
   titleSize?: "sm" | "md" | "lg";
   fieldStyle?: "boxed" | "underline" | "minimal";
   borderStyle?: "solid" | "none" | "rounded";
+  /** Diagonal PDF / print watermark */
+  watermarkEnabled?: boolean;
+  watermarkText?: string;
+  watermarkImageDataUrl?: string;
+  /** 0.05 – 0.45 */
+  watermarkOpacity?: number;
 };
 
 export type FormSchema = {

@@ -603,6 +603,58 @@ export const FormPreview = React.forwardRef<
         }}
       />
 
+      {b.watermarkEnabled && (b.watermarkText?.trim() || b.watermarkImageDataUrl) ? (
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 2,
+            pointerEvents: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              transform: "rotate(-28deg)",
+              opacity: Math.min(0.4, Math.max(0.05, b.watermarkOpacity ?? 0.14)),
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 12,
+              maxWidth: "80%",
+            }}
+          >
+            {b.watermarkImageDataUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={b.watermarkImageDataUrl}
+                alt=""
+                style={{ maxWidth: 280, maxHeight: 160, objectFit: "contain" }}
+              />
+            ) : null}
+            {b.watermarkText?.trim() ? (
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: b.watermarkImageDataUrl ? 22 : 42,
+                  fontWeight: 800,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: b.secondaryColor,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {b.watermarkText.trim()}
+              </p>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
+
       <FormHeader
         branding={b}
         primary={b.primaryColor}
