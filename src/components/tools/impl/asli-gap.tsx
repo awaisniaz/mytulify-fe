@@ -109,9 +109,10 @@ export function TxtToPdf() {
       const text = await f.text();
       const { exportBrandedPdf } = await import("@/lib/pdf-doc");
       await exportBrandedPdf({
+        docType: "Text document",
         title: f.name.replace(/\.[^.]+$/i, "") || "Document",
-        subtitle: "Converted from plain text",
-        sections: [{ body: text || "(empty file)" }],
+        subtitle: "Converted from plain text · Designer layout",
+        sections: [{ heading: "Content", body: text || "(empty file)" }],
         footerLeft: "Mytulify · TXT to PDF",
         filename: f.name.replace(/\.[^.]+$/i, ".pdf"),
       });
@@ -127,22 +128,47 @@ export function TxtToPdf() {
   );
 }
 
-function tableToPdf(text: string, name: string) {
-  return (async () => {
-    const doc = await PDFDocument.create();
-    const font = await doc.embedFont(StandardFonts.Courier);
-    const margin = 40;
-    const size = 9;
-    const lineH = size + 2;
-    let page = doc.addPage();
-    let y = page.getHeight() - margin;
-    for (const line of text.split(/\r?\n/)) {
-      if (y < margin) { page = doc.addPage(); y = page.getHeight() - margin; }
-      page.drawText(line.slice(0, 120), { x: margin, y, size, font, color: rgb(0, 0, 0) });
-      y -= lineH;
+function parseDelimited(text: string): string[][] {
+  const lines = text.replace(/^\uFEFF/, "").split(/\r?\n/).filter((l) => l.trim().length);
+  if (!lines.length) return [["(empty)"]];
+  const delim = lines[0]!.includes("\t") ? "\t" : ",";
+  return lines.map((line) => {
+    // Lightweight CSV split (handles simple quoted cells)
+    const cells: string[] = [];
+    let cur = "";
+    let inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i]!;
+      if (ch === '"') {
+        if (inQ && line[i + 1] === '"') {
+          cur += '"';
+          i++;
+        } else inQ = !inQ;
+        continue;
+      }
+      if (ch === delim && !inQ) {
+        cells.push(cur.trim());
+        cur = "";
+        continue;
+      }
+      cur += ch;
     }
-    await savePdf(doc, name.replace(/\.[^.]+$/i, ".pdf"));
-  })();
+    cells.push(cur.trim());
+    return cells;
+  });
+}
+
+async function tableToPdf(text: string, name: string) {
+  const { exportTablePdf } = await import("@/lib/pdf-doc");
+  const rows = parseDelimited(text);
+  await exportTablePdf({
+    title: name.replace(/\.[^.]+$/i, "") || "Spreadsheet",
+    subtitle: `${rows.length} row${rows.length === 1 ? "" : "s"} · Designed table layout`,
+    rows,
+    hasHeader: true,
+    footerLeft: "Mytulify · Spreadsheet to PDF",
+    filename: name.replace(/\.[^.]+$/i, ".pdf"),
+  });
 }
 
 export function CsvToPdf() {
@@ -161,7 +187,7 @@ export function CsvToPdf() {
     <div className="space-y-4">
       <FileDrop accept=".csv,text/csv,text/plain" onFiles={onFiles} label="Drop a CSV file" />
       {busy && <Notice tone="info">Creating PDF…</Notice>}
-      <Notice tone="info">Rows are rendered as monospace text. For native Excel files, export as CSV first.</Notice>
+      <Notice tone="info">Exports a designed multi-page table PDF. For native Excel (.xlsx), use Excel → PDF.</Notice>
     </div>
   );
 }
@@ -236,9 +262,10 @@ export function EpubToPdf() {
         .trim();
       const { exportBrandedPdf } = await import("@/lib/pdf-doc");
       await exportBrandedPdf({
+        docType: "Ebook",
         title: f.name.replace(/\.epub$/i, "") || "Ebook",
-        subtitle: "Converted from EPUB",
-        sections: [{ body: text || "(No readable text found in EPUB)" }],
+        subtitle: "Converted from EPUB · Designer layout",
+        sections: [{ heading: "Extracted text", body: text || "(No readable text found in EPUB)" }],
         footerLeft: "Mytulify · EPUB to PDF",
         filename: f.name.replace(/\.epub$/i, ".pdf"),
       });

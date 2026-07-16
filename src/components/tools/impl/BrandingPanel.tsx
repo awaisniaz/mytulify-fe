@@ -145,7 +145,7 @@ export function BrandingPanel({ branding, onChange, compact }: Props) {
           </Row>
           <Row label="Fields layout">
             <Select
-              value={b.fieldsLayout ?? "single"}
+              value={b.fieldsLayout ?? "two-column"}
               onChange={(e) => patch({ fieldsLayout: e.target.value as FormBranding["fieldsLayout"] })}
             >
               <option value="single">Single column</option>
@@ -221,11 +221,11 @@ export function BrandingPanel({ branding, onChange, compact }: Props) {
           </Row>
           <Row label="Field style">
             <Select
-              value={b.fieldStyle ?? "boxed"}
+              value={b.fieldStyle ?? "underline"}
               onChange={(e) => patch({ fieldStyle: e.target.value as FormBranding["fieldStyle"] })}
             >
-              <option value="boxed">Boxed inputs</option>
-              <option value="underline">Underline</option>
+              <option value="underline">Underline (document)</option>
+              <option value="boxed">Boxed lines</option>
               <option value="minimal">Minimal</option>
             </Select>
           </Row>

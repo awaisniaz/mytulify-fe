@@ -14,6 +14,101 @@ import {
 import { SignaturePad } from "./SignaturePad";
 import { cn } from "@/lib/utils";
 
+function isWideField(field: FormField) {
+  return field.type === "textarea" || field.type === "signature" || field.type === "radio";
+}
+
+function FieldLabel({
+  field,
+  primary,
+}: {
+  field: FormField;
+  primary: string;
+}) {
+  return (
+    <label
+      className="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.06em]"
+      style={{ color: primary }}
+    >
+      {field.label}
+      {field.required ? <span style={{ color: "#b91c1c" }}> *</span> : null}
+    </label>
+  );
+}
+
+function ValueLine({
+  value,
+  placeholder,
+  fieldStyle,
+  minH = 36,
+  multiline = false,
+  dir,
+}: {
+  value: string;
+  placeholder?: string;
+  fieldStyle: "boxed" | "underline" | "minimal";
+  minH?: number;
+  multiline?: boolean;
+  dir: "ltr" | "rtl";
+}) {
+  const show = value?.trim() ? value : "";
+  const empty = !show;
+
+  if (fieldStyle === "underline") {
+    return (
+      <div
+        dir={dir}
+        className={cn("w-full text-[15px] leading-snug", multiline && "whitespace-pre-wrap")}
+        style={{
+          minHeight: minH,
+          borderBottom: "1.5px solid #94a3b8",
+          paddingBottom: 6,
+          paddingTop: 4,
+          color: empty ? "#94a3b8" : "#0f172a",
+        }}
+      >
+        {show || (placeholder ? ` ${placeholder}` : "\u00a0")}
+      </div>
+    );
+  }
+
+  if (fieldStyle === "minimal") {
+    return (
+      <div
+        dir={dir}
+        className={cn("w-full text-[15px]", multiline && "whitespace-pre-wrap")}
+        style={{
+          minHeight: minH,
+          background: "#f8fafc",
+          borderLeft: "3px solid #cbd5e1",
+          padding: "8px 12px",
+          color: empty ? "#94a3b8" : "#0f172a",
+        }}
+      >
+        {show || "\u00a0"}
+      </div>
+    );
+  }
+
+  // boxed — document table cell, not browser input
+  return (
+    <div
+      dir={dir}
+      className={cn("w-full text-[15px]", multiline && "whitespace-pre-wrap")}
+      style={{
+        minHeight: minH,
+        border: "1px solid #cbd5e1",
+        background: "#fff",
+        padding: "9px 12px",
+        color: empty ? "#94a3b8" : "#0f172a",
+        borderRadius: 2,
+      }}
+    >
+      {show || "\u00a0"}
+    </div>
+  );
+}
+
 function FieldPreview({
   field,
   value,
@@ -31,49 +126,74 @@ function FieldPreview({
   fieldStyle: "boxed" | "underline" | "minimal";
   primary: string;
 }) {
-  const label = (
-    <label className="block text-sm font-semibold" style={{ color: "inherit" }}>
-      {field.label}
-      {field.required && <span className="text-red-600"> *</span>}
-    </label>
-  );
+  const inputBase: React.CSSProperties = {
+    width: "100%",
+    fontSize: 15,
+    color: "#0f172a",
+    outline: "none",
+    background: "#fff",
+    marginTop: 0,
+  };
 
-  const inputCls = cn(
-    "mt-1 w-full bg-white px-3 py-2 text-sm outline-none",
-    fieldStyle === "boxed" && "rounded-md border border-gray-300",
-    fieldStyle === "underline" && "border-0 border-b-2 border-gray-300 rounded-none px-0",
-    fieldStyle === "minimal" && "border border-dashed border-gray-300 rounded-md bg-gray-50/50",
-  );
-
-  if (field.type === "textarea") {
-    return (
-      <div>
-        {label}
-        {editable ? (
-          <textarea
-            className={cn(inputCls, "min-h-[80px] resize-y text-gray-900")}
-            value={value}
-            placeholder={field.placeholder}
-            onChange={(e) => onChange?.(e.target.value)}
-            dir={dir}
-          />
-        ) : (
-          <div className={cn(inputCls, "min-h-[80px] whitespace-pre-wrap text-gray-900")}>{value || " "}</div>
-        )}
-      </div>
-    );
-  }
+  const boxedStyle: React.CSSProperties = {
+    ...inputBase,
+    border: "1px solid #cbd5e1",
+    borderRadius: 2,
+    padding: "9px 12px",
+  };
+  const underlineStyle: React.CSSProperties = {
+    ...inputBase,
+    border: "none",
+    borderBottom: "1.5px solid #94a3b8",
+    borderRadius: 0,
+    padding: "6px 0",
+  };
+  const minimalStyle: React.CSSProperties = {
+    ...inputBase,
+    border: "none",
+    borderLeft: "3px solid #cbd5e1",
+    background: "#f8fafc",
+    padding: "8px 12px",
+  };
+  const editStyle =
+    fieldStyle === "underline" ? underlineStyle : fieldStyle === "minimal" ? minimalStyle : boxedStyle;
 
   if (field.type === "checkbox") {
+    const checked = value === "yes";
     return (
-      <label className="flex items-center gap-2 text-sm">
+      <label className="flex items-start gap-3 text-[14px]" style={{ color: "#0f172a", paddingTop: 4 }}>
         {editable ? (
-          <input type="checkbox" checked={value === "yes"} onChange={(e) => onChange?.(e.target.checked ? "yes" : "")} />
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={(e) => onChange?.(e.target.checked ? "yes" : "")}
+            className="mt-0.5 h-4 w-4"
+          />
         ) : (
-          <span className="inline-block h-4 w-4 border border-gray-400">{value === "yes" ? "✓" : ""}</span>
+          <span
+            aria-hidden
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 18,
+              height: 18,
+              border: `1.5px solid ${primary}`,
+              borderRadius: 2,
+              flexShrink: 0,
+              fontSize: 12,
+              fontWeight: 700,
+              color: primary,
+              marginTop: 1,
+            }}
+          >
+            {checked ? "✓" : ""}
+          </span>
         )}
-        {field.label}
-        {field.required && <span className="text-red-600"> *</span>}
+        <span>
+          <span className="font-semibold">{field.label}</span>
+          {field.required ? <span style={{ color: "#b91c1c" }}> *</span> : null}
+        </span>
       </label>
     );
   }
@@ -81,19 +201,117 @@ function FieldPreview({
   if (field.type === "radio" && field.options?.length) {
     return (
       <div>
-        {label}
-        <div className="mt-2 space-y-1">
-          {field.options.map((opt) => (
-            <label key={opt} className="flex items-center gap-2 text-sm">
-              {editable ? (
-                <input type="radio" name={field.id} checked={value === opt} onChange={() => onChange?.(opt)} />
-              ) : (
-                <span className="inline-block h-3.5 w-3.5 rounded-full border border-gray-400">{value === opt ? "●" : ""}</span>
-              )}
-              {opt}
-            </label>
-          ))}
+        <FieldLabel field={field} primary={primary} />
+        <div className="mt-1 flex flex-wrap gap-x-5 gap-y-2">
+          {field.options.map((opt) => {
+            const on = value === opt;
+            return (
+              <label key={opt} className="flex items-center gap-2 text-[14px]" style={{ color: "#0f172a" }}>
+                {editable ? (
+                  <input type="radio" name={field.id} checked={on} onChange={() => onChange?.(opt)} />
+                ) : (
+                  <span
+                    aria-hidden
+                    style={{
+                      width: 16,
+                      height: 16,
+                      borderRadius: "50%",
+                      border: `1.5px solid ${primary}`,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {on ? (
+                      <span
+                        style={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: "50%",
+                          background: primary,
+                        }}
+                      />
+                    ) : null}
+                  </span>
+                )}
+                {opt}
+              </label>
+            );
+          })}
         </div>
+      </div>
+    );
+  }
+
+  if (field.type === "signature") {
+    return (
+      <div>
+        <FieldLabel field={field} primary={primary} />
+        {editable ? (
+          <SignaturePad value={value || undefined} onChange={(v) => onChange?.(v)} />
+        ) : value ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={value}
+            alt="Signature"
+            style={{
+              marginTop: 4,
+              maxHeight: 88,
+              borderBottom: "1.5px solid #94a3b8",
+              paddingBottom: 4,
+              background: "#fff",
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              marginTop: 4,
+              height: 72,
+              borderBottom: `1.5px solid ${primary}`,
+              position: "relative",
+            }}
+          >
+            <span
+              style={{
+                position: "absolute",
+                bottom: 6,
+                left: 0,
+                fontSize: 11,
+                color: "#94a3b8",
+                letterSpacing: "0.04em",
+              }}
+            >
+              Signature
+            </span>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (field.type === "textarea") {
+    return (
+      <div>
+        <FieldLabel field={field} primary={primary} />
+        {editable ? (
+          <textarea
+            style={{ ...editStyle, minHeight: 88, resize: "vertical" }}
+            value={value}
+            placeholder={field.placeholder}
+            onChange={(e) => onChange?.(e.target.value)}
+            dir={dir}
+          />
+        ) : (
+          <ValueLine
+            value={value}
+            placeholder={field.placeholder}
+            fieldStyle={fieldStyle}
+            minH={88}
+            multiline
+            dir={dir}
+          />
+        )}
       </div>
     );
   }
@@ -101,9 +319,9 @@ function FieldPreview({
   if (field.type === "select" && field.options?.length) {
     return (
       <div>
-        {label}
+        <FieldLabel field={field} primary={primary} />
         {editable ? (
-          <select className={cn(inputCls, "text-gray-900")} value={value} onChange={(e) => onChange?.(e.target.value)} dir={dir}>
+          <select style={editStyle} value={value} onChange={(e) => onChange?.(e.target.value)} dir={dir}>
             <option value="">— Select —</option>
             {field.options.map((o) => (
               <option key={o} value={o}>
@@ -112,23 +330,7 @@ function FieldPreview({
             ))}
           </select>
         ) : (
-          <div className={cn(inputCls, "text-gray-900")}>{value || "—"}</div>
-        )}
-      </div>
-    );
-  }
-
-  if (field.type === "signature") {
-    return (
-      <div>
-        {label}
-        {editable ? (
-          <SignaturePad value={value || undefined} onChange={(v) => onChange?.(v)} />
-        ) : value ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={value} alt="Signature" className="mt-1 max-h-24 rounded border border-gray-300 bg-white" />
-        ) : (
-          <div className={cn(inputCls, "h-24")} style={{ borderColor: primary }} />
+          <ValueLine value={value} fieldStyle={fieldStyle} dir={dir} />
         )}
       </div>
     );
@@ -139,26 +341,35 @@ function FieldPreview({
 
   return (
     <div>
-      {label}
+      <FieldLabel field={field} primary={primary} />
       {editable ? (
         <input
           type={inputType}
-          className={cn(inputCls, "text-gray-900")}
+          style={editStyle}
           value={value}
           placeholder={field.placeholder ?? (field.type === "cnic" ? "XXXXX-XXXXXXX-X" : undefined)}
           onChange={(e) => onChange?.(e.target.value)}
           dir={dir}
         />
       ) : (
-        <div className={cn(inputCls, "text-gray-900")}>{value || " "}</div>
+        <ValueLine
+          value={value}
+          placeholder={field.placeholder}
+          fieldStyle={fieldStyle}
+          dir={dir}
+        />
       )}
     </div>
   );
 }
 
-function ContactLine({ parts, className }: { parts: string[]; className?: string }) {
+function ContactLine({ parts, className, style }: { parts: string[]; className?: string; style?: React.CSSProperties }) {
   if (!parts.length) return null;
-  return <p className={cn("text-xs opacity-90", className)}>{parts.join(" · ")}</p>;
+  return (
+    <p className={cn("text-[11px] leading-relaxed", className)} style={style}>
+      {parts.join("  ·  ")}
+    </p>
+  );
 }
 
 function FormHeader({
@@ -180,73 +391,120 @@ function FormHeader({
 }) {
   const logoPos = branding.logoPosition;
   const align = branding.headerAlign;
-  const logoH = branding.logoHeight ?? 64;
+  const logoH = Math.min(branding.logoHeight ?? 48, 56);
 
   const logo = branding.logoDataUrl ? (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={branding.logoDataUrl}
       alt=""
-      style={{ height: logoH, maxWidth: logoH * 2.5 }}
-      className={cn(
-        "object-contain",
-        branding.headerStyle === "bar" && "rounded bg-white/95 p-1",
-      )}
+      style={{ height: logoH, maxWidth: logoH * 2.8, objectFit: "contain" }}
     />
   ) : null;
 
+  const hasOrg = Boolean(branding.organization?.trim());
+  const hasTag = Boolean(branding.tagline?.trim());
+
   const textBlock = (
     <div className={cn("min-w-0 flex-1", alignClass(align))}>
-      {branding.organization && (
-        <p className={cn("font-bold", branding.headerStyle === "bar" ? "text-xl" : "text-lg")}>{branding.organization}</p>
-      )}
-      {branding.tagline && (
-        <p className={cn("mt-0.5 text-sm", branding.headerStyle === "bar" ? "opacity-90" : "text-gray-600")}>
-          {branding.tagline}
+      {hasOrg && (
+        <p style={{ fontSize: 20, fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.2 }}>
+          {branding.organization}
         </p>
       )}
+      {hasTag && (
+        <p style={{ marginTop: 3, fontSize: 12, opacity: 0.9, fontWeight: 500 }}>{branding.tagline}</p>
+      )}
       {showContact && branding.contactPlacement === "header" && (
-        <ContactLine parts={contactParts} className={branding.headerStyle === "bar" ? "mt-1 opacity-85" : "mt-1 text-gray-500"} />
+        <ContactLine parts={contactParts} style={{ marginTop: 8, opacity: 0.88 }} />
       )}
       {showAddress && branding.addressPlacement === "header" && branding.address && (
-        <p className="mt-1 whitespace-pre-line text-xs opacity-85">{branding.address}</p>
+        <p style={{ marginTop: 4, fontSize: 11, opacity: 0.85, whiteSpace: "pre-line" }}>{branding.address}</p>
       )}
     </div>
   );
 
   const rowClass = cn(
-    "flex flex-wrap gap-4",
+    "flex gap-4",
     flexAlign(align),
     logoPos === "top" && "flex-col",
     logoPos === "center" && "items-center",
-    logoPos === "left" && "items-center",
-    logoPos === "right" && "flex-row-reverse items-center",
+    (logoPos === "left" || logoPos === "right") && "items-center",
+    logoPos === "right" && "flex-row-reverse",
   );
+
+  // No org/logo — slim accent bar only (avoids empty peach band)
+  if (!hasOrg && !logo && !hasTag) {
+    return (
+      <div style={{ height: 6, background: `linear-gradient(90deg, ${primary}, ${secondary})` }} />
+    );
+  }
 
   if (branding.headerStyle === "split") {
     return (
       <>
-        <div className="px-10 py-4" style={{ backgroundColor: secondary, paddingLeft: paddingX, paddingRight: paddingX }}>
-          <div className={cn(rowClass, "text-white")}>{logo}{textBlock}</div>
+        <div style={{ backgroundColor: secondary, padding: `18px ${paddingX}px`, color: "#fff" }}>
+          <div className={rowClass}>{logo}{textBlock}</div>
         </div>
-        <div className="h-1.5" style={{ backgroundColor: primary }} />
+        <div style={{ height: 4, backgroundColor: primary }} />
       </>
     );
   }
 
   if (branding.headerStyle === "bordered") {
     return (
-      <div className="mx-10 mt-6 rounded-lg border-2 p-5" style={{ borderColor: primary, marginLeft: paddingX, marginRight: paddingX }}>
+      <div style={{ padding: `${paddingX * 0.35}px ${paddingX}px 0` }}>
+        <div
+          style={{
+            border: `2px solid ${primary}`,
+            padding: "16px 18px",
+            borderRadius: 4,
+          }}
+        >
+          <div className={rowClass}>
+            {logo}
+            <div className={cn("min-w-0 flex-1", alignClass(align))} style={{ color: secondary }}>
+              {hasOrg && (
+                <p style={{ fontSize: 18, fontWeight: 700, color: primary }}>{branding.organization}</p>
+              )}
+              {hasTag && <p style={{ marginTop: 2, fontSize: 12, color: "#64748b" }}>{branding.tagline}</p>}
+              {showContact && branding.contactPlacement === "header" && (
+                <ContactLine parts={contactParts} style={{ marginTop: 6, color: "#64748b" }} />
+              )}
+              {showAddress && branding.addressPlacement === "header" && branding.address && (
+                <p style={{ marginTop: 4, fontSize: 11, color: "#64748b", whiteSpace: "pre-line" }}>
+                  {branding.address}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (branding.headerStyle === "minimal") {
+    return (
+      <div
+        style={{
+          borderBottom: `3px solid ${primary}`,
+          padding: `20px ${paddingX}px 14px`,
+        }}
+      >
         <div className={rowClass}>
           {logo}
-          <div className={cn("min-w-0 flex-1", alignClass(align))} style={{ color: secondary }}>
-            {branding.organization && <p className="text-lg font-bold" style={{ color: primary }}>{branding.organization}</p>}
-            {branding.tagline && <p className="text-sm text-gray-600">{branding.tagline}</p>}
+          <div className={cn("min-w-0 flex-1", alignClass(align))}>
+            {hasOrg && (
+              <p style={{ fontSize: 18, fontWeight: 700, color: primary }}>{branding.organization}</p>
+            )}
+            {hasTag && <p style={{ marginTop: 2, fontSize: 12, color: "#64748b" }}>{branding.tagline}</p>}
             {showContact && branding.contactPlacement === "header" && (
-              <ContactLine parts={contactParts} className="mt-1 text-gray-500" />
+              <ContactLine parts={contactParts} style={{ marginTop: 6, color: "#64748b" }} />
             )}
             {showAddress && branding.addressPlacement === "header" && branding.address && (
-              <p className="mt-1 whitespace-pre-line text-xs text-gray-500">{branding.address}</p>
+              <p style={{ marginTop: 4, fontSize: 11, color: "#64748b", whiteSpace: "pre-line" }}>
+                {branding.address}
+              </p>
             )}
           </div>
         </div>
@@ -254,36 +512,24 @@ function FormHeader({
     );
   }
 
-  if (branding.headerStyle === "bar") {
-    return (
-      <div className="py-6 text-white" style={{ backgroundColor: primary, paddingLeft: paddingX, paddingRight: paddingX }}>
-        <div className={rowClass}>
-          {logo}
-          {textBlock}
-        </div>
-      </div>
-    );
-  }
-
-  // minimal
+  // bar (default) — strong document letterhead
   return (
-    <div className="border-b py-6" style={{ borderColor: primary, paddingLeft: paddingX, paddingRight: paddingX }}>
+    <div style={{ backgroundColor: primary, color: "#fff", padding: `22px ${paddingX}px` }}>
       <div className={rowClass}>
-        {logo}
-        <div className={cn("min-w-0 flex-1", alignClass(align))}>
-          {branding.organization && (
-            <p className="text-lg font-bold" style={{ color: primary }}>
-              {branding.organization}
-            </p>
-          )}
-          {branding.tagline && <p className="text-sm text-gray-600">{branding.tagline}</p>}
-          {showContact && branding.contactPlacement === "header" && (
-            <ContactLine parts={contactParts} className="mt-1 text-gray-500" />
-          )}
-          {showAddress && branding.addressPlacement === "header" && branding.address && (
-            <p className="mt-1 whitespace-pre-line text-xs text-gray-500">{branding.address}</p>
-          )}
-        </div>
+        {logo ? (
+          <div
+            style={{
+              background: "rgba(255,255,255,0.95)",
+              borderRadius: 4,
+              padding: 6,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            {logo}
+          </div>
+        ) : null}
+        {textBlock}
       </div>
     </div>
   );
@@ -296,33 +542,67 @@ export const FormPreview = React.forwardRef<
     values?: FormValues;
     onChange?: (id: string, value: string) => void;
     editable?: boolean;
+    /** Force print/document look (for PDF capture). Defaults to !editable. */
+    printMode?: boolean;
     className?: string;
   }
->(function FormPreview({ schema, values = {}, onChange, editable = false, className }, ref) {
+>(function FormPreview(
+  { schema, values = {}, onChange, editable = false, printMode, className },
+  ref,
+) {
   const dir = ["ur", "ar", "fa", "ps", "sd"].includes(schema.language) ? "rtl" : "ltr";
   const b = resolvedBranding(schema.branding);
   const padding = PAGE_PADDING_PX[b.pagePadding];
   const contactParts = [b.phone, b.email, b.website].filter(Boolean) as string[];
   const fontStack =
     dir === "rtl"
-      ? "var(--font-urdu), 'Noto Nastaliq Urdu', serif"
+      ? "var(--font-urdu), 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif"
       : FONT_FAMILIES[b.fontFamily];
 
-  const outerCls = cn(
-    "mx-auto w-full max-w-[794px] shadow-sm",
-    b.borderStyle === "rounded" && "rounded-xl overflow-hidden border border-gray-200",
-    b.borderStyle === "solid" && "shadow-md",
-    b.borderStyle === "none" && "shadow-none",
-    className,
-  );
+  // PDF / blank download always uses document rendering (never live <input> chrome)
+  const usePrint = printMode ?? !editable;
+  const fieldInteractive = editable && !usePrint;
+
+  const layout = b.fieldsLayout;
+  const shortFields = schema.fields.filter((f) => !isWideField(f));
+  const useTwoCol = layout === "two-column" || (layout === "single" && shortFields.length >= 3 && usePrint);
 
   return (
     <div
       ref={ref}
       dir={dir}
-      className={outerCls}
-      style={{ backgroundColor: b.backgroundColor, color: b.bodyTextColor, fontFamily: fontStack }}
+      className={cn("mx-auto w-full max-w-[794px]", className)}
+      style={{
+        backgroundColor: b.backgroundColor,
+        color: b.bodyTextColor,
+        fontFamily: fontStack,
+        border: b.borderStyle === "none" ? "none" : "1px solid #e2e8f0",
+        borderRadius: b.borderStyle === "rounded" ? 8 : 0,
+        overflow: "hidden",
+        boxShadow: usePrint ? "none" : "0 1px 3px rgba(15,23,42,0.06)",
+        position: "relative",
+      }}
     >
+      {/* Designer accent rail — matches branded PDF system */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          bottom: 0,
+          width: 5,
+          background: `linear-gradient(180deg, ${b.primaryColor}, ${b.secondaryColor})`,
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          height: 4,
+          background: `linear-gradient(90deg, ${b.primaryColor} 70%, #d97706)`,
+        }}
+      />
+
       <FormHeader
         branding={b}
         primary={b.primaryColor}
@@ -333,62 +613,131 @@ export const FormPreview = React.forwardRef<
         paddingX={padding.x}
       />
 
-      <div style={{ padding: `${padding.y}px ${padding.x}px` }}>
-        {b.addressPlacement === "below-title" && b.address && (
-          <p className={cn("mb-4 whitespace-pre-line text-xs text-gray-500", alignClass(b.titleAlign))}>{b.address}</p>
-        )}
+      <div style={{ padding: `${padding.y}px ${padding.x}px ${Math.max(padding.y - 8, 28)}px`, paddingLeft: padding.x + 4 }}>
+        {/* Meta strip: address + date feel — only if address is meant below title */}
+        {(b.addressPlacement === "below-title" && b.address) || b.contactPlacement === "below-title" ? (
+          <div
+            className={cn("mb-5 flex flex-wrap items-start justify-between gap-3", alignClass(b.titleAlign))}
+            style={{
+              borderBottom: "1px solid #e2e8f0",
+              paddingBottom: 10,
+            }}
+          >
+            {b.addressPlacement === "below-title" && b.address ? (
+              <p style={{ fontSize: 12, color: "#64748b", whiteSpace: "pre-line", margin: 0 }}>
+                {b.address}
+              </p>
+            ) : (
+              <span />
+            )}
+            {b.contactPlacement === "below-title" && contactParts.length > 0 ? (
+              <ContactLine parts={contactParts} style={{ color: "#64748b" }} />
+            ) : null}
+          </div>
+        ) : null}
 
-        <h1
-          className={cn("border-b-2 pb-2 font-bold", alignClass(b.titleAlign))}
-          style={{
-            borderColor: b.primaryColor,
-            color: b.secondaryColor,
-            fontSize: TITLE_SIZES[b.titleSize],
-          }}
-        >
-          {schema.title}
-        </h1>
-        {schema.description && (
-          <p className={cn("mt-2 text-sm text-gray-600", alignClass(b.titleAlign))}>{schema.description}</p>
-        )}
-
-        {b.contactPlacement === "below-title" && contactParts.length > 0 && (
-          <ContactLine parts={contactParts} className={cn("mt-3 text-gray-500", alignClass(b.titleAlign))} />
-        )}
+        <div className={alignClass(b.titleAlign)}>
+          <p
+            style={{
+              margin: 0,
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: b.primaryColor,
+            }}
+          >
+            Form template
+          </p>
+          <h1
+            style={{
+              margin: "6px 0 0",
+              fontWeight: 700,
+              fontSize: TITLE_SIZES[b.titleSize],
+              color: b.secondaryColor,
+              lineHeight: 1.2,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {schema.title}
+          </h1>
+          <div
+            style={{
+              marginTop: 10,
+              width: b.titleAlign === "center" ? 72 : 56,
+              height: 3,
+              background: b.primaryColor,
+              marginLeft: b.titleAlign === "right" ? "auto" : b.titleAlign === "center" ? "auto" : 0,
+              marginRight: b.titleAlign === "center" ? "auto" : 0,
+            }}
+          />
+          {schema.description ? (
+            <p style={{ marginTop: 12, fontSize: 13.5, color: "#64748b", lineHeight: 1.5, maxWidth: 520 }}>
+              {schema.description}
+            </p>
+          ) : null}
+        </div>
 
         <div
-          className={cn("mt-8 gap-5", b.fieldsLayout === "two-column" ? "grid grid-cols-2" : "space-y-5")}
           style={
-            b.fieldsLayout === "two-column"
-              ? { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem" }
-              : { display: "flex", flexDirection: "column", gap: "1.25rem" }
+            useTwoCol
+              ? {
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  columnGap: 28,
+                  rowGap: 22,
+                  marginTop: 28,
+                }
+              : {
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 22,
+                  marginTop: 28,
+                }
           }
         >
           {schema.fields.map((field) => (
-            <FieldPreview
+            <div
               key={field.id}
-              field={field}
-              value={values[field.id] ?? ""}
-              onChange={onChange ? (v) => onChange(field.id, v) : undefined}
-              editable={editable}
-              dir={dir}
-              fieldStyle={b.fieldStyle}
-              primary={b.primaryColor}
-            />
+              style={
+                useTwoCol && isWideField(field)
+                  ? { gridColumn: "1 / -1" }
+                  : undefined
+              }
+            >
+              <FieldPreview
+                field={field}
+                value={values[field.id] ?? ""}
+                onChange={onChange ? (v) => onChange(field.id, v) : undefined}
+                editable={fieldInteractive}
+                dir={dir}
+                fieldStyle={b.fieldStyle}
+                primary={b.primaryColor}
+              />
+            </div>
           ))}
         </div>
 
-        <div className={cn("mt-10 border-t border-gray-200 pt-4 text-xs text-gray-500", alignClass(b.footerAlign))}>
+        <div
+          className={alignClass(b.footerAlign)}
+          style={{
+            marginTop: 36,
+            paddingTop: 14,
+            borderTop: "1px solid #e2e8f0",
+            fontSize: 11,
+            color: "#94a3b8",
+          }}
+        >
           {b.contactPlacement === "footer" && contactParts.length > 0 && (
-            <ContactLine parts={contactParts} className="mb-2 text-gray-500" />
+            <ContactLine parts={contactParts} style={{ marginBottom: 6, color: "#64748b" }} />
           )}
           {b.addressPlacement === "footer" && b.address && (
-            <p className="mb-2 whitespace-pre-line">{b.address}</p>
+            <p style={{ marginBottom: 6, whiteSpace: "pre-line", color: "#64748b" }}>{b.address}</p>
           )}
           {b.footerText ? (
-            <p>{b.footerText}</p>
+            <p style={{ margin: 0 }}>{b.footerText}</p>
           ) : b.showFooterBrand !== false ? (
-            <p>Generated with Mytulify Form Builder</p>
+            <p style={{ margin: 0 }}>Generated with Mytulify · Form Builder</p>
           ) : null}
         </div>
       </div>

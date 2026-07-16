@@ -4,7 +4,7 @@ import * as React from "react";
 import { Input, Select, Textarea, Button } from "@/components/ui/primitives";
 import { Field, Notice, Output, CopyButton } from "@/components/tools/shared";
 import { validateIban, formatIban } from "@/lib/iban";
-import { exportBrandedPdf } from "@/lib/pdf-doc";
+import { exportInvoicePdf } from "@/lib/pdf-doc";
 import { download } from "@/lib/utils";
 
 /* --------------------------- LLMs.txt Generator ---------------------------- */
@@ -268,45 +268,19 @@ export function InvoiceGenerator() {
   const [loading, setLoading] = React.useState(false);
 
   const sub = items.reduce((s, i) => s + i.qty * i.price, 0);
-  const taxAmt = sub * (tax / 100);
-  const total = sub + taxAmt;
+  const total = sub + sub * (tax / 100);
 
   async function pdf() {
     setLoading(true);
     try {
-      const lines = items
-        .filter((it) => it.desc.trim() || it.qty || it.price)
-        .map((it) => {
-          const lineTotal = (it.qty * it.price).toFixed(2);
-          return `${it.desc || "Item"}  ·  qty ${it.qty}  ·  $${it.price.toFixed(2)}  ·  $${lineTotal}`;
-        })
-        .join("\n");
-
-      const fromBlock = [from.name, from.email, from.address].filter(Boolean).join("\n") || "—";
-      const toBlock = [to.name, to.email, to.address].filter(Boolean).join("\n") || "—";
-      const totals = [
-        `Subtotal: $${sub.toFixed(2)}`,
-        tax ? `Tax (${tax}%): $${taxAmt.toFixed(2)}` : "",
-        `Total due: $${total.toFixed(2)}`,
-      ]
-        .filter(Boolean)
-        .join("\n");
-
-      await exportBrandedPdf({
-        title: "Invoice",
-        subtitle: `Professional invoice generated with Mytulify`,
-        meta: [
-          { label: "Invoice #", value: invNo || "INV-001" },
-          { label: "Date", value: new Date().toLocaleDateString() },
-          { label: "Amount due", value: `$${total.toFixed(2)}` },
-        ],
-        sections: [
-          { heading: "From", body: fromBlock },
-          { heading: "Bill to", body: toBlock },
-          { heading: "Line items", body: lines || "No items" },
-          { heading: "Totals", body: totals },
-        ],
-        signatures: ["Authorized signature"],
+      await exportInvoicePdf({
+        invoiceNo: invNo || "INV-001",
+        date: new Date().toLocaleDateString(),
+        from,
+        to,
+        items,
+        taxPercent: tax,
+        notes: "Payment is due upon receipt unless otherwise agreed in writing.",
         footerLeft: "Mytulify · Invoice Generator",
         filename: `invoice-${(invNo || "INV-001").replace(/[^\w.-]+/g, "-")}.pdf`,
       });

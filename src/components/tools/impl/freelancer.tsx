@@ -112,6 +112,7 @@ General: template only — not legal advice. Signatures appear at the bottom of 
     setBusy(true);
     try {
       await exportBrandedPdf({
+        docType: "Contract",
         title: "Freelance Services Agreement",
         subtitle: "Professional services contract template",
         meta: [
@@ -279,6 +280,7 @@ Next step: Reply to confirm, and we’ll send a contract and kickoff checklist.`
     setBusy(true);
     try {
       await exportBrandedPdf({
+        docType: "Proposal",
         title: "Project Proposal",
         subtitle: "Prepared for your review",
         meta: [
@@ -375,6 +377,7 @@ Signatures appear at the bottom of the PDF.`;
     setBusy(true);
     try {
       await exportBrandedPdf({
+        docType: "NDA",
         title: "Non-Disclosure Agreement",
         subtitle: mutual ? "Mutual confidentiality agreement" : "One-way confidentiality agreement",
         meta: [
@@ -773,6 +776,7 @@ export function ClientOnboardingForm() {
     setBusy(true);
     try {
       await exportBrandedPdf({
+        docType: "Onboarding",
         title: "Client Onboarding",
         subtitle: `${business} · Intake questionnaire`,
         meta: [
@@ -885,6 +889,7 @@ Signatures appear at the bottom of the PDF.`;
     setBusy(true);
     try {
       await exportBrandedPdf({
+        docType: "Change order",
         title: "Scope Change Order",
         subtitle: "Authorization for work outside the original agreement",
         meta: [

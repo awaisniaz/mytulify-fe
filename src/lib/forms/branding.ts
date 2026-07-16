@@ -1,10 +1,10 @@
 import type { FormBranding } from "./schema";
 
 export const DEFAULT_BRANDING: FormBranding = {
-  primaryColor: "#ea580c",
-  secondaryColor: "#1e293b",
+  primaryColor: "#0f766e",
+  secondaryColor: "#0f172a",
   backgroundColor: "#ffffff",
-  bodyTextColor: "#111827",
+  bodyTextColor: "#0f172a",
   showFooterBrand: true,
   headerStyle: "bar",
   logoPosition: "left",
@@ -12,13 +12,13 @@ export const DEFAULT_BRANDING: FormBranding = {
   titleAlign: "left",
   footerAlign: "left",
   contactPlacement: "header",
-  addressPlacement: "below-title",
-  logoHeight: 64,
+  addressPlacement: "footer",
+  logoHeight: 48,
   pagePadding: "normal",
-  fieldsLayout: "single",
-  fontFamily: "serif",
+  fieldsLayout: "two-column",
+  fontFamily: "sans",
   titleSize: "lg",
-  fieldStyle: "boxed",
+  fieldStyle: "underline",
   borderStyle: "solid",
 };
 

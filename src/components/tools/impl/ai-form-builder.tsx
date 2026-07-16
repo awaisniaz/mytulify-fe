@@ -148,7 +148,8 @@ export function AiFormBuilder() {
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState("");
   const previewRef = React.useRef<HTMLDivElement>(null);
-  const fillPreviewRef = React.useRef<HTMLDivElement>(null);
+  const printBlankRef = React.useRef<HTMLDivElement>(null);
+  const printFilledRef = React.useRef<HTMLDivElement>(null);
 
   const hasFields = schema.fields.length > 0;
   const isCustom = templateId === CUSTOM_TEMPLATE_ID;
@@ -230,11 +231,6 @@ export function AiFormBuilder() {
   };
 
   const exportPdf = async (filled: boolean) => {
-    const el = filled ? fillPreviewRef.current : previewRef.current;
-    if (!el) {
-      setError("Form preview ready nahi. Pehle form generate/load karein.");
-      return;
-    }
     if (!hasFields) {
       setError("Pehle form fields add karein, phir PDF download karein.");
       return;
@@ -242,6 +238,10 @@ export function AiFormBuilder() {
     setBusy(true);
     setError("");
     try {
+      const el = (filled ? printFilledRef : printBlankRef).current;
+      if (!el) {
+        throw new Error("Form preview ready nahi. Pehle form generate/load karein.");
+      }
       const slug = schema.title.replace(/[^a-z0-9]+/gi, "-").slice(0, 40) || "form";
       await exportElementToPdf(el, `${slug}${filled ? "-filled" : ""}.pdf`);
     } catch (e) {
@@ -266,6 +266,24 @@ export function AiFormBuilder() {
 
   return (
     <div className="space-y-6">
+      {/* Off-screen print canvases — document layout for PDF (never browser inputs) */}
+      {hasFields ? (
+        <div
+          aria-hidden
+          style={{
+            position: "fixed",
+            left: -10000,
+            top: 0,
+            width: 794,
+            pointerEvents: "none",
+            zIndex: -1,
+          }}
+        >
+          <FormPreview ref={printBlankRef} schema={schema} values={{}} printMode />
+          <FormPreview ref={printFilledRef} schema={schema} values={values} printMode />
+        </div>
+      ) : null}
+
       <AiUsageBanner />
       <Notice tone="info">
         Pick a ready-made form from {approximateTemplateCount()} templates across {FORM_COUNTRIES.length - 1}{" "}
@@ -571,7 +589,6 @@ export function AiFormBuilder() {
             <>
               <div className="overflow-hidden rounded-xl border border-border">
                 <FormPreview
-                  ref={fillPreviewRef}
                   schema={schema}
                   values={values}
                   editable
