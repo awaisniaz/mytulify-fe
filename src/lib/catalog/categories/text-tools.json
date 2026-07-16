@@ -32,6 +32,7 @@
     { "name": "Remove Punctuation", "slug": "remove-punctuation", "description": "Strip punctuation marks from text for clean processing.", "searchVolume": "low", "competition": "low", "complexity": "easy", "clientSide": true },
     { "name": "Text to Speech", "slug": "text-to-speech", "description": "Read typed text aloud using the browser speech synthesis API.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
     { "name": "Sentence Counter", "slug": "sentence-counter", "description": "Count sentences and average sentence length in text.", "searchVolume": "low", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Capitalize Each Word", "slug": "capitalize-each-word", "description": "Capitalize the first letter of every word in the input.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true }
+    { "name": "Capitalize Each Word", "slug": "capitalize-each-word", "description": "Capitalize the first letter of every word in the input.", "searchVolume": "medium", "competition": "low", "complexity": "easy", "clientSide": true },
+    { "name": "Reading Time Calculator", "slug": "reading-time-calculator", "description": "Estimate how long it takes to read any text based on words per minute.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true }
   ]
 }

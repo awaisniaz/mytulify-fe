@@ -2083,6 +2083,117 @@
         "calculators/countdown-calculator",
         "developer-tools/cron-expression-generator"
       ]
+    },
+    "image-tools/aspect-ratio-calculator": {
+      "name": "Aspect Ratio Calculator",
+      "description": "Find aspect ratios from dimensions or scale width and height to 16:9, 9:16, 1:1 and more.",
+      "metaTitle": "Aspect Ratio Calculator – Free Online Tool | Mytulify",
+      "metaDescription": "Calculate aspect ratios from width and height, or scale to 16:9, 9:16, 1:1, 4:5 and more. Free CSS aspect-ratio helper — no signup.",
+      "about": [
+        "Aspect ratio is the relationship between an image or video’s width and height (for example 16:9 for YouTube or 9:16 for Reels). Getting the ratio right avoids awkward crops on social platforms and keeps layouts consistent on the web.",
+        "Use this free calculator to simplify any pixel size to a clean ratio, preview the shape, and copy CSS aspect-ratio or padding-bottom snippets for responsive design."
+      ],
+      "howTo": {
+        "title": "How to use this aspect ratio calculator",
+        "steps": [
+          "Enter width and height in pixels, or pick a preset like 16:9 or 1:1.",
+          "Read the simplified ratio, decimal value, and live preview.",
+          "Copy the CSS snippet into your stylesheet or design notes."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is aspect ratio?",
+          "a": "Aspect ratio compares width to height. A 1920×1080 video simplifies to 16:9 — the same shape at any resolution."
+        },
+        {
+          "q": "Which ratio should I use for Instagram Reels?",
+          "a": "Reels and TikTok Shorts typically use 9:16 (vertical). Feed posts often use 1:1 or 4:5."
+        },
+        {
+          "q": "Is this tool free?",
+          "a": "Yes. It runs entirely in your browser on Mytulify — unlimited use, no signup."
+        }
+      ],
+      "related": [
+        "image-tools/resize-image",
+        "image-tools/crop-image",
+        "image-tools/compress-image"
+      ]
+    },
+    "calculators/profit-margin-calculator": {
+      "name": "Profit Margin Calculator",
+      "description": "Calculate profit, profit margin %, and markup from cost and selling price.",
+      "metaTitle": "Profit Margin Calculator – Free Online Tool | Mytulify",
+      "metaDescription": "Calculate profit, profit margin percentage, and markup from cost and price. Also find the selling price for a target margin. Free — no signup.",
+      "about": [
+        "Profit margin shows what share of the selling price is profit (profit ÷ price). Markup shows profit relative to cost (profit ÷ cost). Confusing the two leads to underpricing — a 50% markup is only a 33% margin.",
+        "Enter cost and selling price to see profit, margin, and markup instantly. Or set a target margin to find the price you need to charge."
+      ],
+      "howTo": {
+        "title": "How to calculate profit margin",
+        "steps": [
+          "Enter your product or service cost.",
+          "Enter the selling price (or a target margin % to reverse-calculate price).",
+          "Review profit, margin %, markup %, and required price."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is the difference between margin and markup?",
+          "a": "Margin = profit ÷ selling price. Markup = profit ÷ cost. A $50 cost sold at $100 is 50% margin and 100% markup."
+        },
+        {
+          "q": "How do I price for a 40% margin?",
+          "a": "Price = cost ÷ (1 − 0.40). Use the target margin field in this calculator to get that price automatically."
+        },
+        {
+          "q": "Is my data private?",
+          "a": "Yes. All math runs in your browser — nothing is uploaded."
+        }
+      ],
+      "related": [
+        "calculators/percentage-calculator",
+        "calculators/discount-calculator",
+        "calculators/vat-gst-calculator"
+      ]
+    },
+    "text-tools/reading-time-calculator": {
+      "name": "Reading Time Calculator",
+      "description": "Estimate how long it takes to read any text based on words per minute.",
+      "metaTitle": "Reading Time Calculator – Free Online Tool | Mytulify",
+      "metaDescription": "Estimate reading time for any article or blog post. Counts words and calculates minutes based on WPM. Free reading time calculator — no signup.",
+      "about": [
+        "Reading time estimates help readers decide whether to start an article and help writers set expectations in bylines (“5 min read”). Most adult silent reading averages about 200–250 words per minute.",
+        "Paste your draft, adjust WPM if needed, and get an instant word count plus rounded “min read” label you can put under a title."
+      ],
+      "howTo": {
+        "title": "How to estimate reading time",
+        "steps": [
+          "Paste your article, email, or script into the text box.",
+          "Optionally change words-per-minute (default 200).",
+          "Copy the rounded “X min read” result for your byline."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What WPM should I use?",
+          "a": "200 WPM is a common default for silent adult reading. Skim-heavy content may read faster; technical material may be slower."
+        },
+        {
+          "q": "Does this count images or videos?",
+          "a": "No — it estimates from text words only. Add extra time yourself if the page has heavy media."
+        },
+        {
+          "q": "Is it free?",
+          "a": "Yes. Unlimited browser use on Mytulify with no signup."
+        }
+      ],
+      "related": [
+        "text-tools/word-counter",
+        "text-tools/character-counter",
+        "seo-web-tools/readability-checker"
+      ]
     }
   },
   "strings": {

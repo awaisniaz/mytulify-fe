@@ -423,3 +423,196 @@ function toIcsLocal(value: string) {
 function escIcs(s: string) {
   return s.replace(/\\/g, "\\\\").replace(/,/g, "\\,").replace(/;/g, "\\;").replace(/\n/g, "\\n");
 }
+
+/* ------------------------------ Aspect ratio ------------------------------- */
+const ASPECT_PRESETS = [
+  { label: "16:9 (YouTube / HD)", w: 16, h: 9 },
+  { label: "9:16 (Reels / Shorts)", w: 9, h: 16 },
+  { label: "1:1 (Square)", w: 1, h: 1 },
+  { label: "4:5 (Instagram feed)", w: 4, h: 5 },
+  { label: "4:3 (Classic)", w: 4, h: 3 },
+  { label: "21:9 (Ultrawide)", w: 21, h: 9 },
+  { label: "3:2 (Photo)", w: 3, h: 2 },
+  { label: "2:3 (Portrait photo)", w: 2, h: 3 },
+] as const;
+
+function gcd(a: number, b: number): number {
+  a = Math.abs(Math.round(a));
+  b = Math.abs(Math.round(b));
+  while (b) {
+    const t = b;
+    b = a % b;
+    a = t;
+  }
+  return a || 1;
+}
+
+export function AspectRatioCalculator() {
+  const [width, setWidth] = React.useState("1920");
+  const [height, setHeight] = React.useState("1080");
+  const [lock, setLock] = React.useState({ w: 16, h: 9 });
+  const [mode, setMode] = React.useState<"fromDims" | "fromRatio">("fromDims");
+
+  const w = n(width);
+  const h = n(height);
+  const g = Number.isFinite(w) && Number.isFinite(h) && w > 0 && h > 0 ? gcd(w, h) : 1;
+  const ratioW = Number.isFinite(w) && w > 0 ? Math.round(w / g) : 0;
+  const ratioH = Number.isFinite(h) && h > 0 ? Math.round(h / g) : 0;
+  const decimal = Number.isFinite(w) && Number.isFinite(h) && h > 0 ? w / h : NaN;
+
+  function applyPreset(pw: number, ph: number) {
+    setLock({ w: pw, h: ph });
+    setMode("fromRatio");
+    const base = n(width) || 1920;
+    setWidth(String(base));
+    setHeight(String(Math.round((base * ph) / pw)));
+  }
+
+  function onWidthChange(v: string) {
+    setWidth(v);
+    if (mode === "fromRatio") {
+      const nw = n(v);
+      if (Number.isFinite(nw)) setHeight(String(Math.round((nw * lock.h) / lock.w)));
+    }
+  }
+
+  function onHeightChange(v: string) {
+    setHeight(v);
+    if (mode === "fromRatio") {
+      const nh = n(v);
+      if (Number.isFinite(nh)) setWidth(String(Math.round((nh * lock.w) / lock.h)));
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      <Field label="Mode">
+        <Select value={mode} onChange={(e) => setMode(e.target.value as "fromDims" | "fromRatio")}>
+          <option value="fromDims">Find ratio from width × height</option>
+          <option value="fromRatio">Scale dimensions to a preset ratio</option>
+        </Select>
+      </Field>
+      <Field label="Common presets">
+        <div className="flex flex-wrap gap-2">
+          {ASPECT_PRESETS.map((p) => (
+            <Button key={p.label} type="button" variant="secondary" size="sm" onClick={() => applyPreset(p.w, p.h)}>
+              {p.label}
+            </Button>
+          ))}
+        </div>
+      </Field>
+      <Row>
+        <Field label="Width (px)">
+          <Input type="number" value={width} onChange={(e) => onWidthChange(e.target.value)} />
+        </Field>
+        <Field label="Height (px)">
+          <Input type="number" value={height} onChange={(e) => onHeightChange(e.target.value)} />
+        </Field>
+      </Row>
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Stat label="Aspect ratio" value={ratioW && ratioH ? `${ratioW}:${ratioH}` : "—"} />
+        <Stat label="Decimal" value={fmt(decimal, 4)} />
+        <Stat label="CSS" value={ratioW && ratioH ? `aspect-ratio: ${ratioW} / ${ratioH};` : "—"} />
+      </div>
+      {ratioW > 0 && ratioH > 0 && (
+        <div className="rounded-xl border border-border bg-surface-2 p-4">
+          <p className="mb-2 text-xs font-medium text-muted">Preview</p>
+          <div className="mx-auto max-w-xs overflow-hidden rounded-lg border border-border bg-brand/10">
+            <div style={{ aspectRatio: `${ratioW} / ${ratioH}` }} className="grid place-items-center text-sm font-semibold text-brand">
+              {ratioW}:{ratioH}
+            </div>
+          </div>
+        </div>
+      )}
+      <Output
+        value={
+          ratioW && ratioH
+            ? `/* ${width}×${height} → ${ratioW}:${ratioH} */\naspect-ratio: ${ratioW} / ${ratioH};\n/* or */\npadding-bottom: ${fmt((ratioH / ratioW) * 100, 4)}%;`
+            : ""
+        }
+        rows={5}
+        filename="aspect-ratio.css"
+      />
+    </div>
+  );
+}
+
+/* ------------------------------ Profit margin ------------------------------ */
+export function ProfitMarginCalculator() {
+  const [cost, setCost] = React.useState("50");
+  const [price, setPrice] = React.useState("80");
+  const [targetMargin, setTargetMargin] = React.useState("40");
+  const c = n(cost);
+  const p = n(price);
+  const profit = p - c;
+  const margin = p !== 0 ? (profit / p) * 100 : NaN;
+  const markup = c !== 0 ? (profit / c) * 100 : NaN;
+  const tm = n(targetMargin);
+  const priceForMargin = 100 - tm !== 0 ? c / (1 - tm / 100) : NaN;
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">Margin = profit ÷ selling price. Markup = profit ÷ cost. They are not the same.</Notice>
+      <Row>
+        <Field label="Cost">
+          <Input type="number" value={cost} onChange={(e) => setCost(e.target.value)} />
+        </Field>
+        <Field label="Selling price">
+          <Input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
+        </Field>
+      </Row>
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Stat label="Profit" value={fmt(profit)} />
+        <Stat label="Profit margin" value={`${fmt(margin, 2)}%`} />
+        <Stat label="Markup" value={`${fmt(markup, 2)}%`} />
+      </div>
+      <Field label="Target margin (%) — find required price">
+        <Input type="number" value={targetMargin} onChange={(e) => setTargetMargin(e.target.value)} />
+      </Field>
+      <Stat label="Price for target margin" value={fmt(priceForMargin)} />
+    </div>
+  );
+}
+
+/* ------------------------------ Reading time ------------------------------- */
+export function ReadingTimeCalculator() {
+  const [text, setText] = React.useState(
+    "Paste your article, blog post, or email here to estimate how long it takes an average adult to read.",
+  );
+  const [wpm, setWpm] = React.useState("200");
+  const words = text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
+  const chars = text.length;
+  const rate = Math.max(1, n(wpm) || 200);
+  const minutes = words / rate;
+  const totalSec = Math.round(minutes * 60);
+  const mins = Math.floor(totalSec / 60);
+  const secs = totalSec % 60;
+
+  return (
+    <div className="space-y-4">
+      <Field label="Text">
+        <Textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          rows={10}
+          className="font-sans text-sm"
+          placeholder="Paste your content…"
+        />
+      </Field>
+      <Field label="Reading speed (words per minute)" hint="Adults typically read 200–250 WPM silently">
+        <Input type="number" value={wpm} onChange={(e) => setWpm(e.target.value)} />
+      </Field>
+      <div className="grid gap-3 sm:grid-cols-4">
+        <Stat label="Words" value={fmt(words, 0)} />
+        <Stat label="Characters" value={fmt(chars, 0)} />
+        <Stat label="Reading time" value={words ? `${mins}m ${secs}s` : "—"} />
+        <Stat label="Rounded" value={words ? `${Math.max(1, Math.ceil(minutes))} min read` : "—"} />
+      </div>
+      <Output
+        value={words ? `${Math.max(1, Math.ceil(minutes))} min read · ${words.toLocaleString()} words · ${rate} WPM` : ""}
+        rows={2}
+        filename="reading-time.txt"
+      />
+    </div>
+  );
+}

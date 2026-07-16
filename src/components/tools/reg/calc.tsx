@@ -12,7 +12,7 @@ import { RandomNumber } from "@/components/tools/impl/data";
 import {
   AfghanDateConverter, ZakatCalculator, TasbihCounter, SalaryTaxCalculator,
 } from "@/components/tools/impl/asli-gap";
-import { EmiCalculator, VatGstCalculator } from "@/components/tools/impl/demand-extra";
+import { EmiCalculator, VatGstCalculator, ProfitMarginCalculator } from "@/components/tools/impl/demand-extra";
 
 export default makeReg({
   "bmi-calculator": BmiCalculator,
@@ -51,4 +51,5 @@ export default makeReg({
   "salary-tax-calculator": SalaryTaxCalculator,
   "emi-calculator": EmiCalculator,
   "vat-gst-calculator": VatGstCalculator,
+  "profit-margin-calculator": ProfitMarginCalculator,
 });

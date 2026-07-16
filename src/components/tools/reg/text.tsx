@@ -10,6 +10,7 @@ import {
 } from "@/components/tools/impl/text";
 import { TextToAsciiArt, TextToHandwriting } from "@/components/tools/impl/text-extra";
 import { MultiStyler, SingleStyler } from "@/components/tools/impl/text-styler";
+import { ReadingTimeCalculator } from "@/components/tools/impl/demand-extra";
 
 export default makeReg({
   "word-counter": WordCounter,
@@ -42,4 +43,5 @@ export default makeReg({
   "upside-down-text-generator": () => <SingleStyler styleName="Upside Down" />,
   "text-to-ascii-art": TextToAsciiArt,
   "text-to-handwriting": TextToHandwriting,
+  "reading-time-calculator": ReadingTimeCalculator,
 });
