@@ -74,6 +74,11 @@
       "name": "Handwriting OCR",
       "description": "AI-powered handwriting-to-text OCR for 30+ languages. Upload a photo and get accurate editable text in seconds.",
       "tagline": "Handwriting to text in 30+ languages"
+    },
+    "freelancer-tools": {
+      "name": "Freelancer Tools",
+      "description": "Free client-side tools for freelancers — contracts, proposals, NDAs, rate calculators, quotes, and change orders. No signup, no subscription.",
+      "tagline": "Contracts, rates & client docs — free"
     }
   },
   "tools": {
@@ -2193,6 +2198,344 @@
         "text-tools/word-counter",
         "text-tools/character-counter",
         "seo-web-tools/readability-checker"
+      ]
+    },
+    "freelancer-tools/contract-generator": {
+      "name": "Freelance Contract Generator",
+      "description": "Create a clear freelance services contract with scope, payment terms, IP, and revisions — download as PDF.",
+      "metaTitle": "Free Freelance Contract Generator – PDF Download | Mytulify",
+      "metaDescription": "Generate a freelance services contract with scope, payment schedule, IP, and revisions. Free PDF export in your browser — no signup.",
+      "about": [
+        "A written freelance contract reduces scope creep and unpaid work. Cover deliverables, payment timing, revisions, late fees, IP ownership, and how either side can end the project.",
+        "This free generator builds a practical template in your browser and exports a PDF. It is not legal advice — have a lawyer review for your jurisdiction before signing."
+      ],
+      "howTo": {
+        "title": "How to create a contract",
+        "steps": [
+          "Fill freelancer, client, scope, payment, and IP fields.",
+          "Review the live preview.",
+          "Download the PDF and send it for signatures."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Is this a legally binding contract?",
+          "a": "It is a template to start from. Binding effect depends on your jurisdiction and how both parties sign. Get legal review for important deals."
+        },
+        {
+          "q": "Does my data leave the browser?",
+          "a": "No. Everything runs client-side on Mytulify — we do not upload your contract text."
+        },
+        {
+          "q": "Can I also create invoices?",
+          "a": "Yes. After you win the work, use our free Invoice Generator under Converters & Generators."
+        }
+      ],
+      "related": [
+        "freelancer-tools/proposal-generator",
+        "freelancer-tools/nda-generator",
+        "freelancer-tools/change-order-generator",
+        "converters-generators/invoice-generator"
+      ]
+    },
+    "freelancer-tools/proposal-generator": {
+      "name": "Freelance Proposal Generator",
+      "description": "Build a client proposal with summary, scope, timeline, pricing, and about section — export PDF.",
+      "metaTitle": "Free Freelance Proposal Generator – PDF | Mytulify",
+      "metaDescription": "Create a client proposal with executive summary, scope, milestones, and pricing. Free PDF export — web, writing, and consulting templates included.",
+      "about": [
+        "Winning freelancers send clear proposals: the client problem, what you will deliver, when, and for how much. Templates speed up first drafts without sounding generic.",
+        "Fill each section, preview live, and download a PDF. Pair with a contract once they say yes."
+      ],
+      "howTo": {
+        "title": "How to write a proposal",
+        "steps": [
+          "Pick a starter template or start blank.",
+          "Customize summary, scope, timeline, and pricing.",
+          "Download the PDF and email it to your prospect."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Which template should I use?",
+          "a": "Choose Web Design, Content Writing, or Consulting — or keep blank and paste your own structure."
+        },
+        {
+          "q": "Is it free?",
+          "a": "Yes. Unlimited browser use, no signup."
+        }
+      ],
+      "related": [
+        "freelancer-tools/contract-generator",
+        "freelancer-tools/quote-calculator",
+        "freelancer-tools/rate-calculator",
+        "converters-generators/invoice-generator"
+      ]
+    },
+    "freelancer-tools/nda-generator": {
+      "name": "NDA Generator",
+      "description": "Generate a one-way or mutual non-disclosure agreement and download it as a PDF.",
+      "metaTitle": "Free NDA Generator – Mutual or One-Way PDF | Mytulify",
+      "metaDescription": "Create a mutual or one-way NDA with purpose, term, and jurisdiction. Free PDF download — runs privately in your browser.",
+      "about": [
+        "NDAs help when you need to share product, business, or client details before a project starts. Choose mutual (both sides protect info) or one-way.",
+        "This tool drafts a simple PDF template. Complex deals still need an attorney."
+      ],
+      "howTo": {
+        "title": "How to generate an NDA",
+        "steps": [
+          "Enter both parties and the purpose of disclosure.",
+          "Set term length, mutual vs one-way, and jurisdiction.",
+          "Download the PDF for review and signature."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Mutual vs one-way?",
+          "a": "Mutual protects both parties. One-way protects only the disclosing party’s information."
+        },
+        {
+          "q": "Is this legal advice?",
+          "a": "No. Templates help you draft faster; counsel should review critical agreements."
+        }
+      ],
+      "related": [
+        "freelancer-tools/contract-generator",
+        "freelancer-tools/proposal-generator",
+        "freelancer-tools/client-onboarding-form"
+      ]
+    },
+    "freelancer-tools/rate-calculator": {
+      "name": "Freelance Rate Calculator",
+      "description": "Calculate a sustainable hourly rate from income goals, expenses, billable hours, and profit margin.",
+      "metaTitle": "Freelance Rate Calculator – Free Hourly Rate Tool | Mytulify",
+      "metaDescription": "Calculate your freelance hourly rate from income goals, expenses, time off, billable hours, and margin. Transparent math — free, no signup.",
+      "about": [
+        "Undercharging often comes from assuming 40 billable hours a week. Real freelancers spend time on sales, admin, and learning. This calculator uses realistic billable hours and shows the math.",
+        "Set income, expenses, days off, hours, and a buffer margin to get a recommended rate."
+      ],
+      "howTo": {
+        "title": "How to set your rate",
+        "steps": [
+          "Enter desired annual income and yearly expenses.",
+          "Set vacation days and realistic billable hours per week.",
+          "Add a profit/buffer % and read the recommended hourly rate."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Why not 40 hours?",
+          "a": "Non-billable work is real. Many freelancers bill 20–30 hours/week on average."
+        },
+        {
+          "q": "Should I quote hourly or fixed?",
+          "a": "Use this rate to price fixed quotes too — estimate hours, then add margin with the Quote Calculator."
+        }
+      ],
+      "related": [
+        "freelancer-tools/quote-calculator",
+        "freelancer-tools/break-even-calculator",
+        "freelancer-tools/self-employment-tax-calculator"
+      ]
+    },
+    "freelancer-tools/quote-calculator": {
+      "name": "Project Quote Calculator",
+      "description": "Turn hours, rate, expenses, and margin into a clear project quote with cost breakdown.",
+      "metaTitle": "Project Quote Calculator – Free Freelance Tool | Mytulify",
+      "metaDescription": "Calculate a project quote from hours, hourly rate, expenses, and profit margin. Free breakdown for freelancers — no signup.",
+      "about": [
+        "A good quote separates labor, hard costs, and profit so you do not accidentally work for free when expenses show up.",
+        "Enter hours and rate from your rate calculator, add project expenses, then set the margin you need."
+      ],
+      "howTo": {
+        "title": "How to build a quote",
+        "steps": [
+          "Enter estimated hours and hourly rate.",
+          "Add fixed project expenses.",
+          "Set desired margin % and use the total in your proposal."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What margin should I use?",
+          "a": "Many freelancers add 10–25% for risk and revisions. Adjust for project complexity."
+        },
+        {
+          "q": "Where do I send invoices?",
+          "a": "Use Mytulify’s Invoice Generator once the quote is accepted."
+        }
+      ],
+      "related": [
+        "freelancer-tools/rate-calculator",
+        "freelancer-tools/proposal-generator",
+        "converters-generators/invoice-generator",
+        "freelancer-tools/change-order-generator"
+      ]
+    },
+    "freelancer-tools/late-fee-calculator": {
+      "name": "Late Payment Fee Calculator",
+      "description": "Calculate late fees on overdue invoices with flat or monthly percentage rates.",
+      "metaTitle": "Late Payment Fee Calculator – Free Invoice Tool | Mytulify",
+      "metaDescription": "Calculate overdue invoice late fees with a flat fee or % per month. See days overdue and new total due — free browser tool.",
+      "about": [
+        "Late fees only work if your contract allows them and local law permits. This calculator helps you quantify what is owed so you can follow up professionally.",
+        "Pick flat or monthly percentage, enter due date and amount, and see the updated balance."
+      ],
+      "howTo": {
+        "title": "How to calculate a late fee",
+        "steps": [
+          "Enter invoice amount and due date.",
+          "Choose flat fee or % per month.",
+          "Read days overdue, fee, and new total."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Is a late fee always enforceable?",
+          "a": "It depends on your contract and local rules. Check before charging."
+        },
+        {
+          "q": "How do I put this in a contract?",
+          "a": "Use the Freelance Contract Generator and set a late payment fee percentage."
+        }
+      ],
+      "related": [
+        "freelancer-tools/contract-generator",
+        "converters-generators/invoice-generator",
+        "freelancer-tools/quote-calculator"
+      ]
+    },
+    "freelancer-tools/break-even-calculator": {
+      "name": "Break-Even Calculator",
+      "description": "Find how many projects or hours you need each month to cover fixed costs.",
+      "metaTitle": "Freelance Break-Even Calculator – Free Tool | Mytulify",
+      "metaDescription": "Calculate how many projects or hours you need each month to break even. Free tool for freelancers and small businesses.",
+      "about": [
+        "Break-even tells you the minimum volume required before you profit. Fixed costs (rent, software, insurance) must be covered by contribution margin on each project or hour.",
+        "Enter monthly fixed costs, price, and variable cost to see units needed."
+      ],
+      "howTo": {
+        "title": "How to find break-even",
+        "steps": [
+          "Enter fixed monthly costs.",
+          "Enter average price and variable cost per project or hour.",
+          "Read how many units you need this month."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is contribution margin?",
+          "a": "Price minus variable cost — what is left to cover fixed costs and profit."
+        },
+        {
+          "q": "How does this relate to rates?",
+          "a": "If break-even volume feels impossible, raise rates with the Rate Calculator or cut fixed costs."
+        }
+      ],
+      "related": [
+        "freelancer-tools/rate-calculator",
+        "freelancer-tools/quote-calculator",
+        "calculators/profit-margin-calculator"
+      ]
+    },
+    "freelancer-tools/self-employment-tax-calculator": {
+      "name": "Self-Employment Tax Calculator",
+      "description": "Estimate US self-employment tax or Pakistan income tax on freelance net income — for planning only.",
+      "metaTitle": "Self-Employment Tax Calculator (US & Pakistan) | Mytulify",
+      "metaDescription": "Estimate US self-employment tax plus rough income tax, or a simplified Pakistan tax estimate on freelance income. Planning only — not tax advice.",
+      "about": [
+        "Freelancers often forget self-employment or income tax until filing season. This calculator gives a planning estimate for US SE tax (~15.3% on most net earnings) plus a rough federal income tax sketch, and a simplified Pakistan income-tax estimate.",
+        "Always treat results as educational. Tax law changes and your situation may differ — talk to a tax professional."
+      ],
+      "howTo": {
+        "title": "How to estimate tax",
+        "steps": [
+          "Choose United States or Pakistan.",
+          "Enter net or taxable freelance income.",
+          "Review the breakdown and save notes for planning."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Is this official tax advice?",
+          "a": "No. Estimates only. Use a CPA or tax advisor for filing."
+        },
+        {
+          "q": "Why 15.3% for the US?",
+          "a": "That approximates Social Security and Medicare self-employment tax on net earnings (with the common 92.35% base adjustment)."
+        }
+      ],
+      "related": [
+        "freelancer-tools/rate-calculator",
+        "freelancer-tools/break-even-calculator",
+        "calculators/salary-tax-calculator"
+      ]
+    },
+    "freelancer-tools/client-onboarding-form": {
+      "name": "Client Onboarding Form Generator",
+      "description": "Generate a client intake questionnaire as a printable PDF or downloadable HTML form.",
+      "metaTitle": "Client Onboarding Form Generator – Free PDF/HTML | Mytulify",
+      "metaDescription": "Create a client intake questionnaire with goals, budget, timeline, and brand assets. Download PDF or HTML — free, private, no signup.",
+      "about": [
+        "A structured onboarding form prevents missing requirements and awkward mid-project surprises. Ask about goals, budget, timeline, assets, and stakeholders before kickoff.",
+        "Export a PDF to print or an HTML form clients can fill and send back. No server — files stay on your device."
+      ],
+      "howTo": {
+        "title": "How to onboard a client",
+        "steps": [
+          "Enter your business name and toggle optional questions.",
+          "Preview the questionnaire.",
+          "Download PDF or HTML and send it to the client."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Can clients fill it online on Mytulify?",
+          "a": "This version exports files you control. Host the HTML yourself if you want a shareable form URL."
+        },
+        {
+          "q": "What next after onboarding?",
+          "a": "Send a contract and proposal, then invoice with our Invoice Generator."
+        }
+      ],
+      "related": [
+        "freelancer-tools/contract-generator",
+        "freelancer-tools/proposal-generator",
+        "freelancer-tools/nda-generator"
+      ]
+    },
+    "freelancer-tools/change-order-generator": {
+      "name": "Scope Change Order Generator",
+      "description": "Document out-of-scope work with added cost and time — protect yourself with a PDF change order.",
+      "metaTitle": "Scope Change Order Generator – Free PDF | Mytulify",
+      "metaDescription": "Create a freelance change order for extra work, cost, and timeline. Free PDF download — stop unpaid “one more thing” requests.",
+      "about": [
+        "Scope creep kills margins. When a client asks for work outside the original agreement, a signed change order documents cost and time before you start.",
+        "Fill project reference, new work, cost, and days added — then download a PDF with signature lines."
+      ],
+      "howTo": {
+        "title": "How to issue a change order",
+        "steps": [
+          "Reference the original contract or proposal.",
+          "Describe the extra work, cost, and timeline impact.",
+          "Download the PDF and get client approval before starting."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What if the client refuses to sign?",
+          "a": "Do not start the extra work. Point back to the original scope and offer a new quote."
+        },
+        {
+          "q": "Should this match my contract?",
+          "a": "Yes — your contract should say out-of-scope work requires a written change order."
+        }
+      ],
+      "related": [
+        "freelancer-tools/contract-generator",
+        "freelancer-tools/quote-calculator",
+        "freelancer-tools/proposal-generator",
+        "converters-generators/invoice-generator"
       ]
     }
   },

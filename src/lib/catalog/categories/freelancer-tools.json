@@ -1,0 +1,97 @@
+{
+  "name": "Freelancer Tools",
+  "slug": "freelancer-tools",
+  "description": "Free client-side tools for freelancers — contracts, proposals, NDAs, rate calculators, quotes, and change orders. No signup, no subscription.",
+  "tools": [
+    {
+      "name": "Freelance Contract Generator",
+      "slug": "contract-generator",
+      "description": "Create a clear freelance services contract with scope, payment terms, IP, and revisions — download as PDF.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Freelance Proposal Generator",
+      "slug": "proposal-generator",
+      "description": "Build a client proposal with summary, scope, timeline, pricing, and about section — export PDF.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "NDA Generator",
+      "slug": "nda-generator",
+      "description": "Generate a one-way or mutual non-disclosure agreement and download it as a PDF.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Freelance Rate Calculator",
+      "slug": "rate-calculator",
+      "description": "Calculate a sustainable hourly rate from income goals, expenses, billable hours, and profit margin.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Project Quote Calculator",
+      "slug": "quote-calculator",
+      "description": "Turn hours, rate, expenses, and margin into a clear project quote with cost breakdown.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Late Payment Fee Calculator",
+      "slug": "late-fee-calculator",
+      "description": "Calculate late fees on overdue invoices with flat or monthly percentage rates.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Break-Even Calculator",
+      "slug": "break-even-calculator",
+      "description": "Find how many projects or hours you need each month to cover fixed costs.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Self-Employment Tax Calculator",
+      "slug": "self-employment-tax-calculator",
+      "description": "Estimate US self-employment tax or Pakistan income tax on freelance net income — for planning only.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Client Onboarding Form Generator",
+      "slug": "client-onboarding-form",
+      "description": "Generate a client intake questionnaire as a printable PDF or downloadable HTML form.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Scope Change Order Generator",
+      "slug": "change-order-generator",
+      "description": "Document out-of-scope work with added cost and time — protect yourself with a PDF change order.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    }
+  ]
+}

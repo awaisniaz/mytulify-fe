@@ -87,6 +87,7 @@ import {
   X,
   Zap,
   Clock,
+  Briefcase,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -102,6 +103,7 @@ const ICONS: Record<string, LucideIcon> = {
   Bot,
   Boxes,
   Braces,
+  Briefcase,
   Calculator,
   Calendar,
   CaseSensitive,

@@ -18,6 +18,7 @@ import unitConverters from "./categories/unit-converters.json";
 import seoTools from "./categories/seo-web-tools.json";
 import socialTools from "./categories/social-media-tools.json";
 import convertersGenerators from "./categories/converters-generators.json";
+import freelancerTools from "./categories/freelancer-tools.json";
 
 export type { Category, Tool, Level, Complexity } from "./types";
 
@@ -25,6 +26,7 @@ export type { Category, Tool, Level, Complexity } from "./types";
 const META: Record<string, CategoryMeta> = {
   "ai-tools": { icon: "Sparkles", gradient: "from-indigo-500 to-fuchsia-600", tagline: "AI assistants for developers" },
   "handwriting-ocr": { icon: "ScanText", gradient: "from-violet-500 to-indigo-600", tagline: "Handwriting to text in 30+ languages" },
+  "freelancer-tools": { icon: "Briefcase", gradient: "from-sky-500 to-teal-600", tagline: "Contracts, rates & client docs — free" },
   "devops-tools": { icon: "Server", gradient: "from-cyan-500 to-sky-600", tagline: "Configs, manifests & scripts" },
   "health-tools": { icon: "Activity", gradient: "from-rose-500 to-pink-600", tagline: "Fitness, nutrition & wellbeing" },
   "text-tools": { icon: "Type", gradient: "from-sky-500 to-blue-600", tagline: "Write, clean & transform text" },
@@ -51,6 +53,7 @@ const handwritingOcr: CategoryData = {
 const RAW: CategoryData[] = [
   aiTools,
   handwritingOcr,
+  freelancerTools,
   devopsTools,
   healthTools,
   textTools,

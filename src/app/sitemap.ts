@@ -12,6 +12,7 @@ const ROOT = process.cwd();
 const CATEGORY_FILE: Record<string, string> = {
   "ai-tools": "src/lib/catalog/categories/ai-tools.json",
   "handwriting-ocr": "src/lib/ai/tools.ts",
+  "freelancer-tools": "src/lib/catalog/categories/freelancer-tools.json",
   "devops-tools": "src/lib/catalog/categories/devops-tools.json",
   "health-tools": "src/lib/catalog/categories/health-tools.json",
   "text-tools": "src/lib/catalog/categories/text-tools.json",

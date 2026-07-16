@@ -25,6 +25,7 @@ const META = {
   "seo-web-tools": "Search",
   "social-media-tools": "Share2",
   "converters-generators": "Repeat",
+  "freelancer-tools": "Briefcase",
 };
 
 const RULES = [
@@ -34,6 +35,8 @@ const RULES = [
   [/security-headers|csp|hsts/i, "Shield"],
   [/domain-name|domain-finder/i, "Globe"],
   [/invoice|receipt/i, "Receipt"],
+  [/contract-generator|nda-generator|change-order|proposal-generator|onboarding-form/i, "FileText"],
+  [/rate-calculator|quote-calculator|late-fee|break-even|self-employment-tax/i, "DollarSign"],
   [/iban/i, "Landmark"],
   [/email-signature/i, "Share2"],
   [/vcard|vcf/i, "Fingerprint"],

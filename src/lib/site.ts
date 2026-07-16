@@ -21,5 +21,7 @@ export const site = {
     "developer tools",
     "unit converter",
     "calculator",
+    "freelancer tools",
+    "freelance contract",
   ],
 };
