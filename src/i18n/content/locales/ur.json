@@ -52,8 +52,8 @@
     },
     "seo-web-tools": {
       "name": "SEO & Web Tools",
-      "description": "Client-side SEO utilities for generating, analyzing, and previewing on-page and technical SEO assets.",
-      "tagline": "On-page & technical SEO"
+      "description": "Keyword research, technical SEO, content optimization, rank tracking, backlinks, internal linking, schema, audits, aur AI SEO workflows — free browser tools.",
+      "tagline": "Research, audits, schema & AI SEO"
     },
     "social-media-tools": {
       "name": "Social Media Tools",
@@ -1341,6 +1341,86 @@
     "seo-web-tools/ads-txt-generator": {
       "name": "ads.txt Generator",
       "description": "Create a valid ads.txt file for Google AdSense and ad networks."
+    },
+    "seo-web-tools/related-keywords-generator": {
+      "name": "Related Keywords Generator",
+      "description": "Seed keywords se questions, commercial modifiers, long-tail aur combinations generate karein."
+    },
+    "seo-web-tools/keyword-difficulty-estimator": {
+      "name": "Keyword Difficulty Estimator",
+      "description": "SERP signals se keyword competitiveness estimate karein."
+    },
+    "seo-web-tools/search-intent-classifier": {
+      "name": "Search Intent Classifier",
+      "description": "Keywords ko informational, commercial, transactional ya navigational classify karein."
+    },
+    "seo-web-tools/xml-sitemap-validator": {
+      "name": "XML Sitemap Validator",
+      "description": "Sitemap XML validate karein — errors, duplicates, lastmod, 50k limit."
+    },
+    "seo-web-tools/heading-structure-analyzer": {
+      "name": "Heading Structure Analyzer",
+      "description": "H1–H6 outline audit — multiple H1s, skipped levels, empty headings."
+    },
+    "seo-web-tools/seo-audit-checklist": {
+      "name": "SEO Audit Checklist",
+      "description": "Technical, on-page, E-E-A-T aur links ki interactive SEO audit checklist."
+    },
+    "seo-web-tools/seo-content-score": {
+      "name": "SEO Content Score",
+      "description": "Draft ka on-page SEO score — keyword, density, title/meta, scannability."
+    },
+    "seo-web-tools/keyword-rank-tracker": {
+      "name": "Keyword Rank Tracker",
+      "description": "Browser mein keyword ranks log karein aur CSV export — bina API key."
+    },
+    "seo-web-tools/backlink-profile-analyzer": {
+      "name": "Backlink Profile Analyzer",
+      "description": "Ahrefs/Semrush/Moz CSV se anchors, hosts aur follow mix analyze karein."
+    },
+    "seo-web-tools/disavow-file-generator": {
+      "name": "Disavow File Generator",
+      "description": "Spam domains/URLs se Google disavow.txt banayein."
+    },
+    "seo-web-tools/internal-link-suggester": {
+      "name": "Internal Link Suggester",
+      "description": "Page list se draft ke liye internal link suggestions."
+    },
+    "seo-web-tools/orphan-page-finder": {
+      "name": "Orphan Page Finder",
+      "description": "Sitemap orphans aur missing sitemap URLs dhoondhein."
+    },
+    "seo-web-tools/schema-markup-validator": {
+      "name": "Schema Markup Validator",
+      "description": "JSON-LD schema validate karein — FAQ, HowTo, Product, LocalBusiness."
+    },
+    "seo-web-tools/howto-schema-generator": {
+      "name": "HowTo Schema Generator",
+      "description": "Title aur steps se HowTo JSON-LD generate karein."
+    },
+    "seo-web-tools/local-business-schema-generator": {
+      "name": "Local Business Schema Generator",
+      "description": "NAP aur geo ke sath LocalBusiness JSON-LD banayein."
+    },
+    "seo-web-tools/nap-consistency-checker": {
+      "name": "NAP Consistency Checker",
+      "description": "Local citations mein Name/Address/Phone inconsistencies check karein."
+    },
+    "seo-web-tools/content-brief-generator": {
+      "name": "Content Brief Generator",
+      "description": "AI SEO content brief — outline, PAA, keywords, on-page checklist."
+    },
+    "seo-web-tools/ai-meta-tag-writer": {
+      "name": "AI Meta Tag Writer",
+      "description": "AI se CTR-optimized title tags aur meta descriptions."
+    },
+    "seo-web-tools/ai-seo-outline-generator": {
+      "name": "AI SEO Outline Generator",
+      "description": "AI article outline — H2/H3 structure search intent ke liye."
+    },
+    "seo-web-tools/ai-seo-page-audit": {
+      "name": "AI SEO Page Audit",
+      "description": "HTML/text se AI technical + on-page SEO audit with prioritized fixes."
     },
     "social-media-tools/fake-tweet-generator": {
       "name": "Fake Tweet Generator",

@@ -52,8 +52,8 @@
     },
     "seo-web-tools": {
       "name": "SEO & Web Tools",
-      "description": "Client-side SEO utilities for generating, analyzing, and previewing on-page and technical SEO assets.",
-      "tagline": "On-page & technical SEO"
+      "description": "Keyword research, technical SEO, content optimization, rank tracking, backlink analysis, internal linking, schema, audits, and AI-powered SEO workflows — free in your browser.",
+      "tagline": "Research, audits, schema & AI SEO"
     },
     "social-media-tools": {
       "name": "Social Media Tools",
@@ -1452,6 +1452,604 @@
     "seo-web-tools/ads-txt-generator": {
       "name": "ads.txt Generator",
       "description": "Create a valid ads.txt file for Google AdSense and ad networks."
+    },
+    "seo-web-tools/related-keywords-generator": {
+      "name": "Related Keywords Generator",
+      "description": "Expand seed keywords into questions, commercial modifiers, long-tail phrases, and combinations for research.",
+      "metaTitle": "Related Keywords Generator – Free Keyword Research Tool | Mytulify",
+      "metaDescription": "Generate related keywords, questions, commercial modifiers, and long-tail phrases from seed terms. Free keyword research expander — no signup.",
+      "about": [
+        "Keyword research starts with a seed, then expands into the questions and modifiers people actually type. Related keywords help you cover a topic cluster, build internal links, and find easier long-tail wins before chasing competitive head terms.",
+        "This tool builds a keyword universe in your browser: question prefixes, commercial intent modifiers, informational suffixes, long-tail variants, and combinations with your secondary modifiers. Export the list into a rank tracker, content calendar, or AI content brief."
+      ],
+      "howTo": {
+        "title": "How to generate related keywords",
+        "steps": [
+          "Enter one or more seed keywords (one per line).",
+          "Optionally add secondary modifiers such as industries, audiences, or products.",
+          "Review grouped suggestions, then copy or download the full list for research."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Does this pull live search volume?",
+          "a": "No. It expands keywords with proven SEO modifiers in your browser. Pair the list with Google Keyword Planner, Ahrefs, or Search Console for volume and difficulty."
+        },
+        {
+          "q": "How should I use the output?",
+          "a": "Cluster by intent, map each cluster to a page type, then brief writers or feed seeds into the Content Brief Generator and Keyword Rank Tracker."
+        }
+      ],
+      "related": [
+        "seo-web-tools/keyword-difficulty-estimator",
+        "seo-web-tools/search-intent-classifier",
+        "seo-web-tools/keyword-combiner",
+        "seo-web-tools/content-brief-generator",
+        "seo-web-tools/keyword-rank-tracker"
+      ]
+    },
+    "seo-web-tools/keyword-difficulty-estimator": {
+      "name": "Keyword Difficulty Estimator",
+      "description": "Estimate keyword competitiveness from SERP signals like brands, content length, and authority.",
+      "metaTitle": "Keyword Difficulty Estimator – Free SEO Score | Mytulify",
+      "metaDescription": "Estimate keyword difficulty from SERP signals — brands, .gov/.edu, content length, and authority. Free heuristic KD score, no API key.",
+      "about": [
+        "Keyword difficulty tools usually score how hard it is to rank on page one. Live KD APIs need paid data; this estimator uses SERP observations you can gather yourself — brand dominance, publisher strength, and typical content depth.",
+        "Use it to prioritize opportunistic long-tail terms versus head terms that need months of authority building. Always validate with real SERPs before committing to a content investment."
+      ],
+      "howTo": {
+        "title": "How to estimate keyword difficulty",
+        "steps": [
+          "Enter the keyword and approximate average word count of the top results.",
+          "Set a typical referring-domain strength and note if brands or .gov/.edu dominate.",
+          "Add SERP domain notes, then read the 0–100 score, band, and recommended next step."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Is this the same as Ahrefs or Moz KD?",
+          "a": "No. It is a transparent heuristic based on inputs you provide. Use it for prioritization, not as a substitute for paid link metrics."
+        },
+        {
+          "q": "What score should I target?",
+          "a": "Newer or thinner sites usually win more often below ~45. Hard scores still work with strong differentiation, links, and topical authority."
+        }
+      ],
+      "related": [
+        "seo-web-tools/related-keywords-generator",
+        "seo-web-tools/search-intent-classifier",
+        "seo-web-tools/content-brief-generator",
+        "seo-web-tools/seo-content-score"
+      ]
+    },
+    "seo-web-tools/search-intent-classifier": {
+      "name": "Search Intent Classifier",
+      "description": "Classify keywords as informational, commercial, transactional, or navigational with page-type suggestions.",
+      "metaTitle": "Search Intent Classifier – Free SEO Keyword Tool | Mytulify",
+      "metaDescription": "Classify keywords by search intent (informational, commercial, transactional, navigational) and get suggested page types. Free CSV export.",
+      "about": [
+        "Matching search intent is one of the highest-leverage SEO skills. A transactional query wants a product or pricing page; an informational query wants a guide. Publishing the wrong page type wastes rankings and conversions.",
+        "Paste a keyword list to classify intent from linguistic signals and export CSV for briefs, calendars, or agency deliverables."
+      ],
+      "howTo": {
+        "title": "How to classify search intent",
+        "steps": [
+          "Paste keywords one per line.",
+          "Review the intent and suggested page type for each row.",
+          "Download the CSV and align each keyword with the right content format."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What are the four main search intents?",
+          "a": "Informational (learn), navigational (find a site), commercial investigation (compare before buying), and transactional (buy or convert)."
+        }
+      ],
+      "related": [
+        "seo-web-tools/related-keywords-generator",
+        "seo-web-tools/content-brief-generator",
+        "seo-web-tools/ai-seo-outline-generator",
+        "seo-web-tools/seo-content-score"
+      ]
+    },
+    "seo-web-tools/xml-sitemap-validator": {
+      "name": "XML Sitemap Validator",
+      "description": "Validate sitemap XML for parse errors, bad URLs, duplicates, lastmod dates, and the 50k limit.",
+      "metaTitle": "XML Sitemap Validator – Free Technical SEO Tool | Mytulify",
+      "metaDescription": "Validate XML sitemaps for parse errors, duplicate URLs, lastmod issues, and the 50,000 URL limit. Free client-side sitemap checker.",
+      "about": [
+        "An XML sitemap helps search engines discover important URLs. Invalid XML, duplicate locs, or oversized files can leave pages undiscovered or ignore lastmod signals.",
+        "Paste sitemap XML to catch structural issues before you submit the file in Google Search Console or Bing Webmaster Tools."
+      ],
+      "howTo": {
+        "title": "How to validate a sitemap",
+        "steps": [
+          "Paste your sitemap.xml contents (or a sitemap index entry list).",
+          "Review errors and warnings for parse issues, duplicates, and URL limits.",
+          "Fix the file, re-upload, and resubmit in Search Console if needed."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is the URL limit for a sitemap?",
+          "a": "A single sitemap file should stay under 50,000 URLs and 50 MB uncompressed. Split large sites into multiple sitemaps referenced by a sitemap index."
+        }
+      ],
+      "related": [
+        "seo-web-tools/xml-sitemap-generator",
+        "seo-web-tools/orphan-page-finder",
+        "seo-web-tools/robots-txt-generator",
+        "seo-web-tools/seo-audit-checklist"
+      ]
+    },
+    "seo-web-tools/heading-structure-analyzer": {
+      "name": "Heading Structure Analyzer",
+      "description": "Audit H1–H6 outlines in page HTML for multiple H1s, skipped levels, and empty headings.",
+      "metaTitle": "Heading Structure Analyzer – Free On-Page SEO Tool | Mytulify",
+      "metaDescription": "Audit H1–H6 heading outlines for multiple H1s, skipped levels, and empty headings. Free HTML heading analyzer for on-page SEO.",
+      "about": [
+        "Clear heading hierarchy helps users and crawlers understand page structure. Multiple H1s, skipped levels, and empty headings are common on-page issues that hurt scannability and sometimes snippet eligibility.",
+        "Paste HTML to extract the outline and flag problems before you publish or hand work to a developer."
+      ],
+      "howTo": {
+        "title": "How to analyze headings",
+        "steps": [
+          "Paste page HTML (view-source or CMS export).",
+          "Review the H1–H6 outline and issue list.",
+          "Fix hierarchy so one clear H1 leads nested H2/H3 sections."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Should every page have only one H1?",
+          "a": "Best practice is a single descriptive H1 that matches the primary topic. Extra H1s are not always a hard penalty, but they confuse structure and SEO reviews."
+        }
+      ],
+      "related": [
+        "seo-web-tools/seo-content-score",
+        "seo-web-tools/ai-seo-page-audit",
+        "seo-web-tools/ai-seo-outline-generator",
+        "seo-web-tools/readability-checker"
+      ]
+    },
+    "seo-web-tools/seo-audit-checklist": {
+      "name": "SEO Audit Checklist",
+      "description": "Interactive technical, on-page, E-E-A-T, and link audit checklist with progress saved in your browser.",
+      "metaTitle": "SEO Audit Checklist – Free Technical & On-Page SEO | Mytulify",
+      "metaDescription": "Run a free interactive SEO audit checklist covering technical SEO, on-page, E-E-A-T, and links. Progress saves in your browser.",
+      "about": [
+        "A structured SEO audit prevents skipped fundamentals — indexing, Core Web Vitals-related hygiene, meta tags, internal links, and trust signals. Checklists turn vague “we should audit the site” into measurable progress.",
+        "This interactive checklist covers technical, on-page, E-E-A-T, and link items with local progress saving so you can resume client or site audits without a spreadsheet."
+      ],
+      "howTo": {
+        "title": "How to run the SEO audit checklist",
+        "steps": [
+          "Open the checklist and work section by section (technical, on-page, E-E-A-T, links).",
+          "Mark items done as you verify them in Search Console, analytics, and the live site.",
+          "Export or note remaining gaps, then prioritize fixes by impact."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Is checklist progress synced to the cloud?",
+          "a": "No. Progress is stored in your browser locally so audits stay private and free."
+        }
+      ],
+      "related": [
+        "seo-web-tools/ai-seo-page-audit",
+        "seo-web-tools/xml-sitemap-validator",
+        "seo-web-tools/schema-markup-validator",
+        "seo-web-tools/backlink-profile-analyzer"
+      ]
+    },
+    "seo-web-tools/seo-content-score": {
+      "name": "SEO Content Score",
+      "description": "Score on-page SEO for a draft — keyword placement, density, title/meta length, and scannability.",
+      "metaTitle": "SEO Content Score – Free On-Page SEO Checker | Mytulify",
+      "metaDescription": "Score draft content for on-page SEO: keyword placement, density, title/meta length, and scannability. Free content SEO checker.",
+      "about": [
+        "On-page SEO scoring helps writers ship drafts that already cover basics: focus keyword in the title and intro, sensible density, readable structure, and meta lengths that fit SERPs.",
+        "Paste a draft and target keyword to get a transparent score with actionable gaps — then refine before publishing or running an AI page audit."
+      ],
+      "howTo": {
+        "title": "How to score content for SEO",
+        "steps": [
+          "Enter the focus keyword and optional title/meta fields.",
+          "Paste the full draft body.",
+          "Review the score breakdown and fix the lowest-scoring checks."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is a good SEO content score?",
+          "a": "Aim for a high band after covering keyword placement, structure, and meta length — without stuffing. Use the checklist items, not vanity scores alone."
+        }
+      ],
+      "related": [
+        "seo-web-tools/keyword-density-checker",
+        "seo-web-tools/heading-structure-analyzer",
+        "seo-web-tools/ai-meta-tag-writer",
+        "seo-web-tools/readability-checker"
+      ]
+    },
+    "seo-web-tools/keyword-rank-tracker": {
+      "name": "Keyword Rank Tracker",
+      "description": "Log keyword rankings over time in your browser and export CSV reports — no API key required.",
+      "metaTitle": "Keyword Rank Tracker – Free Browser SEO Tracker | Mytulify",
+      "metaDescription": "Track keyword rankings over time in your browser. Log positions, notes, and export CSV — free rank tracker with no API key.",
+      "about": [
+        "Rank tracking shows whether SEO work moves positions for target queries. Enterprise trackers poll SERPs automatically; this tool lets you manually log positions you observe and keep a private history.",
+        "Ideal for freelancers and small sites that want a lightweight CSV-friendly log without another SaaS subscription."
+      ],
+      "howTo": {
+        "title": "How to track keyword ranks",
+        "steps": [
+          "Add keywords and the URL or site you are monitoring.",
+          "Enter the position you see (incognito SERP or Search Console).",
+          "Save entries over time and export CSV for clients or reports."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Does this scrape Google automatically?",
+          "a": "No. You enter positions manually (or from Search Console). That keeps the tool free, private, and ToS-safe."
+        }
+      ],
+      "related": [
+        "seo-web-tools/related-keywords-generator",
+        "seo-web-tools/seo-audit-checklist",
+        "seo-web-tools/search-intent-classifier"
+      ]
+    },
+    "seo-web-tools/backlink-profile-analyzer": {
+      "name": "Backlink Profile Analyzer",
+      "description": "Analyze Ahrefs/Semrush/Moz backlink CSV exports for anchors, referring hosts, and follow mix.",
+      "metaTitle": "Backlink Profile Analyzer – Free CSV SEO Tool | Mytulify",
+      "metaDescription": "Analyze Ahrefs, Semrush, or Moz backlink CSV exports — referring hosts, anchors, follow/nofollow mix, and average authority. Free, private.",
+      "about": [
+        "Backlink analysis reveals who links to you, which anchors dominate, and whether follow vs nofollow mix looks natural. Paid tools export CSV; this analyzer summarizes that export in your browser.",
+        "Use it to spot over-optimized anchors, thin referring-host diversity, or candidates for a disavow review — without uploading data to another cloud."
+      ],
+      "howTo": {
+        "title": "How to analyze a backlink CSV",
+        "steps": [
+          "Export backlinks from Ahrefs, Semrush, or Moz as CSV.",
+          "Paste the CSV into the analyzer.",
+          "Review host counts, follow mix, top anchors, and the tip — then act on outreach or cleanup."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Which CSV columns are required?",
+          "a": "At least a referring URL or anchor column. Domain rating / authority and follow type columns are used when present."
+        }
+      ],
+      "related": [
+        "seo-web-tools/disavow-file-generator",
+        "seo-web-tools/seo-audit-checklist",
+        "seo-web-tools/internal-link-suggester"
+      ]
+    },
+    "seo-web-tools/disavow-file-generator": {
+      "name": "Disavow File Generator",
+      "description": "Build a Google Search Console disavow.txt from spam domains and URLs.",
+      "metaTitle": "Disavow File Generator – Free Google Disavow Tool | Mytulify",
+      "metaDescription": "Build a Google Search Console disavow.txt from spam domains and URLs. Free disavow file generator with domain and URL blocks.",
+      "about": [
+        "Google’s disavow tool tells Search Console to ignore specific toxic links when assessing your site. Use it carefully — only for clear spam or paid-link risk after other cleanup fails.",
+        "Paste domains and URLs to generate a correctly formatted disavow.txt ready to upload."
+      ],
+      "howTo": {
+        "title": "How to create a disavow file",
+        "steps": [
+          "List spam domains (one per line) and optional full URLs.",
+          "Copy the generated disavow.txt contents.",
+          "Upload in Google Search Console → Disavow links (advanced) after reviewing carefully."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Should I disavow most backlinks?",
+          "a": "No. Disavow is for clear spam or manipulative links. Over-disavowing can remove useful equity. Prefer outreach and natural link growth first."
+        }
+      ],
+      "related": [
+        "seo-web-tools/backlink-profile-analyzer",
+        "seo-web-tools/seo-audit-checklist"
+      ]
+    },
+    "seo-web-tools/internal-link-suggester": {
+      "name": "Internal Link Suggester",
+      "description": "Suggest internal links from your page list into a draft using keyword overlap scoring.",
+      "metaTitle": "Internal Link Suggester – Free SEO Linking Tool | Mytulify",
+      "metaDescription": "Suggest internal links from your URL/title list into a draft using keyword overlap. Free internal linking helper for SEO.",
+      "about": [
+        "Internal links distribute equity, clarify topical relationships, and help crawlers discover pages. Manual linking at scale is slow; overlap scoring between draft text and your page inventory surfaces relevant targets quickly.",
+        "Paste a sitemap-style page list and your draft to get suggested anchors and destination URLs."
+      ],
+      "howTo": {
+        "title": "How to suggest internal links",
+        "steps": [
+          "Paste your pages (URL and title or keywords).",
+          "Paste the draft content you are optimizing.",
+          "Add the highest-relevance suggestions as contextual links with natural anchors."
+        ]
+      },
+      "faq": [
+        {
+          "q": "How many internal links should a page have?",
+          "a": "Enough to help readers and crawlers — typically a handful of highly relevant contextual links beat dozens of weak ones."
+        }
+      ],
+      "related": [
+        "seo-web-tools/orphan-page-finder",
+        "seo-web-tools/seo-content-score",
+        "seo-web-tools/xml-sitemap-generator"
+      ]
+    },
+    "seo-web-tools/orphan-page-finder": {
+      "name": "Orphan Page Finder",
+      "description": "Find sitemap URLs with no internal links and linked URLs missing from the sitemap.",
+      "metaTitle": "Orphan Page Finder – Free Technical SEO Tool | Mytulify",
+      "metaDescription": "Find orphan pages: sitemap URLs with no internal links, and linked URLs missing from the sitemap. Free crawl-gap checker.",
+      "about": [
+        "Orphan pages exist in a sitemap or CMS but lack internal links, so users and crawlers rarely reach them. Conversely, linked URLs missing from the sitemap may be important discoveries you forgot to include.",
+        "Compare your sitemap URL list against extracted internal links to close crawl and linking gaps."
+      ],
+      "howTo": {
+        "title": "How to find orphan pages",
+        "steps": [
+          "Paste sitemap URLs (one per line).",
+          "Paste HTML or a list of internal links found on the site.",
+          "Review orphans and sitemap gaps, then add links or update the sitemap."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Why do orphan pages hurt SEO?",
+          "a": "Without internal links, pages get fewer crawls and less topical context. Important content should sit in a clear internal linking graph."
+        }
+      ],
+      "related": [
+        "seo-web-tools/internal-link-suggester",
+        "seo-web-tools/xml-sitemap-validator",
+        "seo-web-tools/seo-audit-checklist"
+      ]
+    },
+    "seo-web-tools/schema-markup-validator": {
+      "name": "Schema Markup Validator",
+      "description": "Validate JSON-LD structure for FAQ, HowTo, Product, LocalBusiness, and common schema errors.",
+      "metaTitle": "Schema Markup Validator – Free JSON-LD Checker | Mytulify",
+      "metaDescription": "Validate JSON-LD structured data for FAQ, HowTo, Product, LocalBusiness, and common schema errors. Free client-side schema checker.",
+      "about": [
+        "Structured data helps search engines understand entities, FAQs, products, and local businesses — and can enable rich results. Invalid JSON-LD silently fails rich-result eligibility.",
+        "Paste JSON-LD to catch missing @type, broken @context, and type-specific required fields before deploying."
+      ],
+      "howTo": {
+        "title": "How to validate schema markup",
+        "steps": [
+          "Paste your JSON-LD script contents.",
+          "Review errors and warnings by schema type.",
+          "Fix issues, then confirm in Google’s Rich Results Test when ready."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Does this replace Google’s Rich Results Test?",
+          "a": "It catches structural and common field issues locally. Always re-check critical pages in Google’s official tools before launch."
+        }
+      ],
+      "related": [
+        "seo-web-tools/schema-markup-generator",
+        "seo-web-tools/faq-schema-generator",
+        "seo-web-tools/howto-schema-generator",
+        "seo-web-tools/local-business-schema-generator"
+      ]
+    },
+    "seo-web-tools/howto-schema-generator": {
+      "name": "HowTo Schema Generator",
+      "description": "Generate HowTo JSON-LD structured data from a title and step-by-step list.",
+      "metaTitle": "HowTo Schema Generator – Free JSON-LD Tool | Mytulify",
+      "metaDescription": "Generate HowTo JSON-LD from a title and steps. Free HowTo schema markup generator for rich results eligibility.",
+      "about": [
+        "HowTo structured data describes step-by-step instructions. When eligible, it can power richer presentations of instructional content in search.",
+        "Enter a title and steps to generate copy-paste JSON-LD for your guide pages."
+      ],
+      "howTo": {
+        "title": "How to generate HowTo schema",
+        "steps": [
+          "Enter the how-to title and optional description.",
+          "Add steps in order (one per line or fields).",
+          "Copy the JSON-LD into a script tag on the page and validate."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Is HowTo rich result still available?",
+          "a": "Eligibility and display change over time by Google. Valid markup still helps machines understand steps even when rich UI varies."
+        }
+      ],
+      "related": [
+        "seo-web-tools/schema-markup-validator",
+        "seo-web-tools/faq-schema-generator",
+        "seo-web-tools/schema-markup-generator"
+      ]
+    },
+    "seo-web-tools/local-business-schema-generator": {
+      "name": "Local Business Schema Generator",
+      "description": "Create LocalBusiness JSON-LD with NAP, geo coordinates, and business type.",
+      "metaTitle": "Local Business Schema Generator – Free Local SEO | Mytulify",
+      "metaDescription": "Generate LocalBusiness JSON-LD with name, address, phone, geo, and type. Free local SEO schema markup tool.",
+      "about": [
+        "LocalBusiness schema clarifies NAP (name, address, phone), geo coordinates, and business type for local search and knowledge panels.",
+        "Fill in business details once to generate consistent JSON-LD that matches your Google Business Profile and citations."
+      ],
+      "howTo": {
+        "title": "How to generate LocalBusiness schema",
+        "steps": [
+          "Enter business name, type, address, phone, and optional geo coordinates.",
+          "Copy the generated JSON-LD.",
+          "Place it on your homepage or contact page and keep NAP identical across citations."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is NAP consistency?",
+          "a": "Name, Address, and Phone should match everywhere — website, Google Business Profile, and directories. Inconsistencies confuse local ranking signals."
+        }
+      ],
+      "related": [
+        "seo-web-tools/nap-consistency-checker",
+        "seo-web-tools/schema-markup-validator",
+        "seo-web-tools/schema-markup-generator"
+      ]
+    },
+    "seo-web-tools/nap-consistency-checker": {
+      "name": "NAP Consistency Checker",
+      "description": "Compare Name, Address, Phone across local citations to catch local SEO inconsistencies.",
+      "metaTitle": "NAP Consistency Checker – Free Local SEO Tool | Mytulify",
+      "metaDescription": "Compare Name, Address, Phone across local citations to find inconsistencies. Free NAP checker for local SEO audits.",
+      "about": [
+        "Local SEO relies on consistent business identity. Different phone formats, suite numbers, or trading names across directories weaken trust and can suppress local pack visibility.",
+        "Paste citation variants to spot mismatches before you claim or update listings."
+      ],
+      "howTo": {
+        "title": "How to check NAP consistency",
+        "steps": [
+          "Enter the canonical NAP you want everywhere.",
+          "Paste other citation versions (directories, GBP, site footer).",
+          "Fix every mismatch so spelling, punctuation, and phone format align."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Do phone formatting differences matter?",
+          "a": "Digits should match. Prefer one canonical format on the site and mirror it on major citations when possible."
+        }
+      ],
+      "related": [
+        "seo-web-tools/local-business-schema-generator",
+        "seo-web-tools/seo-audit-checklist"
+      ]
+    },
+    "seo-web-tools/content-brief-generator": {
+      "name": "Content Brief Generator",
+      "description": "AI SEO content brief with outline, PAA questions, keywords, and on-page checklist.",
+      "metaTitle": "AI Content Brief Generator for SEO | Mytulify",
+      "metaDescription": "Generate an AI SEO content brief with title ideas, outline, PAA-style questions, keywords, and on-page checklist. Free AI SEO workflow.",
+      "about": [
+        "A strong content brief aligns writers with search intent, target keywords, outline depth, and on-page requirements before drafting. Briefs reduce revisions and thin content.",
+        "This AI workflow produces title ideas, secondary keywords, H2/H3 outline, People Also Ask style questions, internal link ideas, word-count targets, and an on-page checklist."
+      ],
+      "howTo": {
+        "title": "How to generate an SEO content brief",
+        "steps": [
+          "Enter the primary keyword or topic and audience.",
+          "Choose search intent (informational, commercial, or transactional).",
+          "Generate the brief and hand it to writers or feed the outline into the AI SEO Outline Generator."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Is the brief ready to publish as an article?",
+          "a": "No — it is a strategy document. Use it to draft original content, then score the draft with SEO Content Score."
+        }
+      ],
+      "related": [
+        "seo-web-tools/ai-seo-outline-generator",
+        "seo-web-tools/ai-meta-tag-writer",
+        "seo-web-tools/search-intent-classifier",
+        "seo-web-tools/seo-content-score"
+      ]
+    },
+    "seo-web-tools/ai-meta-tag-writer": {
+      "name": "AI Meta Tag Writer",
+      "description": "AI-written title tags and meta descriptions optimized for CTR and character limits.",
+      "metaTitle": "AI Meta Tag Writer – Titles & Descriptions | Mytulify",
+      "metaDescription": "Generate AI title tags and meta descriptions optimized for CTR and SERP length. Free AI meta tag writer for SEO.",
+      "about": [
+        "Title tags and meta descriptions are your SERP ad copy. Clear keyword placement plus a benefit-driven CTA improves click-through without keyword stuffing.",
+        "Provide a focus keyword and page summary to get multiple title and description options within practical character ranges."
+      ],
+      "howTo": {
+        "title": "How to write meta tags with AI",
+        "steps": [
+          "Enter the focus keyword and a short page summary.",
+          "Optionally add your brand name.",
+          "Pick a title/description pair, then verify length in the Meta Title / Description Length Checkers."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Will Google use my exact meta description?",
+          "a": "Not always. Google may rewrite snippets. Accurate, compelling metas still improve the odds of a useful result."
+        }
+      ],
+      "related": [
+        "seo-web-tools/meta-title-length-checker",
+        "seo-web-tools/meta-description-length-checker",
+        "seo-web-tools/serp-snippet-preview",
+        "seo-web-tools/meta-tag-generator"
+      ]
+    },
+    "seo-web-tools/ai-seo-outline-generator": {
+      "name": "AI SEO Outline Generator",
+      "description": "AI article outline with H2/H3 structure tuned for featured snippets and search intent.",
+      "metaTitle": "AI SEO Outline Generator – Free Article Outline | Mytulify",
+      "metaDescription": "Generate an AI SEO article outline with H2/H3 structure tuned for search intent and featured snippets. Free outline tool.",
+      "about": [
+        "Outlines keep long-form content comprehensive and scannable. SEO-oriented outlines map headings to sub-intents, FAQ blocks, and snippet-friendly definitions or lists.",
+        "Enter a target keyword and optional unique angle to get a nested H1/H2/H3 outline with notes under each section."
+      ],
+      "howTo": {
+        "title": "How to generate an SEO outline",
+        "steps": [
+          "Enter the target keyword.",
+          "Add a unique angle or product mention if you have one.",
+          "Generate the outline, then expand each section into original copy."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Can I use this outline with the Content Brief Generator?",
+          "a": "Yes. Use the brief for strategy and keywords, then this outline for heading structure — or start here for faster drafting."
+        }
+      ],
+      "related": [
+        "seo-web-tools/content-brief-generator",
+        "seo-web-tools/heading-structure-analyzer",
+        "seo-web-tools/ai-seo-page-audit"
+      ]
+    },
+    "seo-web-tools/ai-seo-page-audit": {
+      "name": "AI SEO Page Audit",
+      "description": "AI technical and on-page SEO audit from pasted HTML or page text with prioritized fixes.",
+      "metaTitle": "AI SEO Page Audit – Free On-Page & Technical Review | Mytulify",
+      "metaDescription": "Paste HTML or page text for an AI SEO audit with score, critical issues, on-page fixes, and quick wins. Free AI page audit.",
+      "about": [
+        "Page-level SEO audits combine technical HTML signals (title, meta, headings, canonical, schema) with on-page quality notes. AI can surface prioritized fixes faster than a blank checklist.",
+        "Paste HTML or full page text (optional target keyword) to get a scored summary, critical issues, recommendations, and quick wins."
+      ],
+      "howTo": {
+        "title": "How to run an AI SEO page audit",
+        "steps": [
+          "Optionally enter a target keyword.",
+          "Paste page HTML or text.",
+          "Review critical issues and quick wins, then re-check with Heading Structure Analyzer and SEO Content Score."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Does this crawl my live URL?",
+          "a": "No. Paste HTML or text yourself. That keeps audits private and works for staging pages behind login."
+        }
+      ],
+      "related": [
+        "seo-web-tools/seo-audit-checklist",
+        "seo-web-tools/seo-content-score",
+        "seo-web-tools/heading-structure-analyzer",
+        "seo-web-tools/schema-markup-validator"
+      ]
     },
     "social-media-tools/fake-tweet-generator": {
       "name": "Fake Tweet Generator",

@@ -37,7 +37,7 @@ const META: Record<string, CategoryMeta> = {
   "color-tools": { icon: "Palette", gradient: "from-fuchsia-500 to-pink-600", tagline: "Pick, convert & build palettes" },
   "calculators": { icon: "Calculator", gradient: "from-teal-500 to-cyan-600", tagline: "Finance, health & math"},
   "unit-converters": { icon: "Ruler", gradient: "from-indigo-500 to-blue-600", tagline: "Convert any unit instantly" },
-  "seo-web-tools": { icon: "Search", gradient: "from-lime-500 to-green-600", tagline: "On-page & technical SEO" },
+  "seo-web-tools": { icon: "Search", gradient: "from-lime-500 to-green-600", tagline: "Research, audits, schema & AI SEO" },
   "social-media-tools": { icon: "Share2", gradient: "from-pink-500 to-rose-600", tagline: "Captions, fonts & mockups" },
   "converters-generators": { icon: "Repeat", gradient: "from-amber-500 to-orange-600", tagline: "Data converters & generators" },
 };

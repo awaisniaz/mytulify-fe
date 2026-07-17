@@ -399,6 +399,138 @@ export const AI_TOOLS: Record<string, AiTool> = {
   },
 };
 
+/* ------------------------------------------------------ AI SEO workflows --- */
+Object.assign(AI_TOOLS, {
+  "content-brief-generator": {
+    slug: "content-brief-generator",
+    cta: "Generate brief",
+    outputLabel: "SEO content brief",
+    fields: [
+      {
+        name: "keyword",
+        type: "textarea",
+        label: "Primary keyword / topic",
+        placeholder: "how to create an xml sitemap",
+        required: true,
+        rows: 2,
+      },
+      {
+        name: "audience",
+        type: "text",
+        label: "Audience",
+        placeholder: "Marketing managers at SaaS startups",
+        default: "General web audience",
+      },
+      {
+        name: "intent",
+        type: "select",
+        label: "Search intent",
+        default: "informational",
+        options: [
+          { value: "informational", label: "Informational" },
+          { value: "commercial", label: "Commercial investigation" },
+          { value: "transactional", label: "Transactional" },
+        ],
+      },
+    ],
+    maxTokens: 2200,
+    effort: "high",
+    system: ({ intent, audience }) =>
+      `You are a senior SEO content strategist. Create a comprehensive content brief for a ${intent} page aimed at: ${audience}. Use Markdown with sections: Title ideas (5), Primary & secondary keywords, Search intent notes, Recommended outline (H2/H3), People Also Ask style questions, Internal link opportunities (generic but realistic), Word count target, and On-page checklist. Be specific and actionable.`,
+    buildUser: ({ keyword, audience, intent }) =>
+      `Primary keyword/topic: ${keyword}\nAudience: ${audience}\nIntent: ${intent}`,
+  },
+  "ai-meta-tag-writer": {
+    slug: "ai-meta-tag-writer",
+    cta: "Write meta tags",
+    outputLabel: "Titles & meta descriptions",
+    fields: [
+      {
+        name: "keyword",
+        type: "text",
+        label: "Focus keyword",
+        required: true,
+        placeholder: "keyword density checker",
+      },
+      {
+        name: "page",
+        type: "textarea",
+        label: "Page summary or draft",
+        required: true,
+        rows: 6,
+        placeholder: "Describe what the page covers…",
+      },
+      {
+        name: "brand",
+        type: "text",
+        label: "Brand name (optional)",
+        placeholder: "Mytulify",
+      },
+    ],
+    maxTokens: 1200,
+    effort: "medium",
+    system: () =>
+      `You are an SEO copywriter. Write click-worthy but honest SERP copy. Respond in Markdown with: ## Title tags (5 options, 50–60 characters each), ## Meta descriptions (5 options, 140–160 characters each), ## Notes (keyword placement + CTA tips). Count characters carefully. Do not stuff keywords.`,
+    buildUser: ({ keyword, page, brand }) =>
+      `Focus keyword: ${keyword}\nBrand: ${brand || "(none)"}\nPage content:\n${page}`,
+  },
+  "ai-seo-outline-generator": {
+    slug: "ai-seo-outline-generator",
+    cta: "Generate outline",
+    outputLabel: "SEO outline",
+    fields: [
+      {
+        name: "keyword",
+        type: "text",
+        label: "Target keyword",
+        required: true,
+      },
+      {
+        name: "angle",
+        type: "textarea",
+        label: "Unique angle / product to mention (optional)",
+        rows: 3,
+        placeholder: "We have a free online tool the reader can use…",
+      },
+    ],
+    maxTokens: 1800,
+    effort: "medium",
+    system: () =>
+      `You are an SEO editor. Produce a detailed article outline in Markdown: H1, then nested H2/H3 with 1-sentence notes under each on what to cover. Include intro hook, FAQ section ideas, and a conclusion CTA. Optimize for featured snippets with definition and list-friendly headings.`,
+    buildUser: ({ keyword, angle }) =>
+      angle?.trim() ? `Keyword: ${keyword}\nAngle: ${angle}` : `Keyword: ${keyword}`,
+  },
+  "ai-seo-page-audit": {
+    slug: "ai-seo-page-audit",
+    cta: "Audit page",
+    outputLabel: "SEO audit",
+    fields: [
+      {
+        name: "keyword",
+        type: "text",
+        label: "Target keyword (optional)",
+        placeholder: "primary keyword",
+      },
+      {
+        name: "html",
+        type: "textarea",
+        label: "Page HTML or text",
+        required: true,
+        rows: 12,
+        mono: true,
+        placeholder: "Paste HTML source or full page text…",
+      },
+    ],
+    maxTokens: 2200,
+    effort: "high",
+    think: true,
+    system: () =>
+      `You are a technical + on-page SEO auditor. Analyze the provided page HTML/text. Respond in Markdown with: ## Summary score (0-100) + one-line verdict, ## Critical issues, ## On-page recommendations, ## Technical notes (from HTML if present: title, meta, headings, canonical, schema), ## Quick wins (top 5 actions). Be concrete; quote snippets from the input.`,
+    buildUser: ({ keyword, html }) =>
+      keyword?.trim() ? `Target keyword: ${keyword}\n\nPage:\n${html}` : `Page:\n${html}`,
+  },
+} as Record<string, AiTool>);
+
 /* ------------------------------------------------------ Handwriting OCR --- */
 /**
  * 30 language-specific handwriting-OCR tools plus a generic one, all generated

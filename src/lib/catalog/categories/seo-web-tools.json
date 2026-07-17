@@ -1,7 +1,7 @@
 {
   "name": "SEO & Web Tools",
   "slug": "seo-web-tools",
-  "description": "Client-side SEO utilities for generating, analyzing, and previewing on-page and technical SEO assets.",
+  "description": "Comprehensive SEO suite — keyword research, technical audits, content optimization, rank tracking, backlinks, internal linking, schema, and AI SEO workflows.",
   "tools": [
     {
       "name": "Meta Tag Generator",
@@ -272,6 +272,186 @@
       "competition": "low",
       "complexity": "easy",
       "clientSide": true
+    },
+    {
+      "name": "Related Keywords Generator",
+      "slug": "related-keywords-generator",
+      "description": "Expand seed keywords into questions, commercial modifiers, long-tail phrases, and combinations for research.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Keyword Difficulty Estimator",
+      "slug": "keyword-difficulty-estimator",
+      "description": "Estimate keyword competitiveness from SERP signals like brands, content length, and authority.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Search Intent Classifier",
+      "slug": "search-intent-classifier",
+      "description": "Classify keywords as informational, commercial, transactional, or navigational with page-type suggestions.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "XML Sitemap Validator",
+      "slug": "xml-sitemap-validator",
+      "description": "Validate sitemap XML for parse errors, bad URLs, duplicates, lastmod dates, and the 50k limit.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Heading Structure Analyzer",
+      "slug": "heading-structure-analyzer",
+      "description": "Audit H1–H6 outlines in page HTML for multiple H1s, skipped levels, and empty headings.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "SEO Audit Checklist",
+      "slug": "seo-audit-checklist",
+      "description": "Interactive technical, on-page, E-E-A-T, and link audit checklist with progress saved in your browser.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "SEO Content Score",
+      "slug": "seo-content-score",
+      "description": "Score on-page SEO for a draft — keyword placement, density, title/meta length, and scannability.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Keyword Rank Tracker",
+      "slug": "keyword-rank-tracker",
+      "description": "Log keyword rankings over time in your browser and export CSV reports — no API key required.",
+      "searchVolume": "high",
+      "competition": "high",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Backlink Profile Analyzer",
+      "slug": "backlink-profile-analyzer",
+      "description": "Analyze Ahrefs/Semrush/Moz backlink CSV exports for anchors, referring hosts, and follow mix.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Disavow File Generator",
+      "slug": "disavow-file-generator",
+      "description": "Build a Google Search Console disavow.txt from spam domains and URLs.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Internal Link Suggester",
+      "slug": "internal-link-suggester",
+      "description": "Suggest internal links from your page list into a draft using keyword overlap scoring.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Orphan Page Finder",
+      "slug": "orphan-page-finder",
+      "description": "Find sitemap URLs with no internal links and linked URLs missing from the sitemap.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "Schema Markup Validator",
+      "slug": "schema-markup-validator",
+      "description": "Validate JSON-LD structure for FAQ, HowTo, Product, LocalBusiness, and common schema errors.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    },
+    {
+      "name": "HowTo Schema Generator",
+      "slug": "howto-schema-generator",
+      "description": "Generate HowTo JSON-LD structured data from a title and step-by-step list.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Local Business Schema Generator",
+      "slug": "local-business-schema-generator",
+      "description": "Create LocalBusiness JSON-LD with NAP, geo coordinates, and business type.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "NAP Consistency Checker",
+      "slug": "nap-consistency-checker",
+      "description": "Compare Name, Address, Phone across local citations to catch local SEO inconsistencies.",
+      "searchVolume": "medium",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Content Brief Generator",
+      "slug": "content-brief-generator",
+      "description": "AI SEO content brief with outline, PAA questions, keywords, and on-page checklist.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": false
+    },
+    {
+      "name": "AI Meta Tag Writer",
+      "slug": "ai-meta-tag-writer",
+      "description": "AI-written title tags and meta descriptions optimized for CTR and character limits.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "easy",
+      "clientSide": false
+    },
+    {
+      "name": "AI SEO Outline Generator",
+      "slug": "ai-seo-outline-generator",
+      "description": "AI article outline with H2/H3 structure tuned for featured snippets and search intent.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "easy",
+      "clientSide": false
+    },
+    {
+      "name": "AI SEO Page Audit",
+      "slug": "ai-seo-page-audit",
+      "description": "AI technical and on-page SEO audit from pasted HTML or page text with prioritized fixes.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": false
     }
   ]
 }

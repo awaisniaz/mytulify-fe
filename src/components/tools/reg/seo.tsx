@@ -8,11 +8,30 @@ import {
   HtmlTagStripper, EmailExtractor, CodeTextRatio, KeywordCombiner, ReadabilityChecker, HtaccessGenerator,
   MetaTagsAnalyzer, RobotsValidator,
 } from "@/components/tools/impl/seo";
+import {
+  RelatedKeywordsGenerator,
+  KeywordDifficultyEstimator,
+  SearchIntentClassifier,
+  XmlSitemapValidator,
+  HeadingStructureAnalyzer,
+  SeoAuditChecklist,
+  SeoContentScore,
+  KeywordRankTracker,
+  BacklinkProfileAnalyzer,
+  DisavowFileGenerator,
+  InternalLinkSuggester,
+  OrphanPageFinder,
+  SchemaMarkupValidator,
+  HowToSchemaGenerator,
+  LocalBusinessSchemaGenerator,
+  NapConsistencyChecker,
+} from "@/components/tools/impl/seo-suite";
 import { UrlTool } from "@/components/tools/impl/data";
 import { WordCounter, CharacterCounter, SlugTool, DiffChecker } from "@/components/tools/impl/text";
 import { FaviconGenerator } from "@/components/tools/impl/image";
 import { DomainNameFinder } from "@/components/tools/impl/domain";
 import { LlmsTxtGenerator, SecurityHeadersGenerator, AdsTxtGenerator } from "@/components/tools/impl/high-demand";
+import { AiTool } from "@/components/tools/impl/ai";
 
 export default makeReg({
   "meta-tag-generator": MetaTagGenerator,
@@ -50,4 +69,25 @@ export default makeReg({
   "llms-txt-generator": LlmsTxtGenerator,
   "security-headers-generator": SecurityHeadersGenerator,
   "ads-txt-generator": AdsTxtGenerator,
+  /* —— new comprehensive SEO suite —— */
+  "related-keywords-generator": RelatedKeywordsGenerator,
+  "keyword-difficulty-estimator": KeywordDifficultyEstimator,
+  "search-intent-classifier": SearchIntentClassifier,
+  "xml-sitemap-validator": XmlSitemapValidator,
+  "heading-structure-analyzer": HeadingStructureAnalyzer,
+  "seo-audit-checklist": SeoAuditChecklist,
+  "seo-content-score": SeoContentScore,
+  "keyword-rank-tracker": KeywordRankTracker,
+  "backlink-profile-analyzer": BacklinkProfileAnalyzer,
+  "disavow-file-generator": DisavowFileGenerator,
+  "internal-link-suggester": InternalLinkSuggester,
+  "orphan-page-finder": OrphanPageFinder,
+  "schema-markup-validator": SchemaMarkupValidator,
+  "howto-schema-generator": HowToSchemaGenerator,
+  "local-business-schema-generator": LocalBusinessSchemaGenerator,
+  "nap-consistency-checker": NapConsistencyChecker,
+  "content-brief-generator": () => <AiTool slug="content-brief-generator" />,
+  "ai-meta-tag-writer": () => <AiTool slug="ai-meta-tag-writer" />,
+  "ai-seo-outline-generator": () => <AiTool slug="ai-seo-outline-generator" />,
+  "ai-seo-page-audit": () => <AiTool slug="ai-seo-page-audit" />,
 });
