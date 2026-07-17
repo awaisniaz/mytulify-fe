@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Input, Select, Textarea } from "@/components/ui/primitives";
 import { CopyButton, Field, Output, Notice, Stat } from "@/components/tools/shared";
+import { FetchFromUrl, extractMeta } from "@/components/tools/fetch-from-url";
 
 /* ------------------------------ Meta tag gen ------------------------------- */
 export function MetaTagGenerator() {
@@ -312,6 +313,7 @@ export function CodeTextRatio() {
   const ratio = html.length ? ((text.length / html.length) * 100).toFixed(1) : "0";
   return (
     <div className="space-y-4">
+      <FetchFromUrl onFetched={(p) => setHtml(p.html)} />
       <Textarea value={html} onChange={(e) => setHtml(e.target.value)} rows={8} placeholder="Paste full page HTML…" />
       <div className="grid grid-cols-3 gap-3">
         <Stat label="HTML size" value={html.length} />
@@ -363,18 +365,21 @@ export function MetaTagsAnalyzer() {
   const [html, setHtml] = React.useState("");
   const rows: [string, string][] = [];
   if (html.trim() && typeof window !== "undefined") {
+    const meta = extractMeta(html);
+    rows.push(["Title", meta.title || "— missing —"]);
+    rows.push(["Description", meta.description || "— missing —"]);
     const doc = new DOMParser().parseFromString(html, "text/html");
-    rows.push(["Title", doc.querySelector("title")?.textContent ?? "— missing —"]);
-    rows.push(["Description", doc.querySelector('meta[name="description"]')?.getAttribute("content") ?? "— missing —"]);
     rows.push(["Keywords", doc.querySelector('meta[name="keywords"]')?.getAttribute("content") ?? "—"]);
-    rows.push(["Canonical", doc.querySelector('link[rel="canonical"]')?.getAttribute("href") ?? "—"]);
-    rows.push(["OG title", doc.querySelector('meta[property="og:title"]')?.getAttribute("content") ?? "—"]);
-    rows.push(["OG image", doc.querySelector('meta[property="og:image"]')?.getAttribute("content") ?? "—"]);
+    rows.push(["Canonical", meta.canonical || "—"]);
+    rows.push(["Robots", meta.robots || "—"]);
+    rows.push(["OG title", meta.ogTitle || "—"]);
+    rows.push(["OG image", meta.ogImage || "—"]);
     rows.push(["Viewport", doc.querySelector('meta[name="viewport"]')?.getAttribute("content") ?? "— missing —"]);
-    rows.push(["H1 count", String(doc.querySelectorAll("h1").length)]);
+    rows.push(["H1 count", String(meta.h1.length)]);
   }
   return (
     <div className="space-y-4">
+      <FetchFromUrl onFetched={(p) => setHtml(p.html)} />
       <Textarea value={html} onChange={(e) => setHtml(e.target.value)} rows={6} placeholder="Paste a page's HTML source…" />
       {rows.length > 0 && (
         <div className="overflow-hidden rounded-xl border border-border">
@@ -404,6 +409,13 @@ export function RobotsValidator() {
   });
   return (
     <div className="space-y-4">
+      <FetchFromUrl
+        label="robots.txt URL"
+        placeholder="https://example.com/robots.txt"
+        cta="Fetch robots.txt"
+        hint="Fetch a public robots.txt, or paste contents below"
+        onFetched={(p) => setTxt(p.html)}
+      />
       <Textarea value={txt} onChange={(e) => setTxt(e.target.value)} rows={8} />
       {issues.length === 0
         ? <Notice tone="success">✓ robots.txt looks valid.</Notice>

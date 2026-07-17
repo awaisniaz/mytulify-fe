@@ -274,6 +274,15 @@
       "clientSide": true
     },
     {
+      "name": "URL Page SEO Analyzer",
+      "slug": "url-page-seo-analyzer",
+      "description": "Paste a page URL to fetch live HTML and audit title, meta, headings, schema, images, and links.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
       "name": "Related Keywords Generator",
       "slug": "related-keywords-generator",
       "description": "Expand seed keywords into questions, commercial modifiers, long-tail phrases, and combinations for research.",

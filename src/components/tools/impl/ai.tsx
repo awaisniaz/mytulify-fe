@@ -8,6 +8,7 @@ import { proHeaders } from "@/lib/billing/client";
 import { Icon } from "@/components/ui/Icon";
 import { cn, readAsDataURL } from "@/lib/utils";
 import { AI_TOOLS, type AiField, type AiInput } from "@/lib/ai/tools";
+import { fetchPageHtml } from "@/components/tools/fetch-from-url";
 
 /** Read an image file and downscale it to keep the request payload reasonable. */
 async function fileToScaledDataUrl(file: File, maxDim = 1600): Promise<string> {
@@ -143,10 +144,23 @@ export function AiTool({ slug }: { slug: string }) {
     setOutput("");
     setLoading(true);
     try {
+      let payload: AiInput = { ...values };
+      if (slug === "ai-seo-page-audit") {
+        const pageUrl = payload.pageUrl?.trim() ?? "";
+        const html = payload.html?.trim() ?? "";
+        if (pageUrl && !html) {
+          const page = await fetchPageHtml(pageUrl);
+          payload = { ...payload, html: page.html.slice(0, 120_000), pageUrl: page.finalUrl };
+        } else if (!pageUrl && !html) {
+          setError("Enter a page URL or paste HTML.");
+          setLoading(false);
+          return;
+        }
+      }
       const res = await fetch(`/api/ai/${slug}`, {
         method: "POST",
         headers: { "Content-Type": "application/json", ...proHeaders() },
-        body: JSON.stringify(values),
+        body: JSON.stringify(payload),
       });
       const data = (await res.json()) as {
         text?: string;
@@ -160,8 +174,8 @@ export function AiTool({ slug }: { slug: string }) {
         setOutput(data.text ?? "");
         notifyUsageUpdated();
       }
-    } catch {
-      setError("Network error — please check your connection and try again.");
+    } catch (e) {
+      setError((e as Error).message || "Network error — please check your connection and try again.");
     } finally {
       setLoading(false);
     }

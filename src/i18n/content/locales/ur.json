@@ -1342,6 +1342,10 @@
       "name": "ads.txt Generator",
       "description": "Create a valid ads.txt file for Google AdSense and ad networks."
     },
+    "seo-web-tools/url-page-seo-analyzer": {
+      "name": "URL Page SEO Analyzer",
+      "description": "Page ka URL paste karein — live HTML fetch karke title, meta, headings, schema aur links audit."
+    },
     "seo-web-tools/related-keywords-generator": {
       "name": "Related Keywords Generator",
       "description": "Seed keywords se questions, commercial modifiers, long-tail aur combinations generate karein."

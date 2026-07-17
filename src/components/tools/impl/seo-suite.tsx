@@ -3,6 +3,14 @@
 import * as React from "react";
 import { Input, Select, Textarea, Button } from "@/components/ui/primitives";
 import { CopyButton, Field, Output, Notice, Stat } from "@/components/tools/shared";
+import {
+  FetchFromUrl,
+  extractMeta,
+  extractVisibleText,
+  extractJsonLdBlocks,
+  extractInternalLinks,
+  parsePageDoc,
+} from "@/components/tools/fetch-from-url";
 
 /* ----------------------------- shared helpers ------------------------------ */
 function tokenize(text: string): string[] {
@@ -336,6 +344,13 @@ export function XmlSitemapValidator() {
   return (
     <div className="space-y-4">
       <Notice tone="info">Validate sitemap XML structure, loc schemes, duplicates, lastmod dates, and the 50k URL limit.</Notice>
+      <FetchFromUrl
+        label="Sitemap URL"
+        placeholder="https://example.com/sitemap.xml"
+        cta="Fetch sitemap"
+        hint="Fetch a public sitemap.xml (or paste XML below)"
+        onFetched={(p) => setXml(p.html)}
+      />
       <Field label="Paste sitemap XML">
         <Textarea value={xml} onChange={(e) => setXml(e.target.value)} rows={10} className="font-mono text-xs" placeholder="<?xml version=&quot;1.0&quot;?>…" />
       </Field>
@@ -383,8 +398,9 @@ export function HeadingStructureAnalyzer() {
   return (
     <div className="space-y-4">
       <Notice tone="info">
-        Paste page HTML to audit H1–H6 outline — multiple H1s, skipped levels, and thin heading text for content SEO.
+        Paste a page URL or HTML to audit H1–H6 outline — multiple H1s, skipped levels, and thin heading text.
       </Notice>
+      <FetchFromUrl onFetched={(p) => setHtml(p.html)} />
       <Field label="HTML">
         <Textarea value={html} onChange={(e) => setHtml(e.target.value)} rows={10} className="font-mono text-xs" placeholder="<html>…" />
       </Field>
@@ -614,9 +630,16 @@ export function SeoContentScore() {
   return (
     <div className="space-y-4">
       <Notice tone="info">
-        On-page SEO content score from title, meta description, body, and focus keyword — density, placement, length,
-        and scannability.
+        On-page SEO content score from title, meta description, body, and focus keyword — or fetch a live page URL.
       </Notice>
+      <FetchFromUrl
+        onFetched={(p) => {
+          const meta = extractMeta(p.html);
+          setTitle(meta.title);
+          setDescription(meta.description);
+          setBody(extractVisibleText(p.html).slice(0, 50_000));
+        }}
+      />
       <Field label="Focus keyword">
         <Input value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="xml sitemap generator" />
       </Field>
@@ -1050,33 +1073,48 @@ export function OrphanPageFinder() {
 /* ===================== Schema / niche ===================== */
 export function SchemaMarkupValidator() {
   const [json, setJson] = React.useState("");
+  const [fetchNote, setFetchNote] = React.useState<string | null>(null);
   const report = React.useMemo(() => {
     if (!json.trim()) return null;
     const issues: string[] = [];
-    let data: unknown;
-    try {
-      data = JSON.parse(json);
-    } catch (e) {
-      return { ok: false, issues: [`Invalid JSON: ${(e as Error).message}`], types: [] as string[] };
-    }
-    const nodes = Array.isArray(data) ? data : [data];
     const types: string[] = [];
-    for (const node of nodes) {
-      if (!node || typeof node !== "object") {
-        issues.push("Array item is not an object.");
+    const chunks = json
+      .split(/\n\s*\n/)
+      .map((c) => c.trim())
+      .filter(Boolean);
+    const toParse = chunks.length > 1 ? chunks : [json.trim()];
+    for (const chunk of toParse) {
+      let data: unknown;
+      try {
+        data = JSON.parse(chunk);
+      } catch (e) {
+        issues.push(`Invalid JSON: ${(e as Error).message}`);
         continue;
       }
-      const o = node as Record<string, unknown>;
-      if (!o["@context"] && !o["@type"]) issues.push("Missing @context and @type on a node.");
-      if (!o["@type"]) issues.push("Missing @type.");
-      else types.push(String(o["@type"]));
-      if (o["@type"] === "FAQPage") {
-        const main = o.mainEntity;
-        if (!Array.isArray(main) || !main.length) issues.push("FAQPage needs mainEntity Q&A array.");
+      const nodes = Array.isArray(data)
+        ? data
+        : data && typeof data === "object" && "@graph" in (data as object)
+          ? ((data as { "@graph": unknown[] })["@graph"] ?? [data])
+          : [data];
+      for (const node of nodes) {
+        if (!node || typeof node !== "object") {
+          issues.push("Array item is not an object.");
+          continue;
+        }
+        const o = node as Record<string, unknown>;
+        if (!o["@context"] && !o["@type"] && !Array.isArray(o["@graph"])) {
+          issues.push("Missing @context and @type on a node.");
+        }
+        if (!o["@type"]) issues.push("Missing @type.");
+        else types.push(String(o["@type"]));
+        if (o["@type"] === "FAQPage") {
+          const main = o.mainEntity;
+          if (!Array.isArray(main) || !main.length) issues.push("FAQPage needs mainEntity Q&A array.");
+        }
+        if (o["@type"] === "HowTo" && !Array.isArray(o.step)) issues.push("HowTo should include step[].");
+        if (o["@type"] === "Product" && !o.name) issues.push("Product missing name.");
+        if (o["@type"] === "LocalBusiness" && !o.address && !o.name) issues.push("LocalBusiness needs name/address.");
       }
-      if (o["@type"] === "HowTo" && !Array.isArray(o.step)) issues.push("HowTo should include step[].");
-      if (o["@type"] === "Product" && !o.name) issues.push("Product missing name.");
-      if (o["@type"] === "LocalBusiness" && !o.address && !o.name) issues.push("LocalBusiness needs name/address.");
     }
     if (!issues.length) issues.push("JSON parses cleanly. Also test in Google Rich Results Test when live.");
     return { ok: issues[0]?.startsWith("JSON parses") ?? false, issues, types };
@@ -1085,8 +1123,21 @@ export function SchemaMarkupValidator() {
   return (
     <div className="space-y-4">
       <Notice tone="info">
-        Validate JSON-LD structure before publishing — FAQPage, HowTo, Product, LocalBusiness common pitfalls included.
+        Validate JSON-LD from a pasted block — or fetch a live page and extract all schema scripts.
       </Notice>
+      <FetchFromUrl
+        onFetched={(p) => {
+          const blocks = extractJsonLdBlocks(p.html);
+          if (!blocks.length) {
+            setJson("");
+            setFetchNote("No application/ld+json scripts found on this page.");
+          } else {
+            setJson(blocks.join("\n\n"));
+            setFetchNote(`Extracted ${blocks.length} JSON-LD block(s).`);
+          }
+        }}
+      />
+      {fetchNote && <Notice tone="info">{fetchNote}</Notice>}
       <Field label="JSON-LD">
         <Textarea value={json} onChange={(e) => setJson(e.target.value)} rows={12} className="font-mono text-xs" />
       </Field>
@@ -1271,6 +1322,145 @@ export function NapConsistencyChecker() {
           </tbody>
         </table>
       </div>
+    </div>
+  );
+}
+
+/* ===================== URL page analyzer ===================== */
+export function UrlPageSeoAnalyzer() {
+  const [html, setHtml] = React.useState("");
+  const [finalUrl, setFinalUrl] = React.useState("");
+  const [keyword, setKeyword] = React.useState("");
+
+  const report = React.useMemo(() => {
+    if (!html.trim()) return null;
+    const meta = extractMeta(html);
+    const doc = parsePageDoc(html);
+    const text = extractVisibleText(html);
+    const words = text.split(/\s+/).filter(Boolean).length;
+    const headings = [...doc.querySelectorAll("h1,h2,h3,h4,h5,h6")].map((el) => ({
+      tag: el.tagName.toLowerCase(),
+      text: (el.textContent ?? "").replace(/\s+/g, " ").trim().slice(0, 100),
+    }));
+    const images = doc.querySelectorAll("img");
+    let missingAlt = 0;
+    images.forEach((img) => {
+      if (!(img.getAttribute("alt") ?? "").trim()) missingAlt++;
+    });
+    const jsonLd = extractJsonLdBlocks(html);
+    const links = extractInternalLinks(html, finalUrl || "https://example.com");
+    const issues: string[] = [];
+    if (!meta.title) issues.push("Missing <title>");
+    else if (meta.title.length < 30 || meta.title.length > 60) issues.push(`Title length ${meta.title.length} (aim 30–60)`);
+    if (!meta.description) issues.push("Missing meta description");
+    else if (meta.description.length < 120 || meta.description.length > 160)
+      issues.push(`Meta description length ${meta.description.length} (aim 120–160)`);
+    if (!meta.canonical) issues.push("No canonical link");
+    if (meta.h1.length === 0) issues.push("No H1");
+    if (meta.h1.length > 1) issues.push(`${meta.h1.length} H1 tags`);
+    if (/noindex/i.test(meta.robots)) issues.push(`robots meta: ${meta.robots}`);
+    if (missingAlt) issues.push(`${missingAlt} image(s) missing alt`);
+    if (!jsonLd.length) issues.push("No JSON-LD structured data found");
+    if (words < 300) issues.push(`Thin content (~${words} words)`);
+
+    const kw = keyword.trim().toLowerCase();
+    if (kw) {
+      if (!meta.title.toLowerCase().includes(kw)) issues.push("Focus keyword missing from title");
+      if (!text.toLowerCase().slice(0, 500).includes(kw)) issues.push("Focus keyword not near top of body");
+    }
+
+    let score = 100;
+    score -= Math.min(60, issues.length * 8);
+    score = Math.max(5, score);
+
+    return {
+      meta,
+      words,
+      headings,
+      images: images.length,
+      missingAlt,
+      jsonLdCount: jsonLd.length,
+      jsonLdPreview: jsonLd.slice(0, 2),
+      links: links.slice(0, 40),
+      linkCount: links.length,
+      issues,
+      score,
+      textPreview: text.slice(0, 400),
+    };
+  }, [html, finalUrl, keyword]);
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Paste any public page URL — we fetch the HTML and run a full on-page SEO check: title/meta, headings, schema,
+        images, internal links, and content length.
+      </Notice>
+      <FetchFromUrl
+        label="Page URL"
+        cta="Analyze page"
+        onFetched={(p) => {
+          setHtml(p.html);
+          setFinalUrl(p.finalUrl);
+        }}
+      />
+      <Field label="Focus keyword (optional)">
+        <Input value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="primary keyword to check" />
+      </Field>
+      {report && (
+        <>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <Stat label="SEO score" value={`${report.score}/100`} />
+            <Stat label="Words" value={report.words} />
+            <Stat label="Internal links" value={report.linkCount} />
+            <Stat label="JSON-LD blocks" value={report.jsonLdCount} />
+          </div>
+          {finalUrl && <p className="text-xs text-muted">Analyzed: {finalUrl}</p>}
+          <div className="overflow-hidden rounded-xl border border-border">
+            <table className="w-full text-sm">
+              <tbody>
+                {(
+                  [
+                    ["Title", report.meta.title || "— missing —"],
+                    ["Description", report.meta.description || "— missing —"],
+                    ["Canonical", report.meta.canonical || "—"],
+                    ["Robots", report.meta.robots || "—"],
+                    ["OG title", report.meta.ogTitle || "—"],
+                    ["H1", report.meta.h1.join(" | ") || "— missing —"],
+                    ["Images", `${report.images} (${report.missingAlt} missing alt)`],
+                  ] as [string, string][]
+                ).map(([k, v]) => (
+                  <tr key={k} className="border-b border-border last:border-0">
+                    <td className="w-32 bg-surface-2 px-3 py-2 font-medium">{k}</td>
+                    <td className={`px-3 py-2 ${v.includes("missing") ? "text-rose-500" : ""}`}>{v}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <p className="mb-1 text-xs font-bold uppercase text-muted">Issues & opportunities</p>
+            <ul className="list-inside list-disc text-sm text-muted">
+              {report.issues.length ? report.issues.map((i) => <li key={i}>{i}</li>) : <li>No major on-page issues detected.</li>}
+            </ul>
+          </div>
+          <div>
+            <p className="mb-1 text-xs font-bold uppercase text-muted">Heading outline</p>
+            <div className="max-h-48 overflow-y-auto rounded-xl border border-border text-sm">
+              {report.headings.map((h, i) => (
+                <div key={i} className="border-t border-border px-3 py-1 first:border-0">
+                  <span className="font-mono text-xs text-brand">{h.tag}</span> {h.text || "(empty)"}
+                </div>
+              ))}
+            </div>
+          </div>
+          {report.links.length > 0 && (
+            <Output value={report.links.join("\n")} rows={6} filename="internal-links.txt" />
+          )}
+          {report.jsonLdPreview.length > 0 && (
+            <Output value={report.jsonLdPreview.join("\n\n")} rows={8} filename="schema.json" mime="application/json" />
+          )}
+        </>
+      )}
     </div>
   );
 }

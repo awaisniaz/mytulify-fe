@@ -308,6 +308,7 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "llms-txt-generator": "Bot",
   "security-headers-generator": "Shield",
   "ads-txt-generator": "Megaphone",
+  "url-page-seo-analyzer": "TrendingUp",
   "related-keywords-generator": "Search",
   "keyword-difficulty-estimator": "Search",
   "search-intent-classifier": "Search",

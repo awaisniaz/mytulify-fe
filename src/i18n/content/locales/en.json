@@ -1453,6 +1453,40 @@
       "name": "ads.txt Generator",
       "description": "Create a valid ads.txt file for Google AdSense and ad networks."
     },
+    "seo-web-tools/url-page-seo-analyzer": {
+      "name": "URL Page SEO Analyzer",
+      "description": "Paste a page URL to fetch live HTML and audit title, meta, headings, schema, images, and links.",
+      "metaTitle": "URL Page SEO Analyzer – Free On-Page Audit by Link | Mytulify",
+      "metaDescription": "Paste any page URL for a free on-page SEO audit: title, meta, headings, schema, images, and internal links. No signup.",
+      "about": [
+        "Most SEO checkers make you paste HTML by hand. This analyzer fetches a public page from its URL and runs an on-page audit in one step — title and meta lengths, H1 issues, missing alt text, JSON-LD presence, content length, and internal links.",
+        "Use it for quick competitor checks, staging reviews (if publicly reachable), and client spot-checks before a deeper AI SEO Page Audit."
+      ],
+      "howTo": {
+        "title": "How to analyze a page by URL",
+        "steps": [
+          "Paste the full page URL (https://…).",
+          "Optionally add a focus keyword to check placement in the title and intro.",
+          "Click Analyze page and review the score, issues list, heading outline, and schema preview."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Can I analyze pages behind login?",
+          "a": "No. Only publicly reachable pages. For private HTML, paste source into Heading Structure Analyzer or AI SEO Page Audit instead."
+        },
+        {
+          "q": "Does this crawl the whole site?",
+          "a": "It fetches a single URL. For site-wide work, combine with the sitemap validator, orphan page finder, and audit checklist."
+        }
+      ],
+      "related": [
+        "seo-web-tools/meta-tags-analyzer",
+        "seo-web-tools/heading-structure-analyzer",
+        "seo-web-tools/ai-seo-page-audit",
+        "seo-web-tools/seo-content-score"
+      ]
+    },
     "seo-web-tools/related-keywords-generator": {
       "name": "Related Keywords Generator",
       "description": "Expand seed keywords into questions, commercial modifiers, long-tail phrases, and combinations for research.",

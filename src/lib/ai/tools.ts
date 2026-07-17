@@ -506,6 +506,12 @@ Object.assign(AI_TOOLS, {
     outputLabel: "SEO audit",
     fields: [
       {
+        name: "pageUrl",
+        type: "text",
+        label: "Page URL (optional — fetch live HTML)",
+        placeholder: "https://example.com/page",
+      },
+      {
         name: "keyword",
         type: "text",
         label: "Target keyword (optional)",
@@ -515,10 +521,10 @@ Object.assign(AI_TOOLS, {
         name: "html",
         type: "textarea",
         label: "Page HTML or text",
-        required: true,
+        required: false,
         rows: 12,
         mono: true,
-        placeholder: "Paste HTML source or full page text…",
+        placeholder: "Paste HTML — or leave empty and use Page URL above",
       },
     ],
     maxTokens: 2200,
@@ -526,8 +532,13 @@ Object.assign(AI_TOOLS, {
     think: true,
     system: () =>
       `You are a technical + on-page SEO auditor. Analyze the provided page HTML/text. Respond in Markdown with: ## Summary score (0-100) + one-line verdict, ## Critical issues, ## On-page recommendations, ## Technical notes (from HTML if present: title, meta, headings, canonical, schema), ## Quick wins (top 5 actions). Be concrete; quote snippets from the input.`,
-    buildUser: ({ keyword, html }) =>
-      keyword?.trim() ? `Target keyword: ${keyword}\n\nPage:\n${html}` : `Page:\n${html}`,
+    buildUser: ({ keyword, html, pageUrl }) => {
+      const parts = [];
+      if (pageUrl?.trim()) parts.push(`Page URL: ${pageUrl}`);
+      if (keyword?.trim()) parts.push(`Target keyword: ${keyword}`);
+      parts.push(`Page:\n${html || "(empty)"}`);
+      return parts.join("\n\n");
+    },
   },
 } as Record<string, AiTool>);
 

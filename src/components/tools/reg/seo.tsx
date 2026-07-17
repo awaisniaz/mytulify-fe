@@ -25,6 +25,7 @@ import {
   HowToSchemaGenerator,
   LocalBusinessSchemaGenerator,
   NapConsistencyChecker,
+  UrlPageSeoAnalyzer,
 } from "@/components/tools/impl/seo-suite";
 import { UrlTool } from "@/components/tools/impl/data";
 import { WordCounter, CharacterCounter, SlugTool, DiffChecker } from "@/components/tools/impl/text";
@@ -69,6 +70,7 @@ export default makeReg({
   "llms-txt-generator": LlmsTxtGenerator,
   "security-headers-generator": SecurityHeadersGenerator,
   "ads-txt-generator": AdsTxtGenerator,
+  "url-page-seo-analyzer": UrlPageSeoAnalyzer,
   /* —— new comprehensive SEO suite —— */
   "related-keywords-generator": RelatedKeywordsGenerator,
   "keyword-difficulty-estimator": KeywordDifficultyEstimator,
