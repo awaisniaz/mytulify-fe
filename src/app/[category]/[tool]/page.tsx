@@ -11,9 +11,10 @@ import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
 import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
 import { socialMeta } from "@/lib/seo";
+import { faqPageJsonLd, howToJsonLd, toolQuickFacts } from "@/lib/aeo";
 import { getLocale } from "@/i18n/locale";
 import {
-  buildFaq, getContent, localizeCategory, localizeTool, toolAboutParagraphs, toolMeta,
+  buildFaq, buildHowTo, getContent, localizeCategory, localizeTool, toolAboutParagraphs, toolMeta,
 } from "@/i18n/content";
 
 export function generateStaticParams() {
@@ -96,11 +97,14 @@ export default async function ToolPage({
   });
   const related = resolveRelated(label.related, t, 4);
   const faq = buildFaq(content, label, t.clientSide);
+  const howTo = buildHowTo(content, label, t.clientSide);
   const about = toolAboutParagraphs(content, label, t.clientSide);
+  const facts = toolQuickFacts(label.name, t.clientSide);
   const present = getToolIconPresentation(t);
   const s = content.strings;
   const perDay = s.perDayFree.replace("{limit}", String(FREE_AI_DAILY_LIMIT));
   const available = isToolAvailable(t);
+  const pageUrl = `${site.url}${toolHref(t)}`;
 
   const jsonLd = available
     ? [
@@ -111,7 +115,7 @@ export default async function ToolPage({
           applicationCategory: "UtilitiesApplication",
           operatingSystem: "Any (Web)",
           description: label.description,
-          url: `${site.url}${toolHref(t)}`,
+          url: pageUrl,
           offers: {
             "@type": "Offer",
             price: "0",
@@ -127,18 +131,11 @@ export default async function ToolPage({
           itemListElement: [
             { "@type": "ListItem", position: 1, name: s.home, item: site.url },
             { "@type": "ListItem", position: 2, name: catLabel.name, item: `${site.url}/${cat.slug}` },
-            { "@type": "ListItem", position: 3, name: label.name, item: `${site.url}${toolHref(t)}` },
+            { "@type": "ListItem", position: 3, name: label.name, item: pageUrl },
           ],
         },
-        {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: faq.map((f) => ({
-            "@type": "Question",
-            name: f.q,
-            acceptedAnswer: { "@type": "Answer", text: f.a },
-          })),
-        },
+        faqPageJsonLd(faq),
+        howToJsonLd(howTo, pageUrl, label.name),
       ]
     : [
         {
@@ -147,7 +144,7 @@ export default async function ToolPage({
           itemListElement: [
             { "@type": "ListItem", position: 1, name: s.home, item: site.url },
             { "@type": "ListItem", position: 2, name: catLabel.name, item: `${site.url}/${cat.slug}` },
-            { "@type": "ListItem", position: 3, name: label.name, item: `${site.url}${toolHref(t)}` },
+            { "@type": "ListItem", position: 3, name: label.name, item: pageUrl },
           ],
         },
       ];
@@ -224,16 +221,39 @@ export default async function ToolPage({
             <p key={paragraph.slice(0, 48)} className="leading-relaxed">{paragraph}</p>
           ))}
         </div>
-        {label.howTo && (
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold text-foreground">{label.howTo.title}</h3>
-            <ol className="mt-3 list-decimal space-y-2 pl-5 text-muted">
-              {label.howTo.steps.map((step) => (
-                <li key={step.slice(0, 48)} className="leading-relaxed">{step}</li>
-              ))}
-            </ol>
+
+        <div id="how-to-use" className="mt-8">
+          <h2 className="text-xl font-bold text-foreground">{howTo.title}</h2>
+          <ol className="mt-3 list-decimal space-y-2 pl-5 text-muted">
+            {howTo.steps.map((step) => (
+              <li key={step.slice(0, 48)} className="leading-relaxed">{step}</li>
+            ))}
+          </ol>
+        </div>
+
+        <div className="mt-8">
+          <h3 className="text-lg font-semibold text-foreground">
+            {(s.quickFactsTitle ?? "Key facts about the {name}").replace("{name}", label.name)}
+          </h3>
+          <div className="mt-3 overflow-x-auto rounded-xl border border-border">
+            <table className="w-full min-w-[280px] text-left text-sm">
+              <thead>
+                <tr className="border-b border-border bg-surface-2/60">
+                  <th className="px-4 py-2.5 font-semibold text-foreground">Fact</th>
+                  <th className="px-4 py-2.5 font-semibold text-foreground">Detail</th>
+                </tr>
+              </thead>
+              <tbody>
+                {facts.map((row) => (
+                  <tr key={row.label} className="border-b border-border last:border-0">
+                    <td className="px-4 py-2.5 font-medium text-foreground">{row.label}</td>
+                    <td className="px-4 py-2.5 text-muted">{row.value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        )}
+        </div>
       </section>
 
       <section className="mt-10">

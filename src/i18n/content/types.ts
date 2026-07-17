@@ -38,6 +38,8 @@ export type ContentStrings = {
   comingSoonBody: string;
   faqTitle: string;
   aboutTool: string;
+  howToTitle: string;
+  quickFactsTitle: string;
   relatedTools: string;
   exploreOther: string;
   toolsCount: string;
@@ -50,6 +52,9 @@ export type ContentStrings = {
   searchResultsMany: string;
   searchClear: string;
   browseTools: string;
+  faqWhatIsQ: string;
+  faqWhatIsAClient: string;
+  faqWhatIsAAi: string;
   faqIsFreeQ: string;
   faqIsFreeAClient: string;
   faqIsFreeAAi: string;

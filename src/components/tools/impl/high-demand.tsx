@@ -56,7 +56,13 @@ export function LlmsTxtGenerator() {
 
   return (
     <div className="space-y-4">
-      <Notice tone="info">Trending for AI SEO in 2026 — helps ChatGPT, Claude & Google AI find your best pages.</Notice>
+      <Notice tone="info">
+        Trending for AI SEO (GEO) in 2026 — helps ChatGPT, Claude & Perplexity find your best pages. See{" "}
+        <a href="/llms.txt" className="font-semibold text-brand underline" target="_blank" rel="noreferrer">
+          Mytulify&apos;s live llms.txt
+        </a>{" "}
+        for a real example.
+      </Notice>
       <Field label="Site / project name"><Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Mytulify" /></Field>
       <Field label="Short description"><Textarea value={desc} onChange={(e) => setDesc(e.target.value)} rows={2} className="font-sans" placeholder="Online tools for PDF, SEO, developers…" /></Field>
       <Field label="Important URLs" hint="One per line (or use sitemap below)">

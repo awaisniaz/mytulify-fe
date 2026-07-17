@@ -1,15 +1,21 @@
 import type { Tool } from "@/lib/catalog";
 import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
+import {
+  defaultHowTo,
+  descClause,
+  directAnswerLead,
+  ensureDirectAbout,
+} from "@/lib/aeo";
 import type { Locale } from "../config";
 import { DEFAULT_LOCALE } from "../config";
-import type { ContentBundle, LocalizedCategory, LocalizedTool, ToolFaqItem } from "./types";
+import type { ContentBundle, LocalizedCategory, LocalizedTool, ToolFaqItem, ToolHowTo } from "./types";
 import enContent from "./locales/en.json";
 
 const cache = new Map<Locale, ContentBundle>();
 const fallback = enContent as ContentBundle;
 cache.set("en", fallback);
 
-export type { ContentBundle, LocalizedTool, LocalizedCategory };
+export type { ContentBundle, LocalizedTool, LocalizedCategory, ToolFaqItem, ToolHowTo };
 
 export function toolContentKey(tool: Pick<Tool, "category" | "slug">) {
   return `${tool.category}/${tool.slug}`;
@@ -51,19 +57,23 @@ export function localizeTool(content: ContentBundle, tool: Tool): LocalizedTool 
       `${base.description} Upload a photo and get editable text in seconds. Free AI OCR on Mytulify — ${FREE_AI_DAILY_LIMIT} runs/day, no signup.`;
     if (!base.about?.length) {
       base.about = [
-        `${name} uses AI vision to turn a photo of handwriting into editable digital text. ${base.description}`,
+        directAnswerLead(name, base.description),
         "Upload a clear photo or scan, wait a few seconds, then copy or download the transcription. The Free plan includes limited daily AI runs; Pro unlocks unlimited OCR.",
       ];
     }
     if (!base.faq?.length) {
       base.faq = [
         {
+          q: `What is ${name}?`,
+          a: `${name} is a free AI OCR tool on Mytulify that turns a photo of handwriting into editable digital text. Upload a clear image, wait a few seconds, then copy or download the transcription for notes, forms, or archives.`,
+        },
+        {
           q: `Is ${name} free?`,
-          a: `Yes. Free accounts get ${FREE_AI_DAILY_LIMIT} AI/OCR runs per day on Mytulify. Upgrade to Pro for unlimited handwriting OCR.`,
+          a: `Yes. Free accounts get ${FREE_AI_DAILY_LIMIT} AI/OCR runs per day on Mytulify. Upgrade to Pro for unlimited handwriting OCR when you need higher daily volume.`,
         },
         {
           q: "What image quality works best?",
-          a: "Use a well-lit, sharp photo with the writing filling most of the frame. Avoid heavy glare or blur for the most accurate transcription.",
+          a: "Use a well-lit, sharp photo with the writing filling most of the frame. Avoid heavy glare, blur, or extreme angles for the most accurate transcription from the OCR model.",
         },
         {
           q: "Is my handwriting photo stored?",
@@ -92,6 +102,7 @@ function fmt(template: string, vars: Record<string, string | number>) {
   );
 }
 
+/** Visible FAQ for every tool page — mirrors FAQPage JSON-LD exactly. */
 export function buildFaq(
   content: ContentBundle,
   label: LocalizedTool,
@@ -101,21 +112,47 @@ export function buildFaq(
   const s = content.strings;
   const name = label.name;
   const desc = label.description;
+  const clause = descClause(desc);
+  const vars = { name, desc, descClause: clause, limit: FREE_AI_DAILY_LIMIT };
+
   return [
     {
-      q: fmt(s.faqIsFreeQ, { name }),
+      q: fmt(s.faqWhatIsQ, vars),
+      a: clientSide ? fmt(s.faqWhatIsAClient, vars) : fmt(s.faqWhatIsAAi, vars),
+    },
+    {
+      q: fmt(s.faqIsFreeQ, vars),
       a: clientSide
-        ? fmt(s.faqIsFreeAClient, { name })
-        : fmt(s.faqIsFreeAAi, { name, limit: FREE_AI_DAILY_LIMIT }),
+        ? fmt(s.faqIsFreeAClient, vars)
+        : fmt(s.faqIsFreeAAi, vars),
     },
     clientSide
-      ? { q: fmt(s.faqSafeQ, { name }), a: fmt(s.faqSafeA, { name }) }
-      : { q: fmt(s.faqDataQ, { name }), a: fmt(s.faqDataA, { name }) },
+      ? { q: fmt(s.faqSafeQ, vars), a: fmt(s.faqSafeA, vars) }
+      : { q: fmt(s.faqDataQ, vars), a: fmt(s.faqDataA, vars) },
     {
-      q: fmt(s.faqHowQ, { name }),
-      a: clientSide ? fmt(s.faqHowAClient, { desc }) : fmt(s.faqHowAAi, { desc }),
+      q: fmt(s.faqHowQ, vars),
+      a: clientSide ? fmt(s.faqHowAClient, vars) : fmt(s.faqHowAAi, vars),
     },
   ];
+}
+
+/** Always returns HowTo steps for visible `<ol>` + HowTo JSON-LD. */
+export function buildHowTo(
+  content: ContentBundle,
+  label: LocalizedTool,
+  clientSide: boolean,
+): ToolHowTo {
+  if (label.howTo?.steps?.length) {
+    return {
+      title: label.howTo.title || fmt(content.strings.howToTitle, { name: label.name }),
+      steps: label.howTo.steps,
+    };
+  }
+  const generated = defaultHowTo(label.name, clientSide);
+  return {
+    title: fmt(content.strings.howToTitle ?? generated.title, { name: label.name }),
+    steps: generated.steps,
+  };
 }
 
 export function toolAboutParagraphs(
@@ -123,20 +160,22 @@ export function toolAboutParagraphs(
   label: LocalizedTool,
   clientSide: boolean,
 ): string[] {
-  if (label.about?.length) return label.about;
-  const s = content.strings;
-  const text = clientSide
-    ? fmt(s.toolAboutClient, { name: label.name, desc: label.description, limit: FREE_AI_DAILY_LIMIT })
-    : fmt(s.toolAboutAi, { name: label.name, desc: label.description, limit: FREE_AI_DAILY_LIMIT });
-  return [text];
+  if (label.about?.length) {
+    return ensureDirectAbout(label.about, label.name, label.description, !clientSide);
+  }
+  // Lead sentence is always a tight direct answer (AEO/GEO snippet bait).
+  const lead = directAnswerLead(label.name, label.description, !clientSide);
+  const second = clientSide
+    ? "It runs entirely in your browser on Mytulify — fast, private, and unlimited on the Free plan. No account or installation is required."
+    : `The Free plan includes ${FREE_AI_DAILY_LIMIT} runs per day; Pro unlocks unlimited runs. Input is processed on our server — avoid pasting secrets and review output before use.`;
+  return [lead, second];
 }
 
 /** @deprecated Prefer toolAboutParagraphs — kept for any external callers. */
 export function toolAboutText(content: ContentBundle, name: string, desc: string, clientSide: boolean) {
   const s = content.strings;
-  return clientSide
-    ? fmt(s.toolAboutClient, { name, desc, limit: FREE_AI_DAILY_LIMIT })
-    : fmt(s.toolAboutAi, { name, desc, limit: FREE_AI_DAILY_LIMIT });
+  const vars = { name, desc, descClause: descClause(desc), limit: FREE_AI_DAILY_LIMIT };
+  return clientSide ? fmt(s.toolAboutClient, vars) : fmt(s.toolAboutAi, vars);
 }
 
 export function toolMeta(content: ContentBundle, label: LocalizedTool, clientSide: boolean) {
