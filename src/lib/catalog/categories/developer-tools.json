@@ -317,6 +317,15 @@
       "competition": "low",
       "complexity": "easy",
       "clientSide": true
+    },
+    {
+      "name": "JSON Diff Checker",
+      "slug": "json-diff-checker",
+      "description": "Compare two JSON documents with path-level added, removed, and changed highlights.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
     }
   ]
 }

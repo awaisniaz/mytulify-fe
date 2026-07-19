@@ -39,6 +39,8 @@
     { "name": "Salary Tax Calculator", "slug": "salary-tax-calculator", "description": "Estimate income tax and net salary from gross pay.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
     { "name": "EMI Calculator", "slug": "emi-calculator", "description": "Calculate monthly EMI, total interest, and payment for home, car, or personal loans.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true },
     { "name": "VAT / GST Calculator", "slug": "vat-gst-calculator", "description": "Add or extract VAT and GST from any amount with a custom tax rate.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "Profit Margin Calculator", "slug": "profit-margin-calculator", "description": "Calculate profit, profit margin %, and markup from cost and selling price.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true }
+    { "name": "Profit Margin Calculator", "slug": "profit-margin-calculator", "description": "Calculate profit, profit margin %, and markup from cost and selling price.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
+    { "name": "Debt Payoff Calculator", "slug": "debt-payoff-calculator", "description": "Compare snowball vs avalanche debt payoff plans with months, interest, and a payment schedule.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
+    { "name": "Inflation Calculator", "slug": "inflation-calculator", "description": "See what today’s money will be worth later — or was worth in the past — using a custom inflation rate.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true }
   ]
 }

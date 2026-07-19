@@ -15,6 +15,7 @@ import { InvoiceGenerator, IbanValidator } from "@/components/tools/impl/high-de
 import {
   EmailSignatureGenerator, VcardGenerator, IcsCalendarGenerator,
 } from "@/components/tools/impl/demand-extra";
+import { DecisionWheel, PomodoroTimer } from "@/components/tools/impl/engaging-suite";
 
 export default makeReg({
   "json-to-csv": JsonToCsv,
@@ -52,4 +53,6 @@ export default makeReg({
   "email-signature-generator": EmailSignatureGenerator,
   "vcard-generator": VcardGenerator,
   "ics-calendar-generator": IcsCalendarGenerator,
+  "decision-wheel": DecisionWheel,
+  "pomodoro-timer": PomodoroTimer,
 });

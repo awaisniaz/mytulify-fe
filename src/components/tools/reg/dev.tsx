@@ -15,6 +15,7 @@ import { GitignoreGenerator } from "@/components/tools/impl/devops";
 import { RegexExplainer, DataFileMerger, DuplicateFileFinder } from "@/components/tools/impl/devx";
 import { MockDataGenerator, PwaManifestGenerator } from "@/components/tools/impl/high-demand";
 import { PxRemConverter } from "@/components/tools/impl/demand-extra";
+import { JsonDiffChecker } from "@/components/tools/impl/engaging-suite";
 
 export default makeReg({
   "json-formatter": JsonFormatter,
@@ -55,4 +56,5 @@ export default makeReg({
   "duplicate-file-finder": DuplicateFileFinder,
   "mock-data-generator": MockDataGenerator,
   "pwa-manifest-generator": PwaManifestGenerator,
+  "json-diff-checker": JsonDiffChecker,
 });

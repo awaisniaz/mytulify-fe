@@ -164,6 +164,24 @@
       "competition": "low",
       "complexity": "easy",
       "clientSide": true
+    },
+    {
+      "name": "Decision Wheel",
+      "slug": "decision-wheel",
+      "description": "Spin a colorful wheel to pick randomly from your list — lunch, chores, team decisions, and more.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "easy",
+      "clientSide": true
+    },
+    {
+      "name": "Pomodoro Timer",
+      "slug": "pomodoro-timer",
+      "description": "Free focus timer with 25-minute Pomodoros, short/long breaks, task label, and optional alerts.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "easy",
+      "clientSide": true
     }
   ]
 }

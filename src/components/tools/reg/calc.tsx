@@ -13,6 +13,7 @@ import {
   AfghanDateConverter, ZakatCalculator, TasbihCounter, SalaryTaxCalculator,
 } from "@/components/tools/impl/asli-gap";
 import { EmiCalculator, VatGstCalculator, ProfitMarginCalculator } from "@/components/tools/impl/demand-extra";
+import { DebtPayoffCalculator, InflationCalculator } from "@/components/tools/impl/engaging-suite";
 
 export default makeReg({
   "bmi-calculator": BmiCalculator,
@@ -52,4 +53,6 @@ export default makeReg({
   "emi-calculator": EmiCalculator,
   "vat-gst-calculator": VatGstCalculator,
   "profit-margin-calculator": ProfitMarginCalculator,
+  "debt-payoff-calculator": DebtPayoffCalculator,
+  "inflation-calculator": InflationCalculator,
 });

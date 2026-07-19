@@ -2523,6 +2523,35 @@
         "color-tools/box-shadow-generator"
       ]
     },
+    "developer-tools/json-diff-checker": {
+      "name": "JSON Diff Checker",
+      "description": "Compare two JSON documents with path-level added, removed, and changed highlights.",
+      "metaTitle": "JSON Diff Checker – Free Online JSON Compare | Mytulify",
+      "metaDescription": "Compare two JSON files path-by-path. See added, removed, and changed values instantly. Free browser JSON diff — no signup.",
+      "about": [
+        "JSON diffs help you review API responses, config changes, and localization files without staring at raw dumps. Path-level highlights show exactly what moved.",
+        "Paste original and updated JSON to get counts of additions, removals, and value changes — all in your browser."
+      ],
+      "howTo": {
+        "title": "How to diff JSON",
+        "steps": [
+          "Paste the original JSON on the left and the updated JSON on the right.",
+          "Review added (green), removed (red), and changed (amber) paths.",
+          "Fix your payload or config based on the table, then re-check."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Does order of object keys matter?",
+          "a": "No. Comparison is by path/value. Array indexes are compared positionally."
+        }
+      ],
+      "related": [
+        "developer-tools/json-formatter",
+        "developer-tools/json-validator",
+        "text-tools/text-diff-checker"
+      ]
+    },
     "developer-tools/yaml-to-json": {
       "name": "YAML to JSON Converter",
       "description": "Convert YAML to pretty-printed JSON instantly in your browser.",
@@ -2721,6 +2750,64 @@
         "developer-tools/cron-expression-generator"
       ]
     },
+    "converters-generators/decision-wheel": {
+      "name": "Decision Wheel",
+      "description": "Spin a colorful wheel to pick randomly from your list — lunch, chores, team decisions, and more.",
+      "metaTitle": "Decision Wheel Spinner – Free Online Picker | Mytulify",
+      "metaDescription": "Spin a free decision wheel to pick from your custom list. Fair random picker for lunch, chores, giveaways, and team decisions — no signup.",
+      "about": [
+        "A decision wheel turns a boring choice into a fair, visual spin. Add options, spin once, and let the pointer land on a winner — great for classrooms, teams, and everyday picks.",
+        "Everything runs in your browser. No accounts, no uploads — just options and a spin."
+      ],
+      "howTo": {
+        "title": "How to use the decision wheel",
+        "steps": [
+          "Enter 2–24 options, one per line.",
+          "Click Spin the wheel and wait for it to stop.",
+          "Read the winner and spin again if you want a rematch."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Is the spin truly random?",
+          "a": "Yes. The landing slice is chosen with the browser’s random number generator, then the wheel animates to that slice."
+        }
+      ],
+      "related": [
+        "converters-generators/list-randomizer",
+        "calculators/random-number-generator",
+        "converters-generators/pomodoro-timer"
+      ]
+    },
+    "converters-generators/pomodoro-timer": {
+      "name": "Pomodoro Timer",
+      "description": "Free focus timer with 25-minute Pomodoros, short/long breaks, task label, and optional alerts.",
+      "metaTitle": "Pomodoro Timer Online – Free Focus Timer | Mytulify",
+      "metaDescription": "Free online Pomodoro timer with focus, short break, and long break modes. Track sessions, set a task, and enable desktop alerts — no signup.",
+      "about": [
+        "The Pomodoro Technique breaks work into focused intervals (usually 25 minutes) separated by short breaks, with a longer break after every four sessions. It reduces context-switching and makes big tasks feel manageable.",
+        "This timer runs entirely in your tab — customize durations, label your task, and optionally enable browser notifications when a session ends."
+      ],
+      "howTo": {
+        "title": "How to use this Pomodoro timer",
+        "steps": [
+          "Optionally name the task you’re focusing on.",
+          "Click Start and work until the focus ring finishes.",
+          "Take the suggested short or long break, then start the next focus block."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Can I change the 25/5/15 defaults?",
+          "a": "Yes. Adjust focus, short break, and long break minutes anytime the timer is paused."
+        }
+      ],
+      "related": [
+        "converters-generators/decision-wheel",
+        "calculators/countdown-calculator",
+        "calculators/hours-calculator"
+      ]
+    },
     "image-tools/aspect-ratio-calculator": {
       "name": "Aspect Ratio Calculator",
       "description": "Find aspect ratios from dimensions or scale width and height to 16:9, 9:16, 1:1 and more.",
@@ -2795,6 +2882,64 @@
         "calculators/vat-gst-calculator"
       ]
     },
+    "calculators/debt-payoff-calculator": {
+      "name": "Debt Payoff Calculator",
+      "description": "Compare snowball vs avalanche debt payoff plans with months, interest, and a payment schedule.",
+      "metaTitle": "Debt Payoff Calculator – Snowball vs Avalanche | Mytulify",
+      "metaDescription": "Compare snowball and avalanche debt payoff strategies. See months to debt-free, total interest, and a payment schedule. Free — no signup.",
+      "about": [
+        "Avalanche attacks the highest APR first (usually less interest). Snowball clears the smallest balance first (faster psychological wins). The best plan is the one you’ll stick with — this calculator shows the math for both.",
+        "Add each debt’s balance, APR, and minimum payment, plus any extra monthly amount, to estimate payoff time and interest."
+      ],
+      "howTo": {
+        "title": "How to plan debt payoff",
+        "steps": [
+          "List each debt with balance, APR, and minimum payment.",
+          "Enter extra money you can put toward debt each month.",
+          "Switch between avalanche and snowball to compare interest and months."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Which method is better?",
+          "a": "Avalanche usually costs less interest. Snowball can feel more motivating. Use the comparison notice to see the trade-off for your numbers."
+        }
+      ],
+      "related": [
+        "calculators/loan-calculator",
+        "calculators/emi-calculator",
+        "calculators/inflation-calculator"
+      ]
+    },
+    "calculators/inflation-calculator": {
+      "name": "Inflation Calculator",
+      "description": "See what today’s money will be worth later — or was worth in the past — using a custom inflation rate.",
+      "metaTitle": "Inflation Calculator – Purchasing Power Tool | Mytulify",
+      "metaDescription": "Calculate how inflation changes purchasing power over time. Future or past value with a custom annual rate. Free inflation calculator.",
+      "about": [
+        "Inflation silently reduces what a currency unit can buy. A purchasing-power calculator shows how much more (or less) money you need after several years at a given average rate.",
+        "Enter an amount, annual inflation %, and years to see future or past equivalents — useful for salary talks, savings goals, and historical comparisons."
+      ],
+      "howTo": {
+        "title": "How to use the inflation calculator",
+        "steps": [
+          "Choose future value or past value mode.",
+          "Enter amount, average annual inflation %, and years.",
+          "Read the equivalent amount and purchasing-power change."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What inflation rate should I use?",
+          "a": "Use a long-run average for your country (often roughly 2–4% in many economies). Official CPI series are more precise for historical years."
+        }
+      ],
+      "related": [
+        "calculators/compound-interest-calculator",
+        "calculators/debt-payoff-calculator",
+        "calculators/salary-calculator"
+      ]
+    },
     "text-tools/reading-time-calculator": {
       "name": "Reading Time Calculator",
       "description": "Estimate how long it takes to read any text based on words per minute.",
@@ -2830,6 +2975,39 @@
         "text-tools/word-counter",
         "text-tools/character-counter",
         "seo-web-tools/readability-checker"
+      ]
+    },
+    "text-tools/speech-to-text": {
+      "name": "Speech to Text",
+      "description": "Dictate speech into editable text in your browser with live transcript and multi-language support.",
+      "metaTitle": "Speech to Text – Free Voice Dictation Online | Mytulify",
+      "metaDescription": "Free speech-to-text dictation in your browser. Live transcript, multi-language support, copy or download — pairs with text-to-speech.",
+      "about": [
+        "Speech-to-text turns your microphone into a draft pad — useful for notes, outlines, and accessibility. This tool uses the Web Speech API so transcription stays on-device in supporting browsers.",
+        "Start listening, speak clearly, then edit the transcript and copy or download it. Works best in Chrome or Edge."
+      ],
+      "howTo": {
+        "title": "How to dictate text",
+        "steps": [
+          "Allow microphone access when prompted.",
+          "Pick a language and click Start listening.",
+          "Stop when finished, edit the transcript, then copy or download."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Why doesn’t it work in my browser?",
+          "a": "Not every browser exposes speech recognition. Chrome and Edge are the most reliable. Safari support varies by version."
+        },
+        {
+          "q": "Is audio uploaded to Mytulify?",
+          "a": "Recognition is handled by the browser’s speech engine — we don’t run a separate upload API for this tool."
+        }
+      ],
+      "related": [
+        "text-tools/text-to-speech",
+        "text-tools/word-counter",
+        "text-tools/reading-time-calculator"
       ]
     },
     "freelancer-tools/contract-generator": {
