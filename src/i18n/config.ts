@@ -1,4 +1,4 @@
-export const LOCALES = ["en", "ur"] as const;
+export const LOCALES = ["en", "ur", "fr", "de"] as const;
 
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "en";
@@ -10,6 +10,8 @@ export const RTL_LOCALES: Locale[] = ["ur"];
 export const LOCALE_LABELS: Record<Locale, string> = {
   en: "English",
   ur: "اردو",
+  fr: "Français",
+  de: "Deutsch",
 };
 
 export function isLocale(value: string): value is Locale {
@@ -22,5 +24,5 @@ export function localeDir(locale: Locale): "ltr" | "rtl" {
 
 /** Grouped for language picker UI */
 export const LOCALE_GROUPS: { label: string; locales: Locale[] }[] = [
-  { label: "Language", locales: ["en", "ur"] },
+  { label: "Language", locales: ["en", "ur", "fr", "de"] },
 ];

@@ -1,0 +1,1940 @@
+{
+  "categories": {
+    "ai-tools": {
+      "name": "Outils alimentés par l'IA",
+      "description": "Assistants IA pour les développeurs — expliquer le code, générer du SQL, déboguer les erreurs, écrire des commits, des docs et des tests, alimentés par un grand modèle de langage.",
+      "tagline": "Assistants IA pour les développeurs"
+    },
+    "calculators": {
+      "name": "Calculatrices",
+      "description": "Calculatrices financières, de santé, mathématiques, de date et de la vie quotidienne qui fonctionnent entièrement dans le navigateur.",
+      "tagline": "Finance, santé & mathématiques"
+    },
+    "color-tools": {
+      "name": "Outils de couleur",
+      "description": "Sélecteurs de couleur, convertisseurs, palettes et générateurs de dégradés basés sur le navigateur.",
+      "tagline": "Sélectionner, convertir & créer des palettes"
+    },
+    "converters-generators": {
+      "name": "Convertisseurs & Générateurs",
+      "description": "Convertisseurs de données côté client et générateurs d'utilitaires pour les développeurs, les étudiants et les utilisateurs quotidiens.",
+      "tagline": "Convertisseurs de données & générateurs"
+    },
+    "developer-tools": {
+      "name": "Outils de développement",
+      "description": "Utilitaires de codage côté client pour le formatage, la conversion, le codage et l'inspection des données.",
+      "tagline": "Formatter, convertir et déboguer le code"
+    },
+    "devops-tools": {
+      "name": "Outils DevOps",
+      "description": "Générateurs et validateurs côté client pour l'infrastructure, CI/CD et le réseau — configurations, manifestes et scripts que vous pouvez copier directement dans votre projet.",
+      "tagline": "Configurations, manifestes et scripts"
+    },
+    "health-tools": {
+      "name": "Santé et bien-être",
+      "description": "Calculatrices de santé et de fitness gratuites — hydratation, macros, zones de fréquence cardiaque, entraînement et plus. Instantanées, privées et exécutées entièrement dans votre navigateur.",
+      "tagline": "Fitness, nutrition et bien-être"
+    },
+    "image-tools": {
+      "name": "Outils d'image",
+      "description": "Outils basés sur le navigateur pour convertir, redimensionner, compresser, rogner et éditer des images.",
+      "tagline": "Redimensionner, compresser et convertir des images"
+    },
+    "pdf-tools": {
+      "name": "Outils PDF",
+      "description": "Outils basés sur le navigateur pour fusionner, diviser, convertir, compresser et éditer des fichiers PDF.",
+      "tagline": "Fusionner, diviser et convertir des PDF"
+    },
+    "security-password-tools": {
+      "name": "Sécurité et Outils de Mot de Passe",
+      "description": "Outils de confidentialité en premier, dans le navigateur pour les mots de passe, le hachage, le cryptage et la génération de clés.",
+      "tagline": "Mots de passe, hachage et crypto"
+    },
+    "seo-web-tools": {
+      "name": "Outils SEO et Web",
+      "description": "Recherche de mots clés, SEO technique, optimisation de contenu, suivi de classement, analyse de liens retour, liens internes, schéma, audits et flux de travail SEO alimentés par l'IA — gratuits dans votre navigateur.",
+      "tagline": "Recherche, audits, schéma et SEO IA"
+    },
+    "social-media-tools": {
+      "name": "Outils de Médias Sociaux",
+      "description": "Aides côté client pour créer, personnaliser et simuler du contenu et des publications de médias sociaux.",
+      "tagline": "Légendes, polices et maquettes"
+    },
+    "text-tools": {
+      "name": "Outils de texte",
+      "description": "Utilitaires basés sur navigateur pour compter, convertir, nettoyer et transformer le texte.",
+      "tagline": "Écrivez, nettoyez et transformez le texte"
+    },
+    "unit-converters": {
+      "name": "Convertisseurs d'unités",
+      "description": "Convertisseurs instantanés côté client pour la longueur, le poids, le volume, la température et d'autres unités de mesure.",
+      "tagline": "Convertissez n'importe quelle unité instantanément"
+    },
+    "handwriting-ocr": {
+      "name": "Reconnaissance optique de l'écriture manuscrite",
+      "description": "Reconnaissance optique de l'écriture manuscrite vers texte alimentée par l'IA pour 30 langues+. Téléchargez une photo et obtenez du texte éditable précis en quelques secondes.",
+      "tagline": "Écriture manuscrite en texte dans 30 langues+"
+    },
+    "freelancer-tools": {
+      "name": "Outils pour freelances",
+      "description": "Outils côté client gratuits pour les freelances — contrats, propositions, NDA, calculateurs de tarifs, devis et commandes de modification. Pas d'inscription, pas d'abonnement.",
+      "tagline": "Contrats, tarifs et documents client — gratuits"
+    }
+  },
+  "tools": {
+    "ai-tools/ai-form-builder": {
+      "name": "Générateur de formulaires IA",
+      "description": "Choisissez parmi 60+ formulaires prêts à l'emploi dans le monde entier ou décrivez un formulaire personnalisé dans n'importe quelle langue. Éditez les champs, la marque, la signature numérique, scannez à partir d'une image et téléchargez le PDF."
+    },
+    "ai-tools/code-explainer": {
+      "name": "Expliqueur de code IA",
+      "description": "Collez le code et obtenez une explication en français clair, avec des bogues potentiels signalés. Niveau débutant ou expert."
+    },
+    "ai-tools/sql-query-generator": {
+      "name": "Générateur de requêtes SQL IA",
+      "description": "Décrivez une requête en français et obtenez le SQL correct pour Postgres, MySQL, SQLite ou T-SQL, expliqué en retour."
+    },
+    "ai-tools/error-diagnoser": {
+      "name": "Diagnostiqueur d'erreurs IA",
+      "description": "Collez une erreur ou une trace de pile et obtenez la cause racine ainsi que la correction de code exacte sous forme de diff."
+    },
+    "ai-tools/code-review-assistant": {
+      "name": "Assistant de révision de code IA",
+      "description": "Obtenez des commentaires sur votre code divisés en sections Sécurité, Performance et Style."
+    },
+    "ai-tools/regex-generator": {
+      "name": "Générateur de regex IA",
+      "description": "Transformez une description en français clair en une expression régulière fonctionnelle, avec une explication et des exemples."
+    },
+    "ai-tools/commit-message-generator": {
+      "name": "Générateur de messages de commit IA",
+      "description": "Transformez une différence Git en un message de commit propre — Conventional Commits, Gitmoji ou style plain."
+    },
+    "ai-tools/readme-generator": {
+      "name": "Générateur de fichiers README IA",
+      "description": "Générez un fichier README.md professionnel à partir des détails de votre projet, en détectant automatiquement la pile à partir de package.json."
+    },
+    "ai-tools/test-case-generator": {
+      "name": "Générateur de cas de test",
+      "description": "Collez une fonction et obtenez un ensemble de tests complet pour Jest, PyTest ou JUnit couvrant les cas limites."
+    },
+    "ai-tools/docker-compose-generator": {
+      "name": "Générateur de fichiers Docker Compose IA",
+      "description": "Décrivez vos services ou choisissez un modèle de pile (MERN, Laravel+MySQL+Redis, Django+Postgres) et obtenez un fichier docker-compose.yml valide."
+    },
+    "ai-tools/cron-explainer": {
+      "name": "Expliqueur d'expressions cron IA",
+      "description": "Convertissez le français clair en une expression cron ou expliquez n'importe quelle expression cron, avec des heures de prochaine exécution sensibles au fuseau horaire."
+    },
+    "calculators/bmi-calculator": {
+      "name": "Calculateur d'IMC",
+      "description": "Calculez l'indice de masse corporelle à partir de la taille et du poids en unités métriques ou impériales."
+    },
+    "calculators/percentage-calculator": {
+      "name": "Calculatrice de pourcentage",
+      "description": "Trouvez les pourcentages, le changement de pourcentage et quel pourcentage représente un nombre par rapport à un autre."
+    },
+    "calculators/age-calculator": {
+      "name": "Calculatrice d'âge",
+      "description": "Calculez l'âge exact en années, mois, semaines et jours à partir d'une date de naissance."
+    },
+    "calculators/loan-calculator": {
+      "name": "Calculatrice de prêt",
+      "description": "Estimez les paiements mensuels, les intérêts totaux et le remboursement pour tout prêt."
+    },
+    "calculators/mortgage-calculator": {
+      "name": "Calculatrice d'hypothèque",
+      "description": "Calculez les paiements d'hypothèque, y compris le principal, les intérêts, les taxes et l'assurance."
+    },
+    "calculators/compound-interest-calculator": {
+      "name": "Calculatrice d'intérêt composé",
+      "description": "Projetez la croissance des investissements avec composition dans le temps et contributions."
+    },
+    "calculators/tip-calculator": {
+      "name": "Calculatrice de pourboire",
+      "description": "Calculez le montant du pourboire et divisez la facture totale entre plusieurs personnes."
+    },
+    "calculators/discount-calculator": {
+      "name": "Calculatrice de remise",
+      "description": "Trouvez le prix de vente et le montant économisé à partir d'un prix d'origine et d'un pourcentage de remise."
+    },
+    "calculators/sales-tax-calculator": {
+      "name": "Calculatrice de taxe de vente",
+      "description": "Ajoutez la taxe de vente à un prix ou extrayez la taxe d'un montant brut."
+    },
+    "calculators/calorie-calculator": {
+      "name": "Calculatrice de calories",
+      "description": "Estimez les besoins quotidiens en calories pour le maintien, la perte ou le gain."
+    },
+    "calculators/bmr-calculator": {
+      "name": "Calculatrice de MBR",
+      "description": "Calculez le Métabolisme de base pour estimer la combustion de calories au repos."
+    },
+    "calculators/tdee-calculator": {
+      "name": "Calculatrice de DÉE",
+      "description": "Calculez la Dépense énergétique quotidienne totale à partir du MBR et du niveau d'activité."
+    },
+    "calculators/body-fat-calculator": {
+      "name": "Calculatrice de graisse corporelle",
+      "description": "Estimez le pourcentage de graisse corporelle en utilisant les mesures de la méthode de la marine américaine."
+    },
+    "calculators/ideal-weight-calculator": {
+      "name": "Calculatrice de poids idéal",
+      "description": "Suggère une fourchette de poids santé en fonction de la taille, de l'âge et du sexe."
+    },
+    "calculators/due-date-calculator": {
+      "name": "Calculatrice de date d'accouchement",
+      "description": "Estime la date d'accouchement à partir de la dernière période menstruelle."
+    },
+    "calculators/ovulation-calculator": {
+      "name": "Calculatrice d'ovulation",
+      "description": "Prévoit les fenêtres de fertilité et les jours d'ovulation à partir des données du cycle."
+    },
+    "calculators/pregnancy-calculator": {
+      "name": "Calculatrice de grossesse",
+      "description": "Suivi de la progression de la grossesse, du décompte des semaines et des étapes clés."
+    },
+    "calculators/gpa-calculator": {
+      "name": "Calculatrice de moyenne générale",
+      "description": "Calcule la moyenne générale à partir des notes de cours et des heures de crédit."
+    },
+    "calculators/grade-calculator": {
+      "name": "Calculatrice de notes",
+      "description": "Calcule les notes finales ou pondérées et la note nécessaire pour réussir."
+    },
+    "calculators/fraction-calculator": {
+      "name": "Calculatrice de fractions",
+      "description": "Ajoute, soustrait, multiplie et simplifie les fractions."
+    },
+    "calculators/scientific-calculator": {
+      "name": "Calculatrice scientifique",
+      "description": "Calculatrice à fonctions complètes avec trigonométrie, logarithmes, exposants et constantes."
+    },
+    "calculators/date-calculator": {
+      "name": "Calculatrice de dates",
+      "description": "Ajoute ou soustrait des jours d'une date et trouve l'intervalle entre deux dates."
+    },
+    "calculators/hours-calculator": {
+      "name": "Calculatrice d'heures",
+      "description": "Calcule le total d'heures et de minutes entre deux heures pour les feuilles de temps."
+    },
+    "calculators/time-duration-calculator": {
+      "name": "Calculatrice de durée",
+      "description": "Mesure le temps écoulé entre deux dates-heures dans plusieurs unités."
+    },
+    "calculators/countdown-calculator": {
+      "name": "Calculatrice de compte à rebours",
+      "description": "Compte à rebours les jours, les heures et les minutes jusqu'à une date cible."
+    },
+    "calculators/paycheck-calculator": {
+      "name": "Calculatrice de paie",
+      "description": "Estimer le salaire net après impôts et déductions courantes."
+    },
+    "calculators/salary-calculator": {
+      "name": "Calculatrice de salaire",
+      "description": "Convertir le salaire entre les taux horaire, hebdomadaire, mensuel et annuel."
+    },
+    "calculators/sleep-calculator": {
+      "name": "Calculatrice de sommeil",
+      "description": "Suggérer les heures de coucher ou de réveil en fonction de cycles de sommeil de 90 minutes."
+    },
+    "calculators/random-number-generator": {
+      "name": "Générateur de nombres aléatoires",
+      "description": "Générer des nombres aléatoires dans une plage personnalisée avec des options."
+    },
+    "calculators/standard-deviation-calculator": {
+      "name": "Calculatrice d'écart-type",
+      "description": "Calculer la moyenne, la variance et l'écart-type pour un ensemble de données."
+    },
+    "calculators/zakat-calculator": {
+      "name": "Calculatrice de Zakat",
+      "description": "Calculer le Zakat sur l'or, l'argent et la richesse dans votre navigateur."
+    },
+    "calculators/afghan-date-converter": {
+      "name": "Convertisseur de dates afghanes",
+      "description": "Convertir les dates Shamsi (Hijri solaire) en grégoriennes et vice versa."
+    },
+    "calculators/tasbih-counter": {
+      "name": "Compteur de Tasbih",
+      "description": "Compteur de Tasbih numérique pour le dhikr et le rappel islamique."
+    },
+    "calculators/salary-tax-calculator": {
+      "name": "Calculatrice d'impôt sur le salaire",
+      "description": "Estimer l'impôt sur le revenu et le salaire net à partir du salaire brut."
+    },
+    "color-tools/color-picker": {
+      "name": "Sélecteur de couleur",
+      "description": "Sélectionner une couleur et obtenir ses valeurs HEX, RGB et HSL."
+    },
+    "color-tools/hex-to-rgb": {
+      "name": "HEX vers RGB",
+      "description": "Convertir les codes de couleur HEX en valeurs RGB."
+    },
+    "color-tools/rgb-to-hex": {
+      "name": "RGB vers HEX",
+      "description": "Convertir les valeurs RGB en un code de couleur HEX."
+    },
+    "color-tools/hex-to-hsl": {
+      "name": "HEX à HSL",
+      "description": "Convertissez les couleurs HEX au format HSL."
+    },
+    "color-tools/hsl-to-hex": {
+      "name": "HSL à HEX",
+      "description": "Convertissez les valeurs de couleur HSL en code HEX."
+    },
+    "color-tools/rgb-to-hsl": {
+      "name": "RGB à HSL",
+      "description": "Convertissez les valeurs de couleur RGB en HSL."
+    },
+    "color-tools/rgb-to-cmyk": {
+      "name": "RGB à CMYK",
+      "description": "Convertissez les couleurs RGB en CMYK pour l'impression."
+    },
+    "color-tools/cmyk-to-rgb": {
+      "name": "CMYK à RGB",
+      "description": "Convertissez les couleurs d'impression CMYK en RGB."
+    },
+    "color-tools/hex-to-cmyk": {
+      "name": "HEX à CMYK",
+      "description": "Convertissez un code de couleur HEX en valeurs CMYK."
+    },
+    "color-tools/color-palette-generator": {
+      "name": "Générateur de palette de couleurs",
+      "description": "Générez des palettes de couleurs harmonieuses instantanément."
+    },
+    "color-tools/gradient-generator": {
+      "name": "Générateur de dégradés",
+      "description": "Créez des dégradés linéaires et radiaux CSS visuellement."
+    },
+    "color-tools/color-contrast-checker": {
+      "name": "Vérificateur de contraste de couleur",
+      "description": "Vérifiez le rapport de contraste WCAG entre deux couleurs."
+    },
+    "color-tools/color-shades-generator": {
+      "name": "Générateur de nuances de couleur",
+      "description": "Générez des nuances plus foncées d'une couleur de base."
+    },
+    "color-tools/color-tints-generator": {
+      "name": "Générateur de teintes de couleur",
+      "description": "Générez des teintes plus claires d'une couleur de base."
+    },
+    "color-tools/color-wheel": {
+      "name": "Cercle chromatique",
+      "description": "Explorez les couleurs complémentaires et d'harmonie sur un cercle."
+    },
+    "color-tools/color-mixer": {
+      "name": "Mélangeur de couleurs",
+      "description": "Mélangez deux couleurs et prévisualisez le résultat mélangé."
+    },
+    "color-tools/color-blindness-simulator": {
+      "name": "Simulateur de daltonisme",
+      "description": "Prévisualisez les couleurs telles que vues avec des déficiences de vision des couleurs."
+    },
+    "color-tools/random-color-generator": {
+      "name": "Générateur de couleurs aléatoires",
+      "description": "Générez des couleurs aléatoires avec leurs codes."
+    },
+    "color-tools/complementary-color-finder": {
+      "name": "Rechercheur de couleurs complémentaires",
+      "description": "Trouvez la couleur complémentaire pour n'importe quelle couleur d'entrée."
+    },
+    "color-tools/analogous-color-generator": {
+      "name": "Générateur de couleurs analogues",
+      "description": "Générez des schémas de couleurs analogues à partir d'une couleur de base."
+    },
+    "color-tools/triadic-color-generator": {
+      "name": "Générateur de couleurs triadiques",
+      "description": "Créez des schémas d'harmonie de couleurs triadiques à trois couleurs."
+    },
+    "color-tools/monochromatic-color-generator": {
+      "name": "Générateur de couleurs monochromatiques",
+      "description": "Construisez une palette monochromatique à une seule teinte."
+    },
+    "color-tools/color-name-finder": {
+      "name": "Rechercheur de noms de couleurs",
+      "description": "Trouvez le nom de couleur le plus proche pour n'importe quelle valeur HEX."
+    },
+    "color-tools/css-gradient-background-generator": {
+      "name": "Générateur d'arrière-plan de dégradé CSS",
+      "description": "Générez des arrière-plans de dégradé CSS copier-coller."
+    },
+    "color-tools/box-shadow-generator": {
+      "name": "Générateur d'ombre de boîte",
+      "description": "Construisez et prévisualisez le code d'ombre de boîte CSS."
+    },
+    "color-tools/text-shadow-generator": {
+      "name": "Générateur d'ombre de texte",
+      "description": "Créez des effets d'ombre de texte CSS avec une prévisualisation en direct."
+    },
+    "color-tools/hex-color-to-image": {
+      "name": "Couleur HEX en image",
+      "description": "Générez une image de couleur solide à partir d'un code HEX."
+    },
+    "color-tools/color-from-image": {
+      "name": "Couleur à partir d'une image",
+      "description": "Sélectionnez et extrayez les couleurs directement à partir d'une image téléchargée."
+    },
+    "color-tools/hex-to-rgba": {
+      "name": "Hex vers RGBA",
+      "description": "Convertissez les couleurs Hex en RGBA avec un canal alpha."
+    },
+    "color-tools/lighten-darken-color": {
+      "name": "Éclaircir et assombrir la couleur",
+      "description": "Ajustez la luminosité d'une couleur vers le haut ou le bas en pourcentage."
+    },
+    "converters-generators/json-to-csv": {
+      "name": "Convertisseur JSON en CSV",
+      "description": "Convertissez les tableaux/objets JSON en fichiers CSV téléchargeables."
+    },
+    "converters-generators/csv-to-json": {
+      "name": "Convertisseur CSV en JSON",
+      "description": "Analysez le CSV en JSON structuré avec mappage d'en-tête."
+    },
+    "converters-generators/json-formatter": {
+      "name": "Formateur / Embellisseur JSON",
+      "description": "Imprimez en joli format, minimisez et validez le JSON avec une vue arborescente."
+    },
+    "converters-generators/json-to-yaml": {
+      "name": "Convertisseur JSON en YAML",
+      "description": "Convertissez entre les formats JSON et YAML."
+    },
+    "converters-generators/xml-to-json": {
+      "name": "Convertisseur XML en JSON",
+      "description": "Analysez le XML en JSON et vice versa."
+    },
+    "converters-generators/base64-encoder-decoder": {
+      "name": "Encodeur / Décodeur Base64",
+      "description": "Encodez et décodez le texte et les fichiers en/de Base64."
+    },
+    "converters-generators/qr-code-generator": {
+      "name": "Générateur de code QR",
+      "description": "Générez des codes QR téléchargeables pour les URL, le texte et les contacts."
+    },
+    "converters-generators/barcode-generator": {
+      "name": "Générateur de code à barres",
+      "description": "Créez des codes à barres dans des formats tels que Code128, EAN et UPC."
+    },
+    "converters-generators/uuid-generator": {
+      "name": "Générateur d'UUID / GUID",
+      "description": "Générez des UUID v4 (et v1) en bloc."
+    },
+    "converters-generators/password-generator": {
+      "name": "Générateur de mots de passe",
+      "description": "Créez des mots de passe aléatoires forts avec des règles personnalisées."
+    },
+    "converters-generators/lorem-ipsum-generator": {
+      "name": "Générateur de Lorem Ipsum",
+      "description": "Générez du texte factice par mots, phrases ou paragraphes."
+    },
+    "converters-generators/hash-generator": {
+      "name": "Générateur de hachage (MD5 / SHA)",
+      "description": "Calculez les hachages MD5, SHA-1 et SHA-256 du texte."
+    },
+    "converters-generators/case-converter": {
+      "name": "Convertisseur de cas",
+      "description": "Convertissez le texte entre majuscules, minuscules, titre, camel et cas serpent."
+    },
+    "converters-generators/timestamp-converter": {
+      "name": "Convertisseur d'horodatage Unix",
+      "description": "Convertissez entre l'époque Unix et les dates lisibles par l'homme."
+    },
+    "converters-generators/json-to-xml": {
+      "name": "Convertisseur JSON en XML",
+      "description": "Convertissez les structures de données JSON en XML."
+    },
+    "converters-generators/html-to-markdown": {
+      "name": "Convertisseur HTML en Markdown",
+      "description": "Convertissez la balise HTML en Markdown propre."
+    },
+    "converters-generators/markdown-to-html": {
+      "name": "Convertisseur Markdown en HTML",
+      "description": "Rendu Markdown en HTML avec aperçu en direct."
+    },
+    "converters-generators/color-converter": {
+      "name": "Convertisseur de couleurs (HEX / RGB / HSL)",
+      "description": "Convertissez les couleurs entre HEX, RGB, HSL et HSV."
+    },
+    "converters-generators/number-base-converter": {
+      "name": "Convertisseur de base de nombres",
+      "description": "Convertissez les nombres entre binaire, octal, décimal et hexadécimal."
+    },
+    "converters-generators/random-number-generator": {
+      "name": "Générateur de nombres aléatoires",
+      "description": "Générez des nombres aléatoires dans une plage personnalisée."
+    },
+    "converters-generators/regex-tester": {
+      "name": "Testeur de regex",
+      "description": "Testez les expressions régulières avec mise en surbrillance de correspondance en direct."
+    },
+    "converters-generators/jwt-decoder": {
+      "name": "Décodeur JWT",
+      "description": "Décodez l'en-tête et la charge utile JWT et affichez les revendications."
+    },
+    "converters-generators/csv-to-tsv": {
+      "name": "Convertisseur CSV en TSV",
+      "description": "Convertissez CSV en TSV et en formats compatibles Excel."
+    },
+    "converters-generators/sql-to-json": {
+      "name": "Convertisseur SQL en JSON",
+      "description": "Convertissez les instructions SQL INSERT en JSON ou CSV."
+    },
+    "converters-generators/text-to-slug": {
+      "name": "Générateur de slug de texte",
+      "description": "Transformez n'importe quel texte en slug sécurisé pour les URL."
+    },
+    "converters-generators/random-string-generator": {
+      "name": "Générateur de chaînes aléatoires",
+      "description": "Générez des chaînes aléatoires et des jetons d'API avec des jeux de caractères personnalisés."
+    },
+    "converters-generators/json-to-typescript": {
+      "name": "JSON vers TypeScript",
+      "description": "Générez des interfaces TypeScript à partir d'un exemple JSON."
+    },
+    "converters-generators/cron-expression-generator": {
+      "name": "Générateur d'expressions Cron",
+      "description": "Construisez et expliquez les plans de cron en anglais clair."
+    },
+    "converters-generators/list-randomizer": {
+      "name": "Randomiseur de liste",
+      "description": "Mélangez ou sélectionnez des éléments aléatoires à partir d'une liste collée."
+    },
+    "converters-generators/code-minifier": {
+      "name": "Minificateur de code",
+      "description": "Minifiez HTML, CSS et JavaScript pour réduire la taille du fichier."
+    },
+    "converters-generators/invoice-generator": {
+      "name": "Générateur de factures",
+      "description": "Créez des factures PDF professionnelles avec des éléments de ligne, des taxes et un téléchargement instantané — sans filigrane."
+    },
+    "converters-generators/iban-validator": {
+      "name": "Vérificateur IBAN",
+      "description": "Validez les numéros IBAN pour le Pakistan, l'UE, le Royaume-Uni et plus de 80 pays avec la somme de contrôle mod-97."
+    },
+    "developer-tools/json-formatter": {
+      "name": "Formateur JSON",
+      "description": "Mettez en forme, validez et minifiez JSON avec une mise en évidence de la syntaxe."
+    },
+    "developer-tools/json-to-csv": {
+      "name": "Convertisseur JSON en CSV",
+      "description": "Convertir des tableaux JSON en fichiers CSV téléchargeables."
+    },
+    "developer-tools/csv-to-json": {
+      "name": "Convertisseur CSV en JSON",
+      "description": "Analyser les données CSV en sortie JSON structurée."
+    },
+    "developer-tools/base64-encoder-decoder": {
+      "name": "Encodeur/Décodeur Base64",
+      "description": "Encoder et décoder du texte et des fichiers en Base64 et vice versa."
+    },
+    "developer-tools/url-encoder-decoder": {
+      "name": "Encodeur/Décodeur d'URL",
+      "description": "Encoder et décoder les URL et les paramètres de requête en pourcentage."
+    },
+    "developer-tools/jwt-decoder": {
+      "name": "Décodeur JWT",
+      "description": "Décoder un JWT en son en-tête, sa charge utile et sa signature."
+    },
+    "developer-tools/regex-tester": {
+      "name": "Testeur de Regex",
+      "description": "Tester des expressions régulières contre un exemple de texte avec mise en surbrillance des correspondances en temps réel."
+    },
+    "developer-tools/timestamp-converter": {
+      "name": "Convertisseur de Timestamp",
+      "description": "Convertir les timestamps Unix en dates lisibles par l'homme et vice versa."
+    },
+    "developer-tools/uuid-generator": {
+      "name": "Générateur d'UUID",
+      "description": "Générer des UUID v4 un par un ou en masse."
+    },
+    "developer-tools/hex-to-rgb-converter": {
+      "name": "Convertisseur Hex en RGB",
+      "description": "Convertir des couleurs entre les formats HEX, RGB et HSL."
+    },
+    "developer-tools/cron-expression-generator": {
+      "name": "Générateur d'Expressions Cron",
+      "description": "Construire et expliquer les plans de cron avec aperçu de la prochaine exécution."
+    },
+    "developer-tools/html-encoder-decoder": {
+      "name": "Encodeur/Décodeur HTML",
+      "description": "Encoder et décoder les entités HTML dans le texte."
+    },
+    "developer-tools/html-minifier": {
+      "name": "Minificateur HTML",
+      "description": "Supprimer les espaces blancs et les commentaires pour réduire le code HTML."
+    },
+    "developer-tools/css-minifier": {
+      "name": "Minificateur de CSS",
+      "description": "Compresser le CSS en supprimant les espaces et les commentaires."
+    },
+    "developer-tools/javascript-minifier": {
+      "name": "Minificateur de JavaScript",
+      "description": "Minimiser le code source JavaScript pour réduire la taille du fichier."
+    },
+    "developer-tools/json-to-yaml": {
+      "name": "Convertisseur JSON en YAML",
+      "description": "Convertir entre les formats JSON et YAML."
+    },
+    "developer-tools/sql-formatter": {
+      "name": "Formateur de SQL",
+      "description": "Mettre en forme et indent les requêtes SQL pour améliorer la lisibilité."
+    },
+    "developer-tools/number-base-converter": {
+      "name": "Convertisseur de base de nombres",
+      "description": "Convertir des nombres entre binaire, octal, décimal et hexadécimal."
+    },
+    "developer-tools/color-picker": {
+      "name": "Sélecteur de couleurs",
+      "description": "Sélectionner des couleurs et afficher les valeurs HEX, RGB et HSL."
+    },
+    "developer-tools/qr-code-generator": {
+      "name": "Générateur de code QR",
+      "description": "Générer des codes QR téléchargeables à partir de texte ou d'URL."
+    },
+    "developer-tools/css-gradient-generator": {
+      "name": "Générateur de dégradés CSS",
+      "description": "Construire visuellement des dégradés linéaires et radiaux CSS avec sortie de code."
+    },
+    "developer-tools/box-shadow-generator": {
+      "name": "Générateur d'ombre de boîte",
+      "description": "Générer du code d'ombre de boîte CSS avec une prévisualisation en direct."
+    },
+    "developer-tools/markdown-preview": {
+      "name": "Aperçu Markdown",
+      "description": "Rendre le Markdown en HTML en direct côte à côte."
+    },
+    "developer-tools/xml-formatter": {
+      "name": "Formateur de XML",
+      "description": "Mettre en forme et valider les documents XML."
+    },
+    "developer-tools/json-validator": {
+      "name": "Validateur de JSON",
+      "description": "Valider la syntaxe JSON et identifier les erreurs."
+    },
+    "developer-tools/slug-generator": {
+      "name": "Générateur de slug",
+      "description": "Créez des slug d'URL compatibles SEO à partir du texte."
+    },
+    "developer-tools/meta-tag-generator": {
+      "name": "Générateur de balises Meta",
+      "description": "Construisez des balises meta HTML et Open Graph pour le SEO."
+    },
+    "developer-tools/rot13-encoder-decoder": {
+      "name": "Encodeur/Décodeur ROT13",
+      "description": "Appliquez le chiffre de substitution de lettres ROT13 au texte."
+    },
+    "developer-tools/chmod-calculator": {
+      "name": "Calculatrice Chmod",
+      "description": "Calculez les autorisations de fichiers Unix numériques et symboliques."
+    },
+    "developer-tools/user-agent-parser": {
+      "name": "Analyseur d'agent utilisateur",
+      "description": "Analysez une chaîne d'agent utilisateur en navigateur, système d'exploitation et appareil."
+    },
+    "developer-tools/gitignore-generator": {
+      "name": "Générateur de .gitignore",
+      "description": "Fusionnez plusieurs modèles de langage, de framework et de système d'exploitation en un seul .gitignore, avec des modèles en double supprimés."
+    },
+    "developer-tools/regex-explainer": {
+      "name": "Expliqueur de regex",
+      "description": "Collez une expression régulière et obtenez une explication simple, mot par mot, de ce qu'elle correspond."
+    },
+    "developer-tools/data-file-merger": {
+      "name": "Fusionneur de fichiers de données",
+      "description": "Fusionnez plusieurs fichiers JSON, CSV, TSV ou XML en un seul jeu de données combiné, exportable sous forme de JSON ou de CSV."
+    },
+    "developer-tools/duplicate-file-finder": {
+      "name": "Rechercheur de fichiers en double",
+      "description": "Recherchez des fichiers en double exacts par hachage de contenu localement dans votre navigateur, en signalant les anciennes copies comme étant en sécurité pour la suppression."
+    },
+    "developer-tools/mock-data-generator": {
+      "name": "Générateur de données de test",
+      "description": "Générez des utilisateurs ou des produits fictifs sous forme de JSON ou de CSV pour les tests d'API et les démonstrations."
+    },
+    "developer-tools/pwa-manifest-generator": {
+      "name": "Générateur de manifeste PWA",
+      "description": "Construisez manifest.json et des balises HTML pour transformer votre site en une application Web progressive installable."
+    },
+    "devops-tools/ip-subnet-calculator": {
+      "name": "Calculatrice de sous-réseau IP",
+      "description": "Calculez le réseau, la diffusion, la plage d'hôtes et le masque à partir d'un bloc CIDR, avec une ventilation visuelle des bits."
+    },
+    "devops-tools/curl-command-builder": {
+      "name": "Constructeur de commande curl",
+      "description": "Construisez une commande curl à partir d'un formulaire et exportez le code équivalent Python requests et JS fetch."
+    },
+    "devops-tools/nginx-config-generator": {
+      "name": "Générateur de configuration Nginx",
+      "description": "Générez des configurations Nginx pour le proxy inverse, la terminaison SSL, les sites statiques et l'équilibrage de charge."
+    },
+    "devops-tools/kubernetes-yaml-generator": {
+      "name": "Générateur de YAML Kubernetes",
+      "description": "Générez un déploiement, un service et une entrée liés dans un seul manifeste à partir d'un formulaire simple."
+    },
+    "devops-tools/github-actions-generator": {
+      "name": "Générateur de GitHub Actions",
+      "description": "Générez un flux de travail YAML CI à partir de modèles Node, Python et Docker prêts à l'emploi."
+    },
+    "devops-tools/robots-txt-generator": {
+      "name": "Générateur de robots.txt",
+      "description": "Construisez un fichier robots.txt valide avec des règles d'autorisation et d'interdiction, un retard de parcours et une carte du site, avec validation en direct."
+    },
+    "devops-tools/env-validator": {
+      "name": ".env Validateur",
+      "description": "Validez la syntaxe .env et signalez les secrets et les clés API susceptibles d'avoir été divulgués avant de les valider."
+    },
+    "devops-tools/crontab-builder": {
+      "name": "Constructeur de crontab",
+      "description": "Construisez une expression cron et validez-la contre un analyseur réel, avec un aperçu des 5 prochaines exécutions."
+    },
+    "devops-tools/backup-script-generator": {
+      "name": "Générateur de script de sauvegarde",
+      "description": "Générez un script de sauvegarde de base de données prêt pour cron pour Postgres, MySQL ou MongoDB, avec un téléchargement S3 facultatif."
+    },
+    "devops-tools/health-check-generator": {
+      "name": "Générateur de configuration de vérification de l'état",
+      "description": "Générez un script de vérification de l'état prêt à être collé et une configuration JSON pour les moniteurs de disponibilité à partir d'un point de terminaison."
+    },
+    "devops-tools/subnet-overlap-visualizer": {
+      "name": "Visualiseur de chevauchement de sous-réseau",
+      "description": "Collez plusieurs blocs CIDR ou plages d'adresses IP et voyez leur couverture et leurs chevauchements sur une carte visuelle."
+    },
+    "devops-tools/ip-address-info": {
+      "name": "Informations et classeur d'adresses IP",
+      "description": "Classez une adresse IP comme privée, publique, CGNAT, bouclage ou réservée avec un contexte en langage clair et une recherche DNS inverse."
+    },
+    "devops-tools/systemd-timer-explainer": {
+      "name": "Expliqueur de minuteur Systemd",
+      "description": "Expliquez et construisez des expressions OnCalendar Systemd en anglais clair, avec les 5 prochaines exécutions."
+    },
+    "health-tools/water-intake-calculator": {
+      "name": "Calculatrice d'apport hydrique",
+      "description": "Estimez vos besoins hydriques quotidiens en fonction du poids, de l'exercice et du climat, affichés en litres, tasses et bouteilles."
+    },
+    "health-tools/macro-calculator": {
+      "name": "Calculatrice de macronutriments",
+      "description": "Divisez vos calories quotidiennes en protéines, glucides et graisses avec des paramètres de régime et une ventilation par repas."
+    },
+    "health-tools/heart-rate-zone-calculator": {
+      "name": "Calculatrice de zones de fréquence cardiaque",
+      "description": "Calculez vos 5 zones de fréquence cardiaque d'entraînement en utilisant la méthode Karvonen avec votre fréquence cardiaque au repos."
+    },
+    "health-tools/calories-burned-calculator": {
+      "name": "Calculatrice de calories brûlées",
+      "description": "Estimez les calories brûlées pour des dizaines d'activités en utilisant les valeurs MET, votre poids et la durée."
+    },
+    "health-tools/one-rep-max-calculator": {
+      "name": "Calculatrice de maximum à une répétition",
+      "description": "Estimez votre maximum à une répétition à partir d'un exercice et de répétitions, avec un tableau d'entraînement complet en pourcentage du maximum."
+    },
+    "health-tools/pace-calculator": {
+      "name": "Calculatrice de rythme de course",
+      "description": "Transformez une distance et un temps en rythme par kilomètre et par mile, ainsi que les temps projetés pour 5 km, 10 km, demi-marathon et marathon."
+    },
+    "health-tools/bac-calculator": {
+      "name": "Calculatrice d'alcoolémie (BAC)",
+      "description": "Estimez la concentration d'alcool dans le sang avec la formule de Widmark et une estimation du temps pour se ressaisir."
+    },
+    "health-tools/protein-intake-calculator": {
+      "name": "Calculatrice d'apport protéique",
+      "description": "Trouvez votre objectif quotidien de protéines en fonction du poids corporel et de votre objectif."
+    },
+    "health-tools/waist-to-hip-ratio-calculator": {
+      "name": "Calculatrice du rapport taille/hanches",
+      "description": "Calculez votre rapport taille/hanches et voyez votre catégorie de risque pour la santé en fonction du sexe."
+    },
+    "health-tools/body-surface-area-calculator": {
+      "name": "Calculatrice de surface corporelle",
+      "description": "Calculez la surface corporelle avec les formules de Mosteller et Du Bois côte à côte."
+    },
+    "image-tools/resize-image": {
+      "name": "Redimensionner l'image",
+      "description": "Modifiez les dimensions de l'image en pixels ou en pourcentage."
+    },
+    "image-tools/compress-image": {
+      "name": "Compresser l'image",
+      "description": "Réduisez la taille du fichier JPG/PNG/WebP avec contrôle de la qualité."
+    },
+    "image-tools/crop-image": {
+      "name": "Recadrer l'image",
+      "description": "Recadrer des images librement ou en ratios d'aspect fixes."
+    },
+    "image-tools/rotate-image": {
+      "name": "Pivoter l'image",
+      "description": "Pivoter une image de 90 degrés ou n'importe quel angle."
+    },
+    "image-tools/flip-image": {
+      "name": "Retourner l'image",
+      "description": "Réfléchir une image horizontalement ou verticalement."
+    },
+    "image-tools/webp-to-png": {
+      "name": "WebP en PNG",
+      "description": "Convertir les images WebP en format PNG sans perte."
+    },
+    "image-tools/webp-to-jpg": {
+      "name": "WebP en JPG",
+      "description": "Convertir les images WebP en JPG largement pris en charge."
+    },
+    "image-tools/png-to-jpg": {
+      "name": "PNG en JPG",
+      "description": "Convertir les images PNG en fichiers JPG compressés."
+    },
+    "image-tools/jpg-to-png": {
+      "name": "JPG en PNG",
+      "description": "Convertir les images JPG en format PNG sans perte."
+    },
+    "image-tools/png-to-webp": {
+      "name": "PNG en WebP",
+      "description": "Convertir les images PNG en fichiers WebP plus petits."
+    },
+    "image-tools/jpg-to-webp": {
+      "name": "JPG en WebP",
+      "description": "Convertir les images JPG en format WebP moderne."
+    },
+    "image-tools/heic-to-jpg": {
+      "name": "HEIC en JPG",
+      "description": "Convertir les photos HEIC d'iPhone en images JPG."
+    },
+    "image-tools/svg-to-png": {
+      "name": "SVG en PNG",
+      "description": "Rasteriser les fichiers vectoriels SVG en PNG à n'importe quelle taille."
+    },
+    "image-tools/png-to-svg": {
+      "name": "PNG en SVG",
+      "description": "Traçer une image PNG raster en un vecteur SVG évolutif."
+    },
+    "image-tools/image-to-base64": {
+      "name": "Image en Base64",
+      "description": "Encoder une image dans une chaîne de données URI Base64."
+    },
+    "image-tools/base64-to-image": {
+      "name": "Base64 en Image",
+      "description": "Décoder une chaîne Base64 en une image téléchargeable."
+    },
+    "image-tools/favicon-generator": {
+      "name": "Générateur de Favicon",
+      "description": "Créer des favicons et des fichiers ICO de plusieurs tailles à partir d'une image."
+    },
+    "image-tools/image-to-ico": {
+      "name": "Image en ICO",
+      "description": "Convertir des images PNG/JPG en icônes Windows ICO."
+    },
+    "image-tools/meme-generator": {
+      "name": "Générateur de Mème",
+      "description": "Ajouter des légendes de texte en haut et en bas d'une image."
+    },
+    "image-tools/add-watermark-to-image": {
+      "name": "Ajouter une Filigrane à l'Image",
+      "description": "Superposer des filigranes de texte ou de logo sur les images."
+    },
+    "image-tools/image-color-picker": {
+      "name": "Sélecteur de Couleur d'Image",
+      "description": "Sélectionner des couleurs HEX/RGB à partir de n'importe quel pixel d'une image."
+    },
+    "image-tools/color-extractor-from-image": {
+      "name": "Extracteur de Couleur d'Image",
+      "description": "Extraire une palette de couleurs dominantes d'une photo."
+    },
+    "image-tools/collage-maker": {
+      "name": "Créateur de Collage",
+      "description": "Combiner plusieurs photos en un collage en grille."
+    },
+    "image-tools/combine-images": {
+      "name": "Combiner des Images",
+      "description": "Assembler des images horizontalement ou verticalement."
+    },
+    "image-tools/passport-photo-maker": {
+      "name": "Créateur de Photo de Passeport",
+      "description": "Rogner et redimensionner les photos pour les exigences de passeport/visa."
+    },
+    "image-tools/grayscale-image": {
+      "name": "Image en Niveaux de Gris",
+      "description": "Convertir une image en couleurs en noir et blanc."
+    },
+    "image-tools/blur-image": {
+      "name": "Flou d'image",
+      "description": "Appliquer un flou réglable à une partie ou à l'ensemble d'une image."
+    },
+    "image-tools/pixelate-image": {
+      "name": "Pixeliser l'image",
+      "description": "Pixeliser ou censurer des régions d'une image."
+    },
+    "image-tools/image-to-pdf": {
+      "name": "Image en PDF",
+      "description": "Convertir des images en un PDF téléchargeable unique."
+    },
+    "image-tools/circle-crop-image": {
+      "name": "Recadrage circulaire d'image",
+      "description": "Recadrer une image en un cercle transparent."
+    },
+    "image-tools/jfif-to-jpg": {
+      "name": "JFIF en JPG",
+      "description": "Convertir des images JFIF en format JPG standard dans votre navigateur."
+    },
+    "image-tools/jfif-to-png": {
+      "name": "JFIF en PNG",
+      "description": "Convertir des images JFIF en format PNG sans perte."
+    },
+    "image-tools/bmp-to-jpg": {
+      "name": "BMP en JPG",
+      "description": "Convertir des images bitmap BMP en fichiers JPG compressés."
+    },
+    "image-tools/bmp-to-pdf": {
+      "name": "BMP en PDF",
+      "description": "Fusionner des images BMP en un document PDF unique."
+    },
+    "image-tools/avif-to-jpg": {
+      "name": "AVIF en JPG",
+      "description": "Convertir des images AVIF modernes en JPG largement pris en charge."
+    },
+    "image-tools/avif-to-webp": {
+      "name": "AVIF en WebP",
+      "description": "Convertir des images AVIF en format WebP efficace."
+    },
+    "image-tools/gif-maker": {
+      "name": "Créateur de GIF",
+      "description": "Créer des GIF animés à partir de plusieurs images dans votre navigateur."
+    },
+    "image-tools/gif-resizer": {
+      "name": "Redimensionneur de GIF",
+      "description": "Redimensionner des GIF animés avec des paramètres prédéfinis ou des dimensions personnalisées."
+    },
+    "image-tools/gif-rotator": {
+      "name": "Rotateur GIF",
+      "description": "Faites pivoter ou renversez des GIF animés sur chaque trame."
+    },
+    "image-tools/gif-trimmer": {
+      "name": "Tailleur GIF",
+      "description": "Taillez les animations GIF à une plage de trames spécifique."
+    },
+    "image-tools/gif-optimizer": {
+      "name": "Optimiseur GIF",
+      "description": "Comprimez et optimisez la taille du fichier GIF dans votre navigateur."
+    },
+    "image-tools/gif-to-video": {
+      "name": "GIF vers Vidéo",
+      "description": "Convertissez des GIF animés en vidéo WebM."
+    },
+    "image-tools/gif-to-png": {
+      "name": "GIF vers PNG",
+      "description": "Extrayez toutes les trames GIF sous forme d'images PNG dans un ZIP."
+    },
+    "image-tools/gif-to-jpg": {
+      "name": "GIF vers JPG",
+      "description": "Extrayez toutes les trames GIF sous forme d'images JPG dans un ZIP."
+    },
+    "image-tools/gif-to-webp": {
+      "name": "GIF vers WebP",
+      "description": "Convertissez les trames d'animation GIF en images WebP."
+    },
+    "pdf-tools/merge-pdf": {
+      "name": "Fusionner PDF",
+      "description": "Combinez plusieurs fichiers PDF en un seul document dans n'importe quel ordre."
+    },
+    "pdf-tools/split-pdf": {
+      "name": "Diviser PDF",
+      "description": "Séparez un PDF en plusieurs fichiers par plages de pages."
+    },
+    "pdf-tools/compress-pdf": {
+      "name": "Compresser PDF",
+      "description": "Réduisez la taille du fichier PDF tout en préservant une qualité lisible."
+    },
+    "pdf-tools/rotate-pdf": {
+      "name": "Faire pivoter PDF",
+      "description": "Faites pivoter une ou toutes les pages d'un PDF et enregistrez-les de manière permanente."
+    },
+    "pdf-tools/delete-pdf-pages": {
+      "name": "Supprimer les pages PDF",
+      "description": "Supprimez les pages sélectionnées d'un document PDF."
+    },
+    "pdf-tools/extract-pdf-pages": {
+      "name": "Extraire les pages PDF",
+      "description": "Extraire les pages sélectionnées dans un nouveau fichier PDF."
+    },
+    "pdf-tools/organize-pdf": {
+      "name": "Organiser le PDF",
+      "description": "Réorganiser, réagencer et trier les pages PDF par glisser-déposer."
+    },
+    "pdf-tools/jpg-to-pdf": {
+      "name": "JPG en PDF",
+      "description": "Convertir les images JPG et d'autres images en un seul PDF."
+    },
+    "pdf-tools/png-to-pdf": {
+      "name": "PNG en PDF",
+      "description": "Convertir une ou plusieurs images PNG en un document PDF."
+    },
+    "pdf-tools/pdf-to-jpg": {
+      "name": "PDF en JPG",
+      "description": "Convertir chaque page PDF en une image JPG téléchargeable."
+    },
+    "pdf-tools/pdf-to-png": {
+      "name": "PDF en PNG",
+      "description": "Rendre les pages PDF en images PNG de haute qualité."
+    },
+    "pdf-tools/images-to-pdf": {
+      "name": "Images en PDF",
+      "description": "Combiner par lots plusieurs images en un seul PDF ordonné."
+    },
+    "pdf-tools/extract-images-from-pdf": {
+      "name": "Extraire les images du PDF",
+      "description": "Extraire toutes les images intégrées d'un fichier PDF."
+    },
+    "pdf-tools/add-page-numbers-to-pdf": {
+      "name": "Ajouter des numéros de page au PDF",
+      "description": "Insérer des numéros de page personnalisables dans un PDF."
+    },
+    "pdf-tools/add-watermark-to-pdf": {
+      "name": "Ajouter un filigrane au PDF",
+      "description": "Apposer des filigranes de texte ou d'image sur les pages PDF."
+    },
+    "pdf-tools/crop-pdf": {
+      "name": "Rogner le PDF",
+      "description": "Rogner les marges et la zone visible des pages PDF."
+    },
+    "pdf-tools/protect-pdf": {
+      "name": "Protéger le PDF",
+      "description": "Ajouter un mot de passe et un cryptage pour verrouiller un PDF."
+    },
+    "pdf-tools/unlock-pdf": {
+      "name": "Déverrouiller PDF",
+      "description": "Supprimer un mot de passe connu d'un fichier PDF."
+    },
+    "pdf-tools/sign-pdf": {
+      "name": "Signer PDF",
+      "description": "Dessiner, taper ou télécharger une signature sur un PDF."
+    },
+    "pdf-tools/edit-pdf": {
+      "name": "Éditer PDF",
+      "description": "Ajouter du texte, des images, des formes et des annotations à un PDF."
+    },
+    "pdf-tools/fill-pdf-form": {
+      "name": "Remplir le formulaire PDF",
+      "description": "Remplir et aplatir les champs de formulaire PDF interactifs."
+    },
+    "pdf-tools/flatten-pdf": {
+      "name": "Aplatir PDF",
+      "description": "Fusionner les annotations et les champs de formulaire en contenu statique."
+    },
+    "pdf-tools/resize-pdf": {
+      "name": "Redimensionner PDF",
+      "description": "Mettre à l'échelle les pages PDF en A4, Lettre ou en dimensions personnalisées."
+    },
+    "pdf-tools/reverse-pdf-pages": {
+      "name": "Inverser les pages PDF",
+      "description": "Inverser l'ordre des pages d'un document PDF."
+    },
+    "pdf-tools/split-pdf-in-half": {
+      "name": "Diviser le PDF en deux",
+      "description": "Couper chaque page PDF verticalement ou horizontalement en deux."
+    },
+    "pdf-tools/extract-text-from-pdf": {
+      "name": "Extraire le texte du PDF",
+      "description": "Copier tout le texte sélectionnable d'un PDF sous forme de texte brut."
+    },
+    "pdf-tools/pdf-page-counter": {
+      "name": "Compteur de pages PDF",
+      "description": "Compter instantanément le nombre de pages d'un PDF."
+    },
+    "pdf-tools/duplicate-pdf-pages": {
+      "name": "Dupliquer les pages PDF",
+      "description": "Copier et répéter les pages sélectionnées à l'intérieur d'un PDF."
+    },
+    "pdf-tools/pdf-to-word": {
+      "name": "PDF en Word",
+      "description": "Convertir un PDF en un document DOC/DOCX éditable."
+    },
+    "pdf-tools/word-to-pdf": {
+      "name": "Word en PDF",
+      "description": "Convertissez des documents DOC/DOCX en fichiers PDF."
+    },
+    "pdf-tools/txt-to-pdf": {
+      "name": "TXT en PDF",
+      "description": "Convertissez des fichiers de texte brut en un document PDF formaté."
+    },
+    "pdf-tools/csv-to-pdf": {
+      "name": "CSV en PDF",
+      "description": "Transformez les données de feuille de calcul CSV en un PDF lisible."
+    },
+    "pdf-tools/excel-to-pdf": {
+      "name": "Excel en PDF",
+      "description": "Convertissez les exports CSV d'Excel en fichiers PDF."
+    },
+    "pdf-tools/pdf-to-excel": {
+      "name": "PDF en Excel",
+      "description": "Extrayez les données de tableau PDF et téléchargez-les sous forme de CSV pour Excel."
+    },
+    "pdf-tools/epub-to-pdf": {
+      "name": "EPUB en PDF",
+      "description": "Convertissez des livres électroniques EPUB en PDF pour l'impression ou le partage."
+    },
+    "pdf-tools/cbz-to-pdf": {
+      "name": "CBZ en PDF",
+      "description": "Convertissez les archives de bandes dessinées CBZ en un seul PDF."
+    },
+    "pdf-tools/pdf-to-cbz": {
+      "name": "PDF en CBZ",
+      "description": "Convertissez les pages PDF en une archive de bandes dessinées CBZ."
+    },
+    "pdf-tools/pdf-to-pdf-a": {
+      "name": "PDF en PDF/A",
+      "description": "Préparez les PDF pour une conservation à long terme (exportation au format PDF/A)."
+    },
+    "pdf-tools/bank-statement-to-excel": {
+      "name": "Relevé bancaire en Excel",
+      "description": "Extrayez les données du relevé bancaire PDF au format CSV pour Excel."
+    },
+    "security-password-tools/password-generator": {
+      "name": "Générateur de mots de passe",
+      "description": "Générez des mots de passe aléatoires forts avec une longueur et des jeux de caractères ajustables."
+    },
+    "security-password-tools/password-strength-checker": {
+      "name": "Vérificateur de force de mot de passe",
+      "description": "Estimez la force du mot de passe et le temps de craquage dans le navigateur."
+    },
+    "security-password-tools/md5-hash-generator": {
+      "name": "Générateur de hachage MD5",
+      "description": "Calculer le hachage MD5 de tout texte d'entrée."
+    },
+    "security-password-tools/sha256-hash-generator": {
+      "name": "Générateur de hachage SHA-256",
+      "description": "Générer des hachages SHA-256 via l'API Web Crypto."
+    },
+    "security-password-tools/sha1-hash-generator": {
+      "name": "Générateur de hachage SHA-1",
+      "description": "Calculer des hachages SHA-1 pour le texte d'entrée."
+    },
+    "security-password-tools/sha512-hash-generator": {
+      "name": "Générateur de hachage SHA-512",
+      "description": "Générer des hachages SHA-512 pour le texte."
+    },
+    "security-password-tools/bcrypt-generator": {
+      "name": "Générateur Bcrypt",
+      "description": "Hacher les mots de passe avec Bcrypt et les vérifier, avec des rounds ajustables."
+    },
+    "security-password-tools/bulk-password-generator": {
+      "name": "Générateur de mots de passe en masse",
+      "description": "Générer de nombreux mots de passe forts à la fois pour l'exportation."
+    },
+    "security-password-tools/passphrase-generator": {
+      "name": "Générateur de phrase de passe",
+      "description": "Construire des phrases de passe de style Diceware mémorables."
+    },
+    "security-password-tools/aes-encrypt-decrypt": {
+      "name": "Chiffrement/Déchiffrement de texte AES",
+      "description": "Chiffrer et déchiffrer le texte avec AES-GCM et une phrase de passe, entièrement côté client."
+    },
+    "security-password-tools/hmac-generator": {
+      "name": "Générateur HMAC",
+      "description": "Calculer les signatures HMAC avec un hachage et une clé secrète choisis."
+    },
+    "security-password-tools/htpasswd-generator": {
+      "name": "Générateur htpasswd",
+      "description": "Créer des entrées htpasswd Apache/Nginx avec Bcrypt ou APR1."
+    },
+    "security-password-tools/secure-uuid-generator": {
+      "name": "Générateur de UUID sécurisé",
+      "description": "Générer des UUID v4 cryptographiquement sécurisés."
+    },
+    "security-password-tools/api-key-generator": {
+      "name": "Générateur de clé API",
+      "description": "Générer des clés API et des jetons secrets aléatoires."
+    },
+    "security-password-tools/random-token-generator": {
+      "name": "Générateur de jeton aléatoire",
+      "description": "Produire des jetons aléatoires sécurisés de longueur et de jeu de caractères configurables."
+    },
+    "security-password-tools/totp-generator": {
+      "name": "Générateur de code TOTP / 2FA",
+      "description": "Générer des codes OTP basés sur le temps à partir d'un secret pour les tests 2FA."
+    },
+    "security-password-tools/hash-identifier": {
+      "name": "Identificateur de hachage",
+      "description": "Déterminer l'algorithme de hachage probable à partir d'une chaîne de hachage donnée."
+    },
+    "security-password-tools/crc32-generator": {
+      "name": "Générateur de somme de contrôle CRC32",
+      "description": "Calculer les sommes de contrôle CRC32 pour le texte ou les données."
+    },
+    "security-password-tools/base64-hash-generator": {
+      "name": "Générateur de hachage Base64",
+      "description": "Hacher les entrées et sortir le résumé sous forme Base64."
+    },
+    "security-password-tools/pin-generator": {
+      "name": "Générateur de code PIN",
+      "description": "Générer des codes PIN numériques aléatoires de longueur choisie."
+    },
+    "security-password-tools/wifi-qr-code-generator": {
+      "name": "Générateur de code QR WiFi",
+      "description": "Créer un code QR qui partage les informations d'identification WiFi pour une connexion facile."
+    },
+    "security-password-tools/csrf-token-generator": {
+      "name": "Générateur de jeton CSRF",
+      "description": "Générer des jetons anti-CSRF aléatoires pour les formulaires."
+    },
+    "security-password-tools/ntlm-hash-generator": {
+      "name": "Générateur de hachage NTLM",
+      "description": "Calculer les hachages NTLM à partir des entrées de mot de passe."
+    },
+    "security-password-tools/encryption-key-generator": {
+      "name": "Générateur de clé de chiffrement",
+      "description": "Générer des clés AES aléatoires de longueurs 128/192/256 bits."
+    },
+    "security-password-tools/caesar-cipher": {
+      "name": "Outil de chiffrement César",
+      "description": "Chiffrer et déchiffrer le texte en utilisant un chiffrement César basé sur le décalage."
+    },
+    "security-password-tools/rot47-encoder-decoder": {
+      "name": "Encodeur/Décodeur ROT47",
+      "description": "Appliquer le chiffrement par substitution ROT47 au texte."
+    },
+    "security-password-tools/password-entropy-calculator": {
+      "name": "Calculateur d'entropie de mot de passe",
+      "description": "Calculez les bits d'entropie dans un mot de passe."
+    },
+    "security-password-tools/salt-generator": {
+      "name": "Générateur de sel",
+      "description": "Générez des sels cryptographiques aléatoires en hex ou en Base64."
+    },
+    "security-password-tools/argon2-hash-generator": {
+      "name": "Générateur de hachage Argon2",
+      "description": "Hachez les mots de passe avec Argon2id, avec des paramètres réglables."
+    },
+    "security-password-tools/jwt-verifier": {
+      "name": "Vérificateur de signature JWT",
+      "description": "Vérifiez une signature JWT contre un secret ou une clé fourni."
+    },
+    "seo-web-tools/meta-tag-generator": {
+      "name": "Générateur de balises meta",
+      "description": "Générez du code HTML de titre, de description et de balises meta à partir des entrées de formulaire."
+    },
+    "seo-web-tools/meta-tags-analyzer": {
+      "name": "Analyseur de balises meta",
+      "description": "Analysez le code HTML collé pour extraire et auditer les balises meta pour les problèmes de référencement."
+    },
+    "seo-web-tools/keyword-density-checker": {
+      "name": "Vérificateur de densité de mots clés",
+      "description": "Comptez la fréquence et les pourcentages de densité des mots dans le texte ou le code HTML collé."
+    },
+    "seo-web-tools/robots-txt-generator": {
+      "name": "Générateur de fichier robots.txt",
+      "description": "Construisez un fichier robots.txt valide à partir des entrées d'autorisation et d'interdiction et de plan du site."
+    },
+    "seo-web-tools/xml-sitemap-generator": {
+      "name": "Générateur de carte du site XML",
+      "description": "Créez une carte du site XML à partir d'une liste d'URL avec priorité et fréquence."
+    },
+    "seo-web-tools/schema-markup-generator": {
+      "name": "Générateur de balises de schéma",
+      "description": "Générez des données structurées JSON-LD pour les articles, les produits, les FAQs et plus encore."
+    },
+    "seo-web-tools/open-graph-generator": {
+      "name": "Générateur de balises Open Graph",
+      "description": "Produisez des balises meta Open Graph (og:) pour les aperçus de liens sociaux."
+    },
+    "seo-web-tools/twitter-card-generator": {
+      "name": "Générateur de cartes Twitter",
+      "description": "Construisez des balises meta de cartes Twitter/X et prévisualisez la carte."
+    },
+    "seo-web-tools/serp-snippet-preview": {
+      "name": "Aperçu d'extraits de résultats de recherche",
+      "description": "Prévisualisez l'apparence d'une page dans les résultats Google avec des vérifications de largeur de pixel."
+    },
+    "seo-web-tools/htaccess-generator": {
+      "name": "Générateur de règles .htaccess",
+      "description": "Générez des règles .htaccess pour les redirections, le缓存 et la sécurité."
+    },
+    "seo-web-tools/url-encoder-decoder": {
+      "name": "Encodeur / Décodeur d'URL",
+      "description": "Encodez et décodez les URL et les chaînes de requête en pourcentage."
+    },
+    "seo-web-tools/url-slug-generator": {
+      "name": "Générateur de slug d'URL",
+      "description": "Convertissez les titres en slug propres et compatibles avec le référencement avec suppression des mots vides."
+    },
+    "seo-web-tools/word-counter": {
+      "name": "Compteur de mots",
+      "description": "Comptez les mots, les caractères, les phrases et le temps de lecture dans le texte."
+    },
+    "seo-web-tools/character-counter": {
+      "name": "Compteur de caractères",
+      "description": "Comptez les caractères avec et sans espaces en temps réel."
+    },
+    "seo-web-tools/code-to-text-ratio-checker": {
+      "name": "Vérificateur du rapport code/texte",
+      "description": "Calculez le rapport entre le texte visible et le code HTML à partir de la balise collée."
+    },
+    "seo-web-tools/robots-meta-tag-generator": {
+      "name": "Générateur de balises meta robots",
+      "description": "Générez des directives de balises meta robots index/noindex/suivre."
+    },
+    "seo-web-tools/canonical-tag-generator": {
+      "name": "Générateur de balises canoniques",
+      "description": "Créez des balises de lien canoniques pour éviter le contenu en double."
+    },
+    "seo-web-tools/hreflang-tag-generator": {
+      "name": "Générateur de balises hreflang",
+      "description": "Générez des balises hreflang pour la ciblage multilingue et régional."
+    },
+    "seo-web-tools/keyword-combiner": {
+      "name": "Combinateur de mots-clés",
+      "description": "Combinez et permutiez les listes de mots-clés en correspondance large/phrase/exacte."
+    },
+    "seo-web-tools/utm-builder": {
+      "name": "Générateur UTM",
+      "description": "Générez des URL de campagne suivies avec des paramètres source, média et nom UTM."
+    },
+    "seo-web-tools/html-tag-stripper": {
+      "name": "Supprimeur de balises HTML",
+      "description": "Supprimer les balises HTML pour extraire le texte brut du code."
+    },
+    "seo-web-tools/meta-description-length-checker": {
+      "name": "Vérificateur de longueur de description meta",
+      "description": "Vérifiez la longueur de la description meta avec une prévisualisation de recherche Google en direct — gratuit, sans inscription."
+    },
+    "seo-web-tools/meta-title-length-checker": {
+      "name": "Vérificateur de longueur de titre meta",
+      "description": "Vérifiez si le titre de votre page est de la bonne longueur pour Google — évitez la troncature et améliorez le taux de clics."
+    },
+    "seo-web-tools/text-diff-checker": {
+      "name": "Comparateur de texte / Vérificateur de différences",
+      "description": "Met en évidence les différences entre deux blocs de texte ou de contenu."
+    },
+    "seo-web-tools/robots-txt-validator": {
+      "name": "Vérificateur de syntaxe robots.txt",
+      "description": "Validez la syntaxe robots.txt et testez les règles d'URL autorisées/bloquées."
+    },
+    "seo-web-tools/faq-schema-generator": {
+      "name": "Générateur de schéma FAQ",
+      "description": "Générer du code JSON-LD FAQPage à partir de paires question/réponse."
+    },
+    "seo-web-tools/breadcrumb-schema-generator": {
+      "name": "Générateur de schéma de fil d'Ariane",
+      "description": "Créez des données structurées BreadcrumbList à partir d'un chemin de page."
+    },
+    "seo-web-tools/favicon-generator": {
+      "name": "Générateur de favicon",
+      "description": "Générer des favicons de plusieurs tailles et des balises de lien à partir d'une image."
+    },
+    "seo-web-tools/redirect-checker": {
+      "name": "Générateur de redirection",
+      "description": "Construire et expliquer les règles de redirection 301/302 pour les configurations de serveur courantes."
+    },
+    "seo-web-tools/email-extractor": {
+      "name": "Extracteur d'adresses e-mail",
+      "description": "Extraire ou analyser le texte/HTML collé pour les adresses e-mail exposées."
+    },
+    "seo-web-tools/readability-checker": {
+      "name": "Vérificateur de lisibilité",
+      "description": "Calculer les scores de facilité de lecture Flesch et les scores de niveau de lecture pour le texte."
+    },
+    "seo-web-tools/domain-name-finder": {
+      "name": "Trouveur de nom de domaine",
+      "description": "Suggérez des noms de domaine disponibles à partir de la description de votre projet — n'affiche que les domaines qui semblent être libres pour l'enregistrement."
+    },
+    "seo-web-tools/llms-txt-generator": {
+      "name": "Générateur de fichiers llms.txt",
+      "description": "Créez un fichier llms.txt pour que les crawlers d'IA (ChatGPT, Claude, Google) découvrent vos meilleures pages."
+    },
+    "seo-web-tools/security-headers-generator": {
+      "name": "Générateur d'en-têtes de sécurité",
+      "description": "Générez des en-têtes HSTS, CSP, X-Frame-Options et d'autres en-têtes OWASP pour Nginx, Apache ou Cloudflare."
+    },
+    "seo-web-tools/ads-txt-generator": {
+      "name": "Générateur de fichiers ads.txt",
+      "description": "Créez un fichier ads.txt valide pour Google AdSense et les réseaux publicitaires."
+    },
+    "seo-web-tools/url-page-seo-analyzer": {
+      "name": "Analyseur de page URL SEO",
+      "description": "Collez une URL de page pour récupérer le HTML en direct et auditer le titre, les métadonnées, les en-têtes, les schémas, les images et les liens."
+    },
+    "seo-web-tools/related-keywords-generator": {
+      "name": "Générateur de mots-clés associés",
+      "description": "Étendez les mots-clés de base en questions, modificateurs commerciaux, phrases à longue traîne et combinaisons pour la recherche."
+    },
+    "seo-web-tools/keyword-difficulty-estimator": {
+      "name": "Estimateur de difficulté des mots-clés",
+      "description": "Estimez la compétitivité des mots-clés à partir de signaux SERP tels que les marques, la longueur du contenu et l'autorité."
+    },
+    "seo-web-tools/search-intent-classifier": {
+      "name": "Classificateur d'intention de recherche",
+      "description": "Classifiez les mots-clés comme informationnels, commerciaux, transactionnels ou de navigation avec des suggestions de type de page."
+    },
+    "seo-web-tools/xml-sitemap-validator": {
+      "name": "Validateur de sitemap XML",
+      "description": "Validez les sitemaps XML pour les erreurs d'analyse, les mauvaises URL, les doublons, les dates de dernière modification et la limite de 50 000."
+    },
+    "seo-web-tools/heading-structure-analyzer": {
+      "name": "Analyseur de structure d'en-tête",
+      "description": "Auditez les plans H1-H6 dans le HTML de la page pour les multiples H1, les niveaux sautés et les en-têtes vides."
+    },
+    "seo-web-tools/seo-audit-checklist": {
+      "name": "Liste de vérification d'audit SEO",
+      "description": "Liste de vérification interactive d'audit technique, sur page, E-E-A-T et de lien avec la progression enregistrée dans votre navigateur."
+    },
+    "seo-web-tools/seo-content-score": {
+      "name": "Score de contenu SEO",
+      "description": "Évaluez le SEO sur page pour un brouillon - placement de mot-clé, densité, longueur de titre/métadonnées et lisibilité."
+    },
+    "seo-web-tools/keyword-rank-tracker": {
+      "name": "Suivi de classement de mot-clé",
+      "description": "Enregistrez les classements de mots-clés au fil du temps dans votre navigateur et exportez des rapports CSV - aucune clé API requise."
+    },
+    "seo-web-tools/backlink-profile-analyzer": {
+      "name": "Analyseur de profil de backlink",
+      "description": "Analyser les exports CSV de backlink Ahrefs/Semrush/Moz pour les ancres, les hôtes référents et le mélange de suivi."
+    },
+    "seo-web-tools/disavow-file-generator": {
+      "name": "Générateur de fichier disavow",
+      "description": "Construire un fichier disavow.txt de Google Search Console à partir de domaines et d'URL de spam."
+    },
+    "seo-web-tools/internal-link-suggester": {
+      "name": "Suggesteur de liens internes",
+      "description": "Suggérer des liens internes à partir de votre liste de pages dans un brouillon en utilisant le scoring de chevauchement de mots-clés."
+    },
+    "seo-web-tools/orphan-page-finder": {
+      "name": "Rechercheur de pages orphelines",
+      "description": "Trouver les URL de sitemap sans liens internes et les URL liées manquantes de la sitemap."
+    },
+    "seo-web-tools/schema-markup-validator": {
+      "name": "Validateur de balisage de schéma",
+      "description": "Valider la structure JSON-LD pour les FAQ, les tutoriels, les produits, les entreprises locales et les erreurs de schéma courantes."
+    },
+    "seo-web-tools/howto-schema-generator": {
+      "name": "Générateur de schéma HowTo",
+      "description": "Générer des données structurées HowTo JSON-LD à partir d'un titre et d'une liste étape par étape."
+    },
+    "seo-web-tools/local-business-schema-generator": {
+      "name": "Générateur de schéma d'entreprise locale",
+      "description": "Créer un JSON-LD LocalBusiness avec NAP, coordonnées géographiques et type d'entreprise."
+    },
+    "seo-web-tools/nap-consistency-checker": {
+      "name": "Vérificateur de cohérence de NAP",
+      "description": "Comparer le nom, l'adresse et le téléphone à travers les citations locales pour détecter les incohérences de SEO local."
+    },
+    "seo-web-tools/content-brief-generator": {
+      "name": "Générateur de brief de contenu",
+      "description": "Brief de contenu SEO IA avec plan, questions PAA, mots-clés et liste de contrôle de page."
+    },
+    "seo-web-tools/ai-meta-tag-writer": {
+      "name": "Rédacteur de balises meta IA",
+      "description": "Balises de titre et descriptions meta rédigées par IA, optimisées pour le CTR et les limites de caractères."
+    },
+    "seo-web-tools/ai-seo-outline-generator": {
+      "name": "Générateur de plan de SEO IA",
+      "description": "Plan d'article IA avec structure H2/H3 adaptée pour les extraits présentés et l'intention de recherche."
+    },
+    "seo-web-tools/ai-seo-page-audit": {
+      "name": "Audit de page de SEO IA",
+      "description": "Audit technique et de page de SEO IA à partir d'HTML collé ou de texte de page avec des corrections prioritaires."
+    },
+    "social-media-tools/fake-tweet-generator": {
+      "name": "Générateur de tweets factices",
+      "description": "Créez des maquettes de publications X/Twitter réalistes téléchargeables sous forme d'images."
+    },
+    "social-media-tools/instagram-font-generator": {
+      "name": "Générateur de polices Instagram",
+      "description": "Convertissez le texte en polices Unicode fantaisistes copier-coller pour les bios et les légendes."
+    },
+    "social-media-tools/instagram-hashtag-generator": {
+      "name": "Générateur de hashtags Instagram",
+      "description": "Suggérez et regroupez des hashtags pertinents à partir de mots clés ou de sujets."
+    },
+    "social-media-tools/twitter-character-counter": {
+      "name": "Compteur de caractères Twitter",
+      "description": "Comptez les caractères par rapport à la limite de 280 avec un comptage pondéré."
+    },
+    "social-media-tools/fake-instagram-post-generator": {
+      "name": "Générateur de publications Instagram factices",
+      "description": "Générez des maquettes de publications Instagram réalistes avec des likes et un avatar personnalisés."
+    },
+    "social-media-tools/instagram-bio-generator": {
+      "name": "Générateur de bios Instagram",
+      "description": "Construisez des bios IG stylisés avec des sauts de ligne, des polices et des symboles."
+    },
+    "social-media-tools/instagram-caption-generator": {
+      "name": "Générateur de légendes Instagram",
+      "description": "Générez des idées de légendes à partir d'un sujet ainsi que des hashtags et des émojis."
+    },
+    "social-media-tools/youtube-tag-extractor": {
+      "name": "Extracteur de balises YouTube",
+      "description": "Extrayez les balises vidéo à partir d'une URL YouTube ou d'une source de page."
+    },
+    "social-media-tools/youtube-thumbnail-downloader": {
+      "name": "Téléchargeur de miniatures YouTube",
+      "description": "Récupérez toutes les tailles de miniatures à partir d'une URL de vidéo YouTube."
+    },
+    "social-media-tools/instagram-line-break-generator": {
+      "name": "Générateur de sauts de ligne Instagram",
+      "description": "Ajoutez des espaces invisibles pour que les légendes conservent les sauts de ligne sur Instagram."
+    },
+    "social-media-tools/emoji-picker": {
+      "name": "Sélecteur d'émojis",
+      "description": "Clavier d'émojis recherchable pour copier des émojis dans les publications."
+    },
+    "social-media-tools/fake-facebook-post-generator": {
+      "name": "Générateur de publications Facebook factices",
+      "description": "Créez des maquettes de publications Facebook avec des réactions et des commentaires."
+    },
+    "social-media-tools/tweet-to-image": {
+      "name": "Tweet en Image",
+      "description": "Transformez du texte de tweet réel ou personnalisé en une image stylisée partageable."
+    },
+    "social-media-tools/tiktok-hashtag-generator": {
+      "name": "Générateur de Hashtags TikTok",
+      "description": "Générez des hashtags et des légendes de style tendance pour TikTok."
+    },
+    "social-media-tools/strikethrough-text-generator": {
+      "name": "Générateur de Texte Barré",
+      "description": "Créez du texte Unicode barré et souligné pour les réseaux sociaux."
+    },
+    "social-media-tools/glitch-text-generator": {
+      "name": "Générateur de Texte Glitch",
+      "description": "Générez du texte de style glitch/zalgo pour les publications et les noms d'utilisateur."
+    },
+    "social-media-tools/small-text-generator": {
+      "name": "Générateur de Texte Petit",
+      "description": "Convertissez le texte en caractères Unicode de taille réduite et en majuscules/minuscules."
+    },
+    "social-media-tools/discord-font-generator": {
+      "name": "Générateur de Police Discord",
+      "description": "Produisez du texte élégant et formaté utilisable dans les discussions Discord."
+    },
+    "social-media-tools/twitter-bio-generator": {
+      "name": "Générateur de Bio Twitter",
+      "description": "Créez des bios X/Twitter avec des polices, des sauts de ligne et des émojis."
+    },
+    "social-media-tools/linkedin-text-formatter": {
+      "name": "Formateur de Texte LinkedIn",
+      "description": "Ajoutez une mise en forme Unicode en gras/italique aux publications LinkedIn."
+    },
+    "social-media-tools/whatsapp-link-generator": {
+      "name": "Générateur de Lien WhatsApp",
+      "description": "Créez des liens wa.me de chat en un clic avec des messages préremplis."
+    },
+    "social-media-tools/social-media-image-sizes": {
+      "name": "Tailles d'Image des Réseaux Sociaux",
+      "description": "Référence des dimensions d'images et de vidéos actuelles par plateforme."
+    },
+    "social-media-tools/bold-text-generator": {
+      "name": "Générateur de Texte Gras",
+      "description": "Convertissez le texte en Unicode gras pour les plateformes sans mise en forme."
+    },
+    "social-media-tools/cursive-text-generator": {
+      "name": "Générateur de Texte Cursif",
+      "description": "Générez des styles de texte cursif et italique Unicode."
+    },
+    "social-media-tools/upside-down-text-generator": {
+      "name": "Générateur de texte à l'envers",
+      "description": "Inversez le texte en caractères à l'envers pour des publications amusantes."
+    },
+    "social-media-tools/twitch-text-generator": {
+      "name": "Générateur de texte Twitch",
+      "description": "Créez du texte stylisé et des idées de nom pour les profils Twitch."
+    },
+    "social-media-tools/fake-instagram-dm-generator": {
+      "name": "Générateur de fausses conversations Instagram DM",
+      "description": "Créez des captures d'écran de conversations et de profils Instagram DM fictives."
+    },
+    "social-media-tools/hashtag-counter": {
+      "name": "Compteur de hashtags",
+      "description": "Comptez les hashtags dans le texte et signalez les dépassements de limite de plateforme."
+    },
+    "social-media-tools/social-preview-tester": {
+      "name": "Testeur d'aperçu social",
+      "description": "Prévisualisez l'apparence d'un lien partagé sur différentes plateformes."
+    },
+    "social-media-tools/aesthetic-username-generator": {
+      "name": "Générateur de noms d'utilisateur esthétiques",
+      "description": "Générez des noms d'utilisateur décorés avec des symboles et des polices esthétiques."
+    },
+    "text-tools/word-counter": {
+      "name": "Compteur de mots",
+      "description": "Comptez les mots, les caractères, les phrases, les paragraphes avec des estimations de temps de lecture et de parole."
+    },
+    "text-tools/character-counter": {
+      "name": "Compteur de caractères",
+      "description": "Comptez les caractères avec et sans espaces en temps réel pour les tweets et les biographies."
+    },
+    "text-tools/case-converter": {
+      "name": "Convertisseur de cas",
+      "description": "Convertissez le texte en MAJUSCULE, minuscule, Titre, Phrase et plus encore."
+    },
+    "text-tools/lorem-ipsum-generator": {
+      "name": "Générateur de Lorem Ipsum",
+      "description": "Générez du texte factice de remplacement par paragraphes, phrases ou mots."
+    },
+    "text-tools/remove-line-breaks": {
+      "name": "Suppression des sauts de ligne",
+      "description": "Supprimez ou fusionnez les sauts de ligne et les nouvelles lignes supplémentaires du texte collé."
+    },
+    "text-tools/remove-extra-spaces": {
+      "name": "Suppression des espaces supplémentaires",
+      "description": "Supprimez les espaces blancs dupliqués, menants et de fin de texte."
+    },
+    "text-tools/find-and-replace-text": {
+      "name": "Rechercher et remplacer du texte",
+      "description": "Rechercher et remplacer des mots ou des modèles dans un texte en bloc, avec prise en charge des expressions régulières."
+    },
+    "text-tools/reverse-text": {
+      "name": "Inverser le texte",
+      "description": "Inverser les caractères, les mots ou les lignes de tout texte d'entrée."
+    },
+    "text-tools/text-repeater": {
+      "name": "Répéteur de texte",
+      "description": "Répéter une chaîne ou une ligne un nombre de fois choisi."
+    },
+    "text-tools/word-frequency-counter": {
+      "name": "Compteur de fréquence de mots",
+      "description": "Compter combien de fois chaque mot apparaît et les classer par fréquence."
+    },
+    "text-tools/remove-duplicate-lines": {
+      "name": "Supprimer les lignes en double",
+      "description": "Supprimer les lignes en double d'une liste tout en préservant l'ordre."
+    },
+    "text-tools/sort-text-lines": {
+      "name": "Trier les lignes de texte",
+      "description": "Trier les lignes par ordre alphabétique, numérique ou inverser leur ordre."
+    },
+    "text-tools/text-to-slug": {
+      "name": "Texte en slug",
+      "description": "Convertir un titre ou une phrase en un slug compatible avec les URL."
+    },
+    "text-tools/binary-translator": {
+      "name": "Traducteur binaire",
+      "description": "Convertir le texte en binaire et le binaire en texte lisible."
+    },
+    "text-tools/morse-code-translator": {
+      "name": "Traducteur de code Morse",
+      "description": "Encoder et décoder entre le texte et le code Morse, avec audio facultatif."
+    },
+    "text-tools/fancy-text-generator": {
+      "name": "Générateur de texte stylisé",
+      "description": "Convertir le texte en polices Unicode stylisées pour les bios des médias sociaux."
+    },
+    "text-tools/bionic-reading-converter": {
+      "name": "Convertisseur de lecture bionique",
+      "description": "Mettre en gras la partie principale de chaque mot pour faciliter une lecture plus rapide."
+    },
+    "text-tools/text-to-handwriting": {
+      "name": "Texte en écriture manuscrite",
+      "description": "Rendre le texte tapé sous forme d'écriture manuscrite réaliste sur papier."
+    },
+    "text-tools/title-case-converter": {
+      "name": "Convertisseur de cas de titre",
+      "description": "Convertissez tout texte en cas de titre approprié pour les titres, les billets de blog et les titres de livre."
+    },
+    "text-tools/text-diff-checker": {
+      "name": "Vérificateur de différences de texte",
+      "description": "Mettez en évidence les ajouts et les suppressions entre deux blocs de texte."
+    },
+    "text-tools/whitespace-remover": {
+      "name": "Supprimeur d'espaces",
+      "description": "Supprimez tous les espaces ou réduisez plusieurs espaces en un seul."
+    },
+    "text-tools/add-line-numbers": {
+      "name": "Ajout de numéros de ligne",
+      "description": "Préfixez des numéros de ligne séquentiels à chaque ligne de texte."
+    },
+    "text-tools/text-to-ascii-art": {
+      "name": "Texte en art ASCII",
+      "description": "Convertissez des mots en grand art de bannière ASCII."
+    },
+    "text-tools/nato-phonetic-alphabet-converter": {
+      "name": "Alphabet phonétique de l'OTAN",
+      "description": "Épellez le texte en utilisant l'alphabet phonétique de l'OTAN."
+    },
+    "text-tools/strikethrough-text-generator": {
+      "name": "Générateur de texte barré",
+      "description": "Ajoutez un style de barré ou de soulignement Unicode au texte."
+    },
+    "text-tools/upside-down-text-generator": {
+      "name": "Texte à l'envers",
+      "description": "Renversez le texte en caractères Unicode à l'envers."
+    },
+    "text-tools/remove-punctuation": {
+      "name": "Suppression de la ponctuation",
+      "description": "Supprimez les marques de ponctuation du texte pour un traitement propre."
+    },
+    "text-tools/text-to-speech": {
+      "name": "Texte en parole",
+      "description": "Lisez le texte tapé à haute voix en utilisant l'API de synthèse vocale du navigateur."
+    },
+    "text-tools/sentence-counter": {
+      "name": "Compteur de phrases",
+      "description": "Comptez les phrases et la longueur moyenne des phrases dans le texte."
+    },
+    "text-tools/capitalize-each-word": {
+      "name": "Mettre en majuscule chaque mot",
+      "description": "Mettez en majuscule la première lettre de chaque mot de l'entrée."
+    },
+    "unit-converters/length-converter": {
+      "name": "Convertisseur de longueur",
+      "description": "Convertissez entre mètres, pieds, miles, kilomètres, pouces, et plus."
+    },
+    "unit-converters/weight-converter": {
+      "name": "Convertisseur de poids",
+      "description": "Convertissez des unités de masse comme kilogrammes, livres, onces, et grammes."
+    },
+    "unit-converters/temperature-converter": {
+      "name": "Convertisseur de température",
+      "description": "Convertissez entre Celsius, Fahrenheit, et Kelvin."
+    },
+    "unit-converters/volume-converter": {
+      "name": "Convertisseur de volume",
+      "description": "Convertissez litres, gallons, tasses, millilitres, et d'autres unités de volume."
+    },
+    "unit-converters/area-converter": {
+      "name": "Convertisseur de surface",
+      "description": "Convertissez mètres carrés, acres, hectares, pieds carrés, et plus."
+    },
+    "unit-converters/speed-converter": {
+      "name": "Convertisseur de vitesse",
+      "description": "Convertissez mph, km/h, m/s, nœuds, et d'autres unités de vitesse."
+    },
+    "unit-converters/time-converter": {
+      "name": "Convertisseur de temps",
+      "description": "Convertissez secondes, minutes, heures, jours, semaines, et années."
+    },
+    "unit-converters/pressure-converter": {
+      "name": "Convertisseur de pression",
+      "description": "Convertissez pascals, bar, psi, atm, et mmHg."
+    },
+    "unit-converters/energy-converter": {
+      "name": "Convertisseur d'énergie",
+      "description": "Convertissez joules, calories, kilowattheures, et BTU."
+    },
+    "unit-converters/power-converter": {
+      "name": "Convertisseur de puissance",
+      "description": "Convertissez watts, kilowatts, chevaux-vapeur, et BTU/heure."
+    },
+    "unit-converters/force-converter": {
+      "name": "Convertisseur de force",
+      "description": "Convertissez newtons, forces-livres, forces-kilogrammes, et dynes."
+    },
+    "unit-converters/angle-converter": {
+      "name": "Convertisseur d'angle",
+      "description": "Convertissez degrés, radians, gradins, et minutes d'arc."
+    },
+    "unit-converters/data-storage-converter": {
+      "name": "Convertisseur de stockage de données",
+      "description": "Convertissez des octets, des kilo-octets, des méga-octets, des giga-octets et des téra-octets."
+    },
+    "unit-converters/data-transfer-rate-converter": {
+      "name": "Convertisseur de débit de transfert de données",
+      "description": "Convertissez des bps, des Kbps, des Mbps, des Gbps et des MB/s."
+    },
+    "unit-converters/fuel-consumption-converter": {
+      "name": "Convertisseur de consommation de carburant",
+      "description": "Convertissez des unités d'économie de carburant MPG, km/L et L/100km."
+    },
+    "unit-converters/density-converter": {
+      "name": "Convertisseur de densité",
+      "description": "Convertissez des kg/m3, des g/cm3, des lb/ft3 et d'autres unités de densité."
+    },
+    "unit-converters/frequency-converter": {
+      "name": "Convertisseur de fréquence",
+      "description": "Convertissez des hertz, des kilohertz, des mégahertz et des gigahertz."
+    },
+    "unit-converters/cooking-measurement-converter": {
+      "name": "Convertisseur de mesures culinaires",
+      "description": "Convertissez des tasses, des cuillères à table, des cuillères à café, des grammes et des onces pour les recettes."
+    },
+    "unit-converters/shoe-size-converter": {
+      "name": "Convertisseur de taille de chaussure",
+      "description": "Convertissez des tailles de chaussure entre les États-Unis, le Royaume-Uni, l'UE et les centimètres."
+    },
+    "unit-converters/ring-size-converter": {
+      "name": "Convertisseur de taille d'anneau",
+      "description": "Convertissez des tailles d'anneau entre les États-Unis, le Royaume-Uni, l'UE et les tableaux de diamètre."
+    },
+    "unit-converters/roman-numeral-converter": {
+      "name": "Convertisseur de chiffres romains",
+      "description": "Convertissez des nombres en chiffres romains et vice versa."
+    },
+    "unit-converters/number-to-words-converter": {
+      "name": "Convertisseur de nombres en mots",
+      "description": "Épellez des nombres en mots pour les chèques et les documents."
+    },
+    "unit-converters/binary-to-decimal-converter": {
+      "name": "Convertisseur binaire-décimal",
+      "description": "Convertissez des nombres entre binaire, décimal, hex et octal."
+    },
+    "unit-converters/hex-to-rgb-converter": {
+      "name": "Convertisseur de couleur HEX en RGB",
+      "description": "Convertissez des couleurs entre les formats HEX, RGB et HSL."
+    },
+    "unit-converters/bra-size-converter": {
+      "name": "Convertisseur de tailles de soutien-gorge",
+      "description": "Convertissez les tailles de soutien-gorge entre les systèmes US, UK, EU et FR."
+    },
+    "unit-converters/clothing-size-converter": {
+      "name": "Convertisseur de tailles de vêtements",
+      "description": "Convertissez les tailles de vêtements entre les tableaux US, UK, EU et internationaux."
+    },
+    "unit-converters/inches-to-cm-converter": {
+      "name": "Convertisseur de pouces en centimètres",
+      "description": "Convertisseur dédié entre pouces et centimètres."
+    },
+    "unit-converters/kg-to-lbs-converter": {
+      "name": "Convertisseur de kg en livres",
+      "description": "Convertisseur dédié entre kilogrammes et livres."
+    },
+    "unit-converters/liters-to-gallons-converter": {
+      "name": "Convertisseur de litres en gallons",
+      "description": "Convertisseur dédié entre litres et gallons US/UK."
+    },
+    "unit-converters/time-zone-converter": {
+      "name": "Convertisseur de fuseau horaire",
+      "description": "Convertissez une heure entre différents fuseaux horaires mondiaux."
+    },
+    "unit-converters/currency-converter": {
+      "name": "Convertisseur de devise",
+      "description": "Convertissez entre USD, EUR, PKR, INR, AED et plus avec des taux de marché interbancaire en temps réel."
+    },
+    "developer-tools/px-to-rem-converter": {
+      "name": "Convertisseur de px en rem",
+      "description": "Convertissez les pixels CSS en rem (et vice versa) avec une taille de police racine personnalisable."
+    },
+    "developer-tools/yaml-to-json": {
+      "name": "Convertisseur de YAML en JSON",
+      "description": "Convertissez le YAML en JSON imprimé en pretty instantly dans votre navigateur."
+    },
+    "calculators/emi-calculator": {
+      "name": "Calculatrice d'EMI",
+      "description": "Calculez l'EMI mensuel, les intérêts totaux et le paiement pour les prêts hypothécaires, automobiles ou personnels."
+    },
+    "calculators/vat-gst-calculator": {
+      "name": "Calculatrice de TVA/TPS",
+      "description": "Ajoutez ou extrayez la TVA et la TPS de tout montant avec un taux d'imposition personnalisé."
+    },
+    "converters-generators/email-signature-generator": {
+      "name": "Générateur de signature d'email",
+      "description": "Créez une signature d'email HTML professionnelle avec le nom, le titre, le contact et la couleur de la marque."
+    },
+    "converters-generators/vcard-generator": {
+      "name": "Générateur de vCard",
+      "description": "Générer une carte de contact .vcf téléchargeable pour les téléphones et les clients de messagerie."
+    },
+    "converters-generators/ics-calendar-generator": {
+      "name": "Générateur de calendrier ICS",
+      "description": "Construire un fichier d'événement de calendrier .ics pour Google Calendar, Outlook et Apple Calendar."
+    },
+    "image-tools/aspect-ratio-calculator": {
+      "name": "Calculatrice de rapport d'aspect",
+      "description": "Trouver les rapports d'aspect à partir de dimensions ou mettre à l'échelle la largeur et la hauteur à 16:9, 9:16, 1:1 et plus."
+    },
+    "calculators/profit-margin-calculator": {
+      "name": "Calculatrice de marge bénéficiaire",
+      "description": "Calculer le bénéfice, le pourcentage de marge bénéficiaire et la marge commerciale à partir du coût et du prix de vente."
+    },
+    "text-tools/reading-time-calculator": {
+      "name": "Calculatrice de temps de lecture",
+      "description": "Estimer le temps nécessaire pour lire tout texte en fonction des mots par minute."
+    },
+    "freelancer-tools/contract-generator": {
+      "name": "Générateur de contrat de freelance",
+      "description": "Créer un contrat de services de freelance clair avec portée, conditions de paiement, PI et révisions — télécharger au format PDF."
+    },
+    "freelancer-tools/proposal-generator": {
+      "name": "Générateur de proposition de freelance",
+      "description": "Construire une proposition client avec résumé, portée, calendrier, tarification et section à propos — exporter au format PDF."
+    },
+    "freelancer-tools/nda-generator": {
+      "name": "Générateur de NDA",
+      "description": "Générer un accord de non-divulgation unilatéral ou mutuel et le télécharger au format PDF."
+    },
+    "freelancer-tools/rate-calculator": {
+      "name": "Calculatrice de taux de freelance",
+      "description": "Calculer un taux horaire durable à partir des objectifs de revenu, des dépenses, des heures facturables et de la marge bénéficiaire."
+    },
+    "freelancer-tools/quote-calculator": {
+      "name": "Calculatrice de devis de projet",
+      "description": "Convertir les heures, le taux, les dépenses et la marge en un devis de projet clair avec ventilation des coûts."
+    },
+    "freelancer-tools/late-fee-calculator": {
+      "name": "Calculatrice de frais de retard",
+      "description": "Calculer les frais de retard sur les factures impayées avec des taux forfaitaires ou mensuels."
+    },
+    "freelancer-tools/break-even-calculator": {
+      "name": "Calculatrice de point d'équilibre",
+      "description": "Déterminer combien de projets ou d'heures vous devez avoir chaque mois pour couvrir les coûts fixes."
+    },
+    "freelancer-tools/self-employment-tax-calculator": {
+      "name": "Calculatrice d'impôt sur le revenu non salarié",
+      "description": "Estimez l'impôt américain sur le revenu non salarié ou l'impôt sur le revenu pakistanais sur le revenu net freelance — à des fins de planification uniquement."
+    },
+    "freelancer-tools/client-onboarding-form": {
+      "name": "Générateur de formulaire d'intégration client",
+      "description": "Générez un questionnaire d'intégration client sous forme de PDF imprimable ou de formulaire HTML téléchargeable."
+    },
+    "freelancer-tools/change-order-generator": {
+      "name": "Générateur de bon de commande de modification",
+      "description": "Documentez les travaux hors portée avec coût et temps supplémentaires — protégez-vous avec un bon de commande de modification au format PDF."
+    }
+  },
+  "strings": {
+    "home": "Accueil",
+    "category": "Catégorie",
+    "hot": "Populaire",
+    "private": "Privé",
+    "instant": "Instantané",
+    "aiPowered": "Propulsé par l'IA",
+    "popular": "Populaire",
+    "perDayFree": "{limit}/jour sur le plan Gratuit",
+    "comingSoon": "Bientôt disponible",
+    "comingSoonTitle": "Cet outil sera bientôt lancé",
+    "comingSoonBody": "Nous préparons cet outil propulsé par l'IA. Il sera disponible ici sous peu — revenez nous voir bientôt.",
+    "faqTitle": "Foire aux questions",
+    "aboutTool": "Qu'est-ce que le {name} ?",
+    "howToTitle": "Comment utiliser le {name} ?",
+    "quickFactsTitle": "Faits clés sur le {name}",
+    "relatedTools": "Outils liés {category}",
+    "exploreOther": "Explorer d'autres catégories",
+    "toolsCount": "{n} outils",
+    "toolsPageTitle": "Tous les {n}+ outils",
+    "toolsPageSub": "Rechercher et filtrer parmi {cats} catégories.",
+    "searchAllTools": "Rechercher tous les {n}+ outils…",
+    "searchTrendingHint": "Outils tendance — utilisez ↑↓ et Entrée",
+    "searchNoResults": "Aucun outil trouvé pour « {q} »",
+    "searchResultsOne": "1 résultat",
+    "searchResultsMany": "{n} résultats",
+    "searchClear": "Effacer la recherche",
+    "browseTools": "Parcourir tous les outils",
+    "faqWhatIsQ": "Qu'est-ce que le {name} ?",
+    "faqWhatIsAClient": "{name} est un outil en ligne gratuit sur Mytulify qui {descClause}. Il s'exécute dans votre navigateur sans inscription requise, vous obtenez donc des résultats instantanés sans créer de compte. Copiez ou téléchargez la sortie lorsque vous avez terminé.",
+    "faqWhatIsAAi": "{name} est un outil gratuit propulsé par l'IA sur Mytulify qui {descClause}. Entrez votre entrée, générez un résultat en quelques secondes, puis copiez ou téléchargez la sortie. Le plan Gratuit inclut {limit} exécutions d'IA par jour.",
+    "faqIsFreeQ": "Le {name} est-il gratuit à utiliser ?",
+    "faqIsFreeAClient": "Oui. Le {name} est gratuit sur le plan Gratuit de Mytulify avec utilisation illimitée, sans inscription et sans filigrane. Puisqu'il s'exécute dans votre navigateur, vous n'avez jamais à payer par conversion. Un compte est facultatif et n'est pas requis pour utiliser l'outil lui-même.",
+    "faqIsFreeAAi": "Oui, avec une limite journalière équitable. Le {name} inclut {limit} exécutions d'IA gratuites par jour sur le plan Gratuit. Mettez à niveau vers Pro pour des exécutions illimitées et une expérience sans publicité lorsque vous avez besoin d'un volume plus élevé.",
+    "faqSafeQ": "Mes données sont-elles en sécurité avec le {name} ?",
+    "faqSafeA": "Oui. Le {name} s'exécute entièrement dans votre navigateur, vos fichiers et votre texte ne sont donc pas téléchargés sur les serveurs Mytulify pour le traitement. Cette conception côté client conserve les travaux courants privés sur votre appareil. Évitez tout de même de partager des secrets dans tout outil en ligne si les politiques l'interdisent.",
+    "faqDataQ": "Comment mes données sont-elles gérées par le {name} ?",
+    "faqDataA": "Le {name} envoie votre entrée au serveur Mytulify, qui appelle un modèle d'IA pour générer le résultat. Nous n'archivons pas vos invites à long terme. Évitez de coller des mots de passe, des clés privées ou des données confidentielles, et examinez toujours la sortie de l'IA avant de vous y fier.",
+    "faqHowQ": "Comment utiliser le {name} ?",
+    "faqHowAClient": "Ouvrez le {name}, entrez ou téléchargez votre entrée, puis exécutez l'outil. {desc} Le résultat apparaît instantanément sur votre appareil, vous pouvez donc le copier ou le télécharger sans attendre la file d'attente du serveur.",
+    "faqHowAAi": "Ouvrez le {name}, collez ou téléchargez votre contenu, puis cliquez sur Générer. {desc} Un modèle d'IA renvoie un résultat en quelques secondes — examinez-le, puis copiez ou téléchargez ce dont vous avez besoin.",
+    "toolAboutClient": "{name} est un outil en ligne gratuit qui {descClause}. Il s'exécute entièrement dans votre navigateur sur Mytulify — rapide, privé et illimité sur le plan Gratuit. Aucun compte ou installation n'est requis.",
+    "toolAboutAi": "{name} est un outil gratuit propulsé par l'IA qui {descClause}. Le plan Gratuit inclut {limit} exécutions par jour ; Pro débloque des exécutions illimitées. L'entrée est traitée sur notre serveur — évitez de coller des secrets et examinez la sortie avant utilisation.",
+    "toolMetaTitle": "{name} — Outil en ligne",
+    "toolMetaClient": "{desc} Outil de navigateur gratuit — s'exécute localement dans votre navigateur, sans inscription requise.",
+    "toolMetaAi": "{desc} Outil propulsé par l'IA — {limit} exécutions gratuites par jour sur le plan Gratuit ; Pro pour des exécutions illimitées.",
+    "categoryTitle": "{name} — {count} Outils en ligne",
+    "categoryDescription": "{desc} {count} outils — outils de navigateur gratuits ; les outils d'IA peuvent avoir des limites journalières sur le plan Gratuit.",
+    "aboutPage": {
+      "label": "À propos de nous",
+      "title": "À propos de Mytulify",
+      "intro": "{total}+ outils en ligne — {client}+ s'exécutent gratuitement dans votre navigateur ; l'IA et l'OCR incluent une allocation quotidienne gratuite ou illimitée avec Pro.",
+      "statTools": "Total des outils",
+      "statCategories": "Catégories",
+      "statBrowser": "Uniquement navigateur",
+      "offerTitle": "Ce que nous offrons",
+      "offerBody": "Mytulify couvre {cats} catégories — utilitaires PDF et image, texte, SEO, développeur, outils de couleur, calculateurs et convertisseurs d'unités.",
+      "privacyTitle": "La vie privée d'abord",
+      "privacyBody": "La plupart des outils — {client} sur {total} — s'exécutent entièrement dans votre navigateur. Vos fichiers, votre texte et vos données ne quittent jamais votre appareil.",
+      "aiTitle": "Outils propulsés par l'IA",
+      "aiBody": "Nos {ai} outils d'IA (y compris la reconnaissance optique de caractères manuscrits) envoient l'entrée à notre serveur pour générer les résultats. Nous n'enregistrons pas cette entrée après le traitement.",
+      "pricingTitle": "Gratuit et Pro",
+      "pricingBody": "{client}+ outils de navigateur restent gratuits sans inscription. Les outils d'IA et d'OCR permettent {limit} exécutions par jour sur le plan Gratuit. Pro ajoute des exécutions d'IA et d'OCR illimitées ainsi qu'une expérience sans publicité.",
+      "cta": "Parcourir tous les outils"
+    }
+  }
+}

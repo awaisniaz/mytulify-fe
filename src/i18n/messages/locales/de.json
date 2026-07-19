@@ -1,0 +1,86 @@
+{
+  "nav": {
+    "categories": "Kategorien",
+    "allTools": "Alle Tools",
+    "blog": "Blog",
+    "pricing": "Preise",
+    "requestTool": "Tool anfragen",
+    "search": "Suchen",
+    "menu": "Menü",
+    "toolsCount": "{n} Tools"
+  },
+  "auth": {
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "managePro": "Pro verwalten",
+    "upgradePro": "Auf Pro upgraden"
+  },
+  "home": {
+    "explore": "Entdecken",
+    "pickCategory": "Kategorie wählen",
+    "pickCategorySub": "{n}+ Tools, für Sie sortiert.",
+    "seeAll": "Alle anzeigen",
+    "trending": "Trending",
+    "trendingTitle": "Jetzt am beliebtesten",
+    "valuePrivate": "Privat",
+    "valuePrivateDesc": "Läuft in Ihrem Browser",
+    "valueInstant": "Sofort",
+    "valueInstantDesc": "Kein Warten",
+    "valueOnline": "Online",
+    "valueOnlineDesc": "Überall",
+    "ctaTitle": "Jetzt Tools nutzen",
+    "browseAll": "Alle Tools durchsuchen",
+    "searchAll": "Alle Tools suchen",
+    "heroEverything": "alles",
+    "heroYouDo": "was Sie tun.",
+    "searchPlaceholder": "{n}+ Tools suchen…",
+    "go": "Los",
+    "allToolsArrow": "Alle Tools →",
+    "toolsInCategory": "{n} Tools"
+  },
+  "footer": {
+    "allTools": "Alle Tools",
+    "blog": "Blog",
+    "pricing": "Preise",
+    "requestTool": "Tool anfragen",
+    "about": "Über uns",
+    "privacy": "Datenschutz",
+    "copyright": "© {year} {name}"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Diese Seite oder dieses Tool wurde nicht gefunden.",
+    "goHome": "Startseite",
+    "browseTools": "Tools durchsuchen"
+  },
+  "copy": {
+    "tagline": "{n}+ Online-Tools",
+    "taglineWithTier": "{n}+ Tools · Kostenlos + Pro",
+    "siteDescription": "{total}+ Online-Tools in {cats} Kategorien. {client}+ Browser-Tools kostenlos ohne Anmeldung. KI- und OCR-Tools: {aiLimit} kostenlose Läufe pro Tag — Pro für unbegrenzte KI und ohne Werbung.",
+    "heroBadge": "{n}+ Online-Tools · Kostenlos + Pro",
+    "heroTitleLead": "Online-Tools für",
+    "heroSubtitle": "{client}+ Browser-Tools kostenlos und unbegrenzt. KI und OCR: {aiLimit} Läufe/Tag im Free-Plan — Pro für unbegrenzt und ohne Werbung.",
+    "footerNote": "{client}+ Browser-Tools kostenlos · Pro für unbegrenzte KI",
+    "homeValueFreeTitle": "Kostenloser Plan",
+    "homeValueFreeDesc": "{client}+ Browser-Tools · {aiLimit} KI-Läufe/Tag",
+    "homeCtaSubtitle": "{client}+ Tools ohne Anmeldung. KI-Limits im Free-Plan — jederzeit auf Pro upgraden."
+  },
+  "categories": {
+    "ai-tools": "KI-Tools",
+    "handwriting-ocr": "Handschrift-OCR",
+    "devops-tools": "DevOps-Tools",
+    "health-tools": "Gesundheit & Fitness",
+    "text-tools": "Text-Tools",
+    "developer-tools": "Entwickler-Tools",
+    "security-password-tools": "Sicherheit & Passwörter",
+    "pdf-tools": "PDF-Tools",
+    "image-tools": "Bild-Tools",
+    "color-tools": "Farb-Tools",
+    "calculators": "Rechner",
+    "unit-converters": "Einheitenumrechner",
+    "seo-web-tools": "SEO- & Web-Tools",
+    "social-media-tools": "Social-Media-Tools",
+    "converters-generators": "Konverter & Generatoren",
+    "freelancer-tools": "Freelancer-Tools"
+  }
+}

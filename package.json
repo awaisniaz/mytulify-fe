@@ -9,6 +9,7 @@
     "icons:generate": "node scripts/generate-tool-icons.mjs",
     "i18n:generate": "node scripts/generate-i18n.mjs",
     "i18n:content": "node --env-file=.env.local scripts/generate-i18n-content.mjs",
+    "i18n:content:groq": "node --env-file=.env scripts/generate-i18n-content-groq.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

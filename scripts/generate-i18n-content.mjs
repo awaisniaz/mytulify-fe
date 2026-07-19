@@ -15,7 +15,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const outDir = join(root, "src/i18n/content/locales");
 mkdirSync(outDir, { recursive: true });
 
-const LOCALES = ["en", "ur"];
+const LOCALES = ["en", "ur", "fr", "de"];
 
 const LOCALE_NAMES = {
   en: "English", es: "Spanish", pt: "Portuguese", fr: "French", de: "German",
@@ -281,14 +281,51 @@ async function translateLocaleOpenAI(enBundle, locale, catalog) {
   return out;
 }
 
+function loadEnglishBundle(catalog) {
+  const enPath = join(outDir, "en.json");
+  const fresh = buildEnglish();
+  if (!existsSync(enPath)) {
+    writeFileSync(enPath, JSON.stringify(fresh, null, 2) + "\n");
+    return fresh;
+  }
+  /** Keep hand-written SEO fields; only fill missing catalog entries. */
+  const existing = JSON.parse(readFileSync(enPath, "utf8"));
+  existing.categories ??= {};
+  existing.tools ??= {};
+  existing.strings ??= fresh.strings;
+  for (const [slug, cat] of Object.entries(fresh.categories)) {
+    if (!existing.categories[slug]) existing.categories[slug] = cat;
+  }
+  for (const [key, tool] of Object.entries(fresh.tools)) {
+    if (!existing.tools[key]) existing.tools[key] = tool;
+    else {
+      existing.tools[key].name ??= tool.name;
+      existing.tools[key].description ??= tool.description;
+    }
+  }
+  // Ensure catalog-backed tools exist even if slug order changed.
+  for (const cat of catalog) {
+    if (!existing.categories[cat.slug]) {
+      existing.categories[cat.slug] = fresh.categories[cat.slug];
+    }
+  }
+  return existing;
+}
+
 async function main() {
   const catalog = loadCatalog();
-  const enBundle = buildEnglish();
-  writeFileSync(join(outDir, "en.json"), JSON.stringify(enBundle, null, 2) + "\n");
-  console.log(`✓ en (${Object.keys(enBundle.tools).length} tools)`);
+  const writeEn = args.includes("--write-en");
+  const enBundle = loadEnglishBundle(catalog);
+  if (writeEn) {
+    writeFileSync(join(outDir, "en.json"), JSON.stringify(enBundle, null, 2) + "\n");
+    console.log(`✓ en written (${Object.keys(enBundle.tools).length} tools)`);
+  } else {
+    console.log(`✓ en source (${Object.keys(enBundle.tools).length} tools) — not overwritten`);
+  }
   console.log(openai ? "Using OpenAI" : "Using Google Translate (free)");
 
   for (const locale of targetLocales) {
+    if (locale === "en") continue;
     const outPath = join(outDir, `${locale}.json`);
     if (skipExisting && existsSync(outPath)) {
       try {
