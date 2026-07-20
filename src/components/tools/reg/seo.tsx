@@ -27,6 +27,12 @@ import {
   NapConsistencyChecker,
   UrlPageSeoAnalyzer,
 } from "@/components/tools/impl/seo-suite";
+import {
+  UrlIndexingToolkit,
+  IndexNowSubmitter,
+  IndexingReadinessChecker,
+  UrlIndexStatusChecker,
+} from "@/components/tools/impl/indexing-toolkit";
 import { UrlTool } from "@/components/tools/impl/data";
 import { WordCounter, CharacterCounter, SlugTool, DiffChecker } from "@/components/tools/impl/text";
 import { FaviconGenerator } from "@/components/tools/impl/image";
@@ -88,6 +94,10 @@ export default makeReg({
   "howto-schema-generator": HowToSchemaGenerator,
   "local-business-schema-generator": LocalBusinessSchemaGenerator,
   "nap-consistency-checker": NapConsistencyChecker,
+  "url-indexing-toolkit": UrlIndexingToolkit,
+  "indexnow-url-submitter": IndexNowSubmitter,
+  "indexing-readiness-checker": IndexingReadinessChecker,
+  "url-index-status-checker": UrlIndexStatusChecker,
   "content-brief-generator": () => <AiTool slug="content-brief-generator" />,
   "ai-meta-tag-writer": () => <AiTool slug="ai-meta-tag-writer" />,
   "ai-seo-outline-generator": () => <AiTool slug="ai-seo-outline-generator" />,

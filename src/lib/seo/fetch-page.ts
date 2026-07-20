@@ -80,6 +80,18 @@ function normalizePageUrl(raw: string): URL {
   return url;
 }
 
+/** Validate + normalize a public http(s) URL (no fetch). */
+export async function assertPublicUrl(raw: string): Promise<URL> {
+  const url = normalizePageUrl(raw);
+  await assertPublicHostname(url.hostname);
+  return url;
+}
+
+/** Sync normalize only (caller must assert hostname before outbound fetch). */
+export function normalizePublicHttpUrl(raw: string): URL {
+  return normalizePageUrl(raw);
+}
+
 export type FetchedPage = {
   finalUrl: string;
   status: number;

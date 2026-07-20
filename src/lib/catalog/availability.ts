@@ -16,6 +16,10 @@ export const LIVE_SERVER_TOOLS = new Set<string>([
   "seo-web-tools/ai-meta-tag-writer",
   "seo-web-tools/ai-seo-outline-generator",
   "seo-web-tools/ai-seo-page-audit",
+  "seo-web-tools/url-indexing-toolkit",
+  "seo-web-tools/indexnow-url-submitter",
+  "seo-web-tools/indexing-readiness-checker",
+  "seo-web-tools/url-index-status-checker",
 ]);
 
 function isAiCategory(category: string): boolean {

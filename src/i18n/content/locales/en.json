@@ -1487,6 +1487,128 @@
         "seo-web-tools/seo-content-score"
       ]
     },
+    "seo-web-tools/url-indexing-toolkit": {
+      "name": "URL Indexing Toolkit",
+      "description": "Track URLs, fix index readiness, submit IndexNow, and verify Google/Bing site: status in one workflow.",
+      "metaTitle": "URL Indexing Toolkit – IndexNow, Readiness & Tracker | Mytulify",
+      "metaDescription": "Free URL indexing toolkit: audit noindex/robots issues, submit IndexNow to Bing/Yandex, track bulk URLs, and verify site: index status.",
+      "about": [
+        "Getting links discovered is not the same as a paid “force Google index” network. This toolkit helps you do the work that actually moves indexing: remove blocks, notify participating engines via IndexNow, track batches of URLs, and verify with site: checks.",
+        "Use it after publishing pages, guest posts, or press URLs — especially when you need Bing/Yandex notification plus a clear readiness score before requesting Google crawl in Search Console."
+      ],
+      "howTo": {
+        "title": "How to use the indexing toolkit",
+        "steps": [
+          "Paste URLs into the tracker (or open IndexNow / Readiness / Check tabs).",
+          "Run Readiness on each URL and fix noindex, robots.txt, or canonical problems.",
+          "Generate an IndexNow key, host {key}.txt on your domain, then submit same-host URLs.",
+          "Verify with Google/Bing site: links and mark indexed in the tracker."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Does this guarantee Google indexing in minutes?",
+          "a": "No. IndexNow covers Bing, Yandex, and partners. Google still uses its own crawl and Search Console. We never claim a paid force-index guarantee."
+        },
+        {
+          "q": "Why did IndexNow return 422?",
+          "a": "The key file is missing or wrong. Upload a plain-text file at your keyLocation whose contents equal your key."
+        }
+      ],
+      "related": [
+        "seo-web-tools/indexnow-url-submitter",
+        "seo-web-tools/indexing-readiness-checker",
+        "seo-web-tools/url-index-status-checker",
+        "seo-web-tools/xml-sitemap-generator"
+      ]
+    },
+    "seo-web-tools/indexnow-url-submitter": {
+      "name": "IndexNow URL Submitter",
+      "description": "Generate an IndexNow key and notify Bing/Yandex when URLs are published or updated.",
+      "metaTitle": "IndexNow URL Submitter – Notify Bing & Yandex | Mytulify",
+      "metaDescription": "Free IndexNow submitter: generate a key, host the key file, and submit up to 100 same-host URLs to Bing and Yandex.",
+      "about": [
+        "IndexNow is an open protocol so search engines learn about new or changed URLs quickly. Host a key file on your site, then submit URL lists from that host.",
+        "Pair with the Indexing Readiness Checker so you don’t notify engines about noindex or robots-blocked pages."
+      ],
+      "howTo": {
+        "title": "How to submit with IndexNow",
+        "steps": [
+          "Click Generate key and download/upload {key}.txt to your site root.",
+          "Paste URLs that share the same host (max 100).",
+          "Submit and confirm HTTP 200/202 — then verify discovery with Bing site: search."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Does IndexNow ping Google?",
+          "a": "Not as a Google API. Google may discover changes through other signals; use Search Console URL Inspection for Google."
+        }
+      ],
+      "related": [
+        "seo-web-tools/url-indexing-toolkit",
+        "seo-web-tools/indexing-readiness-checker",
+        "seo-web-tools/url-index-status-checker"
+      ]
+    },
+    "seo-web-tools/indexing-readiness-checker": {
+      "name": "Indexing Readiness Checker",
+      "description": "Audit a live URL for noindex, robots.txt blocks, canonical mismatches, and crawl barriers.",
+      "metaTitle": "Indexing Readiness Checker – Fix noindex & robots Blocks | Mytulify",
+      "metaDescription": "Free indexing readiness audit: live HTTP status, meta robots, X-Robots-Tag, robots.txt path blocks, and canonical checks.",
+      "about": [
+        "If a URL can’t be indexed, submitting it anywhere wastes time. This checker fetches the live page and robots.txt to surface noindex, disallow rules, and canonical conflicts.",
+        "Fix errors here first, then use IndexNow and Google Search Console."
+      ],
+      "howTo": {
+        "title": "How to audit index readiness",
+        "steps": [
+          "Paste a public page URL.",
+          "Review the score and issue list (errors block indexing).",
+          "Fix noindex/robots/canonical, re-audit, then submit IndexNow or request indexing in GSC."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Does a high score mean Google will index it?",
+          "a": "It means the URL looks crawlable/indexable. Indexing still depends on quality, links, and Google’s crawl budget."
+        }
+      ],
+      "related": [
+        "seo-web-tools/url-indexing-toolkit",
+        "seo-web-tools/robots-txt-validator",
+        "seo-web-tools/url-page-seo-analyzer"
+      ]
+    },
+    "seo-web-tools/url-index-status-checker": {
+      "name": "URL Index Status Checker",
+      "description": "Soft-check index presence and open Google/Bing site: verification links for any URL.",
+      "metaTitle": "URL Index Status Checker – Google & Bing site: Links | Mytulify",
+      "metaDescription": "Check if a URL looks indexed with a soft Bing signal plus one-click Google and Bing site: verification links.",
+      "about": [
+        "Automatic “is it indexed?” checks are best-effort without Search Console API access. This tool runs a soft Bing HTML check and always gives you Google/Bing site: links to confirm.",
+        "Mark confirmed URLs in the URL Indexing Toolkit tracker for campaign reporting."
+      ],
+      "howTo": {
+        "title": "How to check index status",
+        "steps": [
+          "Paste the URL and run Soft index check.",
+          "Open Google and Bing site: links to confirm.",
+          "Optionally mark indexed in the toolkit tracker."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Why is confidence low?",
+          "a": "Search result pages change and may block bots. Treat automatic results as hints; site: links are the source of truth for free checks."
+        }
+      ],
+      "related": [
+        "seo-web-tools/url-indexing-toolkit",
+        "seo-web-tools/indexnow-url-submitter",
+        "seo-web-tools/indexing-readiness-checker"
+      ]
+    },
     "seo-web-tools/related-keywords-generator": {
       "name": "Related Keywords Generator",
       "description": "Expand seed keywords into questions, commercial modifiers, long-tail phrases, and combinations for research.",

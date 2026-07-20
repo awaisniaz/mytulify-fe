@@ -59,7 +59,7 @@ const RULES = [
   [/speech-to-text|dictation|voice-to-text/i, "Megaphone"],
   [/debt-payoff|loan-payoff/i, "DollarSign"],
   [/seo-audit|seo-content-score|heading-structure|nap-consistency|search-intent|keyword-difficulty|related-keywords|content-brief|ai-seo|ai-meta|meta-tags-analyzer/i, "Search"],
-  [/robots\.txt|robots-meta|sitemap|canonical|hreflang|redirect|htaccess|utm|serp|meta-tag|meta-tags|keyword|readability|email-extract|html-tag|code-to-text|url-slug/i, "Search"],
+  [/robots\.txt|robots-meta|sitemap|canonical|hreflang|redirect|htaccess|utm|serp|meta-tag|meta-tags|keyword|readability|email-extract|html-tag|code-to-text|url-slug|indexnow|indexing|index-status/i, "Search"],
   [/pdf|document-to-pdf|images-to-pdf|word-to-pdf|html-to-pdf|pdf-to-/i, "FileText"],
   [/merge-pdf|combine-pdf|join-pdf/i, "Files"],
   [/split-pdf|extract-page/i, "Scissors"],

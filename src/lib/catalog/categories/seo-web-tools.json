@@ -454,6 +454,42 @@
       "clientSide": false
     },
     {
+      "name": "URL Indexing Toolkit",
+      "slug": "url-indexing-toolkit",
+      "description": "Track URLs, audit index readiness, submit IndexNow to Bing/Yandex, and verify site: index status — an honest indexing workflow.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": false
+    },
+    {
+      "name": "IndexNow URL Submitter",
+      "slug": "indexnow-url-submitter",
+      "description": "Generate an IndexNow key and notify Bing, Yandex, and other engines when your URLs change.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": false
+    },
+    {
+      "name": "Indexing Readiness Checker",
+      "slug": "indexing-readiness-checker",
+      "description": "Audit a live URL for noindex, robots.txt blocks, canonical issues, and other indexability problems.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": false
+    },
+    {
+      "name": "URL Index Status Checker",
+      "slug": "url-index-status-checker",
+      "description": "Soft-check whether a URL appears indexed and open Google/Bing site: verification links.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "easy",
+      "clientSide": false
+    },
+    {
       "name": "AI SEO Page Audit",
       "slug": "ai-seo-page-audit",
       "description": "AI technical and on-page SEO audit from pasted HTML or page text with prioritized fixes.",
