@@ -1,0 +1,86 @@
+{
+  "nav": {
+    "categories": "Categorias",
+    "allTools": "Todas as ferramentas",
+    "blog": "Blog",
+    "pricing": "Preços",
+    "requestTool": "Pedir uma ferramenta",
+    "search": "Buscar",
+    "menu": "Menu",
+    "toolsCount": "{n} ferramentas"
+  },
+  "auth": {
+    "signIn": "Entrar",
+    "signOut": "Sair",
+    "managePro": "Gerir Pro",
+    "upgradePro": "Upgrade para Pro"
+  },
+  "home": {
+    "explore": "Explorar",
+    "pickCategory": "Escolha uma categoria",
+    "pickCategorySub": "{n}+ ferramentas, organizadas para você.",
+    "seeAll": "Ver tudo",
+    "trending": "Em alta",
+    "trendingTitle": "Mais populares agora",
+    "valuePrivate": "Privado",
+    "valuePrivateDesc": "Funciona no seu navegador",
+    "valueInstant": "Instantâneo",
+    "valueInstantDesc": "Sem espera",
+    "valueOnline": "Online",
+    "valueOnlineDesc": "Funciona em todo lugar",
+    "ctaTitle": "Comece a usar ferramentas agora",
+    "browseAll": "Ver todas as ferramentas",
+    "searchAll": "Buscar todas as ferramentas",
+    "heroEverything": "tudo",
+    "heroYouDo": "o que você faz.",
+    "searchPlaceholder": "Buscar {n}+ ferramentas…",
+    "go": "Ir",
+    "allToolsArrow": "Todas as ferramentas →",
+    "toolsInCategory": "{n} ferramentas"
+  },
+  "footer": {
+    "allTools": "Todas as ferramentas",
+    "blog": "Blog",
+    "pricing": "Preços",
+    "requestTool": "Pedir uma ferramenta",
+    "about": "Sobre",
+    "privacy": "Privacidade",
+    "copyright": "© {year} {name}"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Não encontramos essa página ou ferramenta.",
+    "goHome": "Início",
+    "browseTools": "Ver ferramentas"
+  },
+  "copy": {
+    "tagline": "{n}+ ferramentas online",
+    "taglineWithTier": "{n}+ ferramentas · Grátis + Pro",
+    "siteDescription": "{total}+ ferramentas online em {cats} categorias. {client}+ ferramentas de navegador grátis sem cadastro. Ferramentas de IA e OCR incluem {aiLimit} usos grátis por dia — Pro adiciona IA ilimitada e sem anúncios.",
+    "heroBadge": "{n}+ ferramentas online · Grátis + Pro",
+    "heroTitleLead": "Ferramentas online para",
+    "heroSubtitle": "{client}+ ferramentas de navegador grátis e ilimitadas. IA e OCR: {aiLimit} usos/dia no Grátis — Pro para ilimitado e sem anúncios.",
+    "footerNote": "{client}+ ferramentas de navegador grátis · Pro para IA ilimitada",
+    "homeValueFreeTitle": "Plano grátis",
+    "homeValueFreeDesc": "{client}+ ferramentas de navegador · {aiLimit} usos de IA/dia",
+    "homeCtaSubtitle": "{client}+ ferramentas sem cadastro. Limites de IA no Grátis — faça upgrade para Pro quando quiser."
+  },
+  "categories": {
+    "ai-tools": "Ferramentas de IA",
+    "handwriting-ocr": "OCR de escrita",
+    "devops-tools": "Ferramentas DevOps",
+    "health-tools": "Saúde e fitness",
+    "text-tools": "Ferramentas de texto",
+    "developer-tools": "Ferramentas para desenvolvedores",
+    "security-password-tools": "Segurança e senhas",
+    "pdf-tools": "Ferramentas PDF",
+    "image-tools": "Ferramentas de imagem",
+    "color-tools": "Ferramentas de cor",
+    "calculators": "Calculadoras",
+    "unit-converters": "Conversores de unidades",
+    "seo-web-tools": "Ferramentas SEO e web",
+    "social-media-tools": "Redes sociais",
+    "converters-generators": "Conversores e geradores",
+    "freelancer-tools": "Ferramentas freelance"
+  }
+}

@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
  * Translate content locales via Groq (OpenAI-compatible).
- * Usage: node --env-file=.env scripts/generate-i18n-content-groq.mjs --locale=fr,de
+ * Supports resume from *.partial.json checkpoints.
+ * Usage: node --env-file=.env scripts/generate-i18n-content-groq.mjs --locale=es,pt
  */
-import { readFileSync, writeFileSync, existsSync } from "fs";
+import { readFileSync, writeFileSync, existsSync, unlinkSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import OpenAI from "openai";
@@ -12,7 +13,15 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const outDir = join(root, "src/i18n/content/locales");
 const enPath = join(outDir, "en.json");
 
-const LOCALE_NAMES = { fr: "French", de: "German", ur: "Urdu", es: "Spanish" };
+const LOCALE_NAMES = {
+  fr: "French",
+  de: "German",
+  ur: "Urdu",
+  es: "Spanish",
+  pt: "Portuguese",
+  hi: "Hindi",
+  ar: "Arabic",
+};
 
 const args = process.argv.slice(2);
 const locales = (args.find((a) => a.startsWith("--locale="))?.slice(9) ?? "fr,de")
@@ -69,9 +78,17 @@ async function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
+function parseRetryMs(message) {
+  const m = String(message).match(/try again in (\d+)m([\d.]+)s/i);
+  if (m) return (Number(m[1]) * 60 + Number(m[2])) * 1000 + 2000;
+  const s = String(message).match(/try again in ([\d.]+)s/i);
+  if (s) return Number(s[1]) * 1000 + 2000;
+  return null;
+}
+
 async function translateJson(obj, locale, label) {
   const lang = LOCALE_NAMES[locale] || locale;
-  for (let attempt = 0; attempt < 5; attempt++) {
+  for (let attempt = 0; attempt < 12; attempt++) {
     try {
       const openai = client();
       const res = await openai.chat.completions.create({
@@ -90,8 +107,10 @@ async function translateJson(obj, locale, label) {
       if (!text) throw new Error("empty");
       return JSON.parse(text);
     } catch (e) {
-      const wait = 1500 * (attempt + 1);
-      console.warn(`  retry ${attempt + 1} ${label}: ${e.message}`);
+      const msg = e.message || String(e);
+      const parsed = parseRetryMs(msg);
+      const wait = parsed ?? Math.min(120_000, 3000 * (attempt + 1));
+      console.warn(`  retry ${attempt + 1} ${label}: waiting ${Math.ceil(wait / 1000)}s — ${msg.slice(0, 120)}`);
       await sleep(wait);
     }
   }
@@ -104,27 +123,57 @@ function chunkEntries(entries, size) {
   return out;
 }
 
+function checkpointPath(locale) {
+  return join(outDir, `${locale}.partial.json`);
+}
+
+function saveCheckpoint(locale, out) {
+  writeFileSync(checkpointPath(locale), JSON.stringify(out, null, 2) + "\n");
+}
+
+function loadCheckpoint(locale) {
+  const p = checkpointPath(locale);
+  if (!existsSync(p)) return null;
+  try {
+    return JSON.parse(readFileSync(p, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
 async function translateLocale(en, locale) {
-  const out = { categories: {}, tools: {}, strings: null };
+  const existing = loadCheckpoint(locale);
+  const out = existing ?? { categories: {}, tools: {}, strings: null };
 
-  console.log(`  strings…`);
-  out.strings = await translateJson(en.strings, locale, "UI strings");
-  await sleep(400);
+  if (!out.strings) {
+    console.log(`  strings…`);
+    out.strings = await translateJson(en.strings, locale, "UI strings");
+    saveCheckpoint(locale, out);
+    await sleep(500);
+  } else {
+    console.log(`  strings… (resume)`);
+  }
 
-  console.log(`  categories…`);
   const catKeys = Object.keys(en.categories);
-  for (const batch of chunkEntries(catKeys, 4)) {
-    const chunk = Object.fromEntries(batch.map((k) => [k, en.categories[k]]));
-    const tr = await translateJson({ categories: chunk }, locale, `cats ${batch.join(",")}`);
-    Object.assign(out.categories, tr.categories ?? tr);
-    await sleep(350);
+  const missingCats = catKeys.filter((k) => !out.categories?.[k]?.name);
+  if (missingCats.length) {
+    console.log(`  categories… (${missingCats.length} left)`);
+    for (const batch of chunkEntries(missingCats, 4)) {
+      const chunk = Object.fromEntries(batch.map((k) => [k, en.categories[k]]));
+      const tr = await translateJson({ categories: chunk }, locale, `cats ${batch.join(",")}`);
+      Object.assign(out.categories, tr.categories ?? tr);
+      saveCheckpoint(locale, out);
+      await sleep(500);
+    }
+  } else {
+    console.log(`  categories… (resume)`);
   }
 
   const toolKeys = Object.keys(en.tools);
-  console.log(`  tools (${toolKeys.length})…`);
-  let done = 0;
-  for (const batch of chunkEntries(toolKeys, 12)) {
-    // Only translate name/description — keep payload small; SEO extras fall back to EN.
+  const missingTools = toolKeys.filter((k) => !out.tools?.[k]?.name);
+  console.log(`  tools (${toolKeys.length}, ${missingTools.length} left)…`);
+  let done = toolKeys.length - missingTools.length;
+  for (const batch of chunkEntries(missingTools, 10)) {
     const chunk = Object.fromEntries(
       batch.map((k) => {
         const t = en.tools[k];
@@ -141,8 +190,9 @@ async function translateLocale(en, locale) {
       };
     }
     done += batch.length;
+    saveCheckpoint(locale, out);
     process.stdout.write(`\r  tools ${done}/${toolKeys.length}`);
-    await sleep(350);
+    await sleep(600);
   }
   console.log("");
   return out;
@@ -172,6 +222,8 @@ async function main() {
     }
     const outPath = join(outDir, `${locale}.json`);
     writeFileSync(outPath, JSON.stringify(translated, null, 2) + "\n");
+    const partial = checkpointPath(locale);
+    if (existsSync(partial)) unlinkSync(partial);
     console.log(`✓ ${locale} → ${outPath}`);
   }
   console.log("\nDone");

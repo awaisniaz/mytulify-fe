@@ -1,0 +1,86 @@
+{
+  "nav": {
+    "categories": "Categorías",
+    "allTools": "Todas las herramientas",
+    "blog": "Blog",
+    "pricing": "Precios",
+    "requestTool": "Solicitar una herramienta",
+    "search": "Buscar",
+    "menu": "Menú",
+    "toolsCount": "{n} herramientas"
+  },
+  "auth": {
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "managePro": "Gestionar Pro",
+    "upgradePro": "Mejorar a Pro"
+  },
+  "home": {
+    "explore": "Explorar",
+    "pickCategory": "Elige una categoría",
+    "pickCategorySub": "{n}+ herramientas, organizadas para ti.",
+    "seeAll": "Ver todo",
+    "trending": "Tendencias",
+    "trendingTitle": "Lo más popular ahora",
+    "valuePrivate": "Privado",
+    "valuePrivateDesc": "Funciona en tu navegador",
+    "valueInstant": "Instantáneo",
+    "valueInstantDesc": "Sin esperas",
+    "valueOnline": "En línea",
+    "valueOnlineDesc": "Funciona en todas partes",
+    "ctaTitle": "Empieza a usar herramientas ahora",
+    "browseAll": "Ver todas las herramientas",
+    "searchAll": "Buscar todas las herramientas",
+    "heroEverything": "todo",
+    "heroYouDo": "lo que haces.",
+    "searchPlaceholder": "Buscar {n}+ herramientas…",
+    "go": "Ir",
+    "allToolsArrow": "Todas las herramientas →",
+    "toolsInCategory": "{n} herramientas"
+  },
+  "footer": {
+    "allTools": "Todas las herramientas",
+    "blog": "Blog",
+    "pricing": "Precios",
+    "requestTool": "Solicitar una herramienta",
+    "about": "Acerca de",
+    "privacy": "Privacidad",
+    "copyright": "© {year} {name}"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "No encontramos esa página o herramienta.",
+    "goHome": "Inicio",
+    "browseTools": "Ver herramientas"
+  },
+  "copy": {
+    "tagline": "{n}+ herramientas en línea",
+    "taglineWithTier": "{n}+ herramientas · Gratis + Pro",
+    "siteDescription": "{total}+ herramientas en línea en {cats} categorías. {client}+ herramientas de navegador gratis sin registro. Las herramientas de IA y OCR incluyen {aiLimit} usos gratis al día — Pro añade IA ilimitada y sin anuncios.",
+    "heroBadge": "{n}+ herramientas en línea · Gratis + Pro",
+    "heroTitleLead": "Herramientas en línea para",
+    "heroSubtitle": "{client}+ herramientas de navegador gratis e ilimitadas. IA y OCR: {aiLimit} usos/día en Gratis — Pro para ilimitado y sin anuncios.",
+    "footerNote": "{client}+ herramientas de navegador gratis · Pro para IA ilimitada",
+    "homeValueFreeTitle": "Plan gratis",
+    "homeValueFreeDesc": "{client}+ herramientas de navegador · {aiLimit} usos de IA/día",
+    "homeCtaSubtitle": "{client}+ herramientas sin registro. Límites de IA en Gratis — mejora a Pro cuando quieras."
+  },
+  "categories": {
+    "ai-tools": "Herramientas de IA",
+    "handwriting-ocr": "OCR de escritura",
+    "devops-tools": "Herramientas DevOps",
+    "health-tools": "Salud y fitness",
+    "text-tools": "Herramientas de texto",
+    "developer-tools": "Herramientas para desarrolladores",
+    "security-password-tools": "Seguridad y contraseñas",
+    "pdf-tools": "Herramientas PDF",
+    "image-tools": "Herramientas de imagen",
+    "color-tools": "Herramientas de color",
+    "calculators": "Calculadoras",
+    "unit-converters": "Convertidores de unidades",
+    "seo-web-tools": "Herramientas SEO y web",
+    "social-media-tools": "Redes sociales",
+    "converters-generators": "Convertidores y generadores",
+    "freelancer-tools": "Herramientas freelance"
+  }
+}
