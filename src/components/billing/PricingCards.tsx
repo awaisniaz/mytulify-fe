@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { PaymentCheckout } from "@/components/billing/PaymentCheckout";
+import { ComingSoonPay } from "@/components/billing/ComingSoonPay";
 import { Icon } from "@/components/ui/Icon";
 import { getFreePlan } from "@/lib/billing/plans";
 import {
@@ -10,14 +11,20 @@ import {
   type ApiPlan,
   type BillingInterval,
 } from "@/lib/billing/plans-api";
+import { API_URL } from "@/lib/auth/config";
 import { cn } from "@/lib/utils";
 
 type Props = {
   paidPlans: ApiPlan[];
+  /** Server hint; client re-checks live gateways. */
+  paymentsReadyHint?: boolean;
 };
 
-export function PricingCards({ paidPlans }: Props) {
+export function PricingCards({ paidPlans, paymentsReadyHint = false }: Props) {
   const [interval, setInterval] = useState<BillingInterval>("month");
+  const [paymentsReady, setPaymentsReady] = useState<boolean | null>(
+    paymentsReadyHint ? true : null,
+  );
   const free = getFreePlan();
 
   const pro = useMemo(
@@ -27,6 +34,29 @@ export function PricingCards({ paidPlans }: Props) {
 
   const price = pro ? planPrice(pro, interval) : null;
   const period = interval === "year" ? "year" : "month";
+
+  useEffect(() => {
+    let cancelled = false;
+    // Re-check when interval changes; start from server hint only then confirm live methods.
+    setPaymentsReady(null);
+    fetch(
+      `${API_URL}/api/v1/payments/methods?plan=${encodeURIComponent(pro?.slug ?? "pro")}&interval=${interval}`,
+    )
+      .then((r) => r.json())
+      .then((d: { methods?: unknown[] }) => {
+        if (!cancelled) setPaymentsReady(Array.isArray(d.methods) && d.methods.length > 0);
+      })
+      .catch(() => {
+        // Network/API down — prefer Coming soon over a broken checkout form.
+        if (!cancelled) setPaymentsReady(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [interval, pro?.slug]);
+
+  const showComingSoon = paymentsReady === false;
+  const showCheckout = paymentsReady === true;
 
   return (
     <>
@@ -80,8 +110,15 @@ export function PricingCards({ paidPlans }: Props) {
         </div>
 
         <div className="relative flex flex-col rounded-2xl border border-brand bg-gradient-to-b from-brand/5 to-surface p-6 shadow-lg sm:p-8">
-          <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand px-3 py-0.5 text-xs font-bold text-brand-fg">
-            Most popular
+          <span
+            className={cn(
+              "absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-0.5 text-xs font-bold",
+              showComingSoon
+                ? "bg-surface-2 text-muted ring-1 ring-border"
+                : "bg-brand text-brand-fg",
+            )}
+          >
+            {showComingSoon ? "Coming soon" : "Most popular"}
           </span>
           <h2 className="text-xl font-bold">{pro?.name ?? "Pro"}</h2>
           <p className="mt-1 text-sm text-muted">
@@ -107,11 +144,20 @@ export function PricingCards({ paidPlans }: Props) {
               </li>
             ))}
           </ul>
-          <PaymentCheckout
-            className="mt-8"
-            planSlug={pro?.slug ?? "pro"}
-            interval={interval}
-          />
+
+          {paymentsReady === null && (
+            <p className="mt-8 rounded-xl border border-dashed border-border py-3 text-center text-sm text-muted">
+              Checking payment options…
+            </p>
+          )}
+          {showComingSoon && <ComingSoonPay />}
+          {showCheckout && (
+            <PaymentCheckout
+              className="mt-8"
+              planSlug={pro?.slug ?? "pro"}
+              interval={interval}
+            />
+          )}
         </div>
       </div>
     </>

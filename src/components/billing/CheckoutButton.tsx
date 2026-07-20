@@ -1,12 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/primitives";
 import { Icon } from "@/components/ui/Icon";
+import { ComingSoonPay } from "@/components/billing/ComingSoonPay";
 
-export function CheckoutButton({ className }: { className?: string }) {
+export function CheckoutButton({
+  className,
+  paymentsReady = true,
+}: {
+  className?: string;
+  /** When false, show Coming soon instead of starting checkout. */
+  paymentsReady?: boolean;
+}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  if (!paymentsReady) {
+    return <ComingSoonPay className="mt-0" />;
+  }
 
   async function checkout() {
     setLoading(true);
@@ -15,6 +28,10 @@ export function CheckoutButton({ className }: { className?: string }) {
       const res = await fetch("/api/billing/checkout", { method: "POST" });
       const data = (await res.json()) as { url?: string; error?: string };
       if (!res.ok || !data.url) {
+        if (data.error?.toLowerCase().includes("not configured")) {
+          setError("Payments coming soon — check back shortly.");
+          return;
+        }
         setError(data.error ?? "Checkout unavailable. Try again later.");
         return;
       }
@@ -41,7 +58,14 @@ export function CheckoutButton({ className }: { className?: string }) {
           </>
         )}
       </Button>
-      {error && <p className="mt-2 text-sm text-rose-500">{error}</p>}
+      {error && (
+        <p className="mt-2 text-sm text-muted">
+          {error}{" "}
+          <Link href="/pricing" className="font-semibold text-brand underline">
+            View pricing
+          </Link>
+        </p>
+      )}
     </div>
   );
 }

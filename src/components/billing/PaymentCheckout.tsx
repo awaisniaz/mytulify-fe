@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Input } from "@/components/ui/primitives";
 import { Icon } from "@/components/ui/Icon";
+import { ComingSoonPay } from "@/components/billing/ComingSoonPay";
 import { API_URL } from "@/lib/auth/config";
 import { authHeaders, getStoredUser } from "@/lib/auth/client";
 import type { BillingInterval } from "@/lib/billing/plans-api";
@@ -108,11 +109,6 @@ export function PaymentCheckout({
     }
   }
 
-  const emptyHint = useMemo(() => {
-    if (error) return error;
-    return "No payment gateways configured. Add Lemon Squeezy, PayFast, or JazzCash keys in tools-hub-backend/.env";
-  }, [error]);
-
   if (gateways.length === 0 && !error) {
     return (
       <p className="mt-8 rounded-xl border border-dashed border-border py-3 text-center text-sm text-muted">
@@ -122,11 +118,7 @@ export function PaymentCheckout({
   }
 
   if (gateways.length === 0) {
-    return (
-      <p className="mt-8 rounded-xl border border-dashed border-amber-300 bg-amber-50 py-3 text-center text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200">
-        {emptyHint}
-      </p>
-    );
+    return <ComingSoonPay className="mt-0" />;
   }
 
   return (

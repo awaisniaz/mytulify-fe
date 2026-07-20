@@ -17,6 +17,7 @@ import { socialMeta } from "@/lib/seo";
 import { ProUnlockForm } from "@/components/billing/ProUnlockForm";
 import { PricingCards } from "@/components/billing/PricingCards";
 import { ManageBillingButton } from "@/components/billing/ManageBillingButton";
+import { paymentGatewaysReady } from "@/lib/billing/payments-ready";
 import { Icon } from "@/components/ui/Icon";
 
 export const metadata: Metadata = {
@@ -37,7 +38,7 @@ export default async function PricingPage({
   searchParams: Promise<{ canceled?: string }>;
 }) {
   const { canceled } = await searchParams;
-  const paidPlans = await fetchPlans();
+  const [paidPlans, payLive] = await Promise.all([fetchPlans(), paymentGatewaysReady()]);
   const pro = paidPlans.find((p) => p.slug === "pro") ?? paidPlans[0];
   const monthly = pro ? planPrice(pro, "month") : { usd: PRO_PRICE_USD, pkr: PRO_PRICE_PKR };
   const yearly = pro ? planPrice(pro, "year") : { usd: PRO_PRICE_USD_YEARLY, pkr: PRO_PRICE_PKR_YEARLY };
@@ -72,7 +73,7 @@ export default async function PricingPage({
         ))}
       </div>
 
-      <PricingCards paidPlans={paidPlans} />
+      <PricingCards paidPlans={paidPlans} paymentsReadyHint={payLive} />
 
       <div className="mt-10 overflow-x-auto rounded-2xl border border-border">
         <table className="w-full min-w-[520px] text-left text-sm">
@@ -123,12 +124,20 @@ export default async function PricingPage({
 
       <div className="mt-8 rounded-2xl border border-border bg-surface-2/50 p-6 text-center text-sm text-muted">
         <Icon name="Lock" className="mx-auto mb-2 h-5 w-5 text-brand" />
-        <p>
-          <strong className="text-foreground">Lemon Squeezy</strong> (international cards & PayPal) ·{" "}
-          <strong className="text-foreground">PayFast</strong> (JazzCash, EasyPaisa, PK cards) ·{" "}
-          <strong className="text-foreground">JazzCash</strong> ·{" "}
-          <strong className="text-foreground">EasyPaisa</strong>. After payment you receive a Pro license key.
-        </p>
+        {payLive ? (
+          <p>
+            <strong className="text-foreground">Lemon Squeezy</strong> (international cards & PayPal) ·{" "}
+            <strong className="text-foreground">PayFast</strong> (JazzCash, EasyPaisa, PK cards) ·{" "}
+            <strong className="text-foreground">JazzCash</strong> ·{" "}
+            <strong className="text-foreground">EasyPaisa</strong>. After payment you receive a Pro license key.
+          </p>
+        ) : (
+          <p>
+            <strong className="text-foreground">Online checkout — coming soon.</strong> Card, JazzCash,
+            EasyPaisa and more will appear on the Pro plan once payments are configured. Have a license key?
+            Unlock Pro in the form above.
+          </p>
+        )}
       </div>
 
       <div className="mt-12">
@@ -143,8 +152,9 @@ export default async function PricingPage({
           <div>
             <p className="font-semibold text-foreground">Which payment method for Pakistan?</p>
             <p className="mt-1">
-              Choose PayFast (all local methods), JazzCash, or EasyPaisa — PKR
-              (Rs {monthly.pkr}/month or Rs {yearly.pkr}/year).
+              {payLive
+                ? `Choose PayFast (all local methods), JazzCash, or EasyPaisa — PKR (Rs ${monthly.pkr}/month or Rs ${yearly.pkr}/year).`
+                : `Local payments (PayFast, JazzCash, EasyPaisa) are coming soon — planned from Rs ${monthly.pkr}/month.`}
             </p>
           </div>
           <div>
