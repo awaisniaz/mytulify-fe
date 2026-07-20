@@ -1,15 +1,16 @@
-export const LOCALES = ["en", "ur", "fr", "de", "es", "pt"] as const;
+export const LOCALES = ["en", "ur", "ar", "fr", "de", "es", "pt"] as const;
 
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "en";
 export const LOCALE_COOKIE = "mytulify_locale";
 
 /** RTL writing direction */
-export const RTL_LOCALES: Locale[] = ["ur"];
+export const RTL_LOCALES: Locale[] = ["ur", "ar"];
 
 export const LOCALE_LABELS: Record<Locale, string> = {
   en: "English",
   ur: "اردو",
+  ar: "العربية",
   fr: "Français",
   de: "Deutsch",
   es: "Español",
@@ -26,5 +27,5 @@ export function localeDir(locale: Locale): "ltr" | "rtl" {
 
 /** Grouped for language picker UI */
 export const LOCALE_GROUPS: { label: string; locales: Locale[] }[] = [
-  { label: "Language", locales: ["en", "ur", "fr", "de", "es", "pt"] },
+  { label: "Language", locales: ["en", "ur", "ar", "fr", "de", "es", "pt"] },
 ];

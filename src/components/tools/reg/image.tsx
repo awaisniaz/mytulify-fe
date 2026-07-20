@@ -14,6 +14,7 @@ import {
   GifToPng, GifToJpg, GifToWebp, GifToVideo,
 } from "@/components/tools/impl/asli-gap";
 import { AspectRatioCalculator } from "@/components/tools/impl/demand-extra";
+import { HomeColorVisualizer } from "@/components/tools/impl/home-color-visualizer";
 
 export default makeReg({
   "resize-image": ResizeImage,
@@ -62,4 +63,5 @@ export default makeReg({
   "gif-to-webp": GifToWebp,
   "gif-to-video": GifToVideo,
   "aspect-ratio-calculator": AspectRatioCalculator,
+  "home-color-visualizer": HomeColorVisualizer,
 });

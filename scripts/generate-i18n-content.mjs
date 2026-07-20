@@ -15,7 +15,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const outDir = join(root, "src/i18n/content/locales");
 mkdirSync(outDir, { recursive: true });
 
-const LOCALES = ["en", "ur", "fr", "de", "es", "pt"];
+const LOCALES = ["en", "ur", "ar", "fr", "de", "es", "pt"];
 
 const LOCALE_NAMES = {
   en: "English", es: "Spanish", pt: "Portuguese", fr: "French", de: "German",

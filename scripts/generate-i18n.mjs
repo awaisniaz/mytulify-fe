@@ -105,7 +105,7 @@ const MORE = {
 };
 Object.assign(LOCALES, MORE);
 
-const LOCALE_CODES = ["en", "ur", "fr", "de", "es", "pt"];
+const LOCALE_CODES = ["en", "ur", "ar", "fr", "de", "es", "pt"];
 for (const code of LOCALE_CODES) {
   const data = { ...LOCALES[code], categories: cats(code) };
   writeFileSync(join(outDir, `${code}.json`), JSON.stringify(data, null, 2) + "\n");

@@ -1,0 +1,86 @@
+{
+  "nav": {
+    "categories": "الفئات",
+    "allTools": "جميع الأدوات",
+    "blog": "المدونة",
+    "pricing": "الأسعار",
+    "requestTool": "اطلب أداة",
+    "search": "بحث",
+    "menu": "القائمة",
+    "toolsCount": "{n} أداة"
+  },
+  "auth": {
+    "signIn": "تسجيل الدخول",
+    "signOut": "تسجيل الخروج",
+    "managePro": "إدارة Pro",
+    "upgradePro": "الترقية إلى Pro"
+  },
+  "home": {
+    "explore": "استكشف",
+    "pickCategory": "اختر فئة",
+    "pickCategorySub": "{n}+ أداة، منظمة لك.",
+    "seeAll": "عرض الكل",
+    "trending": "رائج",
+    "trendingTitle": "الأكثر شعبية الآن",
+    "valuePrivate": "خاص",
+    "valuePrivateDesc": "يعمل في متصفحك",
+    "valueInstant": "فوري",
+    "valueInstantDesc": "بدون انتظار",
+    "valueOnline": "عبر الإنترنت",
+    "valueOnlineDesc": "يعمل في كل مكان",
+    "ctaTitle": "ابدأ استخدام الأدوات الآن",
+    "browseAll": "تصفح جميع الأدوات",
+    "searchAll": "ابحث في جميع الأدوات",
+    "heroEverything": "كل شيء",
+    "heroYouDo": "تفعله.",
+    "searchPlaceholder": "ابحث في {n}+ أداة…",
+    "go": "اذهب",
+    "allToolsArrow": "جميع الأدوات ←",
+    "toolsInCategory": "{n} أداة"
+  },
+  "footer": {
+    "allTools": "جميع الأدوات",
+    "blog": "المدونة",
+    "pricing": "الأسعار",
+    "requestTool": "اطلب أداة",
+    "about": "من نحن",
+    "privacy": "الخصوصية",
+    "copyright": "© {year} {name}"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "لم نعثر على هذه الصفحة أو الأداة.",
+    "goHome": "الصفحة الرئيسية",
+    "browseTools": "تصفح الأدوات"
+  },
+  "copy": {
+    "tagline": "{n}+ أداة عبر الإنترنت",
+    "taglineWithTier": "{n}+ أداة · مجاني + Pro",
+    "siteDescription": "{total}+ أداة عبر الإنترنت في {cats} فئات. {client}+ أداة متصفح مجانية بدون تسجيل. أدوات الذكاء الاصطناعي وOCR تتضمن {aiLimit} تشغيل مجاني يومياً — Pro يضيف ذكاءً اصطناعياً غير محدود ويزيل الإعلانات.",
+    "heroBadge": "{n}+ أداة عبر الإنترنت · مجاني + Pro",
+    "heroTitleLead": "أدوات عبر الإنترنت لـ",
+    "heroSubtitle": "{client}+ أداة متصفح مجانية وغير محدودة. الذكاء الاصطناعي وOCR: {aiLimit} تشغيل/يوم على المجاني — Pro للغير محدود وبدون إعلانات.",
+    "footerNote": "{client}+ أداة متصفح مجانية · Pro للذكاء الاصطناعي غير المحدود",
+    "homeValueFreeTitle": "الخطة المجانية",
+    "homeValueFreeDesc": "{client}+ أداة متصفح · {aiLimit} تشغيل AI/يوم",
+    "homeCtaSubtitle": "{client}+ أداة تعمل بدون تسجيل. حدود الذكاء الاصطناعي على المجاني — ترقَّ إلى Pro في أي وقت."
+  },
+  "categories": {
+    "ai-tools": "أدوات الذكاء الاصطناعي",
+    "handwriting-ocr": "OCR للخط اليدوي",
+    "devops-tools": "أدوات DevOps",
+    "health-tools": "الصحة واللياقة",
+    "text-tools": "أدوات النص",
+    "developer-tools": "أدوات المطورين",
+    "security-password-tools": "الأمان وكلمات المرور",
+    "pdf-tools": "أدوات PDF",
+    "image-tools": "أدوات الصور",
+    "color-tools": "أدوات الألوان",
+    "calculators": "الآلات الحاسبة",
+    "unit-converters": "محولات الوحدات",
+    "seo-web-tools": "أدوات SEO والويب",
+    "social-media-tools": "أدوات وسائل التواصل",
+    "converters-generators": "المحولات والمولدات",
+    "freelancer-tools": "أدوات المستقلين"
+  }
+}

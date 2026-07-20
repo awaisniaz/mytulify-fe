@@ -2845,6 +2845,39 @@
         "image-tools/compress-image"
       ]
     },
+    "image-tools/home-color-visualizer": {
+      "name": "Home Color Visualizer",
+      "description": "Upload a photo of your home or room, try wall/door/furniture colors, and preview what looks best.",
+      "metaTitle": "Home Color Visualizer – Try Paint Colors on Your Photo | Mytulify",
+      "metaDescription": "Upload a room or house photo and try wall, door, and furniture colors instantly. Free home paint color visualizer — private, no signup.",
+      "about": [
+        "Choosing paint is hard until you see it on your own walls. This visualizer lets you upload a photo of your room or house exterior, pick colors for walls, trim, doors, accents, and furniture, then click each surface to preview.",
+        "Recoloring keeps the original lighting so shadows and highlights still look natural. Ready-made palettes help you compare warm sand, coastal, sage, terracotta, and charcoal looks in seconds."
+      ],
+      "howTo": {
+        "title": "How to preview home colors",
+        "steps": [
+          "Upload a clear photo of your room or house.",
+          "Select a surface (Walls, Door, Accent…) and choose a color — or load a palette.",
+          "Click that surface on the photo. Adjust tolerance if needed, then download your preview."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Does this use AI room segmentation?",
+          "a": "No. It recolors pixels similar to the spot you click, which works well on flat walls and doors. Use Undo and tolerance for fine control."
+        },
+        {
+          "q": "Is my photo uploaded to a server?",
+          "a": "No. Everything runs in your browser on Mytulify — your photo stays on your device."
+        }
+      ],
+      "related": [
+        "image-tools/image-color-picker",
+        "image-tools/color-extractor-from-image",
+        "color-tools/color-palette-generator"
+      ]
+    },
     "calculators/profit-margin-calculator": {
       "name": "Profit Margin Calculator",
       "description": "Calculate profit, profit margin %, and markup from cost and selling price.",

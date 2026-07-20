@@ -73,6 +73,7 @@ const RULES = [
   [/crop-image|crop/i, "Crop"],
   [/convert-image|image-converter|png-to-jpg|jpg-to-png|webp|heic|bmp|gif|svg-to|to-svg|to-png|to-jpg|to-webp/i, "Image"],
   [/filter|blur|sharpen|grayscale|sepia|invert|meme|collage|flip-image|rotate-image|exif|metadata|background-remov|transparent|aspect-ratio|pixelate|vignette|brightness|contrast|saturation|hue|duotone|posterize|border-image|round-corn|add-text|watermark-to-image/i, "Wand2"],
+  [/home-color|room-color|paint-visual|color-visualizer/i, "Palette"],
   [/color-picker|palette|gradient|shadow|contrast-check|color-blind|tint|shade|tone|harmony|analogous|complementary|triadic|monochrome|random-color|color-name|color-mix|extract-color|image-color|dominant-color/i, "Palette"],
   [/hex-to-|rgb-to-|hsl-to-|cmyk|color-convert|color-code/i, "Palette"],
   [/password-generator|passphrase|random-password/i, "KeyRound"],

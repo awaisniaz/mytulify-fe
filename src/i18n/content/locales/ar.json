@@ -1,0 +1,1968 @@
+{
+  "categories": {
+    "ai-tools": {
+      "name": "أدوات مدعومة بالذكاء الاصطناعي",
+      "description": "مساعدين ذكاء اصطناعي للمطورين — شرح الشفرة ، وتوليد SQL ، وتصحيح الأخطاء ، وكتابة التعليقات و الوثائق و الاختبارات ، مدعومة بنموذج لغة كبير.",
+      "tagline": "مساعدين ذكاء اصطناعي للمطورين"
+    },
+    "calculators": {
+      "name": "الحاسبات",
+      "description": "حاسبات مالية وصحية ورياضية وتاريخية و يومية تعمل بالكامل في المتصفح.",
+      "tagline": "المالية ، الصحية و الرياضية"
+    },
+    "color-tools": {
+      "name": "أدوات الألوان",
+      "description": "أدوات اختيار الألوان و تحويلها و توليد لوحات الألوان و التدرج في المتصفح.",
+      "tagline": "اختر ، تحويل و بناء لوحات الألوان"
+    },
+    "converters-generators": {
+      "name": "المحولات و المولِّدات",
+      "description": "محولات بيانات و مولدات خدمات جانب العميل للمطورين و الطلاب و المستخدمين العاديين.",
+      "tagline": "محولات بيانات و مولدات"
+    },
+    "developer-tools": {
+      "name": "أدوات المطور",
+      "description": "أدوات برمجية على جانب العميل لمعالجة التنسيق والتحويل والتشفير وفحص البيانات.",
+      "tagline": "تنسيق وتحويل وتصحيح الشفرة"
+    },
+    "devops-tools": {
+      "name": "أدوات DevOps",
+      "description": "مولدات ومُصادق على جانب العميل للبنية التحتية و CI/CD والشبكات — تكوينات ووثائق وبرامج نصية يمكن نسخها مباشرة إلى مشروعك.",
+      "tagline": "تكوينات ووثائق وبرامج نصية"
+    },
+    "health-tools": {
+      "name": "الصحة واللياقة",
+      "description": "حاسبات صحية ورياضية مجانية — الترطيب والماكرو والمناطق القلبية والتدريب والمزيد. على الفور وخاصة وتشغيلها بالكامل في متصفحك.",
+      "tagline": "اللياقة والتغذية والرفاهية"
+    },
+    "image-tools": {
+      "name": "أدوات الصورة",
+      "description": "أدوات متصفح لتحويل وتغيير حجم وضغط وقص وедакت الصور.",
+      "tagline": "تغيير الحجم وضغط وتحويل الصور"
+    },
+    "pdf-tools": {
+      "name": "أدوات PDF",
+      "description": "أدوات تعمل في المتصفح لدمج وتنقيح وتحويل وضغط وتحرير ملفات PDF.",
+      "tagline": "دمج وتنقيح وتحويل ملفات PDF"
+    },
+    "security-password-tools": {
+      "name": "أدوات الأمان وكلمات المرور",
+      "description": "أدوات تعمل في المتصفح وتحترم الخصوصية لكلمات المرور وتحويلها وتشفيرها وتوليد المفاتيح.",
+      "tagline": "كلمات المرور وتحويلها والتشفير"
+    },
+    "seo-web-tools": {
+      "name": "أدوات تحسين محركات البحث والويب",
+      "description": "بحث الكلمات الرئيسية وتحسين محركات البحث الفني وتحسين المحتوى وتتبع المراكز والتحليلات الخلفية والروابط الداخلية والنمط والمسح والتدفقات التي تعمل بالذكاء الاصطناعي — مجانًا في متصفحك.",
+      "tagline": "البحث والمسح والنمط والتحسين بالذكاء الاصطناعي"
+    },
+    "social-media-tools": {
+      "name": "أدوات وسائل التواصل الاجتماعي",
+      "description": "مساعدات تعمل على جانب العميل لمساعدة في صياغة وتحسين وتصميم المحتوى المنشور على وسائل التواصل الاجتماعي.",
+      "tagline": "التعليقات والخطوط والتصاميم"
+    },
+    "text-tools": {
+      "name": "أدوات النص",
+      "description": "أدوات متصفح قائم على متصفح للعد والتحويل والتنظيف والتحويل النصي.",
+      "tagline": "اكتب ونمقص واعمل تحويل للنص"
+    },
+    "unit-converters": {
+      "name": "مُحَوِّلات الوحدات",
+      "description": "مُحَوِّلات فورية على جانب العميل للطول والوزن والحجم والدرجة الحرارية وغيرها من وحدات القياس.",
+      "tagline": "تحويل أي وحدة في لحظة"
+    },
+    "handwriting-ocr": {
+      "name": "حرف متحرك OCR",
+      "description": "حرف متحرك مدعوم بالذكاء الاصطناعي لتحويل الكتابة اليدوية إلى نص لأكثر من 30 لغة. قم بتحميل صورة واحصل على نص قابل للتعديل بدقة في ثوان.",
+      "tagline": "كتابة اليد إلى نص في أكثر من 30 لغة"
+    },
+    "freelancer-tools": {
+      "name": "أدوات المُستقل",
+      "description": "أدوات مجانية على جانب العميل للمستقلين - العقود وال提اق والاتفاقيات وآلات حاسبة الأسعار والاقتباسات وتغيير الطلبات. بدون تسجيل دخول ولا اشتراك.",
+      "tagline": "العقود والأسعار ووثائق العميل - مجانًا"
+    }
+  },
+  "tools": {
+    "ai-tools/ai-form-builder": {
+      "name": "AI Form Builder",
+      "description": "اختر من 60+ نموذج جاهز حول العالم أو وصف نموذج مخصص باللغة. تحرير الحقول والتعليمات التجارية والتوقيع الرقمي ومسح الصورة وتحميل ملف PDF."
+    },
+    "ai-tools/code-explainer": {
+      "name": "AI Code Explainer",
+      "description": "لصق الكود والحصول على شرح باللغة الإنجليزية مع إشارات الأخطاء المحتملة. عمق المبتدئ أو الخبير."
+    },
+    "ai-tools/sql-query-generator": {
+      "name": "AI SQL Query Generator",
+      "description": "وصف استعلام باللغة الإنجليزية والحصول على SQL صحيح ل Postgres أو MySQL أو SQLite أو T-SQL، مع شرح العودة إليك."
+    },
+    "ai-tools/error-diagnoser": {
+      "name": "AI Error Diagnoser",
+      "description": "لصق خطأ أو تتبع خطأ والحصول على السبب الجذري بالإضافة إلى إصلاح الكود الدقيق كفرق."
+    },
+    "ai-tools/code-review-assistant": {
+      "name": "AI Code Review Assistant",
+      "description": "الحصول على ملاحظات حول الكود مقسمة إلى أقسام الأمان والأداء والنمط."
+    },
+    "ai-tools/regex-generator": {
+      "name": "AI Regex Generator",
+      "description": "تحويل وصف باللغة الإنجليزية إلى تعبير عادي يعمل، مع شرح وأمثلة."
+    },
+    "ai-tools/commit-message-generator": {
+      "name": "AI Commit Message Generator",
+      "description": "تحويل git diff إلى رسالة التزام نظيفة — Commits التقليدية، Gitmoji أو نمط عادي."
+    },
+    "ai-tools/readme-generator": {
+      "name": "AI README Generator",
+      "description": "توليد README.md محترف من تفاصيل المشروع، مع الكشف التلقائي عن المكدس من package.json."
+    },
+    "ai-tools/test-case-generator": {
+      "name": "Test Case Generator",
+      "description": "لصق دالة والحصول على مجموعة شاملة من الحالات الاختبارية ل Jest أو PyTest أو JUnit تغطي الحالات الحدية."
+    },
+    "ai-tools/docker-compose-generator": {
+      "name": "AI Docker Compose Generator",
+      "description": "وصف الخدمات أو اختيار قالب مكدس (MERN، Laravel+MySQL+Redis، Django+Postgres) والحصول على docker-compose.yml صحيح."
+    },
+    "ai-tools/cron-explainer": {
+      "name": "مفسّر تعبير كرون بالذكاء الاصطناعي",
+      "description": "تحويل اللغة الإنجليزية العادية إلى تعبير كرون أو شرح أي تعبير كرون ، مع أوقات التشغيل التالية المتاحة حسب المنطقة الزمنية."
+    },
+    "calculators/bmi-calculator": {
+      "name": "حاسبة مؤشر كتلة الجسم",
+      "description": "حساب مؤشر كتلة الجسم من الطول والوزن بوحدات مترية أو إمبريالية."
+    },
+    "calculators/percentage-calculator": {
+      "name": "حاسبة النسبة المئوية",
+      "description": "العثور على النسب المئوية ، وتغيير النسبة المئوية ، والنسبة المئوية التي يمثلها رقم ما من رقم آخر."
+    },
+    "calculators/age-calculator": {
+      "name": "حاسبة العمر",
+      "description": "حساب العمر الدقيق بالسنوات والشهور والأسابيع والأيام من تاريخ الميلاد."
+    },
+    "calculators/loan-calculator": {
+      "name": "حاسبة القرض",
+      "description": "تقدير المدفوعات الشهرية ، والفائدة الإجمالية ، ووقت السداد لأي قرض."
+    },
+    "calculators/mortgage-calculator": {
+      "name": "حاسبة الرهن العقاري",
+      "description": "حساب مدفوعات القرض العقاري بما في ذلك الرأس المال ، الفائدة ، الضرائب ، والتأمين."
+    },
+    "calculators/compound-interest-calculator": {
+      "name": "حاسبة الفائدة المركبة",
+      "description": "تقدير نمو الاستثمار مع الفائدة المركبة بمرور الوقت والمساهمات."
+    },
+    "calculators/tip-calculator": {
+      "name": "حاسبة التिप",
+      "description": "حساب مبلغ التิป وتقسيم إجمالي الفاتورة بين عدة أشخاص."
+    },
+    "calculators/discount-calculator": {
+      "name": "حاسبة الخصم",
+      "description": "العثور على سعر البيع وسعر الخصم من السعر الأصلي ونسبة الخصم."
+    },
+    "calculators/sales-tax-calculator": {
+      "name": "حاسبة ضريبة المبيعات",
+      "description": "إضافة ضريبة المبيعات إلى سعر أو استخراج الضريبة من المبلغ الإجمالي."
+    },
+    "calculators/calorie-calculator": {
+      "name": "حاسبة السعرات الحرارية",
+      "description": "تقدير الاحتياجات اليومية للسعرات الحرارية للحفاظ أو الخسارة أو الزيادة."
+    },
+    "calculators/bmr-calculator": {
+      "name": "حاسبة معدل الأيض الأساسي",
+      "description": "حساب معدل الأيض الأساسي لتقدير حرق السعرات الحرارية في حالة الراحة."
+    },
+    "calculators/tdee-calculator": {
+      "name": "حاسبة التكلفة اليومية للطاقة",
+      "description": "حساب التكلفة اليومية الكلية للطاقة من معدل الأيض الأساسي ومستوى النشاط."
+    },
+    "calculators/body-fat-calculator": {
+      "name": "حاسبة نسبة الدهون في الجسم",
+      "description": "تقدير نسبة الدهون في الجسم باستخدام قياسات طريقة البحرية الأمريكية."
+    },
+    "calculators/ideal-weight-calculator": {
+      "name": "حاسبة الوزن المثالي",
+      "description": "اقتراح نطاق وزن صحي يعتمد على الطول والعمر والجنس."
+    },
+    "calculators/due-date-calculator": {
+      "name": "حاسبة تاريخ الولادة",
+      "description": "تقدير تاريخ الولادة المتوقع من آخر دورة شهرية."
+    },
+    "calculators/ovulation-calculator": {
+      "name": "حاسبة التبويض",
+      "description": "توقعات الفترات الخصبة وأيام التبويض من بيانات الدورة الشهرية."
+    },
+    "calculators/pregnancy-calculator": {
+      "name": "حاسبة الحمل",
+      "description": "تتبع تقدم الحمل وعدد الأسابيع والمراحل الرئيسية."
+    },
+    "calculators/gpa-calculator": {
+      "name": "حاسبة المعدل التراكمي",
+      "description": "حساب المعدل التراكمي من درجات المقررات وساعات الائتمان."
+    },
+    "calculators/grade-calculator": {
+      "name": "حاسبة الدرجة",
+      "description": "حساب الدرجة النهائية أو المرجحة والدرجة المطلوبة للنجاح."
+    },
+    "calculators/fraction-calculator": {
+      "name": "حاسبة الكسور",
+      "description": "إضافة، طرح، ضرب، وتبسيط الكسور."
+    },
+    "calculators/scientific-calculator": {
+      "name": "حاسبة علمية",
+      "description": "حاسبة ذات وظائف كاملة مع ثلاثية الأبعاد، لوغاريتمات، أسس، وقيم ثابتة."
+    },
+    "calculators/date-calculator": {
+      "name": "حاسبة التواريخ",
+      "description": "إضافة أو طرح أيام من تاريخ معين وايجاد الفترة الزمنية بين تاريخين."
+    },
+    "calculators/hours-calculator": {
+      "name": "حاسبة الساعات",
+      "description": "حساب الساعات والدقائق الإجمالية بين وقتين لاستخدامها في جداول العمل."
+    },
+    "calculators/time-duration-calculator": {
+      "name": "حاسبة المدة الزمنية",
+      "description": "قياس الزمن المنقضي بين تاريخين معينين بوحدات متعددة."
+    },
+    "calculators/countdown-calculator": {
+      "name": "حاسبة العد التنازلي",
+      "description": "العد التنازلي للأيام، الساعات، والدقائق حتى تاريخ معين."
+    },
+    "calculators/paycheck-calculator": {
+      "name": "حاسبة الراتب",
+      "description": "تقدير الراتب بعد الضرائب والاستقطاعات الشائعة."
+    },
+    "calculators/salary-calculator": {
+      "name": "حاسبة الرواتب",
+      "description": "تحويل الأجر بين معدلات الساعة، الأسبوع، الشهر، والسنة."
+    },
+    "calculators/sleep-calculator": {
+      "name": "حاسبة النوم",
+      "description": "اقتراح أوقات النوم أو الاستيقاظ بناءً على دورات نوم 90 دقيقة."
+    },
+    "calculators/random-number-generator": {
+      "name": "مُولِد الأرقام العشوائية",
+      "description": "توليد أرقام عشوائية ضمن نطاق مخصص مع خيارات."
+    },
+    "calculators/standard-deviation-calculator": {
+      "name": "حاسبة الانحراف المعياري",
+      "description": "احسب المتوسط والانحراف المعياري والتباين لمجموعة بيانات."
+    },
+    "calculators/zakat-calculator": {
+      "name": "حاسبة الزكاة",
+      "description": "احسب زكاة الذهب والفضة والثروة في متصفحك."
+    },
+    "calculators/afghan-date-converter": {
+      "name": "مُحَوِّل تواريخ الأفغانية",
+      "description": "تحويل تواريخ شمسي (هجري شمسي) إلى ميلادي والعكس."
+    },
+    "calculators/tasbih-counter": {
+      "name": "عَدَّاد التَسبيح",
+      "description": "عَدَّاد تَسبيح رقمي لذِكر وَتذكير إسلامي."
+    },
+    "calculators/salary-tax-calculator": {
+      "name": "حاسبة ضريبة الراتب",
+      "description": "تَقدير ضريبة الدَخل والراتب الصَافي من الراتب الإجمالي."
+    },
+    "color-tools/color-picker": {
+      "name": "مُختار اللَون",
+      "description": "اختر أي لون وحصل على قيم HEX و RGB و HSL الخاصة به."
+    },
+    "color-tools/hex-to-rgb": {
+      "name": "HEX إلى RGB",
+      "description": "تحويل رموز الألوان HEX إلى قيم RGB."
+    },
+    "color-tools/rgb-to-hex": {
+      "name": "RGB إلى HEX",
+      "description": "تحويل قيم RGB إلى رمز لوني HEX."
+    },
+    "color-tools/hex-to-hsl": {
+      "name": "HEX إلى HSL",
+      "description": "تحويل ألوان HEX إلى صيغة HSL."
+    },
+    "color-tools/hsl-to-hex": {
+      "name": "HSL إلى HEX",
+      "description": "تحويل قيم الألوان HSL إلى رمز HEX."
+    },
+    "color-tools/rgb-to-hsl": {
+      "name": "RGB إلى HSL",
+      "description": "تحويل قيم الألوان RGB إلى HSL."
+    },
+    "color-tools/rgb-to-cmyk": {
+      "name": "RGB إلى CMYK",
+      "description": "تحويل ألوان RGB إلى CMYK للطباعة."
+    },
+    "color-tools/cmyk-to-rgb": {
+      "name": "CMYK إلى RGB",
+      "description": "تحويل ألوان الطباعة CMYK إلى RGB."
+    },
+    "color-tools/hex-to-cmyk": {
+      "name": "HEX إلى CMYK",
+      "description": "تحويل رمز اللون HEX إلى قيم CMYK."
+    },
+    "color-tools/color-palette-generator": {
+      "name": "مُولِد صَفّاف اللّوَن",
+      "description": "توليد صَفّاف اللّوَن المتناغم على الفور."
+    },
+    "color-tools/gradient-generator": {
+      "name": "مُولِد التدرج",
+      "description": "بناء تدرجات خطية ومدارية CSS بصرية."
+    },
+    "color-tools/color-contrast-checker": {
+      "name": "فاحص تباين الألوان",
+      "description": "فحص نسبة تباين WCAG بين لونين."
+    },
+    "color-tools/color-shades-generator": {
+      "name": "مُولِد ظلال الألوان",
+      "description": "توليد ظلال داكنة من لون قاعدي."
+    },
+    "color-tools/color-tints-generator": {
+      "name": "مُولِد درجات الألوان",
+      "description": "توليد درجات خفيفة من لون قاعدي."
+    },
+    "color-tools/color-wheel": {
+      "name": "دوّارة الألوان",
+      "description": "استكشاف الألوان التكميلية والمتناغمة على دوّارة."
+    },
+    "color-tools/color-mixer": {
+      "name": "مخلوط الألوان",
+      "description": "امزج لونين واستعرض النتيجة المخلوطة."
+    },
+    "color-tools/color-blindness-simulator": {
+      "name": "محاكي عمى الألوان",
+      "description": "استعرض الألوان كما يراها الأشخاص الذين يعانون من عيوب في رؤية الألوان."
+    },
+    "color-tools/random-color-generator": {
+      "name": "مُولِد الألوان العشوائية",
+      "description": "قم بإنشاء ألوان عشوائية مع رموزها."
+    },
+    "color-tools/complementary-color-finder": {
+      "name": "مُكتشف اللون التكميلي",
+      "description": "ابحث عن اللون التكميلي لأي لون مدخلة."
+    },
+    "color-tools/analogous-color-generator": {
+      "name": "مُولِد الألوان الشبيهة",
+      "description": "قم بإنشاء مخططات ألوان شبيهة من لون أساسي."
+    },
+    "color-tools/triadic-color-generator": {
+      "name": "مُولِد الألوان الثلاثية",
+      "description": "قم بإنشاء مخططات توازن ثلاثي الألوان."
+    },
+    "color-tools/monochromatic-color-generator": {
+      "name": "مُولِد الألوان الأحادية",
+      "description": "ابنِ لوحة ألوان أحادية اللون."
+    },
+    "color-tools/color-name-finder": {
+      "name": "مُكتشف اسم اللون",
+      "description": "ابحث عن اللون المسمى الأقرب لقيمة HEX المحددة."
+    },
+    "color-tools/css-gradient-background-generator": {
+      "name": "مُولِد خلفية تدرج CSS",
+      "description": "قم بإنشاء خلفيات تدرج CSS يمكن نسخها ولصقها."
+    },
+    "color-tools/box-shadow-generator": {
+      "name": "مُولِد ظل المربع",
+      "description": "ابنِ واستعرض رمز ظل المربع CSS."
+    },
+    "color-tools/text-shadow-generator": {
+      "name": "مُولِد ظِل النص",
+      "description": "انشئ تأثيرات ظل النص CSS مع معاينة مباشرة."
+    },
+    "color-tools/hex-color-to-image": {
+      "name": "HEX اللون إلى الصورة",
+      "description": "اجمع صورة لون متجانبة من رمز HEX."
+    },
+    "color-tools/color-from-image": {
+      "name": "اللون من الصورة",
+      "description": "اختر واستخرج الألوان مباشرة من صورة تم تحميلها."
+    },
+    "color-tools/hex-to-rgba": {
+      "name": "HEX إلى RGBA",
+      "description": "تحويل ألوان HEX إلى RGBA مع قناة ألفا."
+    },
+    "color-tools/lighten-darken-color": {
+      "name": "تفتيح وغامق اللون",
+      "description": "تعديل إضاءة اللون لأعلى أو لأسفل بنسبة مئوية."
+    },
+    "converters-generators/json-to-csv": {
+      "name": "مُحوِّل JSON إلى CSV",
+      "description": "تحويل مصفوفات JSON / كائنات إلى CSV قابلة للتنزيل."
+    },
+    "converters-generators/csv-to-json": {
+      "name": "مُحوِّل CSV إلى JSON",
+      "description": "تحليل CSV إلى JSON منظم مع تعيين رأس."
+    },
+    "converters-generators/json-formatter": {
+      "name": "مُصَمِّم JSON / مُجمِّع",
+      "description": "طباعة JSON بشكل جميل، وتقليل الحجم، والتحقق من صحتها مع عرض شجري."
+    },
+    "converters-generators/json-to-yaml": {
+      "name": "مُحوِّل JSON إلى YAML",
+      "description": "تحويل بين صيغ JSON وYAML."
+    },
+    "converters-generators/xml-to-json": {
+      "name": "مُحوِّل XML إلى JSON",
+      "description": "تحليل XML إلى JSON و العكس."
+    },
+    "converters-generators/base64-encoder-decoder": {
+      "name": "مُشفر و مُفسر Base64",
+      "description": "تشفير و فك تشفير النصوص والملفات إلى/من Base64."
+    },
+    "converters-generators/qr-code-generator": {
+      "name": "مُنشئ رمز الاستجابة السريعة",
+      "description": "إنشاء رموز الاستجابة السريعة القابلة للتنزيل لعناوين URL والنصوص والاتصالات."
+    },
+    "converters-generators/barcode-generator": {
+      "name": "مُنشئ الباركود",
+      "description": "إنشاء باركودات بصور مثل Code128 و EAN و UPC."
+    },
+    "converters-generators/uuid-generator": {
+      "name": "مُنشئ UUID / GUID",
+      "description": "إنشاء UUIDs من الإصدار 4 (و الإصدار 1) بشكل جماعي."
+    },
+    "converters-generators/password-generator": {
+      "name": "مُنشئ كلمات المرور",
+      "description": "إنشاء كلمات مرور قوية عشوائية بقواعد مخصصة."
+    },
+    "converters-generators/lorem-ipsum-generator": {
+      "name": "مُنشئ نص لوريم إيبسوم",
+      "description": "إنشاء نصوص محلية بحسب الكلمات أو الجمل أو الفقرات."
+    },
+    "converters-generators/hash-generator": {
+      "name": "مُنشئ هاش (MD5 / SHA)",
+      "description": "حساب هاشات MD5 و SHA-1 و SHA-256 للنصوص."
+    },
+    "converters-generators/case-converter": {
+      "name": "مُحول الحالة",
+      "description": "تحويل النصوص بين الحالات العليا والدنيا والأسماء والجمل والهياكل المُستخدمة."
+    },
+    "converters-generators/timestamp-converter": {
+      "name": "مُحول التوقيت Unix",
+      "description": "تحويل بين توقيت Unix البشري والتواريخ القابلة للقراءة."
+    },
+    "converters-generators/json-to-xml": {
+      "name": "مُحول JSON إلى XML",
+      "description": "تحويل هياكل البيانات JSON إلى XML."
+    },
+    "converters-generators/html-to-markdown": {
+      "name": "مُحَوِّل HTML إلى Markdown",
+      "description": "تحويل تعليمات HTML إلى Markdown نظيف."
+    },
+    "converters-generators/markdown-to-html": {
+      "name": "مُحَوِّل Markdown إلى HTML",
+      "description": "إظهار Markdown في HTML مع معاينة مباشرة."
+    },
+    "converters-generators/color-converter": {
+      "name": "مُحَوِّل الألوان (HEX / RGB / HSL)",
+      "description": "تحويل الألوان بين HEX و RGB و HSL و HSV."
+    },
+    "converters-generators/number-base-converter": {
+      "name": "مُحَوِّل قاعدة الأرقام",
+      "description": "تحويل الأرقام بين الثنائي والثماني والعشري والسداسي عشر."
+    },
+    "converters-generators/random-number-generator": {
+      "name": "مُحْدِث الأرقام العشوائية",
+      "description": "إنشاء أرقام عشوائية ضمن نطاق مخصص."
+    },
+    "converters-generators/regex-tester": {
+      "name": "مُخْتَبِر Regex",
+      "description": "اختبار تعبيرات Regex مع تظليل المطابقة المباشر."
+    },
+    "converters-generators/jwt-decoder": {
+      "name": "مُفَسِّر JWT",
+      "description": "فك تشفير JWT والرأس والحمولة وإظهار المطالبات."
+    },
+    "converters-generators/csv-to-tsv": {
+      "name": "مُحَوِّل CSV إلى TSV",
+      "description": "تحويل CSV إلى TSV والصيغ المواتية لبرنامج Excel."
+    },
+    "converters-generators/sql-to-json": {
+      "name": "مُحَوِّل SQL إلى JSON",
+      "description": "تحويل عبارات SQL INSERT إلى JSON أو CSV."
+    },
+    "converters-generators/text-to-slug": {
+      "name": "مُحَوِّل النص إلى Slug",
+      "description": "تحويل أي نص إلى slug آمن لعنوان URL."
+    },
+    "converters-generators/random-string-generator": {
+      "name": "مُولِد السلاسل العشوائية",
+      "description": "امنح سلاسل عشوائية وأكواد واجهة برمجة التطبيقات مع مجموعات أحرف مخصصة."
+    },
+    "converters-generators/json-to-typescript": {
+      "name": "JSON إلى TypeScript",
+      "description": "امنح واجهات برمجة التطبيقات TypeScript من عينة JSON."
+    },
+    "converters-generators/cron-expression-generator": {
+      "name": "مُولِد تعبير Cron",
+      "description": "ابنِ وجاوب جداول Cron باللغة الإنجليزية البسيطة."
+    },
+    "converters-generators/list-randomizer": {
+      "name": "مُخَفِّف القائمة",
+      "description": "اخلط أو اختر عناصر عشوائية من قائمة مُنسَخة."
+    },
+    "converters-generators/code-minifier": {
+      "name": "مُخَفِّف الشفرة",
+      "description": "اخفض من حجم HTML و CSS و JavaScript لتقليل حجم الملف."
+    },
+    "converters-generators/invoice-generator": {
+      "name": "مُولِد الفواتير",
+      "description": "أنشئ فواتير PDF احترافية مع عناصر الفواتير والضرائب والتنزيل الفوري — بدون علامة مائية."
+    },
+    "converters-generators/iban-validator": {
+      "name": "مُصَحِّح IBAN",
+      "description": "افحص أرقام IBAN لباكستان والاتحاد الأوروبي والمملكة المتحدة و80+ دولة مع مُصَحِّح mod-97."
+    },
+    "developer-tools/json-formatter": {
+      "name": "مُصَحِّح JSON",
+      "description": "جَمِّل، افحص، واخفض من حجم JSON مع تَصْوير بنية البرمجة."
+    },
+    "developer-tools/json-to-csv": {
+      "name": "JSON إلى محول CSV",
+      "description": "حَوِّل مصفوفات JSON إلى ملفات CSV قابلة للتنزيل."
+    },
+    "developer-tools/csv-to-json": {
+      "name": "محول CSV إلى JSON",
+      "description": "فَسِّر بيانات CSV إلى إخراج JSON منظم."
+    },
+    "developer-tools/base64-encoder-decoder": {
+      "name": "مُشفر و مُفسر Base64",
+      "description": "تشفير و فك تشفير النصوص والملفات إلى و من Base64."
+    },
+    "developer-tools/url-encoder-decoder": {
+      "name": "مُشفر و مُفسر URL",
+      "description": "تشفير و فك تشفير URLs و معاملات الاستعلام بنسبة مئوية."
+    },
+    "developer-tools/jwt-decoder": {
+      "name": "مُفسر JWT",
+      "description": "فك تشفير JWT إلى رأس الحقل، حمولة و التوقيع."
+    },
+    "developer-tools/regex-tester": {
+      "name": "مُختبر تعبيرات 정규",
+      "description": "اختبار تعبيرات 정규 ضد نص عينة مع تمييز المطابقة الفعّال."
+    },
+    "developer-tools/timestamp-converter": {
+      "name": "مُحول Timestamp",
+      "description": "تحويل Timestamps Unix Epoch إلى تواريخ و أوقات قابلة للقراءة البشرية و العكس."
+    },
+    "developer-tools/uuid-generator": {
+      "name": "مُولّد UUID",
+      "description": "توليد UUIDs من النوع v4 بشكل فردي أو بشكل جماعي."
+    },
+    "developer-tools/hex-to-rgb-converter": {
+      "name": "مُحول Hex إلى RGB",
+      "description": "تحويل الألوان بين صيغ HEX و RGB و HSL."
+    },
+    "developer-tools/cron-expression-generator": {
+      "name": "مُولّد تعبير Cron",
+      "description": "بناء و تفسير جداول Cron مع معاينة التشغيل التالي."
+    },
+    "developer-tools/html-encoder-decoder": {
+      "name": "مُشفر و مُفسر HTML",
+      "description": "تشفير و فك تشفير كيانات HTML في النص."
+    },
+    "developer-tools/html-minifier": {
+      "name": "مُقلص HTML",
+      "description": "إزالة المسافات البيضاء و التعليقات لتقليل حجم HTML."
+    },
+    "developer-tools/css-minifier": {
+      "name": "مضغوط CSS",
+      "description": "ضغط CSS عن طريق إزالة المسافات الفارغة والتعليقات."
+    },
+    "developer-tools/javascript-minifier": {
+      "name": "مضغوط JavaScript",
+      "description": "تقليل مصدر JavaScript لتقليل حجم الملف."
+    },
+    "developer-tools/json-to-yaml": {
+      "name": "مُحول JSON إلى YAML",
+      "description": "تحويل بين تنسيقات JSON وYAML."
+    },
+    "developer-tools/sql-formatter": {
+      "name": "مُصمم SQL",
+      "description": "جعل استفسارات SQL جميلة ومنسقة لتحسين القراءة."
+    },
+    "developer-tools/number-base-converter": {
+      "name": "مُحول قاعدة الأرقام",
+      "description": "تحويل الأرقام بين الثنائي والثماني والعشري والسداسي عشر."
+    },
+    "developer-tools/color-picker": {
+      "name": "مُختار الألوان",
+      "description": "اختيار الألوان وإخراج قيم HEX وRGB وHSL."
+    },
+    "developer-tools/qr-code-generator": {
+      "name": "مُولد رمز الاستجابة السريعة",
+      "description": "توليد رموز الاستجابة السريعة القابلة للتنزيل من النص أو عناوين URL."
+    },
+    "developer-tools/css-gradient-generator": {
+      "name": "مُولد تدرج CSS",
+      "description": "بناء تدرجات خطية وشعاعية CSS بصرية مع إخراج رمز."
+    },
+    "developer-tools/box-shadow-generator": {
+      "name": "مُولد ظل المربع",
+      "description": "توليد رمز ظل المربع في CSS مع معاينة مباشرة."
+    },
+    "developer-tools/markdown-preview": {
+      "name": "معاينة Markdown",
+      "description": "عرض Markdown إلى HTML مباشر جنبًا إلى جنب."
+    },
+    "developer-tools/xml-formatter": {
+      "name": "مُصمم XML",
+      "description": "جعل وثائق XML جميلة وصحية."
+    },
+    "developer-tools/json-validator": {
+      "name": "مُصادق JSON",
+      "description": "تحقق من بنية JSON وتحديد الأخطاء."
+    },
+    "developer-tools/slug-generator": {
+      "name": "مُولد Slug",
+      "description": "إنشاء سلاج URL متوافق مع محركات البحث من النص."
+    },
+    "developer-tools/meta-tag-generator": {
+      "name": "مُولد علامة Meta",
+      "description": "بناء علامات Meta و Open Graph HTML لتحسين محركات البحث."
+    },
+    "developer-tools/rot13-encoder-decoder": {
+      "name": "مُشفر ROT13 / فك التشفير",
+      "description": "تطبيق تشفير ROT13 لتحويل الحروف إلى نص."
+    },
+    "developer-tools/chmod-calculator": {
+      "name": "حاسبة Chmod",
+      "description": "حساب صلاحيات الملفات الرقمية والرمزية في نظام Unix."
+    },
+    "developer-tools/user-agent-parser": {
+      "name": "مُحلل وكيل المستخدم",
+      "description": "تحليل سلسلة وكيل المستخدم إلى متصفح و نظام تشغيل و جهاز."
+    },
+    "developer-tools/gitignore-generator": {
+      "name": "مُولد .gitignore",
+      "description": "دمج قوالب متعددة للغة و الإطار و نظام التشغيل في ملف .gitignore واحد مع إزالة الأنماط المكررة."
+    },
+    "developer-tools/regex-explainer": {
+      "name": "مُفسّر Regex",
+      "description": "لصق تعبير منتظم والحصول على شرح واضح لما يطابقه."
+    },
+    "developer-tools/data-file-merger": {
+      "name": "مُدمج ملفات البيانات",
+      "description": "دمج ملفات JSON و CSV و TSV و XML متعددة في مجموعة بيانات واحدة، يمكن تصديرها ك JSON أو CSV."
+    },
+    "developer-tools/duplicate-file-finder": {
+      "name": "مُجدِد مُلفات مُكررة",
+      "description": "إيجاد ملفات مكررة بالضبط عن طريق المحتوى المحلي في متصفحك، وتحديد النسخ الأقدم كآمنة للحذف."
+    },
+    "developer-tools/mock-data-generator": {
+      "name": "مُولِد بيانات وهمية",
+      "description": "توليد مستخدمين أو منتجات وهمية كـ JSON أو CSV لاختبار واجهات برمجة التطبيقات وعروض التوضيح."
+    },
+    "developer-tools/pwa-manifest-generator": {
+      "name": "مُولِد مَifest لبرامج الويب التقدمية",
+      "description": "بناء manifest.json ووسوم HTML لتحويل موقعك إلى تطبيق ويب قابل للتثبيت."
+    },
+    "devops-tools/ip-subnet-calculator": {
+      "name": "حاسبة شبكة فرعية IP",
+      "description": "حساب الشبكة والبث والإطار المضيف والقناع من كتلة CIDR، مع تحليل بصرية للبتات."
+    },
+    "devops-tools/curl-command-builder": {
+      "name": "باني أمر curl",
+      "description": "بناء أمر curl من نموذج وتصدير رمز Python و JS fetch المكافئ."
+    },
+    "devops-tools/nginx-config-generator": {
+      "name": "مُولِد تكوين Nginx",
+      "description": "توليد تكوينات Nginx للوكيل العكسي وإنتهاء SSL والمواقع الثابتة وتوازن الحمل."
+    },
+    "devops-tools/kubernetes-yaml-generator": {
+      "name": "مُولِد YAML لكوبيرنيتس",
+      "description": "توليد نشر وخدمة ومدخل متصل في مظهر واحد من نموذج بسيط."
+    },
+    "devops-tools/github-actions-generator": {
+      "name": "مُولِد إجراءات GitHub",
+      "description": "توليد تدفق عمل CI YAML من قوالب Node و Python و Docker جاهزة."
+    },
+    "devops-tools/robots-txt-generator": {
+      "name": "مُولِد robots.txt",
+      "description": "بناء robots.txt صحيح مع قواعد السماح والمنع وتأخير الزحف وخريطة الموقع، مع التحقق الحي."
+    },
+    "devops-tools/env-validator": {
+      "name": "مُصادِق .env",
+      "description": "التحقق من بنية .env وتحديد الأسرار والمفاتيح_API المحتملة التسرب قبل الالتزام بها."
+    },
+    "devops-tools/crontab-builder": {
+      "name": "مُنشئ جدول الكرون",
+      "description": "ابنِ تعبير كرون وافقه ضد محرر حقيقي، مع معاينة الأوقات الخمس القادمة للتشغيل."
+    },
+    "devops-tools/backup-script-generator": {
+      "name": "مُنشئ سكريبت النسخ الاحتياطي",
+      "description": "اجنِ سكريبت نسخ احتياطي جاهز للكرون لبيانات قاعدة Postgres أو MySQL أو MongoDB، مع خيار تحميل اختياري إلى S3."
+    },
+    "devops-tools/health-check-generator": {
+      "name": "مُنشئ تكوين فحص الصحة",
+      "description": "اجنِ سكريبت فحص الصحة جاهز لللصق وتكوين JSON لمراقبة وقت التشغيل من نقطة نهاية."
+    },
+    "devops-tools/subnet-overlap-visualizer": {
+      "name": "مُvisualizer ت重叠 الشبكة الفرعية",
+      "description": "الصق كتلة CIDR متعددة أو نطاقات IP وشاهد تغطيتها وتقاطعاتها على خريطة بصرية."
+    },
+    "devops-tools/ip-address-info": {
+      "name": "معلومات عنوان IP والتصنيف",
+      "description": "صنف عنوان IP على أنه خاص أو عام أو CGNAT أو حلقة أو محجوز مع سياق لغة بسيطة و DNS عكسي."
+    },
+    "devops-tools/systemd-timer-explainer": {
+      "name": "مُفسر مؤقت systemd",
+      "description": "افهم وaben تعبيرات OnCalendar لsystemd باللغة الإنجليزية، مع الأوقات الخمس القادمة للتشغيل."
+    },
+    "health-tools/water-intake-calculator": {
+      "name": "حاسبة استهلاك الماء",
+      "description": "تقدير احتياجاتك اليومية من الماء بناءً على الوزن والتمارين والمناخ، معروض باللترات والكؤوس والزجاجات."
+    },
+    "health-tools/macro-calculator": {
+      "name": "حاسبة الماكرو",
+      "description": "تقسيم السعرات الحرارية اليومية إلى بروتين و كربوهيدرات ودهون مع إعدادات نمط النظام الغذائي وتفكيك لكل وجبة."
+    },
+    "health-tools/heart-rate-zone-calculator": {
+      "name": "حاسبة نطاق معدل ضربات القلب",
+      "description": "حساب نطاقات معدل ضربات القلب الخمس للتدريب باستخدام طريقة Karvonen مع معدل ضربات القلب في حالة الراحة."
+    },
+    "health-tools/calories-burned-calculator": {
+      "name": "حاسبة السعرات الحرارية المحروقة",
+      "description": "تقدير السعرات الحرارية المحروقة لأنشطة عديدة باستخدام قيم MET ووزنك ومدة النشاط."
+    },
+    "health-tools/one-rep-max-calculator": {
+      "name": "حاسبة الحد الأقصى للاستعادة",
+      "description": "تقدير 1RM من رفع وتمارين، مع جدول تدريب كامل بنسبة القيمة القصوى."
+    },
+    "health-tools/pace-calculator": {
+      "name": "حاسبة سرعة الجري",
+      "description": "تحويل المسافة والزمن إلى سرعة لكل كيلومتر وكل ميل، بالإضافة إلى أوقات 5K و10K ونصف ماراثون وماراثون متوقعة."
+    },
+    "health-tools/bac-calculator": {
+      "name": "حاسبة تركيز الكحول في الدم (BAC)",
+      "description": "تقدير تركيز الكحول في الدم باستخدام صيغة Widmark وتقدير زمن النشاط."
+    },
+    "health-tools/protein-intake-calculator": {
+      "name": "حاسبة استهلاك البروتين",
+      "description": "العثور على نطاق هدفك اليومي من البروتين بناءً على وزن الجسم وهدفك."
+    },
+    "health-tools/waist-to-hip-ratio-calculator": {
+      "name": "حاسبة نسبة الورك إلى الخصر",
+      "description": "حساب نسبة الورك إلى الخصر ومراجعة فئة خطر الصحة حسب الجنس."
+    },
+    "health-tools/body-surface-area-calculator": {
+      "name": "حاسبة مساحة السطح الجسمي",
+      "description": "حساب مساحة السطح الجسمي باستخدام صيغ Mosteller وDu Bois جنبًا إلى جنب."
+    },
+    "image-tools/resize-image": {
+      "name": "تحجيم الصورة",
+      "description": "تغيير أبعاد الصورة بالبكسل أو النسبة المئوية."
+    },
+    "image-tools/compress-image": {
+      "name": "ضغط الصورة",
+      "description": "تقليل حجم ملف JPG/PNG/WebP مع التحكم في الجودة."
+    },
+    "image-tools/crop-image": {
+      "name": "قص الصورة",
+      "description": "قص الصور بحرية أو إلى نسب ثابتة."
+    },
+    "image-tools/rotate-image": {
+      "name": "دوران الصورة",
+      "description": "دوران الصورة بزاوية 90 درجة أو أي زاوية."
+    },
+    "image-tools/flip-image": {
+      "name": "Flip Image",
+      "description": "اعكس الصورة أفقيًا أو عموديًا."
+    },
+    "image-tools/webp-to-png": {
+      "name": "WebP to PNG",
+      "description": "تحويل صور WebP إلى صيغة PNG الخالية من الفقد."
+    },
+    "image-tools/webp-to-jpg": {
+      "name": "WebP to JPG",
+      "description": "تحويل صور WebP إلى صيغة JPG المدعومة على نطاق واسع."
+    },
+    "image-tools/png-to-jpg": {
+      "name": "PNG to JPG",
+      "description": "تحويل صور PNG إلى ملفات JPG المضغوطة."
+    },
+    "image-tools/jpg-to-png": {
+      "name": "JPG to PNG",
+      "description": "تحويل صور JPG إلى صيغة PNG الخالية من الفقد."
+    },
+    "image-tools/png-to-webp": {
+      "name": "PNG to WebP",
+      "description": "تحويل صور PNG إلى ملفات WebP الأصغر."
+    },
+    "image-tools/jpg-to-webp": {
+      "name": "JPG to WebP",
+      "description": "تحويل صور JPG إلى صيغة WebP الحديثة."
+    },
+    "image-tools/heic-to-jpg": {
+      "name": "HEIC to JPG",
+      "description": "تحويل صور HEIC من آيفون إلى صور JPG."
+    },
+    "image-tools/svg-to-png": {
+      "name": "SVG to PNG",
+      "description": "تحويل ملفات SVG المتجهة إلى PNG بأي حجم."
+    },
+    "image-tools/png-to-svg": {
+      "name": "PNG to SVG",
+      "description": "تحويل صورة PNG النقطية إلى متجهة SVG قابلة للتوسيع."
+    },
+    "image-tools/image-to-base64": {
+      "name": "تحويل الصورة إلى Base64",
+      "description": "تشفير صورة إلى سلسلة بيانات Base64."
+    },
+    "image-tools/base64-to-image": {
+      "name": "Base64 إلى الصورة",
+      "description": "فك تشفير سلسلة Base64 إلى صورة قابلة للتنزيل."
+    },
+    "image-tools/favicon-generator": {
+      "name": "مُنشئ الفافيكون",
+      "description": "إنشاء فافيكون متعدد الأحجام وملفات ICO من صورة."
+    },
+    "image-tools/image-to-ico": {
+      "name": "الصورة إلى ICO",
+      "description": "تحويل صور PNG / JPG إلى أيقونات Windows ICO."
+    },
+    "image-tools/meme-generator": {
+      "name": "مُنشئ الميم",
+      "description": "إضافة تعليقات نصية في الجزء العلوي والسفلي من الصورة."
+    },
+    "image-tools/add-watermark-to-image": {
+      "name": "إضافة العلامة المائية إلى الصورة",
+      "description": "تطويب علامات مائية نصية أو لوجو على الصور."
+    },
+    "image-tools/image-color-picker": {
+      "name": "مُختار لون الصورة",
+      "description": "اختيار ألوان HEX / RGB من أي بيكسل في الصورة."
+    },
+    "image-tools/color-extractor-from-image": {
+      "name": "مُستخرج الألوان من الصورة",
+      "description": "استخراج لوحة ألوان مهيمنة من الصورة."
+    },
+    "image-tools/collage-maker": {
+      "name": "مُصنع الكولاج",
+      "description": "دمج صور متعددة في كولاج شبكي."
+    },
+    "image-tools/combine-images": {
+      "name": "دمج الصور",
+      "description": "خياطة الصور معًا أفقيًا أو رأسيًا."
+    },
+    "image-tools/passport-photo-maker": {
+      "name": "صانع صورة جواز السفر",
+      "description": "قص و تحجيم الصور إلى متطلبات الجواز / التأشيرة."
+    },
+    "image-tools/grayscale-image": {
+      "name": "صورة بالأسود والبياض",
+      "description": "تحويل صورة ملونة إلى أسود وأبيض."
+    },
+    "image-tools/blur-image": {
+      "name": "تعتيم الصورة",
+      "description": "تطبيق تعتيم قابل للتعديل على الصورة كلها أو جزء منها."
+    },
+    "image-tools/pixelate-image": {
+      "name": "تحويل الصورة إلى بكسلات",
+      "description": "تحويل أو حماية مناطق من الصورة إلى بكسلات."
+    },
+    "image-tools/image-to-pdf": {
+      "name": "صورة إلى بي دي إف",
+      "description": "تحويل الصور إلى ملف بي دي إف قابل للتنزيل."
+    },
+    "image-tools/circle-crop-image": {
+      "name": "قص الصورة بشكل دائرة",
+      "description": "قص الصورة إلى دائرة شفافة."
+    },
+    "image-tools/jfif-to-jpg": {
+      "name": "جيف إلى جيه بيه جي",
+      "description": "تحويل صور جيف إلى صيغة جيه بيه جي القياسية في المتصفح."
+    },
+    "image-tools/jfif-to-png": {
+      "name": "جيف إلى بيه إن جي",
+      "description": "تحويل صور جيف إلى صيغة بيه إن جي الخالية من الفقد."
+    },
+    "image-tools/bmp-to-jpg": {
+      "name": "بي إم بي إلى جيه بيه جي",
+      "description": "تحويل صور بي إم بي إلى ملفات جيه بيه جي المضغوطة."
+    },
+    "image-tools/bmp-to-pdf": {
+      "name": "بي إم بي إلى بي دي إف",
+      "description": "دمج صور بي إم بي في وثيقة بي دي إف واحدة."
+    },
+    "image-tools/avif-to-jpg": {
+      "name": "AVIF إلى JPG",
+      "description": "تحويل صور AVIF الحديثة إلى JPG المدعوم على نطاق واسع."
+    },
+    "image-tools/avif-to-webp": {
+      "name": "AVIF إلى WebP",
+      "description": "تحويل صور AVIF إلى صيغة WebP الفعالة."
+    },
+    "image-tools/gif-maker": {
+      "name": "صانع GIF",
+      "description": "إنشاء GIFs متحركة من عدة صور في متصفحك."
+    },
+    "image-tools/gif-resizer": {
+      "name": "حسّن حجم GIF",
+      "description": "تحجيم GIFs المتحركة باستخدام إعدادات مسبقة أو أبعاد مخصصة."
+    },
+    "image-tools/gif-rotator": {
+      "name": "دور GIF",
+      "description": "دوران أو عكس GIFs المتحركة في كل إطار."
+    },
+    "image-tools/gif-trimmer": {
+      "name": "قص GIF",
+      "description": "قص GIFs المتحركة إلى نطاق إطار محدد."
+    },
+    "image-tools/gif-optimizer": {
+      "name": "مُحسّن GIF",
+      "description": "ضغط وحسّن حجم ملف GIF في متصفحك."
+    },
+    "image-tools/gif-to-video": {
+      "name": "GIF إلى فيديو",
+      "description": "تحويل GIFs المتحركة إلى فيديو WebM."
+    },
+    "image-tools/gif-to-png": {
+      "name": "GIF إلى PNG",
+      "description": "استخراج جميع إطارات GIF كصور PNG في ملف ZIP."
+    },
+    "image-tools/gif-to-jpg": {
+      "name": "GIF إلى JPG",
+      "description": "استخراج جميع إطارات GIF كصور JPG في ملف ZIP."
+    },
+    "image-tools/gif-to-webp": {
+      "name": "GIF إلى WebP",
+      "description": "تحويل إطارات رسوم متحركة GIF إلى صور WebP."
+    },
+    "pdf-tools/merge-pdf": {
+      "name": "دمج PDF",
+      "description": "دمج ملفات PDF متعددة في مستند واحد بأي ترتيب."
+    },
+    "pdf-tools/split-pdf": {
+      "name": "تقسيم PDF",
+      "description": "فصل ملف PDF إلى ملفات متعددة حسب نطاقات الصفحات."
+    },
+    "pdf-tools/compress-pdf": {
+      "name": "ضغط PDF",
+      "description": "تقليل حجم ملف PDF مع الحفاظ على جودة قابلة للقراءة."
+    },
+    "pdf-tools/rotate-pdf": {
+      "name": "تدوير PDF",
+      "description": "تدوير صفحة واحدة أو جميع صفحات PDF وحفظها بشكل دائم."
+    },
+    "pdf-tools/delete-pdf-pages": {
+      "name": "حذف صفحات PDF",
+      "description": "إزالة الصفحات المحددة من مستند PDF."
+    },
+    "pdf-tools/extract-pdf-pages": {
+      "name": "استخراج صفحات PDF",
+      "description": "سحب الصفحات المحددة إلى ملف PDF جديد."
+    },
+    "pdf-tools/organize-pdf": {
+      "name": "تنظيم PDF",
+      "description": "إعادة ترتيب صفحات PDF وترتيبها وفرزها عن طريق السحب والإفلات."
+    },
+    "pdf-tools/jpg-to-pdf": {
+      "name": "JPG إلى PDF",
+      "description": "تحويل JPG وصور أخرى إلى ملف PDF واحد."
+    },
+    "pdf-tools/png-to-pdf": {
+      "name": "PNG إلى PDF",
+      "description": "تحويل صورة PNG واحدة أو أكثر إلى مستند PDF."
+    },
+    "pdf-tools/pdf-to-jpg": {
+      "name": "PDF إلى JPG",
+      "description": "قم بتحويل كل صفحة PDF إلى صورة JPG قابلة للتنزيل."
+    },
+    "pdf-tools/pdf-to-png": {
+      "name": "PDF إلى PNG",
+      "description": "اعرض صفحات PDF كصور PNG عالية الجودة."
+    },
+    "pdf-tools/images-to-pdf": {
+      "name": "صور إلى PDF",
+      "description": "قم بدمج صور متعددة بشكل مجموعة في ملف PDF واحد ومترتب."
+    },
+    "pdf-tools/extract-images-from-pdf": {
+      "name": "استخراج الصور من PDF",
+      "description": "اسحب جميع الصور المضمنة من ملف PDF."
+    },
+    "pdf-tools/add-page-numbers-to-pdf": {
+      "name": "إضافة أرقام الصفحات إلى PDF",
+      "description": "أدخل أرقام صفحات قابلة للتخصيص في ملف PDF."
+    },
+    "pdf-tools/add-watermark-to-pdf": {
+      "name": "إضافة ختم مائي إلى PDF",
+      "description": "ختم نص أو صور ختم مائي عبر صفحات PDF."
+    },
+    "pdf-tools/crop-pdf": {
+      "name": "قص PDF",
+      "description": "قص الهوامش وقم بتقليم المنطقة المرئية من صفحات PDF."
+    },
+    "pdf-tools/protect-pdf": {
+      "name": "حماية PDF",
+      "description": "أضف كلمة مرور وتشفير لقفل ملف PDF."
+    },
+    "pdf-tools/unlock-pdf": {
+      "name": "إلغاء قفل PDF",
+      "description": "إزالة كلمة مرور معروفة من ملف PDF."
+    },
+    "pdf-tools/sign-pdf": {
+      "name": "التوقيع على PDF",
+      "description": "ارسم، أو اكتب، أو قم بتحميل توقيع على ملف PDF."
+    },
+    "pdf-tools/edit-pdf": {
+      "name": "تحرير PDF",
+      "description": "إضافة نصوص، صور، أشكال، وتعليقات إلى ملف PDF."
+    },
+    "pdf-tools/fill-pdf-form": {
+      "name": "ملء نموذج PDF",
+      "description": "ملء الحقول التفاعلية في نموذج PDF وتسطيحه."
+    },
+    "pdf-tools/flatten-pdf": {
+      "name": "تسطيح PDF",
+      "description": "دمج التعليقات وحقول النماذج في المحتوى الثابت."
+    },
+    "pdf-tools/resize-pdf": {
+      "name": "تغيير حجم PDF",
+      "description": "تغيير حجم صفحات PDF إلى أبعاد A4 أو حرف أو أبعاد مخصصة."
+    },
+    "pdf-tools/reverse-pdf-pages": {
+      "name": "عكس صفحات PDF",
+      "description": "قلب ترتيب الصفحات في وثيقة PDF."
+    },
+    "pdf-tools/split-pdf-in-half": {
+      "name": "تقسيم PDF إلى نصفين",
+      "description": "قسم كل صفحة من PDF بشكل رأسي أو أفقي إلى نصفين."
+    },
+    "pdf-tools/extract-text-from-pdf": {
+      "name": "استخراج النص من PDF",
+      "description": "نسخ كل النص القابل للتحديد من ملف PDF كنص عادي."
+    },
+    "pdf-tools/pdf-page-counter": {
+      "name": "عداد صفحات PDF",
+      "description": "عد الصفحات في ملف PDF على الفور."
+    },
+    "pdf-tools/duplicate-pdf-pages": {
+      "name": "تكرار صفحات PDF",
+      "description": "نسخ صفحات محددة وتكرارها داخل ملف PDF."
+    },
+    "pdf-tools/pdf-to-word": {
+      "name": "PDF إلى Word",
+      "description": "تحويل ملف PDF إلى وثيقة DOC/DOCX قابلة للتعديل."
+    },
+    "pdf-tools/word-to-pdf": {
+      "name": "تحويل وورد إلى بي دي إف",
+      "description": "قم بتحويل مستندات DOC/DOCX إلى ملفات PDF."
+    },
+    "pdf-tools/txt-to-pdf": {
+      "name": "تحويل TXT إلى PDF",
+      "description": "قم بتحويل ملفات النص العادي إلى وثيقة PDF مع تنسيق."
+    },
+    "pdf-tools/csv-to-pdf": {
+      "name": "تحويل CSV إلى PDF",
+      "description": "قم بتحويل بيانات جداول CSV إلى وثيقة PDF قابلة للقراءة."
+    },
+    "pdf-tools/excel-to-pdf": {
+      "name": "تحويل إكسل إلى PDF",
+      "description": "قم بتحويل تصدير CSV من إكسل إلى ملفات PDF."
+    },
+    "pdf-tools/pdf-to-excel": {
+      "name": "تحويل PDF إلى إكسل",
+      "description": "استخرج بيانات الجدول من PDF وتنزيلها كملف CSV لاستخدامها في إكسل."
+    },
+    "pdf-tools/epub-to-pdf": {
+      "name": "تحويل EPUB إلى PDF",
+      "description": "قم بتحويل كتب إلكترونية EPUB إلى PDF للطباعة أو المشاركة."
+    },
+    "pdf-tools/cbz-to-pdf": {
+      "name": "تحويل CBZ إلى PDF",
+      "description": "قم بتحويل أرشيف الكوميكس CBZ إلى ملف PDF واحد."
+    },
+    "pdf-tools/pdf-to-cbz": {
+      "name": "تحويل PDF إلى CBZ",
+      "description": "قم بتحويل صفحات PDF إلى أرشيف كوميكس CBZ."
+    },
+    "pdf-tools/pdf-to-pdf-a": {
+      "name": "تحويل PDF إلى PDF/A",
+      "description": "إعداد ملفات PDF للتحفظ على المدى الطويل (تصدير بالنمط PDF/A)."
+    },
+    "pdf-tools/bank-statement-to-excel": {
+      "name": "تحويل كشوف الحسابات البنكية إلى إكسل",
+      "description": "استخراج بيانات كشوف الحسابات البنكية من PDF إلى CSV لاستخدامها في إكسل."
+    },
+    "security-password-tools/password-generator": {
+      "name": "مُولِد كلمات المرور",
+      "description": "إنشاء كلمات مرور قوية عشوائية مع طول قابل للتعديل ومجموعات أحرف."
+    },
+    "security-password-tools/password-strength-checker": {
+      "name": "فاحص قوة كلمة المرور",
+      "description": "تقدير قوة كلمة المرور ووقت الكسر في المتصفح."
+    },
+    "security-password-tools/md5-hash-generator": {
+      "name": "مُولِد هاش MD5",
+      "description": "حساب هاش MD5 لأي نص إدخال."
+    },
+    "security-password-tools/sha256-hash-generator": {
+      "name": "مُولِد هاش SHA-256",
+      "description": "توليد هاشات SHA-256 عبر واجهة برمجة تطبيقات الويب الكريبتو."
+    },
+    "security-password-tools/sha1-hash-generator": {
+      "name": "مُولِد هاش SHA-1",
+      "description": "حساب هاشات SHA-1 لنص الإدخال."
+    },
+    "security-password-tools/sha512-hash-generator": {
+      "name": "مُولِد هاش SHA-512",
+      "description": "توليد هاشات SHA-512 لنص."
+    },
+    "security-password-tools/bcrypt-generator": {
+      "name": "مُولِد Bcrypt",
+      "description": "تشفير كلمات المرور باستخدام Bcrypt وتحقق منها، مع جولات قابلة للتعديل."
+    },
+    "security-password-tools/bulk-password-generator": {
+      "name": "مُولِد كلمات المرور بالجملة",
+      "description": "إنشاء العديد من كلمات المرور القوية في وقت واحد للتصدير."
+    },
+    "security-password-tools/passphrase-generator": {
+      "name": "مُولِد عبارة المرور",
+      "description": "بناء عبارات مرور قابلة للتذكر بنمط Diceware."
+    },
+    "security-password-tools/aes-encrypt-decrypt": {
+      "name": "تشفير/فك تشفير نص AES",
+      "description": "تشفير النص وفك تشفيره باستخدام AES-GCM و عبارة مرور، بالكامل على جانب العميل."
+    },
+    "security-password-tools/hmac-generator": {
+      "name": "مُولِد HMAC",
+      "description": "حسابي التوقيعات HMAC باستخدام خوارزمية هاش و مفتاح سري محدد."
+    },
+    "security-password-tools/htpasswd-generator": {
+      "name": "مُولِد htpasswd",
+      "description": "إنشاء إدخالات htpasswd لبروتوكول Apache/Nginx باستخدام bcrypt أو APR1."
+    },
+    "security-password-tools/secure-uuid-generator": {
+      "name": "مُولِد UUID الآمن",
+      "description": "توليد UUIDs آمنة من النوع v4."
+    },
+    "security-password-tools/api-key-generator": {
+      "name": "مُولِد مفتاح API",
+      "description": "توليد مفاتيح API و رموز سرية عشوائية."
+    },
+    "security-password-tools/random-token-generator": {
+      "name": "مُولِد رموز عشوائية",
+      "description": "إنتاج رموز عشوائية آمنة بطول و مجموعة أحرف قابلة للتكوين."
+    },
+    "security-password-tools/totp-generator": {
+      "name": "مُولِد TOTP / 2FA",
+      "description": "توليد رموز OTP الزمنية من مفتاح سري لاختبار 2FA."
+    },
+    "security-password-tools/hash-identifier": {
+      "name": "مُحدد الخوارزمية",
+      "description": "اكتشاف الخوارزمية المحتملة للهاش من سلسلة هاش معينة."
+    },
+    "security-password-tools/crc32-generator": {
+      "name": "مُولِد CRC32",
+      "description": "حسابي قيم التحقق CRC32 للنص أو البيانات."
+    },
+    "security-password-tools/base64-hash-generator": {
+      "name": "مُولِد هاش Base64",
+      "description": "هاش الإدخال وإخراج الهويّة في شكل Base64."
+    },
+    "security-password-tools/pin-generator": {
+      "name": "مُولِد PIN",
+      "description": "توليد رموز PIN العددية العشوائية بطول محدد."
+    },
+    "security-password-tools/wifi-qr-code-generator": {
+      "name": "مُولِد رمز QR لشبكة الواي فاي",
+      "description": "إنشاء رمز QR لمشاركة بيانات الاتصال بشبكة الواي فاي بسهولة."
+    },
+    "security-password-tools/csrf-token-generator": {
+      "name": "مُولِد رمز CSRF",
+      "description": "توليد رموز CSRF عشوائية لأشكال الويب."
+    },
+    "security-password-tools/ntlm-hash-generator": {
+      "name": "مُولِد هاش NTLM",
+      "description": "حساب هاشات NTLM من مدخلات كلمة المرور."
+    },
+    "security-password-tools/encryption-key-generator": {
+      "name": "مُولِد مفتاح التشفير",
+      "description": "توليد مفاتيح AES عشوائية بطول 128/192/256 بت."
+    },
+    "security-password-tools/caesar-cipher": {
+      "name": "أداة شفرة قيصر",
+      "description": "تشفير و فك تشفير النص باستخدام شفرة قيصر القائمة على الإزاحة."
+    },
+    "security-password-tools/rot47-encoder-decoder": {
+      "name": "مُشفر و مُفكّر ROT47",
+      "description": "تطبيق شفرة ROT47 على النص."
+    },
+    "security-password-tools/password-entropy-calculator": {
+      "name": "حاسبة إنتروبي كلمة المرور",
+      "description": "حساب بتات الإنتروبي في كلمة المرور."
+    },
+    "security-password-tools/salt-generator": {
+      "name": "مُولِد الملح",
+      "description": "توليد ملح كريبتوغرافي عشوائي في صيغة سداسية أو Base64."
+    },
+    "security-password-tools/argon2-hash-generator": {
+      "name": "مُولِد هاش Argon2",
+      "description": "تشفير كلمات المرور باستخدام Argon2id مع معلمات قابلة للتعديل."
+    },
+    "security-password-tools/jwt-verifier": {
+      "name": "مُتحقق توقيع JWT",
+      "description": "التحقق من توقيع JWT مقابل سر أو مفتاح معين."
+    },
+    "seo-web-tools/meta-tag-generator": {
+      "name": "مُولِد وسمات الميتا",
+      "description": "إنشاء عنوان ووصف ووسوم ميتا HTML من مدخلات النموذج."
+    },
+    "seo-web-tools/meta-tags-analyzer": {
+      "name": "محلل وسمات الميتا",
+      "description": "تحليل HTML المُلصق لاستخراج وسمات الميتا وتقييمها لمشاكل تحسين محركات البحث."
+    },
+    "seo-web-tools/keyword-density-checker": {
+      "name": "مُتحقق كثافة الكلمات الرئيسية",
+      "description": "عَدّ تكرار الكلمات وتناسبها في النسبة المئوية في النص أو HTML المُلصق."
+    },
+    "seo-web-tools/robots-txt-generator": {
+      "name": "مُولِد ملف روبوتس.تيكست",
+      "description": "بناء ملف روبوتس.تيكست صالح من مدخلات السماح والمنع والخريطة الموقع."
+    },
+    "seo-web-tools/xml-sitemap-generator": {
+      "name": "مُولِد خريطة موقع إكس إم إل",
+      "description": "إنشاء خريطة موقع إكس إم إل من قائمة من عناوين URL مع الأولوية والتكرار."
+    },
+    "seo-web-tools/schema-markup-generator": {
+      "name": "مُولِد تعليمات سكيما",
+      "description": "إنشاء بيانات بنية JSON-LD للمقالات والمنتجات والأسئلة الشائعة وغيرها."
+    },
+    "seo-web-tools/open-graph-generator": {
+      "name": "مُولِد غراف مفتوح",
+      "description": "إنتاج وسوم ميتا غراف مفتوح (og:) لمعاينة الروابط الاجتماعية."
+    },
+    "seo-web-tools/twitter-card-generator": {
+      "name": "مُولِد بطاقات تويتر",
+      "description": "بناء وسوم ميتا بطاقات تويتر/إكس ومعاينة البطاقة."
+    },
+    "seo-web-tools/serp-snippet-preview": {
+      "name": "معاينة مقتطفات SERP",
+      "description": "معاينة كيفية ظهور صفحة في نتائج جوجل مع فحص عرض البكسل."
+    },
+    "seo-web-tools/htaccess-generator": {
+      "name": "مُولِد .htaccess",
+      "description": "إنشاء قواعد .htaccess للتحويلات والแคش والأمان."
+    },
+    "seo-web-tools/url-encoder-decoder": {
+      "name": "مُشفر URL / فك التشفير",
+      "description": "تشفير نسبة URL وفك تشفيرها وسلاسل الاستعلام."
+    },
+    "seo-web-tools/url-slug-generator": {
+      "name": "مُولد سلاج URL",
+      "description": "تحويل العناوين إلى سلاج نظيف متوافق مع محركات البحث مع إزالة الكلمات غير الضرورية."
+    },
+    "seo-web-tools/word-counter": {
+      "name": "عامل كلمات",
+      "description": "عَدّ الكلمات والحروف والجمل ووقت القراءة في النص."
+    },
+    "seo-web-tools/character-counter": {
+      "name": "عامل حروف",
+      "description": "عَدّ الحروف مع أو بدون مسافات في الوقت الفعلي."
+    },
+    "seo-web-tools/code-to-text-ratio-checker": {
+      "name": "فاحص نسبة الكود إلى النص",
+      "description": "حساب نسبة النص المرئي إلى كود HTML من الترميز المُنسخ."
+    },
+    "seo-web-tools/robots-meta-tag-generator": {
+      "name": "مُولد علامة ميتا روبوت",
+      "description": "توليد توجيهات روبوت ميتا index/noindex/follow."
+    },
+    "seo-web-tools/canonical-tag-generator": {
+      "name": "مُولد علامة الكانون",
+      "description": "إنشاء علامات ربط الكانون لمنع المحتوى المكرر."
+    },
+    "seo-web-tools/hreflang-tag-generator": {
+      "name": "مُولد علامة هرفلنغ",
+      "description": "توليد علامات هرفلنغ للاستهداف اللغوي والإقليمي المتعدد."
+    },
+    "seo-web-tools/keyword-combiner": {
+      "name": "مُشترك كلمات مفتاحية",
+      "description": "دمج وتغيير كلمات مفتاحية في قائمة مطابقة عريضة / جملة / دقيقة."
+    },
+    "seo-web-tools/utm-builder": {
+      "name": "باني UTM",
+      "description": "توليد عناوين URL قابلة للتتبع للحملات مع معلمات مصدر ووسيلة واسم UTM."
+    },
+    "seo-web-tools/html-tag-stripper": {
+      "name": "مزيل علامات HTML",
+      "description": "إزالة علامات HTML لاستخراج النص العادي من الترميز."
+    },
+    "seo-web-tools/meta-description-length-checker": {
+      "name": "مُتحقق طول وصف الصفحة",
+      "description": "تحقق من طول وصف الصفحة مع معاينة بحث جوجل حية — مجانًا، بدون تسجيل."
+    },
+    "seo-web-tools/meta-title-length-checker": {
+      "name": "مُتحقق طول عنوان الصفحة",
+      "description": "تحقق مما إذا كان عنوان صفحتك مناسبًا لجوجل — تجنب القطع وتحسين معدل النقر."
+    },
+    "seo-web-tools/text-diff-checker": {
+      "name": "مُقارن النص / مُتحقق الفرق",
+      "description": "تأطير الفروق بين كتلة نصية وكتلة أخرى من المحتوى."
+    },
+    "seo-web-tools/robots-txt-validator": {
+      "name": "مُتحقق صحة robots.txt",
+      "description": "التحقق من صحة بناء الجملة في robots.txt واختبار قواعد السماح والحظر للرابط."
+    },
+    "seo-web-tools/faq-schema-generator": {
+      "name": "مُولد مخطط الأسئلة الشائعة",
+      "description": "إنشاء JSON-LD لصفحة الأسئلة الشائعة من أزواج السؤال والإجابة."
+    },
+    "seo-web-tools/breadcrumb-schema-generator": {
+      "name": "مُولد مخطط البقعة",
+      "description": "إنشاء بيانات هيكلية لمسار الصفحة من مسار الصفحة."
+    },
+    "seo-web-tools/favicon-generator": {
+      "name": "مُولد الأيقونات الصغيرة",
+      "description": "إنشاء أيقونات صغيرة متعددة الحجم ووسوم الارتباط من صورة."
+    },
+    "seo-web-tools/redirect-checker": {
+      "name": "مُولد الإعادة التوجيه",
+      "description": "بناء وتفسير قواعد إعادة التوجيه 301/302 للتهيئة الشائعة للخادم."
+    },
+    "seo-web-tools/email-extractor": {
+      "name": "مُستخرج البريد الإلكتروني",
+      "description": "استخراج أو مسح النص أو HTML المُلصق للعناوين البريدية المعروضة."
+    },
+    "seo-web-tools/readability-checker": {
+      "name": "مُحَكَّمُ مُقَدَّرِ القِرَاءَة",
+      "description": "حسَبْ مُقَدَّرِ القِرَاءَة الفْلِشْ وَدَرَجَة القِرَاءَة لِلنُص"
+    },
+    "seo-web-tools/domain-name-finder": {
+      "name": "مُخْتَرِعُ أَسْمَاءِ النُطَق",
+      "description": "اقْتَرِحْ أَسْمَاءَ نُطَقٍ مُتَوَفِّرَةٍ مِن وَصْفِ مَشْرُوعِك"
+    },
+    "seo-web-tools/llms-txt-generator": {
+      "name": "مُحَكَّمُ جَنَرَاتور llms.txt",
+      "description": "ابْنِ مَلَف llms.txt لِكَي تَكتُشِفَ دُوالَةُ الـ AI (ChatGPT، Claude، Google) أَفْضَلَ صَفْحَاتِك"
+    },
+    "seo-web-tools/security-headers-generator": {
+      "name": "مُحَكَّمُ جَنَرَاتور رُوسَائِل الأَمَن",
+      "description": "اِجْنِرَ رُوسَائِل HSTS و CSP و X-Frame-Options وَغَيْرِهَا مِن رُوسَائِل OWASP لِأَجْل Nginx و Apache و Cloudflare"
+    },
+    "seo-web-tools/ads-txt-generator": {
+      "name": "مُحَكَّمُ جَنَرَاتور ads.txt",
+      "description": "اِخْلُقْ مَلَف ads.txt صَحِيحٌ لِأَجْلِ Google AdSense وَشَبَكَات الإِعْلَان"
+    },
+    "seo-web-tools/url-page-seo-analyzer": {
+      "name": "مُحَلِّلُ صَفْحَة URL SEO",
+      "description": "لُصِقْ رَابِطَ صَفْحَة لِجَلْبِ HTML الْحَي وَإِدَارَةِ عُنْوَان وَمِثَال وَالعُنْوَانَات وَالصُور وَالرَوَابِط"
+    },
+    "seo-web-tools/related-keywords-generator": {
+      "name": "مُحَكَّمُ جَنَرَاتور الكَلِمَات المُرْتَبِطَة",
+      "description": "مَدُّ كَلِمَات البَذْرِ إِلَى أَسْئِلَة وَمُحَرَّرَات تِجَارِيَّة وَعِبَارَات طَوِيلَة وَمُخْتَلَطَات لِلْبَحْث"
+    },
+    "seo-web-tools/keyword-difficulty-estimator": {
+      "name": "مُحَكَّمُ مُقَدِّرِ صُعُوبَة الكَلِمَات",
+      "description": "تَقْدِيرُ مُنَافَسَة الكَلِمَات مِن إِشَارَات SERP مِثْل العَلَامَات التِجَارِيَّة وَطُول العُنْوَان وَالسُلْطَة"
+    },
+    "seo-web-tools/search-intent-classifier": {
+      "name": "مُصَنِّفُ قَصْدِ البَحْث",
+      "description": "تَصْنِيفُ الكَلِمَات كَمَعْلُومَات وَتِجَارِي وَعَقَائِد وَتَحَوُّل بِإِقْتِرَاحَات نَوْعِ الصَفْحَة"
+    },
+    "seo-web-tools/xml-sitemap-validator": {
+      "name": "مُصَحِّحُ خَرِيطَة الموقع XML",
+      "description": "تَصْحِيحُ خَرِيطَة الموقع XML مِنْ أَخْطَاءِ الحَرَكَة وَرَوَابِط خَطَأ وَمُكَرَّرَات وَتَارِيخَات lastmod وَحَد 50k"
+    },
+    "seo-web-tools/heading-structure-analyzer": {
+      "name": "محلل هيكل العنوان",
+      "description": "فحص هيكل العنوان H1–H6 في HTML الصفحة لمножة H1s، مستويات مهملة، وعناوين فارغة."
+    },
+    "seo-web-tools/seo-audit-checklist": {
+      "name": "قائمة فحص تدقيق SEO",
+      "description": "قائمة فحص تقنية تفاعلية، على الصفحة، E-E-A-T، وروابط مع تقدم محفوظ في متصفحك."
+    },
+    "seo-web-tools/seo-content-score": {
+      "name": "درجة محتوى SEO",
+      "description": "تقييم SEO على الصفحة لمسودة — وضع الكلمة الرئيسية، الكثافة، طول العنوان / Meta، وقابلية الفحص."
+    },
+    "seo-web-tools/keyword-rank-tracker": {
+      "name": "متابع تصنيف الكلمة الرئيسية",
+      "description": "تسجيل تصنيفات الكلمات الرئيسية بمرور الوقت في متصفحك وتصدير تقارير CSV — لا يلزم مفتاح API."
+    },
+    "seo-web-tools/backlink-profile-analyzer": {
+      "name": "محلل ملف تعريف الارتباط الخلفي",
+      "description": "تحليل تصديرات CSV لارتباطات Ahrefs / Semrush / Moz للنصوص، مضيفي الإحالة، وخليط اتبع."
+    },
+    "seo-web-tools/disavow-file-generator": {
+      "name": "مولد ملف Disavow",
+      "description": "إنشاء ملف disavow.txt لطرف لوحة تحكم بحث Google من نطاقات وروابط البريد العشوائي."
+    },
+    "seo-web-tools/internal-link-suggester": {
+      "name": "مقترح الارتباطات الداخلية",
+      "description": "اقتراح الارتباطات الداخلية من قائمة صفحاتك إلى مسودة باستخدام تقييم الت重疊 الكلمة الرئيسية."
+    },
+    "seo-web-tools/orphan-page-finder": {
+      "name": "عامل البحث عن الصفحات اليتم",
+      "description": "العثور على عناوين URL في خريطة الموقع بدون روابط داخلية وروابط مرتبطة مفقودة من خريطة الموقع."
+    },
+    "seo-web-tools/schema-markup-validator": {
+      "name": "مُصادق علامات Schema",
+      "description": "التحقق من بنية JSON-LD لFAQ، HowTo، المنتج، الأعمال المحلية، والأخطاء الشائعة في العلامات."
+    },
+    "seo-web-tools/howto-schema-generator": {
+      "name": "مولد مخطط HowTo",
+      "description": "توليد بيانات HowTo JSON-LD المنظمة من عنوان وقائمة خطوة بخطوة."
+    },
+    "seo-web-tools/local-business-schema-generator": {
+      "name": "مُولِد مخطط العمل المحلي",
+      "description": "إنشاء JSON-LD للعمل المحلي مع NAP وتنسيق الجغرافي ونوع العمل."
+    },
+    "seo-web-tools/nap-consistency-checker": {
+      "name": "مُفحَص توافق NAP",
+      "description": "قارن الاسم والعنوان والهاتف عبر الاستشهادات المحلية لالتقاط عدم التماثل في تحسين محركات البحث المحلية."
+    },
+    "seo-web-tools/content-brief-generator": {
+      "name": "مُولِد ملخص المحتوى",
+      "description": "ملخص محتوى Mytulify AI SEO مع مخطط و أسئلة PAA و كلمات مفتاحية و قائمة التحقق على الصفحة."
+    },
+    "seo-web-tools/ai-meta-tag-writer": {
+      "name": "كتاب تعريفات Meta AI",
+      "description": "تعريفات العنوان ووصف Meta مكتوبة بواسطة Mytulify AI ومحسّنة لتحسين النقر وحدود الأحرف."
+    },
+    "seo-web-tools/ai-seo-outline-generator": {
+      "name": "مُولِد مخطط Mytulify AI SEO",
+      "description": "مخطط مقال Mytulify AI مع هيكل H2/H3 مُحسّن لمقتطفات مميزة ونية البحث."
+    },
+    "seo-web-tools/ai-seo-page-audit": {
+      "name": "فحص صفحة Mytulify AI SEO",
+      "description": "فحص تقني وعلى الصفحة Mytulify AI SEO من HTML مُنسّخة أو نص الصفحة مع إصلاحات مُتأثرة."
+    },
+    "social-media-tools/fake-tweet-generator": {
+      "name": "مُولِد تويتر الوهمي",
+      "description": "إنشاء نماذج منشورات X/تويتر الوهمية قابلة للتنزيل كصور."
+    },
+    "social-media-tools/instagram-font-generator": {
+      "name": "مُولِد خط انستجرام",
+      "description": "تحويل النص إلى خطوط انستجرام فنية يُنسخ ويلصق للاستخدام في السيرة الذاتية والتعليقات."
+    },
+    "social-media-tools/instagram-hashtag-generator": {
+      "name": "مُولِد وسم انستجرام",
+      "description": "اقتراح وتجميع وسمات انستجرام ذات الصلة من الكلمات الرئيسية أو المواضيع."
+    },
+    "social-media-tools/twitter-character-counter": {
+      "name": "عامل حروف تويتر",
+      "description": "عَدّ الحروف ضد الحد الأقصى البالغ 280 حرفًا مع عَدّ موزون."
+    },
+    "social-media-tools/fake-instagram-post-generator": {
+      "name": "مولد منشورات إنستجرام الوهمية",
+      "description": "إنشاء منشورات إنستجرام الوهمية مع إعجابات مخصصة ورمز تعريف"
+    },
+    "social-media-tools/instagram-bio-generator": {
+      "name": "مولد سيرة إنستجرام",
+      "description": "إنشاء سيرة إنستجرام أنيقة مع كسر الأسطر والخطوط والرموز"
+    },
+    "social-media-tools/instagram-caption-generator": {
+      "name": "مولد تعليقات إنستجرام",
+      "description": "توليد أفكار التعليقات من موضوع مع هاشتاجات ورموز تعبيرية"
+    },
+    "social-media-tools/youtube-tag-extractor": {
+      "name": "مستخرج تعليمات يوتيوب",
+      "description": "استخراج تعليمات الفيديو من عنوان URL أو مصدر الصفحة على يوتيوب"
+    },
+    "social-media-tools/youtube-thumbnail-downloader": {
+      "name": "مُحمل صورة مصغرة يوتيوب",
+      "description": "استخراج جميع أحجام الصور المصغرة من عنوان URL للفيديو على يوتيوب"
+    },
+    "social-media-tools/instagram-line-break-generator": {
+      "name": "مولد كسر سطر إنستجرام",
+      "description": "إضافة مسافات خفية حتى يتم الحفاظ على كسر الأسطر في التعليقات على إنستجرام"
+    },
+    "social-media-tools/emoji-picker": {
+      "name": "مُختار الرموز التعبيرية",
+      "description": "لوحة مفاتيح رموز تعبيرية قابلة للبحث لنسخ الرموز التعبيرية في المنشورات"
+    },
+    "social-media-tools/fake-facebook-post-generator": {
+      "name": "مولد منشورات فيسبوك الوهمية",
+      "description": "إنشاء منشورات فيسبوك الوهمية مع ردود الفعل والتعليقات"
+    },
+    "social-media-tools/tweet-to-image": {
+      "name": "توييت إلى صورة",
+      "description": "تحويل نص التوييت الحقيقي أو المخصص إلى صورة قابلة للمشاركة ومصممة"
+    },
+    "social-media-tools/tiktok-hashtag-generator": {
+      "name": "مولد هاشتاج تيك توك",
+      "description": "توليد هاشتاجات وأفكار التعليقات على الطراز الشائع لتيك توك"
+    },
+    "social-media-tools/strikethrough-text-generator": {
+      "name": "مُحَوِّل نَصّ مُشطَب",
+      "description": "انشئ نصًا مشطوبًا وتحته خط للاستخدام الاجتماعي."
+    },
+    "social-media-tools/glitch-text-generator": {
+      "name": "مُحَوِّل نَصّ غليتش",
+      "description": "انشئ نصًا مصابًا بالغليتش للاستخدام في المنشورات وأسماء المستخدمين."
+    },
+    "social-media-tools/small-text-generator": {
+      "name": "مُحَوِّل نَصّ صغير",
+      "description": "حول النص إلى حروف صغيرة وترقيم صغير للترميز الموحد."
+    },
+    "social-media-tools/discord-font-generator": {
+      "name": "مُحَوِّل خط ديسكورد",
+      "description": "انشئ نصًا متقنًا ومُنسقًا للاستخدام في محادثات ديسكورد."
+    },
+    "social-media-tools/twitter-bio-generator": {
+      "name": "مُحَوِّل سيرة تويتر",
+      "description": "ابن سيرة تويتر باستخدام خطوط وكسور سطر ورموز تعبيرية."
+    },
+    "social-media-tools/linkedin-text-formatter": {
+      "name": "مُصَمِّم نص لينكد إن",
+      "description": "أضف تنسيقًا غامقًا ومائلًا للنص في منشورات لينكد إن."
+    },
+    "social-media-tools/whatsapp-link-generator": {
+      "name": "مُحَوِّل رابطة واتساب",
+      "description": "انشئ روابط واتساب مع رسائل مُسبقة التحميل."
+    },
+    "social-media-tools/social-media-image-sizes": {
+      "name": "أحجام الصور على وسائل التواصل الاجتماعي",
+      "description": "مرجع لأحجام الصور والفيديو الحالية لكل منصة."
+    },
+    "social-media-tools/bold-text-generator": {
+      "name": "مُحَوِّل نَصّ غامق",
+      "description": "حول النص إلى نص غامق للترميز الموحد للاستخدام على منصات بدون تنسيق."
+    },
+    "social-media-tools/cursive-text-generator": {
+      "name": "مُحَوِّل نَصّ منحني",
+      "description": "انشئ نصًا منحنيًا ومائلًا للترميز الموحد."
+    },
+    "social-media-tools/upside-down-text-generator": {
+      "name": "مُحَوِّل النَّصّ إلى الأعلى",
+      "description": "قلب النص إلى شخصيات منعكسة لأغراض منشورات ممتعة."
+    },
+    "social-media-tools/twitch-text-generator": {
+      "name": "مُحَوِّل النَّصّ لِتويتش",
+      "description": "إنشاء نصوص وأفكار أسماء مصممة لِملفات تعريف تويتش."
+    },
+    "social-media-tools/fake-instagram-dm-generator": {
+      "name": "مُحَوِّل رسائل دايركت إنستجرام المزيفة",
+      "description": "إنشاء رسائل دايركت إنستجرام المحاكاة وصور شاشة الملف الشخصي."
+    },
+    "social-media-tools/hashtag-counter": {
+      "name": "عَدَّاد الهاشتاجات",
+      "description": "عَدّ الهاشتاجات في النص وتحديد الحدود الزائدة للأطراف."
+    },
+    "social-media-tools/social-preview-tester": {
+      "name": "مُخْتَبَر معاينة الإعلام الاجتماعي",
+      "description": "معاينة كيف سيبدو الرابط عند مشاركته عبر المنصات."
+    },
+    "social-media-tools/aesthetic-username-generator": {
+      "name": "مُحَوِّل أسماء المستخدمين الجمالية",
+      "description": "إنشاء أسماء مستخدمين مزخرفة مع الرموز والخطوط الجمالية."
+    },
+    "text-tools/word-counter": {
+      "name": "عَدَّاد الكلمات",
+      "description": "عَدّ الكلمات والحروف والجمل والفقرات مع تقديرات وقت القراءة والتحدث."
+    },
+    "text-tools/character-counter": {
+      "name": "عَدَّاد الحروف",
+      "description": "عَدّ الحروف مع أو بدون مسافات في الوقت الفعلي للتغريدات والترجمة البيانية."
+    },
+    "text-tools/case-converter": {
+      "name": "مُحَوِّل الحالة",
+      "description": "تحويل النص إلى الحالة العلوية، حالة الصغيرة، حالة العنوان، حالة الجملة والمزيد."
+    },
+    "text-tools/lorem-ipsum-generator": {
+      "name": "مُحَوِّل لوريم إيبسوم",
+      "description": "إنشاء نصوص وهمية محجوزة بالفقرات أو الجمل أو الكلمات."
+    },
+    "text-tools/remove-line-breaks": {
+      "name": "إزالة خطوط الفواصل",
+      "description": "إزالة أو دمج خطوط الفواصل والفواصل الجديدة الإضافية من النص المنسوخ."
+    },
+    "text-tools/remove-extra-spaces": {
+      "name": "إزالة الفراغات الإضافية",
+      "description": "إزالة الفراغات المكررة والرئيسية والخلفية من النص."
+    },
+    "text-tools/find-and-replace-text": {
+      "name": "إيجاد واستبدال النص",
+      "description": "إيجاد واستبدال الكلمات أو الأنماط في نص بالجملة، مع دعم regex."
+    },
+    "text-tools/reverse-text": {
+      "name": "عكس النص",
+      "description": "عكس الحروف أو الكلمات أو الأسطر من أي نص إدخال."
+    },
+    "text-tools/text-repeater": {
+      "name": "مكرر النص",
+      "description": "تكرار سلسلة أو سطر بعدد من المرات المختارة."
+    },
+    "text-tools/word-frequency-counter": {
+      "name": "عامل تكرار الكلمة",
+      "description": "إحصاء عدد مرات ظهور كل كلمة وترتيبها حسب التكرار."
+    },
+    "text-tools/remove-duplicate-lines": {
+      "name": "إزالة الأسطر المكررة",
+      "description": "حذف الأسطر المكررة من قائمة مع الحفاظ على الترتيب."
+    },
+    "text-tools/sort-text-lines": {
+      "name": "ترتيب أسطر النص",
+      "description": "ترتيب الأسطر أبجديًا أو رقميًا أو عكس ترتيبها."
+    },
+    "text-tools/text-to-slug": {
+      "name": "نص إلى سلاج",
+      "description": "تحويل عنوان أو عبارة إلى سلاج نظيف متوافق مع عنوان URL."
+    },
+    "text-tools/binary-translator": {
+      "name": "مترجم ثنائي",
+      "description": "تحويل النص إلى ثنائي والثنائي إلى نص قابل للقراءة."
+    },
+    "text-tools/morse-code-translator": {
+      "name": "مترجم شفرة مورس",
+      "description": "تشفير وفك تشفير بين النص وشفرة مورس، مع صوت اختياري."
+    },
+    "text-tools/fancy-text-generator": {
+      "name": "مُولِد نص مُزخرف",
+      "description": "تحويل النص إلى خطوط يونيكود أنيقة لملفات تعريف وسائل التواصل الاجتماعي."
+    },
+    "text-tools/bionic-reading-converter": {
+      "name": "مُحوِّل قراءة بوني",
+      "description": "جعل الجزء الأول من كل كلمة غامقًا لتسهيل القراءة السريعة."
+    },
+    "text-tools/text-to-handwriting": {
+      "name": "نص إلى خط اليد",
+      "description": "تمثيل النص المكتوب كخط يد واقعي على الورق."
+    },
+    "text-tools/title-case-converter": {
+      "name": "مُحوِّل حالة العنوان",
+      "description": "تحويل أي نص إلى حالة عنوان مناسبة للعناوين والمدونات وآراء الكتب."
+    },
+    "text-tools/text-diff-checker": {
+      "name": "فاحص فرق النص",
+      "description": "تأكييد الإضافات والحذف بين كتلة نصية وأخرى."
+    },
+    "text-tools/whitespace-remover": {
+      "name": "مُزيل المسافات البيضاء",
+      "description": "إزالة جميع المسافات البيضاء أو تقليل المسافات المتعددة إلى واحدة."
+    },
+    "text-tools/add-line-numbers": {
+      "name": "إضافة أرقام السطور",
+      "description": "إضافة أرقام سطور متتالية إلى كل سطر من النص."
+    },
+    "text-tools/text-to-ascii-art": {
+      "name": "نص إلى فن أسكي",
+      "description": "تحويل الكلمات إلى فن لافتة أسكي كبير."
+    },
+    "text-tools/nato-phonetic-alphabet-converter": {
+      "name": "مُحوِّل أبجدية ناتو الصوتية",
+      "description": "نطق النص باستخدام أبجدية ناتو الصوتية."
+    },
+    "text-tools/strikethrough-text-generator": {
+      "name": "مُحَوِّل نَصّ مُشطَب",
+      "description": "أضف تنسيقًا مُشطَبًا أو مُتَّخِذًا لِنصّ يُونيكود."
+    },
+    "text-tools/upside-down-text-generator": {
+      "name": "نَصّ مُستَعرض",
+      "description": "اقلب النَصّ إلى حروف يُونيكود مُستَعرضة."
+    },
+    "text-tools/remove-punctuation": {
+      "name": "إزالة علامات الترقيم",
+      "description": "إزالة علامات الترقيم من النَصّ لِتَخزين نَقي."
+    },
+    "text-tools/text-to-speech": {
+      "name": "نَصّ إلى كَلام",
+      "description": "اقرأ النَصّ المُدخَل بِصوت عالٍ باستخدام وِسائِط 합성 الكَلام في المُتصفح."
+    },
+    "text-tools/sentence-counter": {
+      "name": "عَدّ الجُمل",
+      "description": "عَدّ الجُمل ومتوسّط طول الجُملة في النَصّ."
+    },
+    "text-tools/capitalize-each-word": {
+      "name": "تَcapitalize كُل كلمة",
+      "description": "تَcapitalize الحرف الأوّل من كُل كلمة في المدخلات."
+    },
+    "unit-converters/length-converter": {
+      "name": "مُحَوِّل الوَحدات",
+      "description": "تحويل بين الأَمطار، الأَقدم، الأَميال، الكيلومترات، البوصات، وغيرها."
+    },
+    "unit-converters/weight-converter": {
+      "name": "مُحَوِّل الكتلة",
+      "description": "تحويل وَحدات الكتلة مثل الكيلوجرام، الرطل، الأونصة، والجرام."
+    },
+    "unit-converters/temperature-converter": {
+      "name": "مُحَوِّل الدَرجة",
+      "description": "تحويل بين السيلسيوس، الفهرنهايت، والكلفن."
+    },
+    "unit-converters/volume-converter": {
+      "name": "مُحَوِّل الحجم",
+      "description": "تحويل اللتر، الغالون، الكوب، الميليلتر، ووحدات الحجم الأخرى."
+    },
+    "unit-converters/area-converter": {
+      "name": "مُحَوِّل المساحة",
+      "description": "تحويل الأمتار المربعة، الأفدنة، الهكتارات، الأقدام المربعة، وغيرها."
+    },
+    "unit-converters/speed-converter": {
+      "name": "مُحَوِّل السرعة",
+      "description": "تحويل الأميال في الساعة، الكيلومترات في الساعة، الأمتار في الثانية، العقد، ووحدات السرعة الأخرى."
+    },
+    "unit-converters/time-converter": {
+      "name": "مُحَوِّل الزمن",
+      "description": "تحويل الثواني، الدقائق، الساعات، الأيام، الأسابيع، والسنين."
+    },
+    "unit-converters/pressure-converter": {
+      "name": "مُحَوِّل الضغط",
+      "description": "تحويل الباسكال، البار، الرطل لكل بوصة مربعة، الأتموسفير، وملمتر الزئبق."
+    },
+    "unit-converters/energy-converter": {
+      "name": "مُحَوِّل الطاقة",
+      "description": "تحويل الجول، السعرات الحرارية، الكيلووات ساعة، ووحدة الحرارة البريطانية."
+    },
+    "unit-converters/power-converter": {
+      "name": "مُحَوِّل القدرة",
+      "description": "تحويل الواط، الكيلووات، الحصان، ووحدة الحرارة البريطانية في الساعة."
+    },
+    "unit-converters/force-converter": {
+      "name": "مُحَوِّل القوة",
+      "description": "تحويل النيوتن، الرطل القوة، الكيلوغرام قوة، والدين."
+    },
+    "unit-converters/angle-converter": {
+      "name": "مُحَوِّل الزاوية",
+      "description": "تحويل الدرجات، الراديان، الغراد، والدقائق القوسية."
+    },
+    "unit-converters/data-storage-converter": {
+      "name": "مُحَوِّل تخزين البيانات",
+      "description": "تحويل البايت، الكيلوبايت، الميجابايت، الجيجابايت، والتيرابايت."
+    },
+    "unit-converters/data-transfer-rate-converter": {
+      "name": "مُحَوِّل معدل نقل البيانات",
+      "description": "تحويل البت في الثانية، الكيلوبت في الثانية، الميجابت في الثانية، الجيجابت في الثانية، والميجابايت في الثانية."
+    },
+    "unit-converters/fuel-consumption-converter": {
+      "name": "مُحَوِّل استهلاك الوقود",
+      "description": "تحويل وحدات اقتصاد الوقود MPG و km/L و L/100km."
+    },
+    "unit-converters/density-converter": {
+      "name": "مُحَوِّل الكثافة",
+      "description": "تحويل وحدات الكثافة kg/m3 و g/cm3 و lb/ft3 وغيرها."
+    },
+    "unit-converters/frequency-converter": {
+      "name": "مُحَوِّل التردد",
+      "description": "تحويل هرتز و كيلوهرتز و ميغاهيرتز و جيجاهيرتز."
+    },
+    "unit-converters/cooking-measurement-converter": {
+      "name": "مُحَوِّل قياسات الطهي",
+      "description": "تحويل كؤوس و ملاعق طعام و ملاعق شاي و غرامات و أونصات لوصفات الطهي."
+    },
+    "unit-converters/shoe-size-converter": {
+      "name": "مُحَوِّل حجم الحذاء",
+      "description": "تحويل أحجام الأحذية بين الولايات المتحدة و المملكة المتحدة و الاتحاد الأوروبي و السنتيمترات."
+    },
+    "unit-converters/ring-size-converter": {
+      "name": "مُحَوِّل حجم الخاتم",
+      "description": "تحويل أحجام الخواتم بين الولايات المتحدة و المملكة المتحدة و الاتحاد الأوروبي و مخططات القطر."
+    },
+    "unit-converters/roman-numeral-converter": {
+      "name": "مُحَوِّل الأرقام الرومانية",
+      "description": "تحويل الأرقام إلى أرقام رومانية و العكس."
+    },
+    "unit-converters/number-to-words-converter": {
+      "name": "مُحَوِّل الأرقام إلى كلمات",
+      "description": "نطق الأرقام بالكلمات للاستخدام في الشيكات والوثائق."
+    },
+    "unit-converters/binary-to-decimal-converter": {
+      "name": "مُحَوِّل ثنائي إلى عشري",
+      "description": "تحويل الأرقام بين الثنائي و العشري و السداسي عشر و الثماني."
+    },
+    "unit-converters/hex-to-rgb-converter": {
+      "name": "مُحَوِّل HEX إلى RGB",
+      "description": "تحويل الألوان بين تنسيقات HEX و RGB و HSL."
+    },
+    "unit-converters/bra-size-converter": {
+      "name": "مُحَوِّلُ حَجْمِ الِسَّتْر",
+      "description": "يُحَوِّلُ بين أحجام الصدر في أنظمة الولايات المتحدة والمملكة المتحدة والاتحاد الأوروبي وفرنسا."
+    },
+    "unit-converters/clothing-size-converter": {
+      "name": "مُحَوِّلُ حَجْمِ الْمَلَابِس",
+      "description": "يُحَوِّلُ بين أحجام الملابس عبر مخططات الولايات المتحدة والمملكة المتحدة والاتحاد الأوروبي والدولية."
+    },
+    "unit-converters/inches-to-cm-converter": {
+      "name": "مُحَوِّلُ بُوصاتٍ إلى سِنتيمِترات",
+      "description": "مُحَوِّلٌ مُتَخَصِّصٌ بين البوصات والسنتيمترات."
+    },
+    "unit-converters/kg-to-lbs-converter": {
+      "name": "مُحَوِّلُ كِيلُوجَرَاماتٍ إلى رِطَل",
+      "description": "مُحَوِّلٌ مُتَخَصِّصٌ بين الكيلوجرامات والرِطَل."
+    },
+    "unit-converters/liters-to-gallons-converter": {
+      "name": "مُحَوِّلُ لِيتَراتٍ إلى جَلونات",
+      "description": "مُحَوِّلٌ مُتَخَصِّصٌ بين اللترات والجالونات الأمريكية والبريطانية."
+    },
+    "unit-converters/time-zone-converter": {
+      "name": "مُحَوِّلُ مَنْطِقَةِ وَقْت",
+      "description": "يُحَوِّلُ وَقْتًا بين مَنَاطِقَ وَقْتٍ مُخْتَلِفَةٍ في العَالَم."
+    },
+    "unit-converters/currency-converter": {
+      "name": "مُحَوِّلُ عُمَلَة",
+      "description": "يُحَوِّلُ بين الدولار الأمريكي واليورو والروبية الباكستانية والروبية الهندية والدرهم الإماراتي وغيرها مع أسعار السوق المتوسطة الحية."
+    },
+    "developer-tools/px-to-rem-converter": {
+      "name": "مُحَوِّلُ بِكْسِل إلى رِيم",
+      "description": "يُحَوِّلُ بِكْسِلات CSS إلى ريم (و العكس) مع حجم خط جذر مُتَخَصِّص."
+    },
+    "developer-tools/json-diff-checker": {
+      "name": "فَحْصُ مُخْتَلَفِ JSON",
+      "description": "يُقَارِنُ وَثِيقَتَيْنِ JSON مع تَشْغِيلاتٍ مُضَافَةٍ ومحذوفة ومُغَيَّرَةٍ على مُسْتَوَى المَسَار."
+    },
+    "developer-tools/yaml-to-json": {
+      "name": "مُحَوِّلُ YAML إلى JSON",
+      "description": "يُحَوِّلُ YAML إلى JSON مُطَبَعٍ بِالجَمَالِ في مُتَصَفِّحِكَ على الفور."
+    },
+    "calculators/emi-calculator": {
+      "name": "حاسبة القسط الشهري",
+      "description": "حساب القسط الشهري الإجمالي ، الفائدة ، والدفع لتقدم الرهن العقاري أو السيارة أو القروض الشخصية."
+    },
+    "calculators/vat-gst-calculator": {
+      "name": "حاسبة ضريبة القيمة المضافة / ضريبة السلع والخدمات",
+      "description": "إضافة أو استخراج ضريبة القيمة المضافة وضريبة السلع والخدمات من أي مبلغ مع معدل ضريبة مخصص."
+    },
+    "converters-generators/email-signature-generator": {
+      "name": "مُنشئ التوقيع البريدي",
+      "description": "إنشاء توقيع بريدي احترافي بالاسم واللقب والاتصال ولون العلامة التجارية."
+    },
+    "converters-generators/vcard-generator": {
+      "name": "مُنشئ بطاقة الاتصال",
+      "description": "إنشاء بطاقة اتصال قابلة للتنزيل بتنسيق .vcf للهواتف وعميل البريد."
+    },
+    "converters-generators/ics-calendar-generator": {
+      "name": "مُنشئ التقويم",
+      "description": "إنشاء ملف حدث التقويم بتنسيق .ics لجوجل كالندر وأوتلوك وتقويم آبل."
+    },
+    "converters-generators/decision-wheel": {
+      "name": "عجلة القرار",
+      "description": "دوران عجلة ملونة للاختيار العشوائي من قائمة الأشياء — الغداء ، المهام ، قرارات الفريق ، والمزيد."
+    },
+    "converters-generators/pomodoro-timer": {
+      "name": "ساعة بومودورو",
+      "description": "ساعة تركيز مجانية مع فترات بومودورو مدتها 25 دقيقة ، فترات راحة قصيرة وطويلة ، ووسوم المهام ، وإشعارات اختيارية."
+    },
+    "image-tools/aspect-ratio-calculator": {
+      "name": "حاسبة نسبة العرض إلى الارتفاع",
+      "description": "العثور على نسب العرض إلى الارتفاع من الأبعاد أو تحويل العرض والارتفاع إلى 16:9 ، 9:16 ، 1:1 وغيرها."
+    },
+    "image-tools/home-color-visualizer": {
+      "name": "مُvisualizer الألوان المنزلية",
+      "description": "تحميل صورة لمنزلك أو غرفتك ، تجربة ألوان الجدران والأبواب والأثاث ، ومعاينة ما يبدو أفضل."
+    },
+    "calculators/profit-margin-calculator": {
+      "name": "حاسبة هامش الربح",
+      "description": "حساب الربح ، نسبة هامش الربح ، والهامش من التكلفة وسعر البيع."
+    },
+    "calculators/debt-payoff-calculator": {
+      "name": "حاسبة سداد الدين",
+      "description": "قارن بين خطط سداد الدين بالطريقة الكروية أو الثلجية مع الأشهر والفائدة وجدول الدفع."
+    },
+    "calculators/inflation-calculator": {
+      "name": "حاسبة التضخم",
+      "description": "انظر ما هي قيمة الأموال اليوم في المستقبل — أو كانت قيمتها في الماضي — باستخدام معدل تضخم مخصص."
+    },
+    "text-tools/reading-time-calculator": {
+      "name": "حاسبة وقت القراءة",
+      "description": "تخمين الوقت اللازم لقراءة أي نص بناءً على عدد الكلمات في الدقيقة."
+    },
+    "text-tools/speech-to-text": {
+      "name": "كلام إلى نص",
+      "description": "اكتب كلامًا إلى نص قابل للتعديل في متصفحك مع نص مباشر ودعم متعدد اللغات."
+    },
+    "freelancer-tools/contract-generator": {
+      "name": "مُولِّد عقد العمل الحر",
+      "description": "أنشئ عقد خدمات عمل حر واضح مع نطاق وشروط الدفع والملكية الفكرية والمراجعات — قم بتنزيله كملف PDF."
+    },
+    "freelancer-tools/proposal-generator": {
+      "name": "مُولِّد عرض العمل الحر",
+      "description": "ابنِ عرضًا للعميل مع ملخص ونطاق وجدول زمني وتسعير وقسم حول — قم bằngتصدير ملف PDF."
+    },
+    "freelancer-tools/nda-generator": {
+      "name": "مُولِّد اتفاقية سرية",
+      "description": "أنشئ اتفاقية سرية من جانب واحد أو متبادلة وقم بتنزيلها كملف PDF."
+    },
+    "freelancer-tools/rate-calculator": {
+      "name": "حاسبة سعر العمل الحر",
+      "description": "احسب سعرًا ساعيًا مستدامًا من أهداف الدخل والنفقات والساعات القابلة للفوترة والهامش الربحي."
+    },
+    "freelancer-tools/quote-calculator": {
+      "name": "حاسبة عرض السعر للمشروع",
+      "description": "حول الساعات والسعر والنفقات والهامش إلى عرض سعر واضح للمشروع مع تفاصيل التكلفة."
+    },
+    "freelancer-tools/late-fee-calculator": {
+      "name": "حاسبة رسوم الدفع المتأخر",
+      "description": "احسب رسوم الدفع المتأخر على الفواتير المتأخرة مع رسوم ثابتة أو رسوم شهرية بنسبة مئوية."
+    },
+    "freelancer-tools/break-even-calculator": {
+      "name": "حاسبة نقطة التعادل",
+      "description": "اكتشف كمية المشاريع أو الساعات التي تحتاجها كل شهر لتغطية التكاليف الثابتة."
+    },
+    "freelancer-tools/self-employment-tax-calculator": {
+      "name": "حاسبة ضريبة العمل الحر",
+      "description": "تقدير ضريبة العمل الحر في الولايات المتحدة أو ضريبة الدخل في باكستان على صافي دخل العمل الحر — للتنظيم فقط."
+    },
+    "freelancer-tools/client-onboarding-form": {
+      "name": "مُولِد نموذج إعداد العميل",
+      "description": "إنشاء استبيان إعداد العميل القابل للطباعة كملف PDF أو نموذج HTML قابل للتنزيل."
+    },
+    "freelancer-tools/change-order-generator": {
+      "name": "مُولِد أوامر التغيير في النطاق",
+      "description": "توثيق العمل خارج النطاق مع التكلفة والزمن الإضافيين — حماية نفسك بأمر تغيير قابل للتنزيل كملف PDF."
+    }
+  },
+  "strings": {
+    "home": "الصفحة الرئيسية",
+    "category": "الفئة",
+    "hot": "ساخن",
+    "private": "خاص",
+    "instant": "فوري",
+    "aiPowered": "مدعوم بالذكاء الاصطناعي",
+    "popular": "شائع",
+    "perDayFree": "{limit}/يوم على الخطة المجانية",
+    "comingSoon": "قريبا",
+    "comingSoonTitle": "سيتم إطلاق هذا الأداة قريبا",
+    "comingSoonBody": "نحن نجهز هذه الأداة المدعومة بالذكاء الاصطناعي. ستكون متاحة هنا قريبا — راجع مرة أخرى قريبا.",
+    "faqTitle": "الأسئلة المتكررة",
+    "aboutTool": "ما هو {name}؟",
+    "howToTitle": "كيفية استخدام {name}",
+    "quickFactsTitle": "حقائق رئيسية عن {name}",
+    "relatedTools": "أدوات متعلقة ب {category}",
+    "exploreOther": "استكشف فئات أخرى",
+    "toolsCount": "{n} أدوات",
+    "toolsPageTitle": "جميع الأدوات {n}+",
+    "toolsPageSub": "ابحث و افلتر عبر {cats} فئات.",
+    "searchAllTools": "ابحث في جميع الأدوات {n}+…",
+    "searchTrendingHint": "الأدوات الشائعة — استخدم ↑↓ و Enter",
+    "searchNoResults": "لم يتم العثور على أدوات ل „{q}“",
+    "searchResultsOne": "1 نتيجة",
+    "searchResultsMany": "{n} نتائج",
+    "searchClear": "إلغاء البحث",
+    "browseTools": "استعراض جميع الأدوات",
+    "faqWhatIsQ": "ما هو {name}؟",
+    "faqWhatIsAClient": "{name} هو أداة مجانية على الإنترنت على Mytulify التي {descClause}. يعمل في متصفحك بدون تسجيل دخول مطلوب، لذلك تحصل على نتائج فورية بدون إنشاء حساب. انسخ أو حمل المخرجات عند الانتهاء.",
+    "faqWhatIsAAi": "{name} هو أداة مجانية مدعومة بالذكاء الاصطناعي على Mytulify التي {descClause}. أدخل مدخلاتك، أنتج نتيجة في ثوان، وانسخ أو حمل المخرجات. تشمل الخطة المجانية {limit} تشغيل للذكاء الاصطناعي في اليوم.",
+    "faqIsFreeQ": "هل {name} مجاني للاستخدام؟",
+    "faqIsFreeAClient": "نعم. {name} مجاني على خطة Mytulify المجانية مع استخدام غير محدود، بدون تسجيل دخول، وبدون علامة مائية. نظراً لأنها تعمل في متصفحك، لا تدفع أبداً مقابل التحويل. حساب اختياري وليس مطلوبًا لاستخدام الأداة نفسها.",
+    "faqIsFreeAAi": "نعم، مع حد يومي عادل. {name} يتضمن {limit} تشغيل للذكاء الاصطناعي المجاني في اليوم على الخطة المجانية. قم بترقية إلى Pro للحصول على تشغيل غير محدود للذكاء الاصطناعي وتجربة خالية من الإعلانات عند الحاجة إلى حجم أكبر.",
+    "faqSafeQ": "هل بياناتي آمنة مع {name}؟",
+    "faqSafeA": "نعم. {name} يعمل بالكامل في متصفحك، لذلك لا يتم تحميل ملفاتك ونصوصك إلى خوادمنا للобработة. هذا التصميم على جانب العميل يحافظ على العمل الروتيني الخاص على جهازك. مع ذلك، تجنب مشاركة الأسرار في أي أداة على الإنترنت إذا كانت السياسات تمنع ذلك.",
+    "faqDataQ": "كيف يتم التعامل مع بياناتي بواسطة {name}؟",
+    "faqDataA": "{name} يرسل مدخلاتك إلى خادم Mytulify، الذي يستدعي نموذج الذكاء الاصطناعي لإنشاء النتيجة. نحن لا نحتفظ بأرشيف دائم لمدخلاتك. تجنب لصق كلمات المرور والمفاتيح الخاصة والبيانات السرية، ومراجعة مخرجات الذكاء الاصطناعي دائمًا قبل الاعتماد عليها.",
+    "faqHowQ": "كيف استخدم {name}؟",
+    "faqHowAClient": "افتح {name}، أدخل أو حمل مدخلاتك، ثم شغل الأداة. {desc} تظهر النتيجة فورياً على جهازك بحيث يمكنك نسخها أو تحميلها بدون انتظار في قائمة الخادم.",
+    "faqHowAAi": "افتح {name}، لصق أو حمل محتواك، ثم انقر على إنشاء. {desc} يعود نموذج الذكاء الاصطناعي بنتيجة في بضع ثوان — راجعها، ثم انسخ أو حمل ما تحتاجه.",
+    "toolAboutClient": "{name} هو أداة مجانية على الإنترنت التي {descClause}. يعمل بالكامل في متصفحك على Mytulify — سريع، خاص، وبدون حدود على الخطة المجانية. لا حساب أو تثبيت مطلوب.",
+    "toolAboutAi": "{name} هو أداة مجانية مدعومة بالذكاء الاصطناعي التي {descClause}. تشمل الخطة المجانية {limit} تشغيل؛ يفتح Pro تشغيل غير محدود. يتم معالجة المدخلات على خادمنا — تجنب لصق الأسرار ومراجعة المخرجات قبل الاستخدام.",
+    "toolMetaTitle": "{name} — أداة على الإنترنت",
+    "toolMetaClient": "{desc} أداة متصفح مجانية — تعمل محلياً في متصفحك، بدون تسجيل دخول مطلوب.",
+    "toolMetaAi": "{desc} أداة مدعومة بالذكاء الاصطناعي — {limit} تشغيل مجاني في اليوم على الخطة المجانية؛ Pro لتشغيل غير محدود.",
+    "categoryTitle": "{name} — {count} أدوات على الإنترنت",
+    "categoryDescription": "{desc} {count} أدوات — أدوات المتصفح مجانية؛ أدوات الذكاء الاصطناعي قد يكون لها حدود يومية على الخطة المجانية.",
+    "aboutPage": {
+      "label": "عنّا",
+      "title": "عن Mytulify",
+      "intro": "{total}+ أدوات على الإنترنت — {client}+ تعمل مجاناً في متصفحك؛ الذكاء الاصطناعي و OCR يتضمنان مخصص يومي مجاني أو غير محدود مع Pro.",
+      "statTools": "إجمالي الأدوات",
+      "statCategories": "الفئات",
+      "statBrowser": "متصفح فقط",
+      "offerTitle": "ما نقدمه",
+      "offerBody": "Mytulify يغطي {cats} فئات — أدوات PDF وصور، نص، SEO، مطور، أدوات الألوان، حسابات ووحدات تحويل.",
+      "privacyTitle": "الخصوصية أولاً",
+      "privacyBody": "معظم الأدوات — {client} من {total} — تعمل بالكامل في متصفحك. ملفاتك، نصك، وبياناتك لا تترك جهازك أبداً.",
+      "aiTitle": "أدوات مدعومة بالذكاء الاصطناعي",
+      "aiBody": "أدواتنا {ai} المدعومة بالذكاء الاصطناعي (بما في ذلك OCR الكتابة اليدوية) ترسل المدخلات إلى خادمنا لإنشاء النتائج. نحن لا نخزن هذه المدخلات بعد المعالجة.",
+      "pricingTitle": "مجاناً و Pro",
+      "pricingBody": "{client}+ أدوات متصفح تبقى مجانية بدون تسجيل دخول. أدوات الذكاء الاصطناعي و OCR تسمح ب {limit} تشغيل في اليوم على الخطة المجانية. Pro يضيف تشغيل غير محدود للذكاء الاصطناعي و OCR وتجربة خالية من الإعلانات.",
+      "cta": "استعراض جميع الأدوات"
+    }
+  }
+}
