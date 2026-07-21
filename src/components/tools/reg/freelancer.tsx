@@ -13,6 +13,7 @@ import {
   ClientOnboardingForm,
   ChangeOrderGenerator,
 } from "@/components/tools/impl/freelancer";
+import { EmailTemplatesGenerator } from "@/components/tools/impl/email-templates-generator";
 
 export default makeReg({
   "contract-generator": ContractGenerator,
@@ -25,4 +26,5 @@ export default makeReg({
   "self-employment-tax-calculator": SelfEmploymentTaxCalculator,
   "client-onboarding-form": ClientOnboardingForm,
   "change-order-generator": ChangeOrderGenerator,
+  "email-templates-generator": EmailTemplatesGenerator,
 });

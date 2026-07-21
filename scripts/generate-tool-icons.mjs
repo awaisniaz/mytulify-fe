@@ -38,7 +38,7 @@ const RULES = [
   [/contract-generator|nda-generator|change-order|proposal-generator|onboarding-form/i, "FileText"],
   [/rate-calculator|quote-calculator|late-fee|break-even|self-employment-tax/i, "DollarSign"],
   [/iban/i, "Landmark"],
-  [/email-signature/i, "Share2"],
+  [/email-signature|email-templates/i, "Mail"],
   [/vcard|vcf/i, "Fingerprint"],
   [/ics-calendar/i, "Calendar"],
   [/px-to-rem|rem-to-px|aspect-ratio/i, "Ruler"],

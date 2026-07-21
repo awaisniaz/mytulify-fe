@@ -3502,6 +3502,44 @@
         "freelancer-tools/proposal-generator",
         "converters-generators/invoice-generator"
       ]
+    },
+    "freelancer-tools/email-templates-generator": {
+      "name": "Freelance Email Templates Generator",
+      "description": "Generate personalized freelance emails for cold pitches, follow-ups, invoice reminders, retainers, testimonials, and scope changes.",
+      "metaTitle": "Free Freelance Email Templates Generator – Pitch, Invoice & Follow-Up | Mytulify",
+      "metaDescription": "Create personalized freelance email templates for cold pitches, client follow-ups, invoice reminders, retainers, and scope changes. Copy or open in Gmail/Outlook — free.",
+      "about": [
+        "Chasing invoices and nudging silent clients is awkward — but vague emails get ignored. Templated messages that still sound personal save freelancers time and reduce the friction around money conversations: amount owed, original due date, and a clear next step in plain language.",
+        "This free generator covers cold pitches, proposal follow-ups, three levels of invoice reminders, retainer check-ins, thank-you and testimonial asks, and scope-change notices. Pick a tone (friendly, professional, or firm) so the phrasing actually changes, fill in client and project details, then copy the email or open it in Gmail or Outlook with the subject and body already filled."
+      ],
+      "howTo": {
+        "title": "How to generate a freelance email",
+        "steps": [
+          "Choose a template (pitch, follow-up, invoice reminder, retainer, thank-you, or scope change).",
+          "Select a tone and fill client name, project, and invoice fields when shown.",
+          "Edit the subject if needed, then copy the email or open it in Gmail, Outlook, or your mail app."
+        ]
+      },
+      "faq": [
+        {
+          "q": "How do I politely ask a client for overdue payment?",
+          "a": "Start with the friendly invoice reminder: restate the amount and original due date, assume good intent, and offer to resend payment details. If there’s no reply, move to the firm reminder, then the final notice — always matching what your contract allows for late fees."
+        },
+        {
+          "q": "What should a freelance follow-up email include?",
+          "a": "Reference the proposal or project by name, remind them you’re available, invite a simple yes/no or scheduling reply, and avoid guilt-tripping. One short follow-up 5–7 days after sending a proposal is usually enough before a final check-in."
+        },
+        {
+          "q": "Is it okay to automate freelance emails?",
+          "a": "Using templates is fine — and smart — as long as you personalize names, project details, and dates. Don’t blast identical cold pitches to dozens of clients. For invoices, pair templates with a clear invoice from the Invoice Generator and documented late-fee terms."
+        }
+      ],
+      "related": [
+        "converters-generators/invoice-generator",
+        "freelancer-tools/late-fee-calculator",
+        "freelancer-tools/contract-generator",
+        "freelancer-tools/change-order-generator"
+      ]
     }
   },
   "strings": {

@@ -92,6 +92,15 @@
       "competition": "low",
       "complexity": "easy",
       "clientSide": true
+    },
+    {
+      "name": "Freelance Email Templates Generator",
+      "slug": "email-templates-generator",
+      "description": "Generate personalized freelance emails for cold pitches, follow-ups, invoice reminders, retainers, testimonials, and scope changes.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "easy",
+      "clientSide": true
     }
   ]
 }
