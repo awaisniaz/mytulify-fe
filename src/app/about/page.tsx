@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { TOTAL_CATEGORIES, TOTAL_AI_OCR_TOOLS, TOTAL_BROWSER_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { socialMeta } from "@/lib/seo";
+import { socialMeta, pageAlternates } from "@/lib/seo";
 import { Icon } from "@/components/ui/Icon";
 import { getLocale } from "@/i18n/locale";
 import { getContent } from "@/i18n/content";
@@ -19,12 +19,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: "/about" },
+    ...pageAlternates("/about", locale),
     robots: { index: true, follow: true },
     ...socialMeta({
       title: `${title} · ${site.name}`,
       description,
       url: "/about",
+      locale,
     }),
   };
 }

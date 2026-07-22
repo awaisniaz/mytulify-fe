@@ -3,21 +3,25 @@ import Link from "next/link";
 import { RequestToolForm } from "@/components/request/RequestToolForm";
 import { CATEGORIES, TOTAL_TOOLS } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { socialMeta } from "@/lib/seo";
+import { socialMeta, pageAlternates } from "@/lib/seo";
+import { getLocale } from "@/i18n/locale";
 
-const description = `Suggest a new free online tool for ${site.name}. We already ship ${TOTAL_TOOLS}+ tools — tell us what to build next.`;
-
-export const metadata: Metadata = {
-  title: "Request a Tool",
-  description,
-  alternates: { canonical: "/request-tool" },
-  robots: { index: true, follow: true },
-  ...socialMeta({
-    title: `Request a Tool · ${site.name}`,
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const description = `Suggest a new free online tool for ${site.name}. We already ship ${TOTAL_TOOLS}+ tools — tell us what to build next.`;
+  return {
+    title: "Request a Tool",
     description,
-    url: "/request-tool",
-  }),
-};
+    ...pageAlternates("/request-tool", locale),
+    robots: { index: true, follow: true },
+    ...socialMeta({
+      title: `Request a Tool · ${site.name}`,
+      description,
+      url: "/request-tool",
+      locale,
+    }),
+  };
+}
 
 export default function RequestToolPage() {
   const categories = CATEGORIES.map((c) => ({ slug: c.slug, name: c.name }));

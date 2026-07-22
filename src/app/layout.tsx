@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Noto_Nastaliq_Urdu } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
-import { socialMeta, pageAlternates } from "@/lib/seo";
+import { socialMeta } from "@/lib/seo";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { LazyEnhancementsShell } from "@/components/LazyEnhancementsShell";
@@ -47,7 +47,6 @@ export async function generateMetadata(): Promise<Metadata> {
       url: site.url,
       locale,
     }),
-    ...pageAlternates("/", locale),
     robots: { index: true, follow: true },
     other: {
       monetag: process.env.MONETAG_SITE_ID ?? "30db1df687f8615565490f41f36dce91",

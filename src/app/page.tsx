@@ -5,7 +5,7 @@ import { CategoryCard, SectionHeader, ToolCard } from "@/components/cards";
 import { HomeHero } from "@/components/home/HomeHero";
 import { Icon } from "@/components/ui/Icon";
 import { site } from "@/lib/site";
-import { socialMeta } from "@/lib/seo";
+import { socialMeta, pageAlternates } from "@/lib/seo";
 import { getLocale } from "@/i18n/locale";
 import { getMessages } from "@/i18n/messages";
 import { getMessaging } from "@/i18n/messaging";
@@ -18,12 +18,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: { absolute: title },
     description: messaging.siteDescription,
-    alternates: { canonical: "/" },
+    ...pageAlternates("/", locale),
     robots: { index: true, follow: true },
     ...socialMeta({
       title,
       description: messaging.siteDescription,
       url: "/",
+      locale,
     }),
   };
 }

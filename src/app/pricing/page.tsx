@@ -13,24 +13,30 @@ import {
   TOTAL_AI_OCR_TOOLS,
 } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { socialMeta } from "@/lib/seo";
+import { socialMeta, pageAlternates } from "@/lib/seo";
+import { getLocale } from "@/i18n/locale";
 import { ProUnlockForm } from "@/components/billing/ProUnlockForm";
 import { PricingCards } from "@/components/billing/PricingCards";
 import { ManageBillingButton } from "@/components/billing/ManageBillingButton";
 import { paymentGatewaysReady } from "@/lib/billing/payments-ready";
 import { Icon } from "@/components/ui/Icon";
 
-export const metadata: Metadata = {
-  title: "Pricing",
-  description: `${TOTAL_BROWSER_TOOLS}+ browser tools free with ads, or Pro (from $${PRO_PRICE_USD}/mo) for unlimited AI & OCR and ad-free browsing.`,
-  alternates: { canonical: "/pricing" },
-  robots: { index: true, follow: true },
-  ...socialMeta({
-    title: `Pricing · ${site.name}`,
-    description: `Free: ${TOTAL_BROWSER_TOOLS}+ browser tools + ${FREE_AI_DAILY_LIMIT} AI runs/day. Pro: unlimited AI & OCR, no ads.`,
-    url: "/pricing",
-  }),
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const description = `${TOTAL_BROWSER_TOOLS}+ browser tools free with ads, or Pro (from $${PRO_PRICE_USD}/mo) for unlimited AI & OCR and ad-free browsing.`;
+  return {
+    title: "Pricing",
+    description,
+    ...pageAlternates("/pricing", locale),
+    robots: { index: true, follow: true },
+    ...socialMeta({
+      title: `Pricing · ${site.name}`,
+      description: `Free: ${TOTAL_BROWSER_TOOLS}+ browser tools + ${FREE_AI_DAILY_LIMIT} AI runs/day. Pro: unlimited AI & OCR, no ads.`,
+      url: "/pricing",
+      locale,
+    }),
+  };
+}
 
 export default async function PricingPage({
   searchParams,

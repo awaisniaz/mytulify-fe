@@ -1,22 +1,26 @@
 import type { Metadata } from "next";
 import { TOTAL_SERVER_SIDE_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { socialMeta } from "@/lib/seo";
+import { socialMeta, pageAlternates } from "@/lib/seo";
+import { getLocale } from "@/i18n/locale";
 import { Icon } from "@/components/ui/Icon";
 
-const privacyDescription = `${site.name} privacy policy — how we handle your data across ${TOTAL_TOOLS}+ browser-based and AI-powered tools.`;
-
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description: privacyDescription,
-  alternates: { canonical: "/privacy" },
-  robots: { index: true, follow: true },
-  ...socialMeta({
-    title: `Privacy Policy · ${site.name}`,
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const privacyDescription = `${site.name} privacy policy — how we handle your data across ${TOTAL_TOOLS}+ browser-based and AI-powered tools.`;
+  return {
+    title: "Privacy Policy",
     description: privacyDescription,
-    url: "/privacy",
-  }),
-};
+    ...pageAlternates("/privacy", locale),
+    robots: { index: true, follow: true },
+    ...socialMeta({
+      title: `Privacy Policy · ${site.name}`,
+      description: privacyDescription,
+      url: "/privacy",
+      locale,
+    }),
+  };
+}
 
 const SECTIONS = [
   {

@@ -2,22 +2,26 @@ import type { Metadata } from "next";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { getAllPosts } from "@/lib/blog";
 import { site } from "@/lib/site";
-import { socialMeta } from "@/lib/seo";
+import { socialMeta, pageAlternates } from "@/lib/seo";
+import { getLocale } from "@/i18n/locale";
 import { TOTAL_TOOLS } from "@/lib/catalog";
 
-const description = `Guides and tips for using ${site.name}'s ${TOTAL_TOOLS}+ free online tools — SEO, calculators, PDF, images, and more.`;
-
-export const metadata: Metadata = {
-  title: "Blog",
-  description,
-  alternates: { canonical: "/blog" },
-  robots: { index: true, follow: true },
-  ...socialMeta({
-    title: `Blog · ${site.name}`,
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const description = `Guides and tips for using ${site.name}'s ${TOTAL_TOOLS}+ free online tools — SEO, calculators, PDF, images, and more.`;
+  return {
+    title: "Blog",
     description,
-    url: "/blog",
-  }),
-};
+    ...pageAlternates("/blog", locale),
+    robots: { index: true, follow: true },
+    ...socialMeta({
+      title: `Blog · ${site.name}`,
+      description,
+      url: "/blog",
+      locale,
+    }),
+  };
+}
 
 export default function BlogIndexPage() {
   const posts = getAllPosts();

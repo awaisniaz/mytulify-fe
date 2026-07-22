@@ -12,7 +12,7 @@ function clean(value: string | undefined, fallback: string): string {
   return (v || fallback).replace(/\/$/, "");
 }
 
-const PRODUCTION_SITE = "https://mytulify.com";
+const PRODUCTION_SITE = "https://www.mytulify.com";
 
 /**
  * Public site origin (canonical, OG, redirects, sitemap).

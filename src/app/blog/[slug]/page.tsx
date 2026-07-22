@@ -8,6 +8,7 @@ import { formatPostDate, getAllPosts, getPostBySlug } from "@/lib/blog";
 import { getTool, getToolIcon, isToolAvailable, toolHref } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { socialMeta, pageAlternates, clampMetaDescription } from "@/lib/seo";
+import { getLocale } from "@/i18n/locale";
 import { breadcrumbJsonLd } from "@/lib/aeo";
 
 export function generateStaticParams() {
@@ -22,18 +23,20 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return {};
+  const locale = await getLocale();
   const title = post.title;
   const description = clampMetaDescription(post.metaDescription || post.excerpt);
   const path = `/blog/${post.slug}`;
   return {
     title: { absolute: `${title} | ${site.name} Blog` },
     description,
-    ...pageAlternates(path),
+    ...pageAlternates(path, locale),
     robots: { index: true, follow: true },
     ...socialMeta({
       title: `${title} · ${site.name}`,
       description,
       url: path,
+      locale,
     }),
   };
 }

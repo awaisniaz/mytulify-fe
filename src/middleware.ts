@@ -10,6 +10,14 @@ const LOCALE_HEADER = "x-mytulify-locale";
  * - Enforce single-hop 301s for duplicate tool URLs
  */
 export function middleware(request: NextRequest) {
+  const host = request.headers.get("host")?.split(":")[0] ?? "";
+  if (host === "mytulify.com") {
+    const url = request.nextUrl.clone();
+    url.protocol = "https:";
+    url.host = "www.mytulify.com";
+    return NextResponse.redirect(url, 301);
+  }
+
   const lang = request.nextUrl.searchParams.get("lang");
 
   const path = request.nextUrl.pathname.replace(/\/$/, "") || "/";
