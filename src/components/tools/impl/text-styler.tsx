@@ -95,10 +95,14 @@ export function MultiStyler({
   styleNames,
   placeholder = "Type or paste your text…",
   defaultText = "Hello World",
+  charLimit,
+  platformLabel,
 }: {
   styleNames?: string[];
   placeholder?: string;
   defaultText?: string;
+  charLimit?: number;
+  platformLabel?: string;
 }) {
   const [text, setText] = React.useState(defaultText);
   const names = styleNames ?? Object.keys(STYLES);
@@ -113,6 +117,11 @@ export function MultiStyler({
           className="font-sans"
         />
       </Field>
+      {charLimit && (
+        <p className={`text-xs ${text.length > charLimit ? "text-rose-500" : "text-muted"}`}>
+          {platformLabel ? `${platformLabel}: ` : ""}{text.length}/{charLimit} characters
+        </p>
+      )}
       <div className="space-y-2.5">
         {names.map((name) => {
           const out = STYLES[name]?.(text) ?? text;
@@ -135,14 +144,60 @@ export function MultiStyler({
 }
 
 /** Single-style generator (e.g. dedicated bold / cursive tools). */
-export function SingleStyler({ styleName, defaultText = "Hello World" }: { styleName: string; defaultText?: string }) {
-  return <MultiStyler styleNames={[styleName]} defaultText={defaultText} />;
+export function SingleStyler({
+  styleName,
+  styleNames,
+  defaultText = "Hello World",
+}: {
+  styleName?: string;
+  styleNames?: string[];
+  defaultText?: string;
+}) {
+  return <MultiStyler styleNames={styleNames ?? (styleName ? [styleName] : undefined)} defaultText={defaultText} />;
+}
+
+/** Small caps + superscript combined tool */
+export function SmallTextGenerator() {
+  const [mode, setMode] = React.useState<"Small Caps" | "Superscript">("Small Caps");
+  return (
+    <div className="space-y-3">
+      <div className="flex flex-wrap gap-2">
+        {(["Small Caps", "Superscript"] as const).map((m) => (
+          <button key={m} type="button" onClick={() => setMode(m)} className={`rounded-lg px-3 py-1.5 text-sm ${mode === m ? "bg-brand text-brand-fg" : "bg-surface-2"}`}>{m}</button>
+        ))}
+      </div>
+      <MultiStyler styleNames={[mode]} defaultText="small text" />
+    </div>
+  );
+}
+
+/** Glitch with intensity control */
+export function GlitchTextGenerator() {
+  const [text, setText] = React.useState("GLITCH");
+  const [intensity, setIntensity] = React.useState(3);
+  const z = ["̀", "́", "̂", "̃", "̈", "̊", "̧", "҉", "̴"];
+  const out = [...text].map((ch) => (/\s/.test(ch) ? ch : ch + z.slice(0, intensity).join(""))).join("");
+  return (
+    <div className="space-y-4">
+      <Field label="Text"><Textarea value={text} onChange={(e) => setText(e.target.value)} rows={2} className="font-sans" /></Field>
+      <Field label={`Intensity (${intensity})`}>
+        <input type="range" min={1} max={6} value={intensity} onChange={(e) => setIntensity(Number(e.target.value))} className="w-full" />
+      </Field>
+      <div className="flex items-center gap-3 rounded-xl border border-border bg-surface-2 p-4">
+        <p className="min-w-0 flex-1 break-all text-2xl">{out}</p>
+        <CopyButton value={out} />
+      </div>
+    </div>
+  );
 }
 
 /* --------------------------- Aesthetic usernames --------------------------- */
 export function AestheticUsername() {
   const [text, setText] = React.useState("luna");
-  const fonts = ["Script", "Bold Script", "Fullwidth", "Double-Struck", "Small Caps", "Italic"];
+  const [platform, setPlatform] = React.useState("instagram");
+  const limits: Record<string, number> = { instagram: 30, twitter: 15, tiktok: 24, discord: 32, twitch: 25 };
+  const maxLen = limits[platform] ?? 30;
+  const fonts = ["Script", "Bold Script", "Fullwidth", "Double-Struck", "Small Caps", "Italic", "Monospace", "Circled"];
   const results = React.useMemo(() => {
     const base = text || "name";
     const out: string[] = [];
@@ -153,18 +208,33 @@ export function AestheticUsername() {
       out.push(`${d1} ${styled} ${d1}`);
       out.push(`˗ˏˋ ${styled} ´ˎ˗`);
       out.push(`${d2}°｡ ${styled} ｡°${d2}`);
+      out.push(`· ${styled} ·`);
     }
     return out;
   }, [text]);
   return (
     <div className="space-y-5">
-      <Field label="Base username">
-        <Textarea value={text} onChange={(e) => setText(e.target.value)} rows={1} className="font-sans" />
-      </Field>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Field label="Base username">
+          <Textarea value={text} onChange={(e) => setText(e.target.value)} rows={1} className="font-sans" />
+        </Field>
+        <Field label="Platform limit">
+          <select className="w-full rounded-xl border border-border bg-surface-2 px-3 py-2 text-sm" value={platform} onChange={(e) => setPlatform(e.target.value)}>
+            <option value="instagram">Instagram (30)</option>
+            <option value="twitter">X / Twitter (15)</option>
+            <option value="tiktok">TikTok (24)</option>
+            <option value="discord">Discord (32)</option>
+            <option value="twitch">Twitch (25)</option>
+          </select>
+        </Field>
+      </div>
       <div className="grid gap-2.5 sm:grid-cols-2">
         {results.map((r, i) => (
-          <div key={i} className="flex items-center gap-2 rounded-xl border border-border bg-surface-2 p-3">
-            <p className="min-w-0 flex-1 break-words text-base">{r}</p>
+          <div key={i} className={`flex items-center gap-2 rounded-xl border p-3 ${r.length > maxLen ? "border-rose-500/30 bg-rose-500/5" : "border-border bg-surface-2"}`}>
+            <div className="min-w-0 flex-1">
+              <p className="break-words text-base">{r}</p>
+              <p className="text-xs text-muted">{r.length}/{maxLen}</p>
+            </div>
             <CopyButton value={r} />
           </div>
         ))}

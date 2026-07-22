@@ -1,27 +1,32 @@
 "use client";
 
 import { makeReg } from "./_util";
-import { MultiStyler, SingleStyler, AestheticUsername } from "@/components/tools/impl/text-styler";
+import { MultiStyler, SingleStyler, AestheticUsername, SmallTextGenerator, GlitchTextGenerator } from "@/components/tools/impl/text-styler";
 import { CharacterCounter } from "@/components/tools/impl/text";
+import { PLATFORM_LIMITS } from "@/lib/social-tools";
 import {
   WhatsAppLink, HashtagCounter, InstagramLineBreak, YouTubeThumbnail, SocialImageSizes, EmojiPicker,
 } from "@/components/tools/impl/social";
 import {
   FakeTweet, FakeInstagram, InstagramBio, TwitterBio, CaptionGenerator, HashtagGenerator,
-  SocialPreviewTester, FakeFacebook, FakeInstagramDm,
+  SocialPreviewTester, FakeFacebook, FakeInstagramDm, TweetToImage,
 } from "@/components/tools/impl/social-mock";
 import { YouTubeTagExtractor } from "@/components/tools/impl/social-extra";
 
 export default makeReg({
-  "instagram-font-generator": () => <MultiStyler defaultText="your bio text" />,
-  "discord-font-generator": () => <MultiStyler defaultText="discord text" />,
-  "twitch-text-generator": () => <MultiStyler defaultText="twitch name" />,
-  "linkedin-text-formatter": () => <MultiStyler styleNames={["Bold (Serif)", "Italic", "Bold Italic", "Bold Sans"]} defaultText="LinkedIn post" />,
+  "instagram-font-generator": () => (
+    <MultiStyler defaultText="your bio text" charLimit={PLATFORM_LIMITS.bioInstagram.chars} platformLabel="Instagram bio" />
+  ),
+  "discord-font-generator": () => <MultiStyler defaultText="discord text" charLimit={32} platformLabel="Discord" />,
+  "twitch-text-generator": () => <MultiStyler defaultText="twitch name" charLimit={25} platformLabel="Twitch username" />,
+  "linkedin-text-formatter": () => (
+    <MultiStyler styleNames={["Bold (Serif)", "Italic", "Bold Italic", "Bold Sans", "Underline", "Strikethrough"]} defaultText="LinkedIn post" charLimit={3000} platformLabel="LinkedIn" />
+  ),
   "bold-text-generator": () => <SingleStyler styleName="Bold (Serif)" />,
   "cursive-text-generator": () => <SingleStyler styleName="Script" />,
   "strikethrough-text-generator": () => <SingleStyler styleName="Strikethrough" />,
-  "glitch-text-generator": () => <SingleStyler styleName="Glitch" />,
-  "small-text-generator": () => <SingleStyler styleName="Small Caps" />,
+  "glitch-text-generator": GlitchTextGenerator,
+  "small-text-generator": SmallTextGenerator,
   "upside-down-text-generator": () => <SingleStyler styleName="Upside Down" />,
   "aesthetic-username-generator": AestheticUsername,
   "twitter-character-counter": CharacterCounter,
@@ -32,7 +37,7 @@ export default makeReg({
   "social-media-image-sizes": SocialImageSizes,
   "emoji-picker": EmojiPicker,
   "fake-tweet-generator": FakeTweet,
-  "tweet-to-image": FakeTweet,
+  "tweet-to-image": TweetToImage,
   "fake-instagram-post-generator": FakeInstagram,
   "instagram-bio-generator": InstagramBio,
   "twitter-bio-generator": TwitterBio,

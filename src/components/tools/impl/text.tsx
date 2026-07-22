@@ -4,6 +4,7 @@ import * as React from "react";
 import { Input, Select, Button } from "@/components/ui/primitives";
 import { CopyButton, Field, Output, Stat, Notice } from "@/components/tools/shared";
 import { Textarea } from "@/components/ui/primitives";
+import { PLATFORM_LIMITS, splitTwitterThread, twitterWeightedLength } from "@/lib/social-tools";
 
 /* --------------------- Generic input→output transform ---------------------- */
 function TransformTool({
@@ -70,25 +71,63 @@ export function WordCounter() {
 
 export function CharacterCounter() {
   const [text, setText] = React.useState("");
-  const limits = [{ n: 280, l: "Tweet" }, { n: 2200, l: "Instagram" }, { n: 160, l: "SMS" }, { n: 60, l: "SEO title" }];
+  const [weighted, setWeighted] = React.useState(true);
+  const [showThread, setShowThread] = React.useState(false);
+  const twitterLen = weighted ? twitterWeightedLength(text) : text.length;
+  const limits = [
+    { n: PLATFORM_LIMITS.twitter.chars, l: "X / Twitter", val: twitterLen, weighted: true },
+    { n: PLATFORM_LIMITS.twitterPremium.chars, l: "X Premium", val: text.length },
+    { n: PLATFORM_LIMITS.instagram.chars, l: "Instagram", val: text.length },
+    { n: PLATFORM_LIMITS.threads.chars, l: "Threads", val: text.length },
+    { n: PLATFORM_LIMITS.linkedin.chars, l: "LinkedIn", val: text.length },
+    { n: PLATFORM_LIMITS.tiktok.chars, l: "TikTok", val: text.length },
+    { n: PLATFORM_LIMITS.bioInstagram.chars, l: "IG bio", val: text.length },
+    { n: PLATFORM_LIMITS.bioTwitter.chars, l: "X bio", val: text.length },
+    { n: PLATFORM_LIMITS.sms.chars, l: "SMS", val: text.length },
+    { n: PLATFORM_LIMITS.seoTitle.chars, l: "SEO title", val: text.length },
+    { n: PLATFORM_LIMITS.seoDesc.chars, l: "SEO meta", val: text.length },
+  ];
+  const thread = splitTwitterThread(text, 280);
+  const urlCount = (text.match(/https?:\/\/[^\s]+/gi) || []).length;
+  const emojiCount = [...text].filter((c) => (c.codePointAt(0) ?? 0) > 0x1f300).length;
+
   return (
     <div className="space-y-4">
       <Textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="Type to count characters…" rows={6} className="font-sans" />
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="flex flex-wrap gap-4 text-sm">
+        <label className="flex items-center gap-2"><input type="checkbox" checked={weighted} onChange={(e) => setWeighted(e.target.checked)} /> X weighted count (URLs=23, emoji=2)</label>
+        <label className="flex items-center gap-2"><input type="checkbox" checked={showThread} onChange={(e) => setShowThread(e.target.checked)} /> Thread splitter preview</label>
+      </div>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat label="Characters" value={text.length} />
-        <Stat label="No spaces" value={text.replace(/\s/g, "").length} />
+        <Stat label="X weighted" value={twitterLen} />
         <Stat label="Words" value={(text.trim().match(/\S+/g) || []).length} />
+        <Stat label="URLs / emoji" value={`${urlCount} / ${emojiCount}`} />
       </div>
       <div className="grid gap-2 sm:grid-cols-2">
-        {limits.map((x) => (
-          <div key={x.l} className="flex items-center justify-between rounded-xl border border-border bg-surface-2 px-3 py-2 text-sm">
-            <span>{x.l} ({x.n})</span>
-            <span className={text.length > x.n ? "text-rose-500" : "text-emerald-500"}>
-              {x.n - text.length} left
-            </span>
-          </div>
-        ))}
+        {limits.map((x) => {
+          const len = x.val ?? text.length;
+          return (
+            <div key={x.l} className="flex items-center justify-between rounded-xl border border-border bg-surface-2 px-3 py-2 text-sm">
+              <span>{x.l} ({x.n}){x.weighted && weighted ? " ⚖" : ""}</span>
+              <span className={len > x.n ? "text-rose-500" : "text-emerald-500"}>{x.n - len} left</span>
+            </div>
+          );
+        })}
       </div>
+      {showThread && text.trim() && (
+        <div className="space-y-2">
+          <Notice tone="info">Thread preview — {thread.length} tweet{thread.length !== 1 ? "s" : ""}</Notice>
+          {thread.map((t, i) => (
+            <div key={i} className="flex items-start gap-2 rounded-xl border border-border bg-surface-2 p-3">
+              <span className="text-xs font-bold text-muted">{i + 1}/{thread.length}</span>
+              <p className="min-w-0 flex-1 text-sm">{t}</p>
+              <CopyButton value={t} label="" />
+            </div>
+          ))}
+          <Output value={thread.map((t, i) => `${i + 1}/${thread.length}\n${t}`).join("\n\n---\n\n")} rows={8} mono={false} />
+        </div>
+      )}
     </div>
   );
 }
