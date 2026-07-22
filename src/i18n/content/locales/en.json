@@ -3167,40 +3167,59 @@
     },
     "freelancer-tools/contract-generator": {
       "name": "Freelance Contract Generator",
-      "description": "Create a clear freelance services contract with scope, payment terms, IP, and revisions — download as PDF.",
-      "metaTitle": "Free Freelance Contract Generator – PDF Download | Mytulify",
-      "metaDescription": "Generate a freelance services contract with scope, payment schedule, IP, and revisions. Free PDF export in your browser — no signup.",
+      "description": "Free freelance contract template & independent contractor agreement generator — scope, payment terms, IP, confidentiality, PDF download.",
+      "metaTitle": "Free Freelance Contract Template Generator – PDF Download | Mytulify",
+      "metaDescription": "Create a freelance contract template or independent contractor agreement with scope, milestones, IP, NDA & late fees. Free PDF — no signup, runs in browser.",
       "about": [
-        "A written freelance contract reduces scope creep and unpaid work. Cover deliverables, payment timing, revisions, late fees, IP ownership, and how either side can end the project.",
-        "This free generator builds a practical template in your browser and exports a PDF. It is not legal advice — have a lawyer review for your jurisdiction before signing."
+        "A freelance contract template protects you from scope creep, late payments, and IP disputes. This free contract generator creates a professional independent contractor agreement covering deliverables, payment schedule, revision limits, confidentiality, termination, and intellectual property — then exports a branded PDF in seconds.",
+        "Whether you are a web developer, designer, writer, or consultant, a written freelance agreement sets clear expectations before work begins. Clients take you more seriously, and you have a paper trail if payment or scope issues arise.",
+        "Unlike generic Word templates, this tool runs 100% in your browser on Mytulify — your client names, rates, and scope never leave your device. Choose from industry templates (web, design, writing, consulting, retainer, software) or build a custom contract from scratch.",
+        "This is a practical template, not legal advice. Have a qualified attorney review your freelance services agreement for your jurisdiction before signing important deals."
       ],
       "howTo": {
-        "title": "How to create a contract",
+        "title": "How to create a freelance contract",
         "steps": [
-          "Fill freelancer, client, scope, payment, and IP fields.",
-          "Review the live preview.",
-          "Download the PDF and send it for signatures."
+          "Pick a contract template (web design, graphic design, writing, consulting, retainer, or software development) or start blank.",
+          "Enter freelancer and client details — names, emails, addresses, and a contract reference number.",
+          "Define scope of work with clear inclusions and exclusions to prevent scope creep.",
+          "Set payment terms: total value, currency, deposit %, milestone schedule, Net 15/30, late fees, and kill fee.",
+          "Toggle legal clauses: confidentiality, IP ownership, portfolio rights, liability cap, force majeure, and dispute resolution.",
+          "Preview the full agreement, copy the text, or download a branded PDF to send for e-signature."
         ]
       },
       "faq": [
         {
-          "q": "Is this a legally binding contract?",
-          "a": "It is a template to start from. Binding effect depends on your jurisdiction and how both parties sign. Get legal review for important deals."
+          "q": "What should a freelance contract include?",
+          "a": "At minimum: parties, scope of work, payment amount and schedule, deadline, revision limits, IP ownership, confidentiality, termination terms, and late payment fees. Our generator includes all of these plus optional clauses for portfolio rights, expenses, and dispute resolution."
         },
         {
-          "q": "Does my data leave the browser?",
-          "a": "No. Everything runs client-side on Mytulify — we do not upload your contract text."
+          "q": "Is this freelance contract template legally binding?",
+          "a": "It is a starting template, not legal advice. Binding effect depends on your jurisdiction, how both parties sign, and whether terms are enforceable locally. Consult a lawyer for high-value or complex engagements."
         },
         {
-          "q": "Can I also create invoices?",
-          "a": "Yes. After you win the work, use our free Invoice Generator under Converters & Generators."
+          "q": "Can I use this as an independent contractor agreement?",
+          "a": "Yes. The consulting and retainer templates are designed for independent contractor relationships. Adjust scope, payment, and IP clauses to match your engagement type."
+        },
+        {
+          "q": "Does my contract data leave the browser?",
+          "a": "No. Everything runs client-side on Mytulify — we do not upload, store, or see your contract text, client names, or payment terms."
+        },
+        {
+          "q": "Can I download the contract as PDF?",
+          "a": "Yes. Click Download PDF for a professionally formatted contract with signature lines. You can also copy plain text or download a .txt file for editing in Word or Google Docs."
+        },
+        {
+          "q": "What is the difference between a freelance contract and a proposal?",
+          "a": "A proposal sells the project (scope, timeline, pricing pitch). A contract legally defines the engagement after the client says yes. Use our Proposal Generator first, then this Contract Generator once they agree."
         }
       ],
       "related": [
         "freelancer-tools/proposal-generator",
         "freelancer-tools/nda-generator",
         "freelancer-tools/change-order-generator",
-        "converters-generators/invoice-generator"
+        "freelancer-tools/late-fee-calculator",
+        "converters-generators/invoice-generator",
+        "freelancer-tools/email-templates-generator"
       ]
     },
     "freelancer-tools/proposal-generator": {
