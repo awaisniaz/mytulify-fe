@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { site } from "@/lib/site";
 import { messaging } from "@/lib/messaging";
 import type { Locale } from "@/i18n/config";
-import { canonicalForLocale, hreflangAlternates, OG_LOCALE } from "@/lib/seo/hreflang";
+import { canonicalForLocale, hreflangAlternates, hreflangUrl, OG_LOCALE } from "@/lib/seo/hreflang";
 
 type SocialMeta = Pick<Metadata, "openGraph" | "twitter">;
 
@@ -25,10 +25,14 @@ export function clampMetaDescription(text: string, max = 155): string {
 
 /** Canonical + hreflang alternates for indexable pages. */
 export function pageAlternates(path: string, locale: Locale = "en"): Pick<Metadata, "alternates"> {
+  const canonical = canonicalForLocale(path, locale);
+  const languages = hreflangAlternates(path);
+  // Guarantee self-reference: canonical must equal hreflang for the active locale.
+  languages[locale] = canonical;
   return {
     alternates: {
-      canonical: canonicalForLocale(path, locale),
-      languages: hreflangAlternates(path),
+      canonical,
+      languages,
     },
   };
 }
@@ -45,7 +49,9 @@ export function socialMeta({
   url: string;
   locale?: Locale;
 }): SocialMeta {
-  const absoluteUrl = url.startsWith("http") ? url : `${site.url}${url}`;
+  const absoluteUrl = url.startsWith("http")
+    ? url
+    : hreflangUrl(url.startsWith("/") ? url : `/${url}`, locale);
   return {
     openGraph: {
       type: "website",

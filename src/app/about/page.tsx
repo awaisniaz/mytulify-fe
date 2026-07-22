@@ -4,12 +4,16 @@ import { TOTAL_CATEGORIES, TOTAL_AI_OCR_TOOLS, TOTAL_BROWSER_TOOLS, TOTAL_TOOLS 
 import { site } from "@/lib/site";
 import { socialMeta, pageAlternates } from "@/lib/seo";
 import { Icon } from "@/components/ui/Icon";
-import { getLocale } from "@/i18n/locale";
+import { getLocale, getMetadataLocale } from "@/i18n/locale";
 import { getContent } from "@/i18n/content";
 import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getLocale();
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string | string[] }>;
+}): Promise<Metadata> {
+  const locale = await getMetadataLocale(searchParams);
   const content = await getContent(locale);
   const intro = content.strings.aboutPage.intro
     .replace("{total}", String(TOTAL_TOOLS))

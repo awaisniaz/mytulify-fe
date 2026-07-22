@@ -14,15 +14,19 @@ import {
 } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { socialMeta, pageAlternates } from "@/lib/seo";
-import { getLocale } from "@/i18n/locale";
+import { getMetadataLocale } from "@/i18n/locale";
 import { ProUnlockForm } from "@/components/billing/ProUnlockForm";
 import { PricingCards } from "@/components/billing/PricingCards";
 import { ManageBillingButton } from "@/components/billing/ManageBillingButton";
 import { paymentGatewaysReady } from "@/lib/billing/payments-ready";
 import { Icon } from "@/components/ui/Icon";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getLocale();
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string | string[] }>;
+}): Promise<Metadata> {
+  const locale = await getMetadataLocale(searchParams);
   const description = `${TOTAL_BROWSER_TOOLS}+ browser tools free with ads, or Pro (from $${PRO_PRICE_USD}/mo) for unlimited AI & OCR and ad-free browsing.`;
   return {
     title: "Pricing",

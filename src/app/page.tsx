@@ -6,13 +6,17 @@ import { HomeHero } from "@/components/home/HomeHero";
 import { Icon } from "@/components/ui/Icon";
 import { site } from "@/lib/site";
 import { socialMeta, pageAlternates } from "@/lib/seo";
-import { getLocale } from "@/i18n/locale";
+import { getLocale, getMetadataLocale } from "@/i18n/locale";
 import { getMessages } from "@/i18n/messages";
 import { getMessaging } from "@/i18n/messaging";
 import { getContent, localizeCategory, localizeTool } from "@/i18n/content";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getLocale();
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string | string[] }>;
+}): Promise<Metadata> {
+  const locale = await getMetadataLocale(searchParams);
   const messaging = await getMessaging(locale);
   const title = `${site.name} — ${messaging.tagline}`;
   return {

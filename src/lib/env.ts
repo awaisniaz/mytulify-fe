@@ -12,6 +12,17 @@ function clean(value: string | undefined, fallback: string): string {
   return (v || fallback).replace(/\/$/, "");
 }
 
+/** Always emit www — crawlers hit www.mytulify.com; apex env values must not leak into hreflang. */
+function canonicalOrigin(url: string): string {
+  try {
+    const u = new URL(url);
+    if (u.hostname === "mytulify.com") u.hostname = "www.mytulify.com";
+    return u.origin;
+  } catch {
+    return url.replace(/\/$/, "");
+  }
+}
+
 const PRODUCTION_SITE = "https://www.mytulify.com";
 
 /**
@@ -23,8 +34,9 @@ function resolveSiteUrl(): string {
   const isProd =
     process.env.NODE_ENV === "production" ||
     process.env.VERCEL_ENV === "production";
-  if (isProd && /localhost|127\.0\.0\.1/i.test(raw)) return PRODUCTION_SITE;
-  return raw;
+  const resolved =
+    isProd && /localhost|127\.0\.0\.1/i.test(raw) ? PRODUCTION_SITE : raw;
+  return canonicalOrigin(resolved);
 }
 
 /** Public site origin (canonical, OG, redirects). */

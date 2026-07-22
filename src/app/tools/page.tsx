@@ -4,13 +4,17 @@ import { AllToolsBrowser } from "@/components/AllToolsBrowser";
 import { ALL_TOOLS, CATEGORIES, TOTAL_TOOLS, TOTAL_CATEGORIES } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { socialMeta, pageAlternates, clampMetaDescription } from "@/lib/seo";
-import { getLocale } from "@/i18n/locale";
+import { getLocale, getMetadataLocale } from "@/i18n/locale";
 import { getContent, localizeTool } from "@/i18n/content";
 import { categoryLabelFrom } from "@/i18n/messaging";
 import { getMessages } from "@/i18n/messages";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getLocale();
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string | string[] }>;
+}): Promise<Metadata> {
+  const locale = await getMetadataLocale(searchParams);
   const content = await getContent(locale);
   const description = content.strings.toolsPageSub.replace("{cats}", String(TOTAL_CATEGORIES));
   const title = content.strings.toolsPageTitle.replace("{n}", String(TOTAL_TOOLS));

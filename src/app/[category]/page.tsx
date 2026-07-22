@@ -7,7 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
 import { socialMeta, pageAlternates, clampMetaDescription } from "@/lib/seo";
-import { getLocale } from "@/i18n/locale";
+import { getLocale, getMetadataLocale } from "@/i18n/locale";
 import { categoryMeta, getContent, localizeCategory, localizeTool } from "@/i18n/content";
 import { categoryLabelFrom } from "@/i18n/messaging";
 import { getMessages } from "@/i18n/messages";
@@ -18,13 +18,15 @@ export function generateStaticParams() {
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<{ category: string }>;
+  searchParams: Promise<{ lang?: string | string[] }>;
 }): Promise<Metadata> {
   const { category } = await params;
   const c = getCategory(category);
   if (!c) return {};
-  const locale = await getLocale();
+  const locale = await getMetadataLocale(searchParams);
   const content = await getContent(locale);
   const catLabel = localizeCategory(content, c.slug, {
     name: c.name,

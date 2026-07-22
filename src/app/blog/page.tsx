@@ -3,11 +3,15 @@ import { BlogCard } from "@/components/blog/BlogCard";
 import { getAllPosts } from "@/lib/blog";
 import { site } from "@/lib/site";
 import { socialMeta, pageAlternates } from "@/lib/seo";
-import { getLocale } from "@/i18n/locale";
+import { getMetadataLocale } from "@/i18n/locale";
 import { TOTAL_TOOLS } from "@/lib/catalog";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getLocale();
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string | string[] }>;
+}): Promise<Metadata> {
+  const locale = await getMetadataLocale(searchParams);
   const description = `Guides and tips for using ${site.name}'s ${TOTAL_TOOLS}+ free online tools — SEO, calculators, PDF, images, and more.`;
   return {
     title: "Blog",

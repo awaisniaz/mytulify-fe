@@ -4,10 +4,14 @@ import { RequestToolForm } from "@/components/request/RequestToolForm";
 import { CATEGORIES, TOTAL_TOOLS } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { socialMeta, pageAlternates } from "@/lib/seo";
-import { getLocale } from "@/i18n/locale";
+import { getMetadataLocale } from "@/i18n/locale";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getLocale();
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string | string[] }>;
+}): Promise<Metadata> {
+  const locale = await getMetadataLocale(searchParams);
   const description = `Suggest a new free online tool for ${site.name}. We already ship ${TOTAL_TOOLS}+ tools — tell us what to build next.`;
   return {
     title: "Request a Tool",

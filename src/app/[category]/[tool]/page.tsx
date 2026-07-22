@@ -12,7 +12,7 @@ import { site } from "@/lib/site";
 import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
 import { socialMeta, pageAlternates } from "@/lib/seo";
 import { faqPageJsonLd, howToJsonLd, howToProse, softwareApplicationJsonLd, breadcrumbJsonLd, toolQuickFacts } from "@/lib/aeo";
-import { getLocale } from "@/i18n/locale";
+import { getLocale, getMetadataLocale } from "@/i18n/locale";
 import {
   buildFaq, buildHowTo, getContent, localizeCategory, localizeTool, toolAboutParagraphs, toolMeta,
 } from "@/i18n/content";
@@ -50,14 +50,16 @@ function resolveRelated(keys: string[] | undefined, tool: Tool, limit = 6): Tool
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<{ category: string; tool: string }>;
+  searchParams: Promise<{ lang?: string | string[] }>;
 }): Promise<Metadata> {
   const { category, tool } = await params;
   enforceCanonical(category, tool);
   const t = getTool(category, tool);
   if (!t) return {};
-  const locale = await getLocale();
+  const locale = await getMetadataLocale(searchParams);
   const content = await getContent(locale);
   const label = localizeTool(content, t);
   const cat = getCategory(category)!;

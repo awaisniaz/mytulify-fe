@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import { TOTAL_SERVER_SIDE_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { socialMeta, pageAlternates } from "@/lib/seo";
-import { getLocale } from "@/i18n/locale";
+import { getMetadataLocale } from "@/i18n/locale";
 import { Icon } from "@/components/ui/Icon";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getLocale();
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string | string[] }>;
+}): Promise<Metadata> {
+  const locale = await getMetadataLocale(searchParams);
   const privacyDescription = `${site.name} privacy policy — how we handle your data across ${TOTAL_TOOLS}+ browser-based and AI-powered tools.`;
   return {
     title: "Privacy Policy",
