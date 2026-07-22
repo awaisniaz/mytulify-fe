@@ -6,7 +6,7 @@ import { ToolCard } from "@/components/cards";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
-import { socialMeta } from "@/lib/seo";
+import { socialMeta, pageAlternates, clampMetaDescription } from "@/lib/seo";
 import { getLocale } from "@/i18n/locale";
 import { categoryMeta, getContent, localizeCategory, localizeTool } from "@/i18n/content";
 import { categoryLabelFrom } from "@/i18n/messaging";
@@ -32,12 +32,13 @@ export async function generateMetadata({
     tagline: c.tagline,
   });
   const meta = categoryMeta(content, catLabel.name, catLabel.description, c.tools.filter(isToolAvailable).length);
+  const path = `/${c.slug}`;
   return {
     title: meta.title,
-    description: meta.description,
-    alternates: { canonical: `/${c.slug}` },
+    description: clampMetaDescription(meta.description),
+    ...pageAlternates(path, locale),
     robots: { index: true, follow: true },
-    ...socialMeta({ title: `${meta.title} · ${site.name}`, description: meta.description, url: `/${c.slug}` }),
+    ...socialMeta({ title: `${meta.title} · ${site.name}`, description: meta.description, url: path, locale }),
   };
 }
 

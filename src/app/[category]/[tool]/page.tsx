@@ -10,8 +10,8 @@ import { Badge } from "@/components/ui/primitives";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
 import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
-import { socialMeta } from "@/lib/seo";
-import { faqPageJsonLd, howToJsonLd, toolQuickFacts } from "@/lib/aeo";
+import { socialMeta, pageAlternates } from "@/lib/seo";
+import { faqPageJsonLd, howToJsonLd, howToProse, softwareApplicationJsonLd, breadcrumbJsonLd, toolQuickFacts } from "@/lib/aeo";
 import { getLocale } from "@/i18n/locale";
 import {
   buildFaq, buildHowTo, getContent, localizeCategory, localizeTool, toolAboutParagraphs, toolMeta,
@@ -27,7 +27,7 @@ function enforceCanonical(category: string, tool: string) {
   if (dest) permanentRedirect(`/${dest}`);
 }
 
-function resolveRelated(keys: string[] | undefined, tool: Tool, limit = 4): Tool[] {
+function resolveRelated(keys: string[] | undefined, tool: Tool, limit = 6): Tool[] {
   if (!keys?.length) return relatedTools(tool, limit);
   const resolved = keys
     .map((key) => {
@@ -60,19 +60,27 @@ export async function generateMetadata({
   const locale = await getLocale();
   const content = await getContent(locale);
   const label = localizeTool(content, t);
-  const meta = toolMeta(content, label, t.clientSide);
+  const cat = getCategory(category)!;
+  const catLabel = localizeCategory(content, cat.slug, {
+    name: cat.name,
+    description: cat.description,
+    tagline: cat.tagline,
+  });
   const available = isToolAvailable(t);
+  const meta = toolMeta(content, label, t.clientSide, catLabel.name);
+  const path = toolHref(t);
   return {
     title: meta.absolute ? { absolute: meta.title } : meta.title,
     description: meta.description,
-    alternates: { canonical: toolHref(t) },
+    ...pageAlternates(path, locale),
     robots: available
       ? { index: true, follow: true }
       : { index: false, follow: true },
     ...socialMeta({
       title: meta.absolute ? meta.title : `${label.name} · ${site.name}`,
       description: meta.description,
-      url: toolHref(t),
+      url: path,
+      locale,
     }),
   };
 }
@@ -95,9 +103,10 @@ export default async function ToolPage({
     description: cat.description,
     tagline: cat.tagline,
   });
-  const related = resolveRelated(label.related, t, 4);
+  const related = resolveRelated(label.related, t, 6);
   const faq = buildFaq(content, label, t.clientSide);
   const howTo = buildHowTo(content, label, t.clientSide);
+  const howToExtra = howToProse(label.name, label.description, t.clientSide);
   const about = toolAboutParagraphs(content, label, t.clientSide);
   const facts = toolQuickFacts(label.name, t.clientSide);
   const present = getToolIconPresentation(t);
@@ -108,45 +117,27 @@ export default async function ToolPage({
 
   const jsonLd = available
     ? [
-        {
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
+        softwareApplicationJsonLd({
           name: label.name,
-          applicationCategory: "UtilitiesApplication",
-          operatingSystem: "Any (Web)",
           description: label.description,
           url: pageUrl,
-          offers: {
-            "@type": "Offer",
-            price: "0",
-            priceCurrency: "USD",
-            description: t.clientSide
-              ? "Free plan — unlimited browser use"
-              : `Free plan — ${FREE_AI_DAILY_LIMIT} AI runs per day; Pro for unlimited`,
-          },
-        },
-        {
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            { "@type": "ListItem", position: 1, name: s.home, item: site.url },
-            { "@type": "ListItem", position: 2, name: catLabel.name, item: `${site.url}/${cat.slug}` },
-            { "@type": "ListItem", position: 3, name: label.name, item: pageUrl },
-          ],
-        },
+          categoryName: catLabel.name.replace(/\s+/g, ""),
+          clientSide: t.clientSide,
+        }),
+        breadcrumbJsonLd([
+          { name: s.home, item: site.url },
+          { name: catLabel.name, item: `${site.url}/${cat.slug}` },
+          { name: label.name, item: pageUrl },
+        ]),
         faqPageJsonLd(faq),
         howToJsonLd(howTo, pageUrl, label.name),
       ]
     : [
-        {
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            { "@type": "ListItem", position: 1, name: s.home, item: site.url },
-            { "@type": "ListItem", position: 2, name: catLabel.name, item: `${site.url}/${cat.slug}` },
-            { "@type": "ListItem", position: 3, name: label.name, item: pageUrl },
-          ],
-        },
+        breadcrumbJsonLd([
+          { name: s.home, item: site.url },
+          { name: catLabel.name, item: `${site.url}/${cat.slug}` },
+          { name: label.name, item: pageUrl },
+        ]),
       ];
 
   return (
@@ -170,6 +161,8 @@ export default async function ToolPage({
               present.ring,
             )}
             title={present.badge}
+            role="img"
+            aria-label={`${label.name} tool icon`}
           >
             <Icon name={getToolIcon(t)} className={cn("h-6 w-6", present.fg)} />
             <span className={cn("absolute -bottom-1 -right-1 rounded px-1 text-[9px] font-bold leading-tight text-white", TOOL_BADGE_BG[present.badge] ?? "bg-orange-500")}>
@@ -229,6 +222,11 @@ export default async function ToolPage({
               <li key={step.slice(0, 48)} className="leading-relaxed">{step}</li>
             ))}
           </ol>
+          <div className="mt-4 space-y-3 text-muted">
+            {howToExtra.map((p) => (
+              <p key={p.slice(0, 48)} className="leading-relaxed">{p}</p>
+            ))}
+          </div>
         </div>
 
         <div className="mt-8">

@@ -6,6 +6,7 @@ import {
   directAnswerLead,
   ensureDirectAbout,
 } from "@/lib/aeo";
+import { clampMetaDescription } from "@/lib/seo";
 import type { Locale } from "../config";
 import { DEFAULT_LOCALE } from "../config";
 import type { ContentBundle, LocalizedCategory, LocalizedTool, ToolFaqItem, ToolHowTo } from "./types";
@@ -163,30 +164,35 @@ export function toolAboutParagraphs(
   if (label.about?.length) {
     return ensureDirectAbout(label.about, label.name, label.description, !clientSide);
   }
-  // Lead sentence is always a tight direct answer (AEO/GEO snippet bait).
   const lead = directAnswerLead(label.name, label.description, !clientSide);
   const second = clientSide
     ? "It runs entirely in your browser on Mytulify — fast, private, and unlimited on the Free plan. No account or installation is required."
     : `The Free plan includes ${FREE_AI_DAILY_LIMIT} runs per day; Pro unlocks unlimited runs. Input is processed on our server — avoid pasting secrets and review output before use.`;
-  return [lead, second];
+  const useCases = clientSide
+    ? `Use the ${label.name} for everyday tasks, school or office work, and freelance projects when you need quick results without installing software. It works on phones, tablets, and shared computers — ideal when you are on the go or on restricted networks.`
+    : `Use the ${label.name} for marketing copy, research drafts, brainstorming, and content repurposing. Freelancers, students, and small teams rely on it to save time while keeping a free daily quota; power users upgrade to Pro for unlimited AI runs.`;
+  const benefits = `Key benefits: free to start, no download, copy-ready output, and a clean interface designed for repeat use. Explore related tools in the same category below to complete multi-step workflows without leaving Mytulify.`;
+  return [lead, second, useCases, benefits];
 }
 
-/** @deprecated Prefer toolAboutParagraphs — kept for any external callers. */
-export function toolAboutText(content: ContentBundle, name: string, desc: string, clientSide: boolean) {
+export function toolMeta(
+  content: ContentBundle,
+  label: LocalizedTool,
+  clientSide: boolean,
+  categoryName?: string,
+) {
   const s = content.strings;
-  const vars = { name, desc, descClause: descClause(desc), limit: FREE_AI_DAILY_LIMIT };
-  return clientSide ? fmt(s.toolAboutClient, vars) : fmt(s.toolAboutAi, vars);
-}
-
-export function toolMeta(content: ContentBundle, label: LocalizedTool, clientSide: boolean) {
-  const s = content.strings;
+  const catLabel = categoryName ? `${categoryName} ` : "";
+  const defaultTitle = `${label.name} – Free Online ${catLabel}Tool | Mytulify`;
+  const rawDesc =
+    label.metaDescription ??
+    (clientSide
+      ? fmt(s.toolMetaClient, { desc: label.description })
+      : fmt(s.toolMetaAi, { desc: label.description, limit: FREE_AI_DAILY_LIMIT }));
   return {
-    title: label.metaTitle ?? `${label.name} — Free Online Tool | Mytulify`,
+    title: label.metaTitle ?? defaultTitle,
     absolute: true,
-    description: label.metaDescription
-      ?? (clientSide
-        ? fmt(s.toolMetaClient, { desc: label.description })
-        : fmt(s.toolMetaAi, { desc: label.description, limit: FREE_AI_DAILY_LIMIT })),
+    description: clampMetaDescription(rawDesc),
   };
 }
 

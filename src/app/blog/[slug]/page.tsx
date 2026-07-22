@@ -7,7 +7,8 @@ import { Icon } from "@/components/ui/Icon";
 import { formatPostDate, getAllPosts, getPostBySlug } from "@/lib/blog";
 import { getTool, getToolIcon, isToolAvailable, toolHref } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { socialMeta } from "@/lib/seo";
+import { socialMeta, pageAlternates, clampMetaDescription } from "@/lib/seo";
+import { breadcrumbJsonLd } from "@/lib/aeo";
 
 export function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
@@ -22,16 +23,17 @@ export async function generateMetadata({
   const post = getPostBySlug(slug);
   if (!post) return {};
   const title = post.title;
-  const description = post.metaDescription || post.excerpt;
+  const description = clampMetaDescription(post.metaDescription || post.excerpt);
+  const path = `/blog/${post.slug}`;
   return {
     title: { absolute: `${title} | ${site.name} Blog` },
     description,
-    alternates: { canonical: `/blog/${post.slug}` },
+    ...pageAlternates(path),
     robots: { index: true, follow: true },
     ...socialMeta({
       title: `${title} · ${site.name}`,
       description,
-      url: `/blog/${post.slug}`,
+      url: path,
     }),
   };
 }
@@ -54,24 +56,31 @@ export default async function BlogPostPage({
     .slice(0, 4);
 
   const url = `${site.url}/blog/${post.slug}`;
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description: post.metaDescription || post.excerpt,
-    image: post.featuredImage.startsWith("http")
-      ? post.featuredImage
-      : `${site.url}${post.featuredImage}`,
-    datePublished: post.publishedDate,
-    dateModified: post.updatedDate,
-    author: { "@type": "Organization", name: post.author },
-    publisher: {
-      "@type": "Organization",
-      name: site.name,
-      logo: { "@type": "ImageObject", url: `${site.url}/logo.png` },
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.metaDescription || post.excerpt,
+      image: post.featuredImage.startsWith("http")
+        ? post.featuredImage
+        : `${site.url}${post.featuredImage}`,
+      datePublished: post.publishedDate,
+      dateModified: post.updatedDate,
+      author: { "@type": "Organization", name: post.author },
+      publisher: {
+        "@type": "Organization",
+        name: site.name,
+        logo: { "@type": "ImageObject", url: `${site.url}/logo.png` },
+      },
+      mainEntityOfPage: url,
     },
-    mainEntityOfPage: url,
-  };
+    breadcrumbJsonLd([
+      { name: "Home", item: site.url },
+      { name: "Blog", item: `${site.url}/blog` },
+      { name: post.title, item: url },
+    ]),
+  ];
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -106,7 +115,7 @@ export default async function BlogPostPage({
       <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-2xl border border-border bg-surface-2">
         <Image
           src={post.featuredImage}
-          alt=""
+          alt={`Featured image for ${post.title}`}
           fill
           priority
           className="object-cover"

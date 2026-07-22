@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { AllToolsBrowser } from "@/components/AllToolsBrowser";
 import { ALL_TOOLS, CATEGORIES, TOTAL_TOOLS, TOTAL_CATEGORIES } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { socialMeta } from "@/lib/seo";
+import { socialMeta, pageAlternates, clampMetaDescription } from "@/lib/seo";
 import { getLocale } from "@/i18n/locale";
 import { getContent, localizeTool } from "@/i18n/content";
 import { categoryLabelFrom } from "@/i18n/messaging";
@@ -16,10 +16,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = content.strings.toolsPageTitle.replace("{n}", String(TOTAL_TOOLS));
   return {
     title,
-    description,
-    alternates: { canonical: "/tools" },
+    description: clampMetaDescription(description),
+    ...pageAlternates("/tools", locale),
     robots: { index: true, follow: true },
-    ...socialMeta({ title: `${title} · ${site.name}`, description, url: "/tools" }),
+    ...socialMeta({ title: `${title} · ${site.name}`, description, url: "/tools", locale }),
   };
 }
 
