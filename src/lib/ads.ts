@@ -57,3 +57,5 @@ export function isAdFreePath(path: string): boolean {
   if (path.startsWith("/auth/") || path.startsWith("/pricing/")) return true;
   return false;
 }
+
+
