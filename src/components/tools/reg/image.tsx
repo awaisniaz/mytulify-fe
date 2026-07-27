@@ -15,6 +15,7 @@ import {
 } from "@/components/tools/impl/asli-gap";
 import { AspectRatioCalculator } from "@/components/tools/impl/demand-extra";
 import { DuplicatePhotoFinder } from "@/components/tools/impl/duplicate-photo-finder";
+import { HomeColorVisualizer } from "@/components/tools/impl/home-color-visualizer";
 
 export default makeReg({
   "resize-image": ResizeImage,
