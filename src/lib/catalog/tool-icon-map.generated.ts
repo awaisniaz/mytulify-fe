@@ -215,6 +215,7 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "gif-to-jpg": "Image",
   "gif-to-webp": "Image",
   "aspect-ratio-calculator": "Ruler",
+  "duplicate-photo-finder": "Image",
   "home-color-visualizer": "Palette",
   "merge-pdf": "FileText",
   "split-pdf": "FileText",

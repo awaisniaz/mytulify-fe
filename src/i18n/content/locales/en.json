@@ -938,6 +938,10 @@
       "name": "GIF to WebP",
       "description": "Convert GIF animation frames to WebP images."
     },
+    "image-tools/duplicate-photo-finder": {
+      "name": "Duplicate Photo Finder",
+      "description": "Find duplicate and similar photos locally with perceptual hashing — no upload, 100% private."
+    },
     "pdf-tools/merge-pdf": {
       "name": "Merge PDF",
       "description": "Combine multiple PDF files into one document in any order."
@@ -2998,6 +3002,57 @@
         "image-tools/image-color-picker",
         "image-tools/color-extractor-from-image",
         "color-tools/color-palette-generator"
+      ]
+    },
+    "image-tools/duplicate-photo-finder": {
+      "name": "Duplicate Photo Finder",
+      "description": "Find duplicate and similar photos locally with perceptual hashing — no upload, 100% private.",
+      "metaTitle": "Duplicate Photo Finder Online Free – No Upload | Mytulify",
+      "metaDescription": "Find duplicate photos and similar images free in your browser. Perceptual hash detects resized & re-saved copies. No upload, no signup — 100% private.",
+      "about": [
+        "Duplicate Photo Finder is a free online tool that finds duplicate photos and visually similar images without uploading anything to a server. It runs entirely in your browser using perceptual hashing (average hash), so your camera roll, WhatsApp saves, and screenshot folders stay on your device.",
+        "Unlike simple filename or size checks, perceptual hashing compares how a photo actually looks. That means it can group the same shot saved twice, a compressed copy, or a slightly resized version — common clutter on phones and laptops. Switch to exact mode when you only want byte-identical files.",
+        "Use the similarity slider to tune detection: low values catch near-identical duplicates; higher values group burst shots or lightly edited variants. Export a delete list when you are ready to clean up storage manually on your computer or phone."
+      ],
+      "howTo": {
+        "title": "How to find duplicate photos online (without uploading)",
+        "steps": [
+          "Drop photos or select a folder — JPG, PNG, WebP, HEIC, and GIF are supported.",
+          "Choose Similar photos (perceptual hash) or Exact duplicates (byte hash). Adjust the similarity threshold if needed.",
+          "Review grouped thumbnails, note which file to keep in each set, and export the delete list as text or JSON."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is a duplicate photo finder?",
+          "a": "A duplicate photo finder scans a set of images and groups files that match — either exactly (same bytes) or visually (same scene after resize, re-save, or light edits). Mytulify’s tool does this locally in your browser so photos never leave your device."
+        },
+        {
+          "q": "How is perceptual hashing different from exact duplicate detection?",
+          "a": "Exact detection compares file hashes — only byte-identical copies match. Perceptual hashing (aHash) fingerprints how an image looks, so resized WhatsApp forwards or re-exported JPGs can still group with the original."
+        },
+        {
+          "q": "Are my photos uploaded to Mytulify?",
+          "a": "No. All analysis runs client-side. We do not store, transmit, or process your images on our servers. Close the tab and the scan data is gone."
+        },
+        {
+          "q": "What similarity threshold should I use?",
+          "a": "Start at 5 for a balanced scan. Use 0–3 for near-identical duplicates only; 8–12 if you also want resized or recompressed copies; go higher only if you accept broader visual matches (e.g. similar burst frames)."
+        },
+        {
+          "q": "Does this delete files automatically?",
+          "a": "No — browsers cannot delete files on your disk without permission. The tool marks safe-to-delete copies and lets you export a path list. You remove files manually in your file manager or gallery app."
+        },
+        {
+          "q": "Is this duplicate image finder free?",
+          "a": "Yes. Unlimited scans on Mytulify’s free plan — no signup required. Pair it with our Duplicate File Finder for non-image duplicates across any file type."
+        }
+      ],
+      "related": [
+        "image-tools/compress-image",
+        "image-tools/heic-to-jpg",
+        "developer-tools/duplicate-file-finder",
+        "image-tools/resize-image"
       ]
     },
     "calculators/profit-margin-calculator": {

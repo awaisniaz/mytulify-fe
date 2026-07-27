@@ -49,6 +49,7 @@
     { "name": "GIF to JPG", "slug": "gif-to-jpg", "description": "Extract all GIF frames as JPG images in a ZIP.", "searchVolume": "low", "competition": "low", "complexity": "medium", "clientSide": true },
     { "name": "GIF to WebP", "slug": "gif-to-webp", "description": "Convert GIF animation frames to WebP images.", "searchVolume": "low", "competition": "low", "complexity": "medium", "clientSide": true },
     { "name": "Aspect Ratio Calculator", "slug": "aspect-ratio-calculator", "description": "Find aspect ratios from dimensions or scale width and height to 16:9, 9:16, 1:1 and more.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
+    { "name": "Duplicate Photo Finder", "slug": "duplicate-photo-finder", "description": "Find duplicate and similar photos locally with perceptual hashing — no upload, 100% private.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true },
     { "name": "Home Color Visualizer", "slug": "home-color-visualizer", "description": "Upload a photo of your home or room, try wall/door/furniture colors, and preview what looks best.", "searchVolume": "high", "competition": "medium", "complexity": "medium", "clientSide": true }
   ]
 }
