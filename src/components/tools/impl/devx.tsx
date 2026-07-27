@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Input, Select } from "@/components/ui/primitives";
-import { Field, Output, Notice, Stat, FileDrop } from "@/components/tools/shared";
+import { Button, Input, Select } from "@/components/ui/primitives";
+import { CopyButton, DownloadButton, Field, Notice, Output, Stat, FileDrop } from "@/components/tools/shared";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 
@@ -341,100 +341,584 @@ export function DataFileMerger() {
 }
 
 /* ========================== Duplicate File Finder ======================== */
-type FileInfo = { name: string; size: number; modified: number; hash: string };
+type HashAlgo = "md5" | "sha1" | "sha256";
+type CompareMode = "content" | "name-size";
+type KeepStrategy = "newest" | "oldest" | "shortest-path" | "longest-path" | "alphabetical";
 
-async function sha256(buf: ArrayBuffer): Promise<string> {
-  const digest = await crypto.subtle.digest("SHA-256", buf);
-  return Array.from(new Uint8Array(digest))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-}
+type FileInfo = {
+  path: string;
+  name: string;
+  size: number;
+  modified: number;
+  hash: string;
+  ext: string;
+};
+
+type ScanProgress = {
+  phase: "hashing" | "done";
+  total: number;
+  done: number;
+  current: string;
+  skippedBySize: number;
+};
+
+const HASH_CHUNK = 256 * 1024;
 
 const fmtBytes = (b: number) => {
   if (b < 1024) return `${b} B`;
   if (b < 1024 * 1024) return `${(b / 1024).toFixed(1)} KB`;
-  return `${(b / 1024 / 1024).toFixed(1)} MB`;
+  if (b < 1024 * 1024 * 1024) return `${(b / 1024 / 1024).toFixed(1)} MB`;
+  return `${(b / 1024 / 1024 / 1024).toFixed(2)} GB`;
 };
+
+const fmtDate = (ms: number) => new Date(ms).toLocaleString();
+
+function parseExtList(raw: string) {
+  return raw
+    .split(/[,;\s]+/)
+    .map((s) => s.trim().replace(/^\./, "").toLowerCase())
+    .filter(Boolean);
+}
+
+function fileExt(path: string) {
+  const base = path.split("/").pop() ?? path;
+  const i = base.lastIndexOf(".");
+  return i > 0 ? base.slice(i + 1).toLowerCase() : "";
+}
+
+function shouldInclude(path: string, size: number, opts: {
+  minBytes: number;
+  skipHidden: boolean;
+  includeExts: string[];
+  excludeExts: string[];
+}) {
+  if (opts.skipHidden && /(^|\/)\./.test(path)) return false;
+  if (size < opts.minBytes) return false;
+  const ext = fileExt(path);
+  if (opts.includeExts.length && !opts.includeExts.includes(ext)) return false;
+  if (opts.excludeExts.length && opts.excludeExts.includes(ext)) return false;
+  return true;
+}
+
+async function createHasher(algo: HashAlgo) {
+  if (algo === "md5") {
+    const { createMD5 } = await import("hash-wasm");
+    return createMD5();
+  }
+  if (algo === "sha1") {
+    const { createSHA1 } = await import("hash-wasm");
+    return createSHA1();
+  }
+  const { createSHA256 } = await import("hash-wasm");
+  return createSHA256();
+}
+
+async function hashFileChunked(
+  file: File,
+  algo: HashAlgo,
+  cancelled: () => boolean,
+): Promise<string> {
+  const hasher = await createHasher(algo);
+  for (let offset = 0; offset < file.size; offset += HASH_CHUNK) {
+    if (cancelled()) throw new DOMException("Scan cancelled", "AbortError");
+    const chunk = file.slice(offset, Math.min(offset + HASH_CHUNK, file.size));
+    hasher.update(new Uint8Array(await chunk.arrayBuffer()));
+  }
+  return hasher.digest("hex");
+}
+
+async function mapPool<T, R>(
+  items: T[],
+  concurrency: number,
+  fn: (item: T, index: number) => Promise<R>,
+  cancelled: () => boolean,
+): Promise<R[]> {
+  const results = new Array<R>(items.length);
+  let next = 0;
+  const workers = Array.from({ length: Math.min(concurrency, items.length) }, async () => {
+    while (next < items.length) {
+      if (cancelled()) throw new DOMException("Scan cancelled", "AbortError");
+      const i = next++;
+      results[i] = await fn(items[i], i);
+    }
+  });
+  await Promise.all(workers);
+  return results;
+}
+
+function sortGroup(g: FileInfo[], strategy: KeepStrategy) {
+  const sorted = [...g];
+  switch (strategy) {
+    case "oldest":
+      return sorted.sort((a, b) => a.modified - b.modified || a.path.localeCompare(b.path));
+    case "shortest-path":
+      return sorted.sort((a, b) => a.path.length - b.path.length || a.path.localeCompare(b.path));
+    case "longest-path":
+      return sorted.sort((a, b) => b.path.length - a.path.length || a.path.localeCompare(b.path));
+    case "alphabetical":
+      return sorted.sort((a, b) => a.path.localeCompare(b.path));
+    default:
+      return sorted.sort((a, b) => b.modified - a.modified || a.path.localeCompare(b.path));
+  }
+}
+
+function keepLabel(strategy: KeepStrategy) {
+  switch (strategy) {
+    case "oldest": return "Keep (oldest)";
+    case "shortest-path": return "Keep (shortest path)";
+    case "longest-path": return "Keep (longest path)";
+    case "alphabetical": return "Keep (A→Z)";
+    default: return "Keep (newest)";
+  }
+}
+
+function DupCheck({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+}) {
+  return (
+    <label className="inline-flex cursor-pointer select-none items-center gap-2 text-sm">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="h-4 w-4 cursor-pointer accent-[var(--brand,#6366f1)]"
+      />
+      {label}
+    </label>
+  );
+}
 
 export function DuplicateFileFinder() {
   const [files, setFiles] = React.useState<FileInfo[]>([]);
   const [busy, setBusy] = React.useState(false);
+  const [progress, setProgress] = React.useState<ScanProgress | null>(null);
+  const [hashAlgo, setHashAlgo] = React.useState<HashAlgo>("md5");
+  const [compareMode, setCompareMode] = React.useState<CompareMode>("content");
+  const [keepStrategy, setKeepStrategy] = React.useState<KeepStrategy>("newest");
+  const [minSizeKb, setMinSizeKb] = React.useState("0");
+  const [includeExts, setIncludeExts] = React.useState("");
+  const [excludeExts, setExcludeExts] = React.useState("");
+  const [skipHidden, setSkipHidden] = React.useState(true);
+  const [workers, setWorkers] = React.useState("4");
+  const [exportFmt, setExportFmt] = React.useState<"txt" | "json" | "csv">("txt");
+  const [collapsed, setCollapsed] = React.useState<Set<number>>(new Set());
+  const cancelRef = React.useRef(false);
+  const folderRef = React.useRef<HTMLInputElement>(null);
 
-  const onFiles = async (dropped: File[]) => {
+  const scanFiles = async (incoming: File[]) => {
+    if (!incoming.length) return;
+    cancelRef.current = false;
     setBusy(true);
-    const infos: FileInfo[] = [];
-    for (const f of dropped) {
-      const hash = await sha256(await f.arrayBuffer());
-      infos.push({ name: f.name, size: f.size, modified: f.lastModified, hash });
+    setProgress({ phase: "hashing", total: 0, done: 0, current: "", skippedBySize: 0 });
+
+    const filterOpts = {
+      minBytes: Math.max(0, Number(minSizeKb) || 0) * 1024,
+      skipHidden,
+      includeExts: parseExtList(includeExts),
+      excludeExts: parseExtList(excludeExts),
+    };
+    const concurrency = Math.min(8, Math.max(1, Number(workers) || 4));
+
+    const filtered = incoming.filter((f) =>
+      shouldInclude(f.webkitRelativePath || f.name, f.size, filterOpts),
+    );
+
+    if (!filtered.length) {
+      setBusy(false);
+      setProgress(null);
+      return;
     }
-    setFiles((s) => [...s, ...infos]);
-    setBusy(false);
+
+    try {
+      let infos: FileInfo[] = [];
+
+      if (compareMode === "name-size") {
+        infos = filtered.map((f) => {
+          const path = f.webkitRelativePath || f.name;
+          return {
+            path,
+            name: f.name,
+            size: f.size,
+            modified: f.lastModified,
+            ext: fileExt(path),
+            hash: `${f.name.toLowerCase()}|${f.size}`,
+          };
+        });
+        setProgress({ phase: "done", total: filtered.length, done: filtered.length, current: "", skippedBySize: 0 });
+      } else {
+        const bySize = new Map<number, File[]>();
+        for (const f of filtered) {
+          const arr = bySize.get(f.size) ?? [];
+          arr.push(f);
+          bySize.set(f.size, arr);
+        }
+
+        const toHash: File[] = [];
+        let skippedBySize = 0;
+        for (const group of bySize.values()) {
+          if (group.length === 1) skippedBySize++;
+          else toHash.push(...group);
+        }
+
+        const uniqueInfos: FileInfo[] = [];
+        for (const [size, group] of bySize) {
+          if (group.length === 1) {
+            const f = group[0];
+            const path = f.webkitRelativePath || f.name;
+            uniqueInfos.push({
+              path,
+              name: f.name,
+              size,
+              modified: f.lastModified,
+              ext: fileExt(path),
+              hash: `__unique__:${size}:${path}`,
+            });
+          }
+        }
+
+        setProgress({
+          phase: "hashing",
+          total: toHash.length,
+          done: 0,
+          current: "",
+          skippedBySize,
+        });
+
+        let done = 0;
+        const hashed = await mapPool(
+          toHash,
+          concurrency,
+          async (f) => {
+            const path = f.webkitRelativePath || f.name;
+            setProgress((p) =>
+              p ? { ...p, current: path, done } : p,
+            );
+            const hash = await hashFileChunked(f, hashAlgo, () => cancelRef.current);
+            done += 1;
+            setProgress((p) =>
+              p ? { ...p, done, current: path } : p,
+            );
+            return {
+              path,
+              name: f.name,
+              size: f.size,
+              modified: f.lastModified,
+              ext: fileExt(path),
+              hash,
+            } satisfies FileInfo;
+          },
+          () => cancelRef.current,
+        );
+
+        infos = [...uniqueInfos, ...hashed];
+        setProgress((p) =>
+          p ? { ...p, phase: "done", done: toHash.length, skippedBySize } : p,
+        );
+      }
+
+      setFiles((s) => [...s, ...infos]);
+    } catch (err) {
+      if (err instanceof DOMException && err.name === "AbortError") {
+        setProgress(null);
+      } else {
+        console.error(err);
+      }
+    } finally {
+      setBusy(false);
+    }
   };
 
-  const { groups, wasted } = React.useMemo(() => {
-    const byHash = new Map<string, FileInfo[]>();
+  const cancelScan = () => {
+    cancelRef.current = true;
+  };
+
+  const { groups, wasted, deleteList, uniqueCount } = React.useMemo(() => {
+    const byKey = new Map<string, FileInfo[]>();
     for (const f of files) {
-      const arr = byHash.get(f.hash) ?? [];
+      const arr = byKey.get(f.hash) ?? [];
       arr.push(f);
-      byHash.set(f.hash, arr);
+      byKey.set(f.hash, arr);
     }
-    const groups = [...byHash.values()]
+    const groups = [...byKey.values()]
       .filter((g) => g.length > 1)
-      .map((g) => [...g].sort((a, b) => b.modified - a.modified)); // newest first = keep
-    const wasted = groups.reduce((sum, g) => sum + g.slice(1).reduce((s, f) => s + f.size, 0), 0);
-    return { groups, wasted };
-  }, [files]);
+      .map((g) => sortGroup(g, keepStrategy))
+      .sort((a, b) => b.slice(1).reduce((s, f) => s + f.size, 0) - a.slice(1).reduce((s, f) => s + f.size, 0));
+    const deleteList = groups.flatMap((g) => g.slice(1));
+    const wasted = deleteList.reduce((s, f) => s + f.size, 0);
+    const uniqueCount = files.length - deleteList.length;
+    return { groups, wasted, deleteList, uniqueCount };
+  }, [files, keepStrategy]);
+
+  const exportPayload = React.useMemo(() => {
+    if (!deleteList.length) return "";
+    if (exportFmt === "json") {
+      return JSON.stringify(
+        deleteList.map((f) => ({
+          path: f.path,
+          size: f.size,
+          modified: f.modified,
+          hash: f.hash,
+        })),
+        null,
+        2,
+      );
+    }
+    if (exportFmt === "csv") {
+      const rows = [
+        "path,size_bytes,modified_iso,hash",
+        ...deleteList.map(
+          (f) =>
+            `"${f.path.replace(/"/g, '""')}",${f.size},${new Date(f.modified).toISOString()},${f.hash}`,
+        ),
+      ];
+      return rows.join("\n");
+    }
+    return deleteList.map((f) => f.path).join("\n");
+  }, [deleteList, exportFmt]);
+
+  const exportMime =
+    exportFmt === "json" ? "application/json" : exportFmt === "csv" ? "text/csv" : "text/plain";
+
+  const toggleGroup = (i: number) => {
+    setCollapsed((s) => {
+      const next = new Set(s);
+      if (next.has(i)) next.delete(i);
+      else next.add(i);
+      return next;
+    });
+  };
+
+  const keepTag = keepLabel(keepStrategy);
 
   return (
     <div className="space-y-5">
-      <FileDrop multiple onFiles={onFiles} label="Drop files to scan for exact duplicates (they never leave your device)" />
-      {busy && <Notice tone="info">Hashing files…</Notice>}
+      <div className="grid gap-3 sm:grid-cols-2">
+        <FileDrop
+          multiple
+          onFiles={scanFiles}
+          label="Drop files to scan (never uploaded — 100% local)"
+        />
+        <div
+          onClick={() => folderRef.current?.click()}
+          className="glass flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-border/80 p-10 text-center transition-all duration-300 hover:border-brand/40 hover:shadow-lg hover:shadow-brand/10"
+        >
+          <span className="grid h-12 w-12 place-items-center rounded-xl bg-brand/10 text-brand">
+            <Icon name="Archive" className="h-6 w-6" />
+          </span>
+          <p className="text-sm font-medium">Select a folder to scan recursively</p>
+          <p className="text-xs text-muted">Uses relative paths inside the folder</p>
+          <input
+            ref={folderRef}
+            type="file"
+            multiple
+            className="hidden"
+            {...({ webkitdirectory: "", directory: "" } as React.InputHTMLAttributes<HTMLInputElement>)}
+            onChange={(e) => {
+              if (e.target.files) void scanFiles(Array.from(e.target.files));
+              e.target.value = "";
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="grid gap-4 rounded-xl border border-border p-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Field label="Compare by">
+          <Select value={compareMode} onChange={(e) => setCompareMode(e.target.value as CompareMode)}>
+            <option value="content">Exact content (hash)</option>
+            <option value="name-size">Same name + size (fast, no hash)</option>
+          </Select>
+        </Field>
+        {compareMode === "content" && (
+          <Field label="Hash algorithm">
+            <Select value={hashAlgo} onChange={(e) => setHashAlgo(e.target.value as HashAlgo)}>
+              <option value="md5">MD5 — fastest</option>
+              <option value="sha1">SHA-1 — balanced</option>
+              <option value="sha256">SHA-256 — strongest</option>
+            </Select>
+          </Field>
+        )}
+        <Field label="File to keep in each set">
+          <Select value={keepStrategy} onChange={(e) => setKeepStrategy(e.target.value as KeepStrategy)}>
+            <option value="newest">Newest modified</option>
+            <option value="oldest">Oldest modified</option>
+            <option value="shortest-path">Shortest path</option>
+            <option value="longest-path">Longest path</option>
+            <option value="alphabetical">First alphabetically</option>
+          </Select>
+        </Field>
+        <Field label="Min file size (KB)">
+          <Input
+            type="number"
+            min={0}
+            value={minSizeKb}
+            onChange={(e) => setMinSizeKb(e.target.value)}
+            placeholder="0 = no minimum"
+          />
+        </Field>
+        <Field label="Include extensions">
+          <Input
+            value={includeExts}
+            onChange={(e) => setIncludeExts(e.target.value)}
+            placeholder="jpg, png, mp4 (empty = all)"
+          />
+        </Field>
+        <Field label="Exclude extensions">
+          <Input
+            value={excludeExts}
+            onChange={(e) => setExcludeExts(e.target.value)}
+            placeholder="tmp, ds_store"
+          />
+        </Field>
+        {compareMode === "content" && (
+          <Field label="Parallel hash workers">
+            <Select value={workers} onChange={(e) => setWorkers(e.target.value)}>
+              {[1, 2, 3, 4, 6, 8].map((n) => (
+                <option key={n} value={String(n)}>
+                  {n} worker{n === 1 ? "" : "s"}
+                </option>
+              ))}
+            </Select>
+          </Field>
+        )}
+        <div className="flex flex-col justify-end gap-2 sm:col-span-2 lg:col-span-3">
+          <DupCheck label="Skip hidden files & folders (names starting with .)" checked={skipHidden} onChange={setSkipHidden} />
+        </div>
+      </div>
+
+      {busy && progress && (
+        <div className="space-y-2 rounded-xl border border-border bg-surface-2 p-4">
+          <div className="flex items-center justify-between gap-3 text-sm">
+            <span>
+              {compareMode === "name-size"
+                ? "Scanning…"
+                : progress.total
+                  ? `Hashing ${progress.done}/${progress.total}`
+                  : "Preparing…"}
+            </span>
+            <Button type="button" variant="secondary" size="sm" onClick={cancelScan}>
+              Cancel
+            </Button>
+          </div>
+          {progress.total > 0 && (
+            <div className="h-2 overflow-hidden rounded-full bg-border">
+              <div
+                className="h-full rounded-full bg-brand transition-all duration-200"
+                style={{ width: `${Math.round((progress.done / progress.total) * 100)}%` }}
+              />
+            </div>
+          )}
+          {progress.current && (
+            <p className="truncate font-mono text-xs text-muted">{progress.current}</p>
+          )}
+          {progress.skippedBySize > 0 && (
+            <p className="text-xs text-muted">
+              Skipped hashing {progress.skippedBySize} unique-size file
+              {progress.skippedBySize === 1 ? "" : "s"} (no same-size peers)
+            </p>
+          )}
+        </div>
+      )}
+
       {files.length > 0 && (
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <Stat label="Files scanned" value={files.length} />
+          <Stat label="Unique files" value={uniqueCount} />
           <Stat label="Duplicate sets" value={groups.length} />
           <Stat label="Reclaimable" value={fmtBytes(wasted)} />
         </div>
       )}
+
       {files.length > 0 && groups.length === 0 && !busy && (
-        <Notice tone="success">No duplicates found — every file is unique.</Notice>
+        <Notice tone="success">No duplicates found — every scanned file is unique.</Notice>
       )}
-      {groups.map((g, i) => (
-        <div key={i} className="space-y-2 rounded-xl border border-border p-3">
-          <p className="text-xs font-medium text-muted">
-            {g.length} identical files · {fmtBytes(g[0].size)} each
+
+      {deleteList.length > 0 && (
+        <div className="flex flex-wrap items-end gap-3 rounded-xl border border-border p-4">
+          <Field label="Export delete list" className="min-w-[10rem] flex-1">
+            <Select value={exportFmt} onChange={(e) => setExportFmt(e.target.value as typeof exportFmt)}>
+              <option value="txt">Plain text (paths)</option>
+              <option value="json">JSON (full metadata)</option>
+              <option value="csv">CSV</option>
+            </Select>
+          </Field>
+          <CopyButton value={exportPayload} label="Copy list" />
+          <DownloadButton
+            value={exportPayload}
+            filename={`duplicates-to-delete.${exportFmt}`}
+            mime={exportMime}
+          />
+          <p className="w-full text-xs text-muted">
+            {deleteList.length} file{deleteList.length === 1 ? "" : "s"} marked safe to delete ·{" "}
+            {fmtBytes(wasted)} total
           </p>
-          {g.map((f, j) => (
-            <div
-              key={j}
-              className="flex items-center justify-between gap-3 rounded-lg bg-surface-2 px-3 py-2 text-sm"
-            >
-              <span className="truncate font-mono">{f.name}</span>
-              {j === 0 ? (
-                <span className="shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-500">
-                  Keep (newest)
-                </span>
-              ) : (
-                <span className="shrink-0 rounded-full bg-rose-500/10 px-2 py-0.5 text-xs font-medium text-rose-500">
-                  Safe to delete
-                </span>
-              )}
-            </div>
-          ))}
         </div>
-      ))}
-      {files.length > 0 && (
-        <button
-          type="button"
-          onClick={() => setFiles([])}
-          className="text-xs text-muted underline-offset-2 hover:text-foreground hover:underline"
-        >
-          Clear
-        </button>
       )}
+
+      {groups.map((g, i) => {
+        const groupWaste = g.slice(1).reduce((s, f) => s + f.size, 0);
+        const isCollapsed = collapsed.has(i);
+        return (
+          <div key={`${g[0].hash}-${i}`} className="space-y-2 rounded-xl border border-border p-3">
+            <button
+              type="button"
+              onClick={() => toggleGroup(i)}
+              className="flex w-full items-center justify-between gap-3 text-left"
+            >
+              <p className="text-xs font-medium text-muted">
+                {g.length} duplicates · {fmtBytes(g[0].size)} each · waste {fmtBytes(groupWaste)}
+              </p>
+              <Icon
+                name="ChevronDown"
+                className={cn("h-4 w-4 shrink-0 text-muted transition-transform", !isCollapsed && "rotate-180")}
+              />
+            </button>
+            {!isCollapsed &&
+              g.map((f, j) => (
+                <div
+                  key={`${f.path}-${j}`}
+                  className="flex flex-col gap-1 rounded-lg bg-surface-2 px-3 py-2 text-sm sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div className="min-w-0">
+                    <p className="truncate font-mono">{f.path}</p>
+                    <p className="text-xs text-muted">
+                      {fmtBytes(f.size)}
+                      {f.ext ? ` · .${f.ext}` : ""} · {fmtDate(f.modified)}
+                    </p>
+                  </div>
+                  {j === 0 ? (
+                    <span className="shrink-0 self-start rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-500 sm:self-center">
+                      {keepTag}
+                    </span>
+                  ) : (
+                    <span className="shrink-0 self-start rounded-full bg-rose-500/10 px-2 py-0.5 text-xs font-medium text-rose-500 sm:self-center">
+                      Safe to delete
+                    </span>
+                  )}
+                </div>
+              ))}
+          </div>
+        );
+      })}
+
+      {files.length > 0 && (
+        <Button type="button" variant="ghost" size="sm" onClick={() => { setFiles([]); setProgress(null); setCollapsed(new Set()); }}>
+          Clear all results
+        </Button>
+      )}
+
       <p className={cn("flex items-start gap-2 text-xs text-muted")}>
         <Icon name="Lock" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-        <span>Files are hashed locally in your browser and never uploaded. &ldquo;Safe to delete&rdquo; marks the older copies in each identical set.</span>
+        <span>
+          Files are hashed locally in your browser and never uploaded. Size-first grouping skips
+          hashing when no other file shares the same size. Use MD5 for speed on large folders; SHA-256
+          when you need stronger guarantees.
+        </span>
       </p>
     </div>
   );
