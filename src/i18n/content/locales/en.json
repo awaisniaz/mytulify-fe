@@ -3614,6 +3614,62 @@
         "freelancer-tools/contract-generator",
         "freelancer-tools/change-order-generator"
       ]
+    },
+    "freelancer-tools/project-estimator": {
+      "name": "Freelance Project Estimator",
+      "description": "Break projects into phases and tasks, add expenses and profit buffers, and get a fixed quote with timeline and pricing comparisons — export PDF.",
+      "metaTitle": "Free Freelance Project Estimator & Profit Planner – PDF | Mytulify",
+      "metaDescription": "Estimate freelance projects with task breakdowns, contingency buffers, profit margins, and fixed vs hourly pricing. Free PDF export — web, design, content & consulting templates.",
+      "about": [
+        "Most freelancers undercharge because they guess a single number instead of scoping work task-by-task. A project estimator breaks the engagement into phases, assigns realistic hours, adds pass-through expenses, and layers contingency and profit margin on top — so your quote reflects the real effort, not wishful thinking.",
+        "This tool goes beyond a simple hours × rate calculator. Add unlimited tasks with optional rate overrides per task, track project expenses, set contingency and profit buffers, apply client discounts, and see your effective hourly rate after everything is included. Compare fixed-price, pure hourly, and retainer pricing side by side.",
+        "Start from industry templates for website development, brand design, content packages, consulting engagements, or mobile apps — then customize every line. Export a professional PDF estimate or copy a text summary to paste into a proposal or email.",
+        "Pair with the Rate Calculator to set your baseline hourly rate, then use the Proposal Generator to send the final pitch once your estimate looks right."
+      ],
+      "howTo": {
+        "title": "How to estimate a freelance project",
+        "steps": [
+          "Pick a project template (web, design, content, consulting, mobile) or start blank.",
+          "Enter your base hourly rate and adjust the task breakdown — add, remove, or edit phases and hours.",
+          "Add pass-through expenses like stock assets, software, or travel.",
+          "Set contingency (typically 10–20%) and profit margin (15–30%) to protect against scope creep.",
+          "Review the recommended fixed quote, effective hourly rate, and timeline estimate.",
+          "Download the PDF or copy the summary into your proposal."
+        ]
+      },
+      "faq": [
+        {
+          "q": "How is this different from the Project Quote Calculator?",
+          "a": "The Quote Calculator is a quick hours × rate + margin formula. The Project Estimator breaks work into individual tasks with phases, supports rate overrides per task, tracks expenses line-by-line, compares pricing models, and exports a full PDF estimate."
+        },
+        {
+          "q": "What contingency buffer should I use?",
+          "a": "Most freelancers use 10–20%. New clients, vague scopes, or complex integrations warrant 20–25%. Repeat clients with clear briefs can go as low as 10%."
+        },
+        {
+          "q": "What is effective hourly rate?",
+          "a": "It's your final fixed quote divided by total estimated hours — including buffers and margin. If it's below your base rate, you're undercharging even if the total number looks big."
+        },
+        {
+          "q": "Can I use different rates for different tasks?",
+          "a": "Yes. Leave the rate override blank to use your base rate, or enter a custom rate for senior vs junior tasks, rush work, or subcontracted portions."
+        },
+        {
+          "q": "Does my estimate data leave the browser?",
+          "a": "No. All calculations and PDF generation run client-side on Mytulify — your client names, rates, and project details never leave your device."
+        },
+        {
+          "q": "What should I do after estimating?",
+          "a": "Send a proposal with the quote, then a contract once they agree. Use the Change Order Generator if scope expands mid-project."
+        }
+      ],
+      "related": [
+        "freelancer-tools/quote-calculator",
+        "freelancer-tools/rate-calculator",
+        "freelancer-tools/proposal-generator",
+        "freelancer-tools/change-order-generator",
+        "freelancer-tools/break-even-calculator"
+      ]
     }
   },
   "strings": {

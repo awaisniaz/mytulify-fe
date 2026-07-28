@@ -14,6 +14,7 @@ import {
   ChangeOrderGenerator,
 } from "@/components/tools/impl/freelancer";
 import { EmailTemplatesGenerator } from "@/components/tools/impl/email-templates-generator";
+import { ProjectEstimator } from "@/components/tools/impl/project-estimator";
 
 export default makeReg({
   "contract-generator": ContractGenerator,
@@ -27,4 +28,5 @@ export default makeReg({
   "client-onboarding-form": ClientOnboardingForm,
   "change-order-generator": ChangeOrderGenerator,
   "email-templates-generator": EmailTemplatesGenerator,
+  "project-estimator": ProjectEstimator,
 });

@@ -36,7 +36,7 @@ const RULES = [
   [/domain-name|domain-finder/i, "Globe"],
   [/invoice|receipt/i, "Receipt"],
   [/contract-generator|nda-generator|change-order|proposal-generator|onboarding-form/i, "FileText"],
-  [/rate-calculator|quote-calculator|late-fee|break-even|self-employment-tax/i, "DollarSign"],
+  [/rate-calculator|quote-calculator|late-fee|break-even|self-employment-tax|project-estimator/i, "DollarSign"],
   [/iban/i, "Landmark"],
   [/email-signature|email-templates/i, "Mail"],
   [/vcard|vcf/i, "Fingerprint"],

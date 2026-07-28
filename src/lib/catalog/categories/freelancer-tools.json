@@ -101,6 +101,15 @@
       "competition": "low",
       "complexity": "easy",
       "clientSide": true
+    },
+    {
+      "name": "Freelance Project Estimator",
+      "slug": "project-estimator",
+      "description": "Break projects into phases and tasks, add expenses and profit buffers, and get a fixed quote with timeline and pricing comparisons — export PDF.",
+      "searchVolume": "high",
+      "competition": "low",
+      "complexity": "medium",
+      "clientSide": true
     }
   ]
 }

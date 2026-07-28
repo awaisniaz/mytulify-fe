@@ -159,6 +159,7 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "client-onboarding-form": "FileText",
   "change-order-generator": "FileText",
   "email-templates-generator": "Mail",
+  "project-estimator": "DollarSign",
   "water-intake-calculator": "Activity",
   "macro-calculator": "Activity",
   "heart-rate-zone-calculator": "Activity",
