@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import Link from "next/link";
 import { AVAILABLE_TOOLS, getCategory, getTool, getToolIcon, getToolIconPresentation, TOOL_BADGE_BG, isToolAvailable, relatedTools, toolHref, type Tool } from "@/lib/catalog";
-import { TOOL_CANONICAL_REDIRECTS } from "@/lib/catalog/canonical-redirects";
+import { TOOL_CANONICAL_REDIRECTS, resolveCanonicalToolKey, isNonCanonicalToolPath } from "@/lib/catalog/canonical-redirects";
 import { ToolRenderer } from "@/components/tools/ToolRenderer";
 import { ComingSoon } from "@/components/tools/reg/_util";
 import { Icon } from "@/components/ui/Icon";
@@ -18,8 +18,9 @@ import {
 } from "@/i18n/content";
 
 export function generateStaticParams() {
-  // Indexable + live tool routes only (coming-soon stay reachable but are not SSG'd for crawl).
-  return AVAILABLE_TOOLS.map((t) => ({ category: t.category!, tool: t.slug }));
+  return AVAILABLE_TOOLS.filter(
+    (t) => t.category && !isNonCanonicalToolPath(t.category, t.slug),
+  ).map((t) => ({ category: t.category!, tool: t.slug }));
 }
 
 function enforceCanonical(category: string, tool: string) {
@@ -31,7 +32,8 @@ function resolveRelated(keys: string[] | undefined, tool: Tool, limit = 6): Tool
   if (!keys?.length) return relatedTools(tool, limit);
   const resolved = keys
     .map((key) => {
-      const [category, slug] = key.split("/");
+      const canonical = resolveCanonicalToolKey(key);
+      const [category, slug] = canonical.split("/");
       return category && slug ? getTool(category, slug) : undefined;
     })
     .filter((item): item is Tool => item != null && item.slug !== tool.slug && isToolAvailable(item));

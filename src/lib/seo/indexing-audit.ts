@@ -95,7 +95,7 @@ async function fetchTextQuiet(url: string): Promise<string | null> {
       redirect: "follow",
       headers: {
         Accept: "text/plain,*/*",
-        "User-Agent": "MytulifySEOBot/1.0 (+https://mytulify.com)",
+        "User-Agent": "MytulifySEOBot/1.0 (+https://www.mytulify.com)",
       },
     });
     clearTimeout(timer);
@@ -134,7 +134,7 @@ export async function auditUrlIndexing(rawUrl: string): Promise<IndexingAudit> {
       signal: controller.signal,
       headers: {
         Accept: "text/html",
-        "User-Agent": "MytulifySEOBot/1.0 (+https://mytulify.com)",
+        "User-Agent": "MytulifySEOBot/1.0 (+https://www.mytulify.com)",
       },
     });
     clearTimeout(timer);
@@ -292,7 +292,7 @@ export async function softCheckIndexed(rawUrl: string): Promise<IndexCheckResult
       headers: {
         Accept: "text/html",
         "User-Agent":
-          "Mozilla/5.0 (compatible; MytulifySEOBot/1.0; +https://mytulify.com)",
+          "Mozilla/5.0 (compatible; MytulifySEOBot/1.0; +https://www.mytulify.com)",
         "Accept-Language": "en-US,en;q=0.9",
       },
     });

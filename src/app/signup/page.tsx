@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { SignupForm } from "@/components/auth/AuthForms";
 import { site } from "@/lib/site";
+import { privatePageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = privatePageMeta({
   title: "Sign up",
   description: `Create a free ${site.name} account`,
-  robots: { index: false, follow: false },
-  alternates: { canonical: "/signup" },
-};
+});
 
 export default function SignupPage() {
   return (

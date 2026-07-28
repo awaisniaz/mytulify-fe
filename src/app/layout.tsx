@@ -44,10 +44,9 @@ export async function generateMetadata(): Promise<Metadata> {
     ...socialMeta({
       title: `${site.name} — ${messaging.tagline}`,
       description: messaging.siteDescription,
-      url: site.url,
+      url: "/",
       locale,
     }),
-    robots: { index: true, follow: true },
     other: {
       monetag: process.env.MONETAG_SITE_ID ?? "30db1df687f8615565490f41f36dce91",
     },

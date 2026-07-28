@@ -3,19 +3,12 @@ import Link from "next/link";
 import { ProSuccessClient } from "@/components/billing/ProSuccessClient";
 import { site } from "@/lib/site";
 import { brand } from "@/lib/brand";
-import { socialMeta } from "@/lib/seo";
+import { privatePageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = privatePageMeta({
   title: "Payment successful",
   description: `Your ${brand.proProduct} license is ready on ${site.name}.`,
-  robots: { index: false, follow: false },
-  alternates: { canonical: "/pricing/success" },
-  ...socialMeta({
-    title: `Pro activated · ${site.name}`,
-    description: `Your ${brand.proProduct} license is ready.`,
-    url: "/pricing/success",
-  }),
-};
+});
 
 export default async function PricingSuccessPage({
   searchParams,

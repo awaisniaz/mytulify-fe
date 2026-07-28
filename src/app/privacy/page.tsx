@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { TOTAL_SERVER_SIDE_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { socialMeta, pageAlternates } from "@/lib/seo";
+import { englishOnlyPageMeta } from "@/lib/seo";
 import { getMetadataLocale } from "@/i18n/locale";
 import { Icon } from "@/components/ui/Icon";
 
@@ -12,18 +12,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const locale = await getMetadataLocale(searchParams);
   const privacyDescription = `${site.name} privacy policy — how we handle your data across ${TOTAL_TOOLS}+ browser-based and AI-powered tools.`;
-  return {
+  return englishOnlyPageMeta("/privacy", locale, {
     title: "Privacy Policy",
     description: privacyDescription,
-    ...pageAlternates("/privacy", locale),
-    robots: { index: true, follow: true },
-    ...socialMeta({
-      title: `Privacy Policy · ${site.name}`,
-      description: privacyDescription,
-      url: "/privacy",
-      locale,
-    }),
-  };
+    socialTitle: `Privacy Policy · ${site.name}`,
+  });
 }
 
 const SECTIONS = [

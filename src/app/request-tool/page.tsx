@@ -3,7 +3,7 @@ import Link from "next/link";
 import { RequestToolForm } from "@/components/request/RequestToolForm";
 import { CATEGORIES, TOTAL_TOOLS } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { socialMeta, pageAlternates } from "@/lib/seo";
+import { englishOnlyPageMeta } from "@/lib/seo";
 import { getMetadataLocale } from "@/i18n/locale";
 
 export async function generateMetadata({
@@ -13,18 +13,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const locale = await getMetadataLocale(searchParams);
   const description = `Suggest a new free online tool for ${site.name}. We already ship ${TOTAL_TOOLS}+ tools — tell us what to build next.`;
-  return {
+  return englishOnlyPageMeta("/request-tool", locale, {
     title: "Request a Tool",
     description,
-    ...pageAlternates("/request-tool", locale),
-    robots: { index: true, follow: true },
-    ...socialMeta({
-      title: `Request a Tool · ${site.name}`,
-      description,
-      url: "/request-tool",
-      locale,
-    }),
-  };
+    socialTitle: `Request a Tool · ${site.name}`,
+  });
 }
 
 export default function RequestToolPage() {

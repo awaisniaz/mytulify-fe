@@ -49,3 +49,8 @@ export function toolRedirectEntries(): { source: string; destination: string; pe
 export function isNonCanonicalToolPath(category: string, slug: string): boolean {
   return Boolean(TOOL_CANONICAL_REDIRECTS[`${category}/${slug}`]);
 }
+
+/** Map legacy related-tool keys / paths to the current canonical category/slug key. */
+export function resolveCanonicalToolKey(key: string): string {
+  return TOOL_CANONICAL_REDIRECTS[key] ?? key;
+}

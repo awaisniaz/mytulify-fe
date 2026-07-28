@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { LoginForm } from "@/components/auth/AuthForms";
 import { site } from "@/lib/site";
+import { privatePageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = privatePageMeta({
   title: "Sign in",
   description: `Sign in to ${site.name}`,
-  robots: { index: false, follow: false },
-  alternates: { canonical: "/login" },
-};
+});
 
 export default function LoginPage() {
   return (

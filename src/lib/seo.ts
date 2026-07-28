@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { site } from "@/lib/site";
 import { messaging } from "@/lib/messaging";
 import type { Locale } from "@/i18n/config";
+import { DEFAULT_LOCALE } from "@/i18n/config";
 import { canonicalForLocale, hreflangAlternates, hreflangUrl, OG_LOCALE } from "@/lib/seo/hreflang";
 
 type SocialMeta = Pick<Metadata, "openGraph" | "twitter">;
@@ -34,6 +35,67 @@ export function pageAlternates(path: string, locale: Locale = "en"): Pick<Metada
       canonical,
       languages,
     },
+  };
+}
+
+/**
+ * Single canonical URL with no hreflang — for pages whose body is not translated.
+ * Avoids GSC "Google chose different canonical" when ?lang= URLs duplicate English content.
+ */
+export function pageAlternatesSingle(path: string): Pick<Metadata, "alternates"> {
+  return {
+    alternates: {
+      canonical: canonicalForLocale(path, DEFAULT_LOCALE),
+    },
+  };
+}
+
+/** Index only the default-locale URL when content is not translated per language. */
+export function robotsForLocale(locale: Locale, index = true): NonNullable<Metadata["robots"]> {
+  if (locale !== DEFAULT_LOCALE) return { index: false, follow: true };
+  return { index, follow: true };
+}
+
+/** Auth, checkout, errors — never index; no canonical (avoids GSC noise). */
+export function privatePageMeta({
+  title,
+  description,
+}: {
+  title: string;
+  description?: string;
+}): Metadata {
+  return {
+    title,
+    ...(description ? { description } : {}),
+    robots: { index: false, follow: false },
+  };
+}
+
+/** English-only indexable pages (blog, legal, pricing). */
+export function englishOnlyPageMeta(
+  path: string,
+  locale: Locale,
+  {
+    title,
+    description,
+    socialTitle,
+  }: {
+    title: Metadata["title"];
+    description: string;
+    socialTitle: string;
+  },
+): Metadata {
+  return {
+    title,
+    description,
+    ...pageAlternatesSingle(path),
+    robots: robotsForLocale(locale),
+    ...socialMeta({
+      title: socialTitle,
+      description,
+      url: path,
+      locale: "en",
+    }),
   };
 }
 

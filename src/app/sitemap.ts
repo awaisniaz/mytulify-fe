@@ -4,6 +4,7 @@ import { existsSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { AVAILABLE_TOOLS, CATEGORIES, toolHref } from "@/lib/catalog";
+import { isNonCanonicalToolPath } from "@/lib/catalog/canonical-redirects";
 import { getAllPosts, postFileMtime } from "@/lib/blog";
 import { site } from "@/lib/site";
 
@@ -230,7 +231,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const ocrDate = handwritingFallback();
 
-  const toolPages = AVAILABLE_TOOLS.map((t) => {
+  const toolPages = AVAILABLE_TOOLS.filter(
+    (t) => t.category && !isNonCanonicalToolPath(t.category, t.slug),
+  ).map((t) => {
     const file = CATEGORY_FILE[t.category!] ?? `src/lib/catalog/categories/${t.category}.json`;
     const key = `${t.category}/${t.slug}`;
     const slugDate =

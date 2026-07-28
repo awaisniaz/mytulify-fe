@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "mytulify.com" }],
+      "destination": "https://www.mytulify.com/:path*",
+      "permanent": true
+    }
+  ]
+}

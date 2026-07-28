@@ -1,13 +1,17 @@
 "use client";
 
 import { useTransition } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { LOCALE_GROUPS, LOCALE_LABELS, type Locale } from "@/i18n/config";
+import { pathWithLocale } from "@/i18n/paths";
 import { setLocale } from "@/i18n/actions";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 
 export function LocaleSwitcher({ locale, className }: { locale: Locale; className?: string }) {
   const [pending, startTransition] = useTransition();
+  const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <details className={cn("group relative", className)}>
@@ -33,7 +37,11 @@ export function LocaleSwitcher({ locale, className }: { locale: Locale; classNam
                 disabled={pending}
                 onClick={() => {
                   if (code === locale) return;
-                  startTransition(() => setLocale(code));
+                  startTransition(async () => {
+                    await setLocale(code);
+                    router.push(pathWithLocale(pathname, code));
+                    router.refresh();
+                  });
                 }}
                 className={cn(
                   "flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-start text-sm transition-colors hover:bg-surface-2",

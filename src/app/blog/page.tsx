@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { getAllPosts } from "@/lib/blog";
 import { site } from "@/lib/site";
-import { socialMeta, pageAlternates } from "@/lib/seo";
+import { englishOnlyPageMeta, clampMetaDescription } from "@/lib/seo";
 import { getMetadataLocale } from "@/i18n/locale";
 import { TOTAL_TOOLS } from "@/lib/catalog";
 
@@ -12,19 +12,14 @@ export async function generateMetadata({
   searchParams: Promise<{ lang?: string | string[] }>;
 }): Promise<Metadata> {
   const locale = await getMetadataLocale(searchParams);
-  const description = `Guides and tips for using ${site.name}'s ${TOTAL_TOOLS}+ free online tools — SEO, calculators, PDF, images, and more.`;
-  return {
+  const description = clampMetaDescription(
+    `Guides and tips for using ${site.name}'s ${TOTAL_TOOLS}+ free online tools — SEO, calculators, PDF, images, and more.`,
+  );
+  return englishOnlyPageMeta("/blog", locale, {
     title: "Blog",
     description,
-    ...pageAlternates("/blog", locale),
-    robots: { index: true, follow: true },
-    ...socialMeta({
-      title: `Blog · ${site.name}`,
-      description,
-      url: "/blog",
-      locale,
-    }),
-  };
+    socialTitle: `Blog · ${site.name}`,
+  });
 }
 
 export default function BlogIndexPage() {

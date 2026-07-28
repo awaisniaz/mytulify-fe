@@ -7,7 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import { formatPostDate, getAllPosts, getPostBySlug } from "@/lib/blog";
 import { getTool, getToolIcon, isToolAvailable, toolHref } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { socialMeta, pageAlternates, clampMetaDescription } from "@/lib/seo";
+import { englishOnlyPageMeta, clampMetaDescription } from "@/lib/seo";
 import { getMetadataLocale } from "@/i18n/locale";
 import { breadcrumbJsonLd } from "@/lib/aeo";
 
@@ -29,18 +29,11 @@ export async function generateMetadata({
   const title = post.title;
   const description = clampMetaDescription(post.metaDescription || post.excerpt);
   const path = `/blog/${post.slug}`;
-  return {
+  return englishOnlyPageMeta(path, locale, {
     title: { absolute: `${title} | ${site.name} Blog` },
     description,
-    ...pageAlternates(path, locale),
-    robots: { index: true, follow: true },
-    ...socialMeta({
-      title: `${title} · ${site.name}`,
-      description,
-      url: path,
-      locale,
-    }),
-  };
+    socialTitle: `${title} · ${site.name}`,
+  });
 }
 
 export default async function BlogPostPage({

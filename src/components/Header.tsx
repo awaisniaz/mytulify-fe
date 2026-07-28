@@ -7,6 +7,7 @@ import { SiteLogo } from "@/components/SiteLogo";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { getLocale } from "@/i18n/locale";
 import { getMessages } from "@/i18n/messages";
+import { pathWithLocale } from "@/i18n/paths";
 import { categoryLabelFrom } from "@/i18n/messaging";
 import { cn } from "@/lib/utils";
 
@@ -33,7 +34,7 @@ export async function Header() {
                 {NAV_CATEGORIES.map((c) => (
                   <Link
                     key={c.slug}
-                    href={`/${c.slug}`}
+                    href={pathWithLocale(`/${c.slug}`, locale)}
                     className="flex items-center gap-3 rounded-xl p-2.5 transition-colors hover:bg-surface-2"
                   >
                     <span className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gradient-to-br text-white", c.gradient)}>
@@ -48,7 +49,7 @@ export async function Header() {
               </div>
             </div>
           </div>
-          <Link href="/tools" className="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-foreground">
+          <Link href={pathWithLocale("/tools", locale)} className="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-foreground">
             {t.nav.allTools}
           </Link>
           <Link href="/blog" className="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-foreground">
@@ -65,7 +66,7 @@ export async function Header() {
         <div className="ms-auto flex items-center gap-1.5 sm:gap-2">
           <LocaleSwitcher locale={locale} className="hidden sm:inline-flex" />
           <Link
-            href="/tools"
+            href={pathWithLocale("/tools", locale)}
             data-open-search
             className="hidden items-center gap-2 rounded-xl border-2 border-border bg-background px-3 py-2 text-sm font-medium text-muted transition-colors hover:border-brand hover:text-brand sm:flex"
           >
@@ -74,7 +75,7 @@ export async function Header() {
             <kbd className="rounded-md bg-surface-2 px-1.5 py-0.5 text-[10px] font-bold">⌘K</kbd>
           </Link>
           <Link
-            href="/tools"
+            href={pathWithLocale("/tools", locale)}
             data-open-search
             aria-label={t.nav.search}
             className="grid h-9 w-9 place-items-center rounded-xl border-2 border-border sm:hidden"
@@ -95,7 +96,7 @@ export async function Header() {
               <div className="mb-2 px-2 sm:hidden">
                 <LocaleSwitcher locale={locale} className="w-full justify-center" />
               </div>
-              <Link href="/tools" className="block rounded-xl p-3 font-bold hover:bg-surface-2">
+              <Link href={pathWithLocale("/tools", locale)} className="block rounded-xl p-3 font-bold hover:bg-surface-2">
                 {t.nav.allTools}
               </Link>
               <Link href="/blog" className="block rounded-xl p-3 font-bold hover:bg-surface-2">
@@ -108,7 +109,7 @@ export async function Header() {
                 {t.nav.requestTool}
               </Link>
               {NAV_CATEGORIES.map((c) => (
-                <Link key={c.slug} href={`/${c.slug}`} className="flex items-center gap-3 rounded-xl p-3 hover:bg-surface-2">
+                <Link key={c.slug} href={pathWithLocale(`/${c.slug}`, locale)} className="flex items-center gap-3 rounded-xl p-3 hover:bg-surface-2">
                   <span className={cn("grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br text-white", c.gradient)}>
                     <Icon name={c.icon} className="h-3.5 w-3.5" />
                   </span>

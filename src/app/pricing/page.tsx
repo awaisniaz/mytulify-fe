@@ -13,7 +13,7 @@ import {
   TOTAL_AI_OCR_TOOLS,
 } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { socialMeta, pageAlternates } from "@/lib/seo";
+import { englishOnlyPageMeta } from "@/lib/seo";
 import { getMetadataLocale } from "@/i18n/locale";
 import { ProUnlockForm } from "@/components/billing/ProUnlockForm";
 import { PricingCards } from "@/components/billing/PricingCards";
@@ -28,18 +28,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const locale = await getMetadataLocale(searchParams);
   const description = `${TOTAL_BROWSER_TOOLS}+ browser tools free with ads, or Pro (from $${PRO_PRICE_USD}/mo) for unlimited AI & OCR and ad-free browsing.`;
-  return {
+  return englishOnlyPageMeta("/pricing", locale, {
     title: "Pricing",
     description,
-    ...pageAlternates("/pricing", locale),
-    robots: { index: true, follow: true },
-    ...socialMeta({
-      title: `Pricing · ${site.name}`,
-      description: `Free: ${TOTAL_BROWSER_TOOLS}+ browser tools + ${FREE_AI_DAILY_LIMIT} AI runs/day. Pro: unlimited AI & OCR, no ads.`,
-      url: "/pricing",
-      locale,
-    }),
-  };
+    socialTitle: `Pricing · ${site.name}`,
+  });
 }
 
 export default async function PricingPage({

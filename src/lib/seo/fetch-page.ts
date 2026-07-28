@@ -5,7 +5,7 @@ const MAX_BYTES = 1_500_000; // ~1.5 MB HTML cap
 const TIMEOUT_MS = 12_000;
 const MAX_REDIRECTS = 3;
 const USER_AGENT =
-  "MytulifySEOBot/1.0 (+https://mytulify.com; page analysis; contact: support@mytulify.com)";
+  "MytulifySEOBot/1.0 (+https://www.mytulify.com; page analysis; contact: support@mytulify.com)";
 
 function isPrivateOrReservedIp(ip: string): boolean {
   const family = net.isIP(ip);
