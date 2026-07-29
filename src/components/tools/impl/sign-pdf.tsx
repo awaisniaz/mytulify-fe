@@ -4,7 +4,7 @@ import * as React from "react";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { Input, Select, Button } from "@/components/ui/primitives";
 import { FileDrop, Field, Notice } from "@/components/tools/shared";
-import { SignaturePad } from "@/components/tools/impl/SignaturePad";
+import { SignaturePad, SIGNATURE_CHECKER_BG } from "@/components/tools/impl/SignaturePad";
 import { download } from "@/lib/utils";
 import { loadPdfJs, renderPdfPageToCanvas } from "@/lib/pdfjs";
 
@@ -58,6 +58,57 @@ function loadImage(dataUrl: string): Promise<HTMLImageElement> {
     img.onerror = reject;
     img.src = dataUrl;
   });
+}
+
+async function trimTransparentPng(dataUrl: string): Promise<string> {
+  const img = await loadImage(dataUrl);
+  const canvas = document.createElement("canvas");
+  canvas.width = img.naturalWidth;
+  canvas.height = img.naturalHeight;
+  const ctx = canvas.getContext("2d")!;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(img, 0, 0);
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const { data, width, height } = imageData;
+
+  // Key out near-white JPEG backgrounds so uploads blend on the PDF
+  if (/^data:image\/jpe?g/i.test(dataUrl)) {
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i]!;
+      const g = data[i + 1]!;
+      const b = data[i + 2]!;
+      if (r > 232 && g > 232 && b > 232) data[i + 3] = 0;
+    }
+    ctx.putImageData(imageData, 0, 0);
+  }
+
+  let minX = width;
+  let minY = height;
+  let maxX = 0;
+  let maxY = 0;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const a = data[(y * width + x) * 4 + 3]!;
+      if (a > 12) {
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x);
+        maxY = Math.max(maxY, y);
+      }
+    }
+  }
+  if (maxX <= minX || maxY <= minY) return canvas.toDataURL("image/png");
+  const w = maxX - minX + 1;
+  const h = maxY - minY + 1;
+  const out = document.createElement("canvas");
+  out.width = w;
+  out.height = h;
+  out.getContext("2d")!.drawImage(canvas, minX, minY, w, h, 0, 0, w, h);
+  return out.toDataURL("image/png");
+}
+
+async function normalizeSignaturePng(dataUrl: string): Promise<string> {
+  return trimTransparentPng(dataUrl);
 }
 
 async function measureDataUrl(dataUrl: string): Promise<{ width: number; height: number }> {
@@ -361,8 +412,9 @@ export function SignPdf() {
   };
 
   const placeSignature = async (dataUrl?: string, opts?: { width?: number; label?: string }) => {
-    const src = dataUrl ?? activeSigDataUrl;
-    if (!src || !pageMeta) return;
+    const raw = dataUrl ?? activeSigDataUrl;
+    if (!raw || !pageMeta) return;
+    const src = await normalizeSignaturePng(raw);
     const dims = await measureDataUrl(src);
     const aspect = dims.height / dims.width;
     const width = opts?.width ?? defaultWidth;
@@ -639,7 +691,9 @@ export function SignPdf() {
               ))}
             </div>
 
-            {sigMode === "draw" && <SignaturePad value={drawnSig || undefined} onChange={setDrawnSig} />}
+            {sigMode === "draw" && (
+              <SignaturePad transparent value={drawnSig || undefined} onChange={setDrawnSig} />
+            )}
 
             {sigMode === "type" && (
               <div className="space-y-2">
@@ -666,7 +720,7 @@ export function SignPdf() {
                   />
                 </Field>
                 {typedText.trim() && (
-                  <div className="rounded-lg border border-border bg-white p-3 text-center">
+                  <div className={`rounded-lg border border-border p-3 text-center ${SIGNATURE_CHECKER_BG}`}>
                     <img
                       src={textToSignatureDataUrl(typedText.trim(), typedFont, typedSize)}
                       alt="Preview"
@@ -686,7 +740,7 @@ export function SignPdf() {
             )}
 
             {activeSigDataUrl && (
-              <div className="rounded-lg border border-border bg-white p-2">
+              <div className={`rounded-lg border border-border p-2 ${SIGNATURE_CHECKER_BG}`}>
                 <img src={activeSigDataUrl} alt="Current signature" className="mx-auto max-h-20 object-contain" />
               </div>
             )}

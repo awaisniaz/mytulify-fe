@@ -4,34 +4,52 @@ import * as React from "react";
 import { Button } from "@/components/ui/primitives";
 import { cn } from "@/lib/utils";
 
+export const SIGNATURE_CHECKER_BG =
+  "bg-[length:12px_12px] bg-[position:0_0,0_6px,6px_-6px,-6px_0px] bg-white [background-image:linear-gradient(45deg,#e2e8f0_25%,transparent_25%),linear-gradient(-45deg,#e2e8f0_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#e2e8f0_75%),linear-gradient(-45deg,transparent_75%,#e2e8f0_75%)]";
+
 export function SignaturePad({
   value,
   onChange,
   className,
+  transparent = false,
 }: {
   value?: string;
   onChange: (dataUrl: string) => void;
   className?: string;
+  /** PNG export keeps alpha — no white fill behind strokes */
+  transparent?: boolean;
 }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const drawing = React.useRef(false);
+
+  const resetCanvas = React.useCallback(
+    (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
+      if (transparent) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      } else {
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      ctx.strokeStyle = "#111";
+      ctx.lineWidth = 2;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+    },
+    [transparent],
+  );
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    ctx.fillStyle = "#fff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = "#111";
-    ctx.lineWidth = 2;
-    ctx.lineCap = "round";
+    resetCanvas(ctx, canvas);
     if (value) {
       const img = new window.Image();
       img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       img.src = value;
     }
-  }, [value]);
+  }, [value, resetCanvas]);
 
   const pos = (e: React.MouseEvent | React.TouchEvent) => {
     const canvas = canvasRef.current!;
@@ -47,6 +65,10 @@ export function SignaturePad({
     e.preventDefault();
     drawing.current = true;
     const ctx = canvasRef.current!.getContext("2d")!;
+    ctx.strokeStyle = "#111";
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
     const p = pos(e);
     ctx.beginPath();
     ctx.moveTo(p.x, p.y);
@@ -72,26 +94,27 @@ export function SignaturePad({
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d")!;
-    ctx.fillStyle = "#fff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    resetCanvas(ctx, canvas);
     onChange("");
   };
 
   return (
     <div className={cn("space-y-2", className)}>
-      <canvas
-        ref={canvasRef}
-        width={400}
-        height={120}
-        className="w-full touch-none rounded-lg border border-border bg-white"
-        onMouseDown={start}
-        onMouseMove={move}
-        onMouseUp={end}
-        onMouseLeave={end}
-        onTouchStart={start}
-        onTouchMove={move}
-        onTouchEnd={end}
-      />
+      <div className={cn("overflow-hidden rounded-lg border border-border", transparent && SIGNATURE_CHECKER_BG)}>
+        <canvas
+          ref={canvasRef}
+          width={400}
+          height={120}
+          className={cn("w-full touch-none", !transparent && "bg-white")}
+          onMouseDown={start}
+          onMouseMove={move}
+          onMouseUp={end}
+          onMouseLeave={end}
+          onTouchStart={start}
+          onTouchMove={move}
+          onTouchEnd={end}
+        />
+      </div>
       <Button type="button" variant="secondary" size="sm" onClick={clear}>
         Clear signature
       </Button>
