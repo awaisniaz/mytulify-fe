@@ -207,51 +207,7 @@ export function CropPdf() {
 }
 
 /* ------------------------------ Sign PDF ----------------------------------- */
-export function SignPdf() {
-  const [pdfFile, setPdfFile] = React.useState<File | null>(null);
-  const [sigFile, setSigFile] = React.useState<File | null>(null);
-  const [busy, setBusy] = React.useState(false);
-
-  const run = async () => {
-    if (!pdfFile || !sigFile) return;
-    setBusy(true);
-    try {
-      const doc = await loadDoc(pdfFile);
-      const sigBytes = await sigFile.arrayBuffer();
-      const sig = /jpe?g$/i.test(sigFile.type)
-        ? await doc.embedJpg(sigBytes)
-        : await doc.embedPng(sigBytes);
-      const page = doc.getPage(doc.getPageCount() - 1);
-      const { width } = page.getSize();
-      const sw = 160;
-      const sh = (sig.height / sig.width) * sw;
-      page.drawImage(sig, { x: width - sw - 40, y: 40, width: sw, height: sh });
-      await savePdf(doc, pdfFile.name.replace(/\.pdf$/i, "-signed.pdf"));
-    } catch (e) {
-      alert("Could not sign PDF: " + (e as Error).message);
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  return (
-    <div className="space-y-4">
-      {!pdfFile ? (
-        <FileDrop accept="application/pdf" onFiles={(f) => setPdfFile(f[0] ?? null)} label="Step 1: Drop PDF" />
-      ) : !sigFile ? (
-        <>
-          <Notice tone="success">PDF: {pdfFile.name}</Notice>
-          <FileDrop accept="image/png,image/jpeg" onFiles={(f) => setSigFile(f[0] ?? null)} label="Step 2: Drop signature image (PNG/JPG)" />
-        </>
-      ) : (
-        <>
-          <Notice tone="info">Signature will be placed on the last page (bottom-right).</Notice>
-          <Button onClick={run} disabled={busy}>{busy ? "Signing…" : "Sign & download"}</Button>
-        </>
-      )}
-    </div>
-  );
-}
+export { SignPdf } from "@/components/tools/impl/sign-pdf";
 
 /* ------------------------------ Edit PDF (add text) ------------------------ */
 export function EditPdf() {

@@ -1016,7 +1016,55 @@
     },
     "pdf-tools/sign-pdf": {
       "name": "Sign PDF",
-      "description": "Draw, type, or upload a signature onto a PDF."
+      "description": "Preview PDF pages, draw/type/upload signatures, drag & resize placement, multi-page signing — free in browser.",
+      "metaTitle": "Free Sign PDF Online – Draw, Type & Place Signatures | Mytulify",
+      "metaDescription": "Sign PDF documents online for free. Preview pages, draw or type your signature, drag to position, resize, sign multiple pages, and download — private, no upload.",
+      "about": [
+        "Signing a PDF should not mean guessing where your signature lands or paying for a subscription. This free Sign PDF tool shows a live preview of every page so you can place signatures exactly where they belong — on the signature line, bottom of a contract, or any page you choose.",
+        "Create your signature three ways: draw with mouse or touch, type your name in a script font, or upload a PNG/JPG image. Drag signatures into position, resize with the corner handle or width slider, adjust opacity, and add an optional date stamp.",
+        "Need the same signature on every page? Place once and copy to all pages, or use the “place on all pages” option. Save signatures in your session for quick reuse across multiple documents.",
+        "Everything runs 100% in your browser on Mytulify — your PDF and signature never leave your device."
+      ],
+      "howTo": {
+        "title": "How to sign a PDF online",
+        "steps": [
+          "Upload your PDF — a live preview of each page appears instantly.",
+          "Create a signature: draw on the pad, type your name, or upload an image.",
+          "Click “Place on page” — then drag the signature to the exact spot.",
+          "Resize using the corner handle or the width slider in the sidebar.",
+          "Navigate pages and add more signatures if needed.",
+          "Click “Download signed PDF” to save the finished document."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Can I choose where the signature goes?",
+          "a": "Yes. After placing a signature, drag it anywhere on the page preview. Use the resize handle or width slider to make it smaller or larger."
+        },
+        {
+          "q": "Can I sign multiple pages?",
+          "a": "Yes. Navigate between pages and place signatures on each one, or use “Place on all pages” / “Copy to all pages” for the same signature everywhere."
+        },
+        {
+          "q": "Is my PDF uploaded to a server?",
+          "a": "No. The entire signing process runs in your browser — your document and signature stay on your device."
+        },
+        {
+          "q": "Can I type instead of draw a signature?",
+          "a": "Yes. Switch to the Type tab, enter your name, pick a font style and size, then place it on the PDF like any other signature."
+        },
+        {
+          "q": "Is this a legally binding e-signature?",
+          "a": "This tool embeds your signature image into the PDF. Legal validity depends on your jurisdiction and the document type. For high-stakes agreements, consult legal counsel about e-signature requirements."
+        }
+      ],
+      "related": [
+        "pdf-tools/fill-pdf-form",
+        "pdf-tools/edit-pdf",
+        "pdf-tools/protect-pdf",
+        "freelancer-tools/contract-generator",
+        "pdf-tools/add-watermark-to-pdf"
+      ]
     },
     "pdf-tools/edit-pdf": {
       "name": "Edit PDF",

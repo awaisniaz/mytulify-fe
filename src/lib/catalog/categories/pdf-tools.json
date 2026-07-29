@@ -21,7 +21,7 @@
     { "name": "Crop PDF", "slug": "crop-pdf", "description": "Trim margins and crop the visible area of PDF pages.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
     { "name": "Protect PDF", "slug": "protect-pdf", "description": "Add a password and encryption to lock a PDF.", "searchVolume": "high", "competition": "low", "complexity": "medium", "clientSide": true },
     { "name": "Unlock PDF", "slug": "unlock-pdf", "description": "Remove a known password from a PDF file.", "searchVolume": "high", "competition": "low", "complexity": "medium", "clientSide": true },
-    { "name": "Sign PDF", "slug": "sign-pdf", "description": "Draw, type, or upload a signature onto a PDF.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": true },
+    { "name": "Sign PDF", "slug": "sign-pdf", "description": "Preview PDF pages, draw/type/upload signatures, drag & resize placement, multi-page signing — free in browser.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": true },
     { "name": "Edit PDF", "slug": "edit-pdf", "description": "Add text, images, shapes, and annotations to a PDF.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": true },
     { "name": "Fill PDF Form", "slug": "fill-pdf-form", "description": "Fill in and flatten interactive PDF form fields.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
     { "name": "Flatten PDF", "slug": "flatten-pdf", "description": "Merge annotations and form fields into static content.", "searchVolume": "medium", "competition": "low", "complexity": "medium", "clientSide": true },
