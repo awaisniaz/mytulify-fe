@@ -132,32 +132,44 @@ function textToSignatureDataUrl(text: string, fontCss: string, fontSize: number)
   return canvas.toDataURL("image/png");
 }
 
-function pdfToDisplay(
+function placementToStyle(
   p: Pick<Placement, "x" | "y" | "width" | "height">,
-  pdfH: number,
-  scale: number,
-) {
+  page: PageMeta,
+): React.CSSProperties {
   return {
-    left: p.x * scale,
-    top: (pdfH - p.y - p.height) * scale,
-    width: p.width * scale,
-    height: p.height * scale,
+    left: `${(p.x / page.width) * 100}%`,
+    top: `${((page.height - p.y - p.height) / page.height) * 100}%`,
+    width: `${(p.width / page.width) * 100}%`,
+    height: `${(p.height / page.height) * 100}%`,
   };
 }
 
-function displayToPdf(
-  left: number,
-  top: number,
+function pointerToNorm(clientX: number, clientY: number, rect: DOMRect) {
+  return {
+    x: Math.max(0, Math.min(1, (clientX - rect.left) / rect.width)),
+    y: Math.max(0, Math.min(1, (clientY - rect.top) / rect.height)),
+  };
+}
+
+function normToPdf(
+  leftNorm: number,
+  topNorm: number,
   width: number,
   height: number,
-  pdfH: number,
-  scale: number,
+  page: PageMeta,
 ): Pick<Placement, "x" | "y" | "width" | "height"> {
-  const w = width / scale;
-  const h = height / scale;
-  const x = left / scale;
-  const y = pdfH - top / scale - h;
-  return { x, y, width: w, height: h };
+  const x = leftNorm * page.width;
+  const y = page.height - topNorm * page.height - height;
+  return clampPlacement({ x, y, width, height }, page);
+}
+
+function pdfToNorm(p: Pick<Placement, "x" | "y" | "width" | "height">, page: PageMeta) {
+  return {
+    left: p.x / page.width,
+    top: (page.height - p.y - p.height) / page.height,
+    width: p.width / page.width,
+    height: p.height / page.height,
+  };
 }
 
 function clampPlacement(
@@ -182,7 +194,7 @@ async function embedImage(doc: PDFDocument, dataUrl: string) {
 function SignatureOverlay({
   placement,
   pdfPage,
-  scale,
+  overlayEl,
   selected,
   onSelect,
   onChange,
@@ -190,47 +202,69 @@ function SignatureOverlay({
 }: {
   placement: Placement;
   pdfPage: PageMeta;
-  scale: number;
+  overlayEl: HTMLDivElement | null;
   selected: boolean;
   onSelect: () => void;
   onChange: (patch: Partial<Pick<Placement, "x" | "y" | "width" | "height">>) => void;
   onDelete: () => void;
 }) {
-  const disp = pdfToDisplay(placement, pdfPage.height, scale);
-  const dragRef = React.useRef<{ mode: "move" | "resize"; startX: number; startY: number; orig: Placement } | null>(
-    null,
-  );
+  const dragRef = React.useRef<{
+    mode: "move" | "resize";
+    grabOffsetX: number;
+    grabOffsetY: number;
+    orig: Placement;
+  } | null>(null);
+
+  const getRect = () => overlayEl?.getBoundingClientRect() ?? null;
 
   const onPointerDown = (e: React.PointerEvent, mode: "move" | "resize") => {
     e.stopPropagation();
     e.preventDefault();
     onSelect();
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
-    dragRef.current = { mode, startX: e.clientX, startY: e.clientY, orig: { ...placement } };
+    const rect = getRect();
+    if (!rect) return;
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    const ptr = pointerToNorm(e.clientX, e.clientY, rect);
+    const norm = pdfToNorm(placement, pdfPage);
+
+    if (mode === "move") {
+      dragRef.current = {
+        mode,
+        grabOffsetX: ptr.x - norm.left,
+        grabOffsetY: ptr.y - norm.top,
+        orig: { ...placement },
+      };
+    } else {
+      dragRef.current = {
+        mode,
+        grabOffsetX: 0,
+        grabOffsetY: 0,
+        orig: { ...placement },
+      };
+    }
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
     const d = dragRef.current;
     if (!d) return;
-    const dx = e.clientX - d.startX;
-    const dy = e.clientY - d.startY;
+    const rect = getRect();
+    if (!rect) return;
+    const ptr = pointerToNorm(e.clientX, e.clientY, rect);
 
     if (d.mode === "move") {
-      const origDisp = pdfToDisplay(d.orig, pdfPage.height, scale);
-      const next = displayToPdf(
-        origDisp.left + dx,
-        origDisp.top + dy,
-        origDisp.width,
-        origDisp.height,
-        pdfPage.height,
-        scale,
-      );
-      onChange(clampPlacement(next, pdfPage));
+      const leftNorm = ptr.x - d.grabOffsetX;
+      const topNorm = ptr.y - d.grabOffsetY;
+      onChange(normToPdf(leftNorm, topNorm, d.orig.width, d.orig.height, pdfPage));
     } else {
+      const origNorm = pdfToNorm(d.orig, pdfPage);
       const ratio = d.orig.height / d.orig.width;
-      const newW = Math.max(30 / scale, d.orig.width + dx / scale);
-      const newH = newW * ratio;
-      const next = clampPlacement({ ...d.orig, width: newW, height: newH }, pdfPage);
+      const newWidthNorm = Math.max(0.02, ptr.x - origNorm.left);
+      const newWidth = newWidthNorm * pdfPage.width;
+      const newHeight = newWidth * ratio;
+      const next = clampPlacement(
+        { x: d.orig.x, y: d.orig.y, width: newWidth, height: newHeight },
+        pdfPage,
+      );
       onChange(next);
     }
   };
@@ -238,7 +272,7 @@ function SignatureOverlay({
   const onPointerUp = (e: React.PointerEvent) => {
     dragRef.current = null;
     try {
-      (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
     } catch {
       /* ignore */
     }
@@ -248,12 +282,10 @@ function SignatureOverlay({
     <div
       className="absolute touch-none select-none"
       style={{
-        left: disp.left,
-        top: disp.top,
-        width: disp.width,
-        height: disp.height,
+        ...placementToStyle(placement, pdfPage),
         opacity: placement.opacity,
         zIndex: selected ? 20 : 10,
+        pointerEvents: "auto",
       }}
       onPointerDown={(e) => onPointerDown(e, "move")}
       onPointerMove={onPointerMove}
@@ -306,6 +338,7 @@ export function SignPdf() {
   const [loadError, setLoadError] = React.useState("");
 
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const overlayRef = React.useRef<HTMLDivElement>(null);
   const previewWrapRef = React.useRef<HTMLDivElement>(null);
 
   const [sigMode, setSigMode] = React.useState<SigMode>("draw");
@@ -325,6 +358,7 @@ export function SignPdf() {
   const [dateText, setDateText] = React.useState(() => new Date().toLocaleDateString());
   const [applyAllPages, setApplyAllPages] = React.useState(false);
   const [busy, setBusy] = React.useState(false);
+  const [overlayReady, setOverlayReady] = React.useState(0);
 
   const activeSigDataUrl = React.useMemo(() => {
     if (sigMode === "draw" && drawnSig) return drawnSig;
@@ -387,6 +421,17 @@ export function SignPdf() {
       cancelled = true;
     };
   }, [pdfFile, currentPage, effectiveScale]);
+
+  React.useEffect(() => {
+    if (!pageMeta || rendering) return;
+    const bump = () => setOverlayReady((n) => n + 1);
+    bump();
+    const el = overlayRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(bump);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [pageMeta, rendering, effectiveScale, currentPage]);
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -564,6 +609,8 @@ export function SignPdf() {
   }
 
   const pagePlacements = placements.filter((p) => p.pageIndex === currentPage - 1);
+  const overlayWidth = overlayRef.current?.clientWidth ?? 0;
+  void overlayReady;
 
   return (
     <div className="space-y-4">
@@ -632,39 +679,43 @@ export function SignPdf() {
               </div>
             )}
             {pageMeta && (
-              <div className="relative mx-auto w-fit">
-                <canvas ref={canvasRef} className="block max-w-full shadow-md" />
-                {pagePlacements.map((p) => (
-                  <SignatureOverlay
-                    key={p.id}
-                    placement={p}
-                    pdfPage={pageMeta}
-                    scale={effectiveScale}
-                    selected={selectedId === p.id}
-                    onSelect={() => setSelectedId(p.id)}
-                    onChange={(patch) => updatePlacement(p.id, patch)}
-                    onDelete={() => {
-                      setPlacements((prev) => prev.filter((x) => x.id !== p.id));
-                      setDateStamps((prev) => prev.filter((d) => d.id !== `date-${p.id}`));
-                      setSelectedId(null);
-                    }}
-                  />
-                ))}
-                {dateStamps
-                  .filter((d) => d.pageIndex === currentPage - 1)
-                  .map((d) => {
-                    const left = d.x * effectiveScale;
-                    const top = (pageMeta.height - d.y - d.fontSize * 1.2) * effectiveScale;
-                    return (
-                      <div
-                        key={d.id}
-                        className="pointer-events-none absolute text-[11px] font-medium text-gray-800"
-                        style={{ left, top, fontSize: d.fontSize * effectiveScale * 0.85 }}
-                      >
-                        {d.text}
-                      </div>
-                    );
-                  })}
+              <div className="relative mx-auto max-w-full">
+                <div className="relative inline-block max-w-full">
+                  <canvas ref={canvasRef} className="block h-auto w-full max-w-full shadow-md" />
+                  <div ref={overlayRef} className="pointer-events-none absolute inset-0">
+                    {pagePlacements.map((p) => (
+                      <SignatureOverlay
+                        key={p.id}
+                        placement={p}
+                        pdfPage={pageMeta}
+                        overlayEl={overlayRef.current}
+                        selected={selectedId === p.id}
+                        onSelect={() => setSelectedId(p.id)}
+                        onChange={(patch) => updatePlacement(p.id, patch)}
+                        onDelete={() => {
+                          setPlacements((prev) => prev.filter((x) => x.id !== p.id));
+                          setDateStamps((prev) => prev.filter((d) => d.id !== `date-${p.id}`));
+                          setSelectedId(null);
+                        }}
+                      />
+                    ))}
+                    {dateStamps
+                      .filter((d) => d.pageIndex === currentPage - 1)
+                      .map((d) => (
+                        <div
+                          key={d.id}
+                          className="pointer-events-none absolute font-medium text-gray-800"
+                          style={{
+                            left: `${(d.x / pageMeta.width) * 100}%`,
+                            top: `${((pageMeta.height - d.y - d.fontSize * 1.2) / pageMeta.height) * 100}%`,
+                            fontSize: Math.max(9, (d.fontSize / pageMeta.width) * (overlayWidth || 600)),
+                          }}
+                        >
+                          {d.text}
+                        </div>
+                      ))}
+                  </div>
+                </div>
               </div>
             )}
           </div>
