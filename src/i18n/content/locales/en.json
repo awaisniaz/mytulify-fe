@@ -2,8 +2,8 @@
   "categories": {
     "ai-tools": {
       "name": "AI-Powered Tools",
-      "description": "AI assistants for developers — explain code, generate SQL, debug errors, write commits, docs and tests, powered by a large language model.",
-      "tagline": "AI assistants for developers"
+      "description": "AI assistants for developers and job seekers — explain code, generate SQL, write cover letters, debug errors, commits, docs and tests.",
+      "tagline": "AI for developers & job seekers"
     },
     "calculators": {
       "name": "Calculators",
@@ -137,6 +137,51 @@
     "ai-tools/cron-explainer": {
       "name": "AI Cron Expression Explainer",
       "description": "Convert plain English to a cron expression or explain any cron expression, with timezone-aware next run times."
+    },
+    "ai-tools/cover-letter-generator": {
+      "name": "AI Cover Letter Generator",
+      "description": "Paste a job description and your background — get a tailored, ATS-friendly cover letter in seconds.",
+      "metaTitle": "Free AI Cover Letter Generator – Tailored to Any Job | Mytulify",
+      "metaDescription": "Generate a personalized cover letter from any job posting. Paste the job ad and your resume highlights — free AI tool with professional, concise, and career-change tones.",
+      "about": [
+        "Generic cover letters get ignored. Hiring managers and ATS systems both look for language that matches the job posting — your skills, achievements, and motivation stated in terms the role actually uses.",
+        "This free AI Cover Letter Generator reads the full job description and your background, then writes a tailored letter that mirrors the role's priorities without keyword stuffing. Choose professional, enthusiastic, concise, or career-change tone and short, standard, or detailed length.",
+        "Use it when applying to a specific opening, pivoting careers, or turning a resume bullet list into a compelling narrative. Review the output, swap in the hiring manager's name if you have it, and send — no subscription required on Mytulify's free tier."
+      ],
+      "howTo": {
+        "title": "How to generate a cover letter with AI",
+        "steps": [
+          "Enter the job title and company name from the posting.",
+          "Paste the full job description — requirements, responsibilities, and qualifications.",
+          "Paste your resume highlights: skills, years of experience, and 2–3 achievements with numbers if you have them.",
+          "Pick a tone and length that fits the company culture.",
+          "Click Generate, review the letter, customize the greeting if you know the recruiter's name, then copy and send."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Will this pass ATS systems?",
+          "a": "The generator mirrors keywords from the job description naturally, which helps ATS matching. Always paste the actual job ad — the more specific the input, the better the alignment. Final proofreading is still your job."
+        },
+        {
+          "q": "Can I use this for a career change?",
+          "a": "Yes. Select the Career change tone — the AI emphasizes transferable skills and frames your pivot as a strength rather than a gap."
+        },
+        {
+          "q": "Does the AI invent experience I don't have?",
+          "a": "It is instructed to use only what you provide in the background field. Still review every claim before sending — you are responsible for accuracy."
+        },
+        {
+          "q": "How is this different from ChatGPT?",
+          "a": "This tool is structured for cover letters specifically: job ad + background in, formatted letter with subject line out. No prompt engineering required, and it runs on Mytulify's free daily quota."
+        }
+      ],
+      "related": [
+        "freelancer-tools/proposal-generator",
+        "freelancer-tools/email-templates-generator",
+        "text-tools/word-counter",
+        "ai-tools/readme-generator"
+      ]
     },
     "calculators/bmi-calculator": {
       "name": "BMI Calculator",

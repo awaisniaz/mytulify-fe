@@ -128,7 +128,7 @@ const RULES = [
   [/angle|degree|radian|gradian|arcmin|arcsec/i, "Compass"],
   [/fuel|mpg|l100|consumption|mileage/i, "Fuel"],
   [/time-zone|timezone|utc|gmt|world-clock/i, "Globe"],
-  [/ai-|explainer|generator|assistant|review|diagnos|commit-message|readme-generator|test-case|code-review|error-diagnos|sql-query-generator|code-explainer|regex-generator|docker-compose-generator|cron-explainer/i, "Sparkles"],
+  [/ai-|explainer|generator|assistant|review|diagnos|commit-message|readme-generator|test-case|code-review|error-diagnos|sql-query-generator|code-explainer|regex-generator|docker-compose-generator|cron-explainer|cover-letter-generator/i, "Sparkles"],
   [/duplicate-file|file-finder|file-hash|checksum|file-compare/i, "Copy"],
   [/list-random|shuffle|randomize|picker-wheel|lottery|raffle/i, "Shuffle"],
   [/number-base|binary-convert|octal|hex-convert|decimal-to|base-convert/i, "Binary"],

@@ -397,6 +397,102 @@ export const AI_TOOLS: Record<string, AiTool> = {
     },
     buildUser: ({ input }) => input ?? "",
   },
+
+  "cover-letter-generator": {
+    slug: "cover-letter-generator",
+    cta: "Generate cover letter",
+    outputLabel: "Cover letter",
+    fields: [
+      {
+        name: "jobTitle",
+        type: "text",
+        label: "Job title you're applying for",
+        placeholder: "e.g. Senior Frontend Developer",
+        required: true,
+      },
+      {
+        name: "company",
+        type: "text",
+        label: "Company name",
+        placeholder: "e.g. Acme Corp",
+        required: true,
+      },
+      {
+        name: "jobDescription",
+        type: "textarea",
+        label: "Job description (paste the full ad)",
+        placeholder: "Paste the role requirements, responsibilities, and qualifications from the job posting…",
+        required: true,
+        rows: 8,
+      },
+      {
+        name: "background",
+        type: "textarea",
+        label: "Your background & highlights",
+        placeholder:
+          "Paste resume highlights, years of experience, key skills, 2–3 achievements with metrics, and anything else you want mentioned…",
+        required: true,
+        rows: 8,
+      },
+      {
+        name: "tone",
+        type: "select",
+        label: "Tone",
+        default: "professional",
+        options: [
+          { value: "professional", label: "Professional — confident and polished" },
+          { value: "enthusiastic", label: "Enthusiastic — energetic and motivated" },
+          { value: "concise", label: "Concise — short and direct" },
+          { value: "career-change", label: "Career change — bridge transferable skills" },
+        ],
+      },
+      {
+        name: "length",
+        type: "select",
+        label: "Length",
+        default: "standard",
+        options: [
+          { value: "short", label: "Short (~200 words)" },
+          { value: "standard", label: "Standard (~350 words)" },
+          { value: "detailed", label: "Detailed (~500 words)" },
+        ],
+      },
+    ],
+    maxTokens: 2000,
+    effort: "high",
+    system: ({ tone, length, company, jobTitle }) => {
+      const wordTarget = length === "short" ? "about 200 words" : length === "detailed" ? "about 500 words" : "about 350 words";
+      const toneGuide =
+        tone === "enthusiastic"
+          ? "Warm, motivated, and specific — show genuine interest without hype or clichés."
+          : tone === "concise"
+            ? "Direct and tight — every sentence earns its place. No filler paragraphs."
+            : tone === "career-change"
+              ? "Emphasize transferable skills and a credible narrative for switching into this role. Address the pivot honestly."
+              : "Professional, confident, and human — suitable for corporate and startup hiring managers alike.";
+      return `You are an expert career coach and cover letter writer. Write a tailored cover letter for the "${jobTitle}" role at ${company}.
+
+Tone: ${toneGuide}
+Length: ${wordTarget} (body only, excluding header lines).
+
+Rules:
+- Mirror keywords and priorities from the job description naturally — do NOT keyword-stuff.
+- Lead with why this role and company fit the candidate, not "I am writing to apply."
+- Include 2–3 concrete achievements or skills from the candidate background that map to the job requirements.
+- Use plain text with line breaks — no Markdown headings or bullet lists unless the concise tone truly needs one short list.
+- End with a clear, low-friction call to action (e.g. happy to discuss on a call).
+- Do NOT invent employers, degrees, certifications, or metrics not present in the candidate background.
+- Output format:
+  1) Subject line (one line, prefixed "Subject: ")
+  2) Blank line
+  3) Salutation (Dear Hiring Manager, or Dear [Company] Team if name unknown)
+  4) Body paragraphs
+  5) Sign-off (Best regards, / Sincerely, + placeholder [Your Name])
+- After the letter, add a horizontal rule (---) then a "## Tips" section with 3 brief bullets on what you emphasized and one thing the candidate should customize before sending.`;
+    },
+    buildUser: ({ jobTitle, company, jobDescription, background }) =>
+      `Role: ${jobTitle}\nCompany: ${company}\n\n--- Job description ---\n${jobDescription}\n\n--- Candidate background ---\n${background}`,
+  },
 };
 
 /* ------------------------------------------------------ AI SEO workflows --- */

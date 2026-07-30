@@ -11,6 +11,7 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "test-case-generator": "ScanText",
   "docker-compose-generator": "ScanText",
   "cron-explainer": "ScanText",
+  "cover-letter-generator": "ScanText",
   "bmi-calculator": "Activity",
   "percentage-calculator": "Calendar",
   "age-calculator": "Calendar",
