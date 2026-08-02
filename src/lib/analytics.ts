@@ -5,6 +5,6 @@ export const analytics = {
 } as const;
 
 export const ahrefsAnalytics = {
-  key: "AHyL/ZcrSL/mK5zFILfMjQ",
+  key: "E3E1nVuEjwND8ujuM5djlA",
   enabled: true,
 } as const;

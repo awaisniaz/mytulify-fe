@@ -105,6 +105,13 @@
     "toolCount": 28
   },
   {
+    "slug": "content-creator-tools",
+    "name": "Content Creator Tools",
+    "icon": "Mic",
+    "gradient": "from-violet-500 to-fuchsia-600",
+    "toolCount": 1
+  },
+  {
     "slug": "converters-generators",
     "name": "Converters & Generators",
     "icon": "Repeat",

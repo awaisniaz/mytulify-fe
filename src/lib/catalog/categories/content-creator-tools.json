@@ -1,0 +1,16 @@
+{
+  "name": "Content Creator Tools",
+  "slug": "content-creator-tools",
+  "description": "Free browser tools for YouTubers, podcasters & social creators — voiceovers, captions, scripts & more. No signup, runs privately on your device.",
+  "tools": [
+    {
+      "name": "Text to Speech",
+      "slug": "text-to-speech",
+      "description": "Convert text to speech with 100+ voice actors, 50+ languages, 12 tone presets per actor — export SRT/VTT. 100% browser, no AI.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "medium",
+      "clientSide": true
+    }
+  ]
+}

@@ -9,6 +9,7 @@ export function AhrefsAnalytics() {
     <Script
       src="https://analytics.ahrefs.com/analytics.js"
       strategy="afterInteractive"
+      async
       data-key={ahrefsAnalytics.key}
     />
   );

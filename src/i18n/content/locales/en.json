@@ -79,6 +79,11 @@
       "name": "Freelancer Tools",
       "description": "Free client-side tools for freelancers — contracts, proposals, NDAs, rate calculators, quotes, and change orders. No signup, no subscription.",
       "tagline": "Contracts, rates & client docs — free"
+    },
+    "content-creator-tools": {
+      "name": "Content Creator Tools",
+      "description": "Free browser tools for YouTubers, podcasters & social creators — voiceovers, captions, scripts & more.",
+      "tagline": "Voiceovers, captions & scripts"
     }
   },
   "tools": {
@@ -3762,6 +3767,56 @@
         "freelancer-tools/proposal-generator",
         "freelancer-tools/change-order-generator",
         "freelancer-tools/break-even-calculator"
+      ]
+    },
+    "content-creator-tools/text-to-speech": {
+      "name": "Text to Speech",
+      "description": "Convert text to speech with 100+ voice actors, 50+ languages, 12 tone presets per actor — export SRT/VTT. 100% browser, no AI.",
+      "metaTitle": "Free Text to Speech – All Languages, Multiple Actors & Tones | Mytulify",
+      "metaDescription": "Text to speech for creators: 100+ voice actors, every language on your device, 12 tones per actor — Natural, Energetic, Deep, News & more. Free, no AI, export SRT/VTT.",
+      "about": [
+        "Content creators need voiceovers fast — for YouTube intros, TikTok narration, podcast drafts, and course videos. This free Text to Speech tool uses your browser's built-in voices (no AI, no upload) to read any script aloud in the language and tone you choose.",
+        "Pick from every language and voice your device offers — often 50+ languages on Windows, Mac, Android, and iOS. Ten tone presets cover tutorials, energetic Reels, deep podcast intros, news-style reads, calm meditation, and more. Fine-tune speed, pitch, and volume with sliders.",
+        "Export SRT or VTT caption files with estimated timings — drop them straight into CapCut, Premiere Pro, DaVinci Resolve, or YouTube Studio. Download your script as .txt or copy SRT to clipboard.",
+        "Everything runs locally in your browser on Mytulify — unlimited, free, private. No signup, no daily limits, no cloud TTS API."
+      ],
+      "howTo": {
+        "title": "How to use Text to Speech",
+        "steps": [
+          "Paste your video script or narration text.",
+          "Select your language and pick a voice (offline voices work without internet).",
+          "Choose a tone preset — Energetic for Reels, Slow & clear for tutorials, etc.",
+          "Adjust speed, pitch, and volume if needed, then click Speak.",
+          "Export SRT or VTT captions for your video editor, or download the script as .txt."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Does this use AI?",
+          "a": "No. It uses the Web Speech API — your operating system's built-in text-to-speech voices. No large language model, no cloud API, no upload."
+        },
+        {
+          "q": "Why don't I see my language?",
+          "a": "Available languages depend on your OS and browser. Install additional voices in Windows Settings → Time & Language → Speech, or System Settings → Accessibility on Mac."
+        },
+        {
+          "q": "Can I download the audio as MP3?",
+          "a": "This tool plays speech live through your browser. Export SRT/VTT caption files for video editors, or record the playback with any screen/audio recorder for an audio file."
+        },
+        {
+          "q": "What's the difference from the Text Tools version?",
+          "a": "This Content Creator edition adds tone presets, language grouping, paragraph mode, caption export (SRT/VTT), duration estimates, and sample scripts — built for YouTubers and video editors."
+        },
+        {
+          "q": "Is it free and unlimited?",
+          "a": "Yes. Browser tools on Mytulify are free with no daily limits and no signup required."
+        }
+      ],
+      "related": [
+        "text-tools/speech-to-text",
+        "text-tools/text-to-speech",
+        "social-media-tools/caption-generator",
+        "text-tools/word-counter"
       ]
     }
   },
