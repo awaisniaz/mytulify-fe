@@ -1,4 +1,3 @@
-import { TOTAL_TOOLS, TOTAL_CATEGORIES } from "./catalog";
 import { messaging } from "./messaging";
 import { SITE_URL } from "./env";
 

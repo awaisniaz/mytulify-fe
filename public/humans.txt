@@ -1,0 +1,7 @@
+/* TEAM */
+Site: Mytulify
+URL: https://mytulify.com
+Contact: support@mytulify.com
+
+/* THANKS */
+Free online tools for everyone.

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Noto_Nastaliq_Urdu } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
+import { offpage } from "@/lib/offpage";
 import { socialMeta } from "@/lib/seo";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -59,9 +60,10 @@ const jsonLd = [
     "@type": "Organization",
     name: site.name,
     url: site.url,
-    logo: `${site.url}/logo.png`,
-    description: site.description,
-    sameAs: [`https://twitter.com/${site.twitter.replace("@", "")}`],
+    logo: offpage.logo,
+    description: offpage.boilerplate.medium,
+    email: offpage.email,
+    sameAs: offpage.sameAs,
   },
   {
     "@context": "https://schema.org",

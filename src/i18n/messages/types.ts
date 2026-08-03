@@ -45,6 +45,8 @@ export type RawMessages = {
     pricing: string;
     requestTool: string;
     about: string;
+    press: string;
+    linkToUs: string;
     privacy: string;
     copyright: string;
   };
@@ -115,6 +117,8 @@ export type Messages = {
     pricing: string;
     requestTool: string;
     about: string;
+    press: string;
+    linkToUs: string;
     privacy: string;
     copyright: (year: number, name: string) => string;
   };

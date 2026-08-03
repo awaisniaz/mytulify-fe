@@ -49,6 +49,8 @@ export function compileMessages(raw: RawMessages): Messages {
       pricing: raw.footer.pricing,
       requestTool: raw.footer.requestTool,
       about: raw.footer.about,
+      press: raw.footer.press,
+      linkToUs: raw.footer.linkToUs,
       privacy: raw.footer.privacy,
       copyright: (year, name) => fmt(raw.footer.copyright, { year, name }),
     },

@@ -36,6 +36,8 @@ const STATIC_PAGES: { path: string; file: string; priority: number }[] = [
   { path: "/tools", file: "src/app/tools/page.tsx", priority: 0.8 },
   { path: "/pricing", file: "src/app/pricing/page.tsx", priority: 0.8 },
   { path: "/about", file: "src/app/about/page.tsx", priority: 0.8 },
+  { path: "/press", file: "src/app/press/page.tsx", priority: 0.7 },
+  { path: "/link-to-us", file: "src/app/link-to-us/page.tsx", priority: 0.7 },
   { path: "/privacy", file: "src/app/privacy/page.tsx", priority: 0.8 },
   { path: "/blog", file: "src/app/blog/page.tsx", priority: 0.8 },
   { path: "/request-tool", file: "src/app/request-tool/page.tsx", priority: 0.6 },
