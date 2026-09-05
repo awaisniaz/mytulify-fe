@@ -1353,3 +1353,125 @@ export function SwpCalculator() {
     </div>
   );
 }
+
+/* --------------------------- Lumpsum Calculator ---------------------------- */
+type LumpsumCompounding = "yearly" | "monthly";
+
+/**
+ * One-time (lumpsum) investment future value.
+ * Yearly: A = P(1+r)^t — common for mutual-fund lumpsum planners.
+ * Monthly: A = P(1+r/12)^(12t) — compounds more frequently at the same annual rate.
+ */
+export function lumpsumMaturity(
+  principal: number,
+  annualRatePct: number,
+  years: number,
+  compounding: LumpsumCompounding = "yearly",
+): { maturity: number; gains: number } {
+  if (!(principal > 0) || !(years > 0) || !(annualRatePct >= 0)) {
+    return { maturity: NaN, gains: NaN };
+  }
+  const r = annualRatePct / 100;
+  if (r === 0) return { maturity: principal, gains: 0 };
+  const maturity =
+    compounding === "monthly"
+      ? principal * Math.pow(1 + r / 12, 12 * years)
+      : principal * Math.pow(1 + r, years);
+  return { maturity, gains: maturity - principal };
+}
+
+export function LumpsumCalculator() {
+  const [principal, setPrincipal] = React.useState("100000");
+  const [rate, setRate] = React.useState("12");
+  const [years, setYears] = React.useState("10");
+  const [months, setMonths] = React.useState("0");
+  const [compounding, setCompounding] = React.useState<LumpsumCompounding>("yearly");
+
+  const p = n(principal);
+  const annual = n(rate);
+  const yParts = Math.max(0, n(years) || 0);
+  const mParts = Math.max(0, Math.min(11, Math.round(n(months) || 0)));
+  const tenureYears = yParts + mParts / 12;
+  const valid =
+    Number.isFinite(p) &&
+    p > 0 &&
+    Number.isFinite(annual) &&
+    annual >= 0 &&
+    tenureYears > 0;
+
+  const result = React.useMemo(
+    () => (valid ? lumpsumMaturity(p, annual, tenureYears, compounding) : { maturity: NaN, gains: NaN }),
+    [valid, p, annual, tenureYears, compounding],
+  );
+
+  const error = !valid
+    ? "Enter a positive investment amount, a non-negative expected return, and a tenure greater than zero."
+    : "";
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Estimates use compound growth at your assumed annual return. Actual mutual fund returns vary — this is a planning tool, not advice.
+      </Notice>
+      <Row>
+        <Field label="Lumpsum investment amount">
+          <Input
+            type="number"
+            min={0}
+            value={principal}
+            onChange={(e) => setPrincipal(e.target.value)}
+            aria-invalid={!!error && !(p > 0)}
+          />
+        </Field>
+        <Field label="Expected annual return (%)">
+          <Input
+            type="number"
+            min={0}
+            step="0.1"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Tenure (years)">
+          <Input
+            type="number"
+            min={0}
+            step="1"
+            value={years}
+            onChange={(e) => setYears(e.target.value)}
+          />
+        </Field>
+        <Field label="Extra months (0–11)" hint="Optional — added to years">
+          <Input
+            type="number"
+            min={0}
+            max={11}
+            step="1"
+            value={months}
+            onChange={(e) => setMonths(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Field label="Compounding">
+        <Select
+          value={compounding}
+          onChange={(e) => setCompounding(e.target.value as LumpsumCompounding)}
+        >
+          <option value="yearly">Yearly (common for MF lumpsum planners)</option>
+          <option value="monthly">Monthly</option>
+        </Select>
+      </Field>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <div className="grid gap-3 sm:grid-cols-3">
+          <Stat label="Total invested" value={fmt(p, 0)} />
+          <Stat label="Estimated returns" value={fmt(result.gains, 0)} />
+          <Stat label="Maturity value" value={fmt(result.maturity, 0)} />
+        </div>
+      )}
+    </div>
+  );
+}

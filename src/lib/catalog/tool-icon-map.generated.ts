@@ -57,6 +57,7 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "ppf-calculator": "DollarSign",
   "swp-calculator": "DollarSign",
   "rd-calculator": "DollarSign",
+  "lumpsum-calculator": "DollarSign",
   "color-picker": "Palette",
   "hex-to-rgb": "Palette",
   "rgb-to-hex": "Palette",

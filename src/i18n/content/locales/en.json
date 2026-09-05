@@ -3292,7 +3292,8 @@
         "calculators/ppf-calculator",
         "calculators/fd-calculator",
         "calculators/swp-calculator",
-        "calculators/rd-calculator"
+        "calculators/rd-calculator",
+        "calculators/lumpsum-calculator"
       ]
     },
     "calculators/cagr-calculator": {
@@ -3517,7 +3518,54 @@
         "calculators/compound-interest-calculator",
         "calculators/cagr-calculator",
         "calculators/swp-calculator",
-        "calculators/inflation-calculator"
+        "calculators/inflation-calculator",
+        "calculators/lumpsum-calculator"
+      ]
+    },
+    "calculators/lumpsum-calculator": {
+      "name": "Lumpsum Calculator",
+      "description": "Estimate mutual fund lumpsum maturity value, total invested, and returns from a one-time investment, expected return, and tenure.",
+      "metaTitle": "Lumpsum Calculator – Free Mutual Fund One-Time Investment Tool | Mytulify",
+      "metaDescription": "Free lumpsum calculator for mutual funds. Estimate maturity value and returns from a one-time investment, expected annual return, and tenure. Private, no signup.",
+      "about": [
+        "A lumpsum calculator estimates how a one-time mutual fund investment can grow at an assumed annual return over a set tenure. It shows the amount invested, estimated gains, and projected maturity value.",
+        "Choose yearly compounding (common for mutual-fund planners) or monthly compounding. Enter the investment amount, expected return, and tenure in years plus optional months. All math runs in your browser on Mytulify — useful for planning, not investment advice."
+      ],
+      "howTo": {
+        "title": "How to use the lumpsum calculator",
+        "steps": [
+          "Enter your one-time (lumpsum) investment amount and expected annual return percentage.",
+          "Set the tenure in years and optional extra months (0–11).",
+          "Choose yearly or monthly compounding.",
+          "Read total invested, estimated returns, and maturity value."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is a lumpsum calculator?",
+          "a": "A lumpsum calculator projects the future value of a single one-time investment using a compound-return formula. It helps you plan mutual fund lumpsum investments before you invest."
+        },
+        {
+          "q": "How is lumpsum maturity calculated?",
+          "a": "With yearly compounding, maturity = P × (1 + r)^t, where P is the investment amount, r is the annual rate as a decimal, and t is tenure in years. Monthly compounding uses P × (1 + r/12)^(12t)."
+        },
+        {
+          "q": "Lumpsum vs SIP — which should I model?",
+          "a": "Use a lumpsum calculator when you invest a large amount once. Use a SIP calculator when you invest a fixed amount every month. Many people compare both for the same goal and tenure."
+        },
+        {
+          "q": "Is this lumpsum calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no uploads."
+        }
+      ],
+      "related": [
+        "calculators/sip-calculator",
+        "calculators/cagr-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/fd-calculator",
+        "calculators/swp-calculator",
+        "calculators/inflation-calculator",
+        "calculators/ppf-calculator"
       ]
     },
     "text-tools/reading-time-calculator": {
