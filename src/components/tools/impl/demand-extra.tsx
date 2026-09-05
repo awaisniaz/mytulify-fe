@@ -658,6 +658,153 @@ export function SipCalculator() {
   );
 }
 
+/* ------------------------------ FD Calculator ------------------------------ */
+type FdCompounding = "monthly" | "quarterly" | "half-yearly" | "yearly" | "simple";
+
+const FD_COMPOUNDING: { value: FdCompounding; label: string; n: number }[] = [
+  { value: "monthly", label: "Monthly", n: 12 },
+  { value: "quarterly", label: "Quarterly (common for bank FDs)", n: 4 },
+  { value: "half-yearly", label: "Half-yearly", n: 2 },
+  { value: "yearly", label: "Yearly", n: 1 },
+  { value: "simple", label: "Simple interest (no compounding)", n: 0 },
+];
+
+/** Fixed-deposit maturity: compound A = P(1+r/n)^(n·t) or simple A = P(1+r·t). */
+export function fdMaturity(
+  principal: number,
+  annualRatePct: number,
+  years: number,
+  compounding: FdCompounding,
+): { maturity: number; interest: number } {
+  if (!(principal > 0) || !(years > 0) || !(annualRatePct >= 0)) {
+    return { maturity: NaN, interest: NaN };
+  }
+  const r = annualRatePct / 100;
+  if (compounding === "simple" || r === 0) {
+    const maturity = principal * (1 + r * years);
+    return { maturity, interest: maturity - principal };
+  }
+  const freq = FD_COMPOUNDING.find((c) => c.value === compounding)?.n ?? 4;
+  const maturity = principal * Math.pow(1 + r / freq, freq * years);
+  return { maturity, interest: maturity - principal };
+}
+
+export function FdCalculator() {
+  const [principal, setPrincipal] = React.useState("100000");
+  const [rate, setRate] = React.useState("7");
+  const [years, setYears] = React.useState("3");
+  const [months, setMonths] = React.useState("0");
+  const [compounding, setCompounding] = React.useState<FdCompounding>("quarterly");
+
+  const p = n(principal);
+  const annual = n(rate);
+  const yParts = Math.max(0, n(years) || 0);
+  const mParts = Math.max(0, Math.min(11, Math.round(n(months) || 0)));
+  const tenureYears = yParts + mParts / 12;
+  const valid =
+    Number.isFinite(p) &&
+    p > 0 &&
+    Number.isFinite(annual) &&
+    annual >= 0 &&
+    tenureYears > 0;
+
+  const { maturity, interest } = valid
+    ? fdMaturity(p, annual, tenureYears, compounding)
+    : { maturity: NaN, interest: NaN };
+  const effectiveYield =
+    valid && Number.isFinite(maturity) ? ((maturity / p - 1) / tenureYears) * 100 : NaN;
+
+  let error = "";
+  if (principal.trim() === "" || rate.trim() === "") error = "Enter principal and interest rate.";
+  else if (!Number.isFinite(p) || p <= 0) error = "Principal must be a positive number.";
+  else if (!Number.isFinite(annual) || annual < 0) error = "Interest rate cannot be negative.";
+  else if (tenureYears <= 0) error = "Set tenure to at least 1 month.";
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Bank FD rates and payout rules vary. This tool uses the standard compound (or simple) interest
+        formula for planning — confirm final maturity with your bank.
+      </Notice>
+      <Row>
+        <Field label="Deposit amount (principal)">
+          <Input
+            type="number"
+            min={0}
+            value={principal}
+            onChange={(e) => setPrincipal(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(p) || p <= 0))}
+          />
+        </Field>
+        <Field label="Annual interest rate (%)">
+          <Input
+            type="number"
+            min={0}
+            step="0.01"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Tenure — years">
+          <Input
+            type="number"
+            min={0}
+            step="1"
+            value={years}
+            onChange={(e) => setYears(e.target.value)}
+          />
+        </Field>
+        <Field label="Extra months" hint="0–11 (added to years)">
+          <Input
+            type="number"
+            min={0}
+            max={11}
+            step="1"
+            value={months}
+            onChange={(e) => setMonths(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Field label="Compounding frequency">
+        <Select
+          value={compounding}
+          onChange={(e) => setCompounding(e.target.value as FdCompounding)}
+        >
+          {FD_COMPOUNDING.map((c) => (
+            <option key={c.value} value={c.value}>
+              {c.label}
+            </option>
+          ))}
+        </Select>
+      </Field>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Maturity amount" value={fmt(maturity, 0)} />
+            <Stat label="Interest earned" value={fmt(interest, 0)} />
+            <Stat
+              label="Effective annual yield"
+              value={Number.isFinite(effectiveYield) ? `${fmt(effectiveYield, 2)}%` : "—"}
+            />
+          </div>
+          <Stat
+            label="Tenure"
+            value={
+              mParts > 0
+                ? `${yParts} yr ${mParts} mo (${fmt(tenureYears, 2)} years)`
+                : `${yParts} year${yParts === 1 ? "" : "s"}`
+            }
+          />
+        </>
+      )}
+    </div>
+  );
+}
+
 /* ------------------------------ CAGR Calculator ---------------------------- */
 export function CagrCalculator() {
   const [begin, setBegin] = React.useState("100000");
