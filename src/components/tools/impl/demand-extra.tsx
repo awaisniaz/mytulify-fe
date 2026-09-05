@@ -2159,3 +2159,216 @@ export function GratuityCalculator() {
     </div>
   );
 }
+
+/* ------------------------------ HRA calculator ------------------------------ */
+
+export type HraCityType = "metro" | "non-metro";
+export type HraPeriod = "monthly" | "yearly";
+
+export function hraExemption(input: {
+  basic: number;
+  da: number;
+  hraReceived: number;
+  rentPaid: number;
+  city: HraCityType;
+}): {
+  salaryForHra: number;
+  limitActualHra: number;
+  limitRentMinus10: number;
+  limitCityPercent: number;
+  cityPercent: number;
+  exempt: number;
+  taxable: number;
+  bindingLimit: "actual-hra" | "rent-minus-10" | "city-percent";
+} {
+  const { basic, da, hraReceived, rentPaid, city } = input;
+  const salaryForHra = basic + da;
+  const cityPercent = city === "metro" ? 0.5 : 0.4;
+  const limitActualHra = Math.max(0, hraReceived);
+  const limitRentMinus10 = Math.max(0, rentPaid - 0.1 * salaryForHra);
+  const limitCityPercent = Math.max(0, cityPercent * salaryForHra);
+  const exempt = Math.min(limitActualHra, limitRentMinus10, limitCityPercent);
+  const taxable = Math.max(0, hraReceived - exempt);
+
+  let bindingLimit: "actual-hra" | "rent-minus-10" | "city-percent" = "actual-hra";
+  if (exempt === limitRentMinus10 && limitRentMinus10 <= limitActualHra && limitRentMinus10 <= limitCityPercent) {
+    bindingLimit = "rent-minus-10";
+  } else if (
+    exempt === limitCityPercent &&
+    limitCityPercent <= limitActualHra &&
+    limitCityPercent <= limitRentMinus10
+  ) {
+    bindingLimit = "city-percent";
+  } else {
+    bindingLimit = "actual-hra";
+  }
+
+  return {
+    salaryForHra,
+    limitActualHra,
+    limitRentMinus10,
+    limitCityPercent,
+    cityPercent,
+    exempt,
+    taxable,
+    bindingLimit,
+  };
+}
+
+export function HraCalculator() {
+  const [period, setPeriod] = React.useState<HraPeriod>("monthly");
+  const [basic, setBasic] = React.useState("50000");
+  const [da, setDa] = React.useState("5000");
+  const [hraReceived, setHraReceived] = React.useState("20000");
+  const [rentPaid, setRentPaid] = React.useState("25000");
+  const [city, setCity] = React.useState<HraCityType>("metro");
+
+  const basicN = n(basic);
+  const daN = n(da);
+  const hraN = n(hraReceived);
+  const rentN = n(rentPaid);
+
+  const valid =
+    Number.isFinite(basicN) &&
+    basicN >= 0 &&
+    Number.isFinite(daN) &&
+    daN >= 0 &&
+    Number.isFinite(hraN) &&
+    hraN >= 0 &&
+    Number.isFinite(rentN) &&
+    rentN >= 0 &&
+    (basicN > 0 || daN > 0);
+
+  const result = valid
+    ? hraExemption({
+        basic: basicN,
+        da: daN,
+        hraReceived: hraN,
+        rentPaid: rentN,
+        city,
+      })
+    : null;
+
+  let error = "";
+  if (basic.trim() === "" || hraReceived.trim() === "" || rentPaid.trim() === "") {
+    error = "Enter basic salary, HRA received, and rent paid.";
+  } else if (!Number.isFinite(basicN) || basicN < 0) {
+    error = "Basic salary must be zero or a positive number.";
+  } else if (!Number.isFinite(daN) || daN < 0) {
+    error = "Dearness allowance must be zero or a positive number.";
+  } else if (!(basicN > 0 || daN > 0)) {
+    error = "Enter at least some salary (basic and/or DA) used for the HRA rules.";
+  } else if (!Number.isFinite(hraN) || hraN < 0) {
+    error = "HRA received must be zero or a positive number.";
+  } else if (!Number.isFinite(rentN) || rentN < 0) {
+    error = "Rent paid must be zero or a positive number.";
+  }
+
+  const periodLabel = period === "monthly" ? "per month" : "per year";
+  const bindingLabel =
+    result?.bindingLimit === "rent-minus-10"
+      ? "Rent − 10% of salary"
+      : result?.bindingLimit === "city-percent"
+        ? city === "metro"
+          ? "50% of salary (metro)"
+          : "40% of salary (non-metro)"
+        : "Actual HRA received";
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Planning estimate only. HRA exemption under Section 10(13A) / Rule 2A depends on how your
+        employer defines salary, metro classification, and current tax law. Confirm with payroll / a
+        tax advisor — this is not tax filing advice.
+      </Notice>
+      <Row>
+        <Field label="Input period" hint="Use the same period for all money fields">
+          <Select
+            value={period}
+            onChange={(e) => setPeriod(e.target.value as HraPeriod)}
+            aria-label="Input period"
+          >
+            <option value="monthly">Monthly amounts</option>
+            <option value="yearly">Yearly amounts</option>
+          </Select>
+        </Field>
+        <Field label="City type" hint="Metro = Delhi, Mumbai, Kolkata, Chennai (classic 50% rule)">
+          <Select
+            value={city}
+            onChange={(e) => setCity(e.target.value as HraCityType)}
+            aria-label="City type for HRA"
+          >
+            <option value="metro">Metro (50% of salary)</option>
+            <option value="non-metro">Non-metro (40% of salary)</option>
+          </Select>
+        </Field>
+      </Row>
+      <Row>
+        <Field label={`Basic salary (${periodLabel})`}>
+          <Input
+            type="number"
+            min={0}
+            value={basic}
+            onChange={(e) => setBasic(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(basicN) || basicN < 0))}
+          />
+        </Field>
+        <Field label={`Dearness allowance (${periodLabel})`} hint="Include DA that forms part of salary for HRA">
+          <Input type="number" min={0} value={da} onChange={(e) => setDa(e.target.value)} />
+        </Field>
+      </Row>
+      <Row>
+        <Field label={`HRA received (${periodLabel})`}>
+          <Input
+            type="number"
+            min={0}
+            value={hraReceived}
+            onChange={(e) => setHraReceived(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(hraN) || hraN < 0))}
+          />
+        </Field>
+        <Field label={`Rent paid (${periodLabel})`} hint="Actual rent for the same period">
+          <Input
+            type="number"
+            min={0}
+            value={rentPaid}
+            onChange={(e) => setRentPaid(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(rentN) || rentN < 0))}
+          />
+        </Field>
+      </Row>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : result ? (
+        <>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <Stat label={`Exempt HRA (${periodLabel})`} value={fmt(result.exempt, 0)} />
+            <Stat label={`Taxable HRA (${periodLabel})`} value={fmt(result.taxable, 0)} />
+            <Stat label={`Salary for HRA (basic + DA)`} value={fmt(result.salaryForHra, 0)} />
+            <Stat label="Binding limit" value={bindingLabel} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Limit 1 — actual HRA" value={fmt(result.limitActualHra, 0)} />
+            <Stat label="Limit 2 — rent − 10% salary" value={fmt(result.limitRentMinus10, 0)} />
+            <Stat
+              label={`Limit 3 — ${Math.round(result.cityPercent * 100)}% of salary`}
+              value={fmt(result.limitCityPercent, 0)}
+            />
+          </div>
+          {result.limitRentMinus10 === 0 && rentN > 0 && (
+            <Notice tone="info">
+              Rent minus 10% of salary is zero or negative at these inputs — that often happens when
+              rent is low relative to basic + DA. Exemption then cannot exceed that rent-based limit.
+            </Notice>
+          )}
+          {hraN === 0 && (
+            <Notice tone="info">
+              HRA received is zero, so exempt and taxable HRA are both zero. Enter the HRA component
+              from your payslip to model exemption.
+            </Notice>
+          )}
+        </>
+      ) : null}
+    </div>
+  );
+}

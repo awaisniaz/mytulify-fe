@@ -61,6 +61,7 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "epf-calculator": "DollarSign",
   "nps-calculator": "DollarSign",
   "gratuity-calculator": "DollarSign",
+  "hra-calculator": "Landmark",
   "color-picker": "Palette",
   "hex-to-rgb": "Palette",
   "rgb-to-hex": "Palette",
