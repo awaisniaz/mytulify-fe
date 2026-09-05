@@ -28,6 +28,7 @@ import {
   GratuityCalculator,
   HraCalculator,
   SsyCalculator,
+  ScssCalculator,
 } from "@/components/tools/impl/demand-extra";
 import { DebtPayoffCalculator, InflationCalculator } from "@/components/tools/impl/engaging-suite";
 
@@ -83,4 +84,5 @@ export default makeReg({
   "gratuity-calculator": GratuityCalculator,
   "hra-calculator": HraCalculator,
   "ssy-calculator": SsyCalculator,
+  "scss-calculator": ScssCalculator,
 });

@@ -2569,3 +2569,180 @@ export function SsyCalculator() {
     </div>
   );
 }
+
+/* ------------------------------ SCSS Calculator ---------------------------- */
+/**
+ * Senior Citizen Savings Scheme planning model: lump-sum deposit, interest paid
+ * out quarterly (not compounded into principal), principal returned at maturity.
+ * Tenure is commonly modeled as 5 years (optionally extended).
+ */
+export function scssInterest(
+  principal: number,
+  annualRatePct: number,
+  tenureYears: number,
+): {
+  quarterlyInterest: number;
+  annualInterest: number;
+  totalInterest: number;
+  maturityPrincipal: number;
+  totalPayout: number;
+  quarters: number;
+} {
+  if (!(principal > 0) || !(annualRatePct >= 0) || !(tenureYears > 0)) {
+    return {
+      quarterlyInterest: NaN,
+      annualInterest: NaN,
+      totalInterest: NaN,
+      maturityPrincipal: NaN,
+      totalPayout: NaN,
+      quarters: 0,
+    };
+  }
+  const years = tenureYears;
+  const annualInterest = (principal * annualRatePct) / 100;
+  const quarterlyInterest = annualInterest / 4;
+  const totalInterest = annualInterest * years;
+  const quarters = Math.round(years * 4);
+  return {
+    quarterlyInterest,
+    annualInterest,
+    totalInterest,
+    maturityPrincipal: principal,
+    totalPayout: principal + totalInterest,
+    quarters,
+  };
+}
+
+export function ScssCalculator() {
+  const [principal, setPrincipal] = React.useState("1500000");
+  const [rate, setRate] = React.useState("8.2");
+  const [years, setYears] = React.useState("5");
+  const [months, setMonths] = React.useState("0");
+
+  const p = n(principal);
+  const annual = n(rate);
+  const yParts = Math.max(0, n(years) || 0);
+  const mParts = Math.max(0, Math.min(11, Math.round(n(months) || 0)));
+  const tenureYears = yParts + mParts / 12;
+
+  const valid =
+    Number.isFinite(p) &&
+    p > 0 &&
+    Number.isFinite(annual) &&
+    annual >= 0 &&
+    tenureYears > 0;
+
+  const result = valid
+    ? scssInterest(p, annual, tenureYears)
+    : {
+        quarterlyInterest: NaN,
+        annualInterest: NaN,
+        totalInterest: NaN,
+        maturityPrincipal: NaN,
+        totalPayout: NaN,
+        quarters: 0,
+      };
+
+  let error = "";
+  if (principal.trim() === "" || rate.trim() === "") {
+    error = "Enter deposit amount and interest rate.";
+  } else if (!Number.isFinite(p) || p <= 0) {
+    error = "Deposit amount must be a positive number.";
+  } else if (!Number.isFinite(annual) || annual < 0) {
+    error = "Interest rate cannot be negative.";
+  } else if (tenureYears <= 0) {
+    error = "Set tenure to at least 1 month.";
+  }
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        SCSS interest is typically paid out quarterly (not compounded into the deposit). Eligibility,
+        deposit limits, premature closure, extension rules, and the notified rate can change —
+        confirm with your bank or post office. Not investment or tax advice.
+      </Notice>
+      <Row>
+        <Field
+          label="Deposit amount (lump sum)"
+          hint="One-time SCSS deposit you want to model"
+        >
+          <Input
+            type="number"
+            min={0}
+            value={principal}
+            onChange={(e) => setPrincipal(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(p) || p <= 0))}
+          />
+        </Field>
+        <Field label="Annual interest rate (%)" hint="Enter the current notified SCSS rate">
+          <Input
+            type="number"
+            min={0}
+            step="0.01"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Tenure — years" hint="Standard SCSS tenure is often modeled as 5 years">
+          <Input
+            type="number"
+            min={0}
+            step="1"
+            value={years}
+            onChange={(e) => setYears(e.target.value)}
+            aria-invalid={Boolean(error && tenureYears <= 0)}
+          />
+        </Field>
+        <Field label="Extra months" hint="0–11 (added to years); useful for partial-year models">
+          <Input
+            type="number"
+            min={0}
+            max={11}
+            step="1"
+            value={months}
+            onChange={(e) => setMonths(e.target.value)}
+          />
+        </Field>
+      </Row>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Quarterly interest" value={fmt(result.quarterlyInterest, 0)} />
+            <Stat label="Total interest" value={fmt(result.totalInterest, 0)} />
+            <Stat label="Principal at maturity" value={fmt(result.maturityPrincipal, 0)} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Stat label="Annual interest" value={fmt(result.annualInterest, 0)} />
+            <Stat
+              label="Total payout (principal + interest)"
+              value={fmt(result.totalPayout, 0)}
+            />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Stat
+              label="Tenure"
+              value={
+                mParts > 0
+                  ? `${yParts} yr ${mParts} mo (${fmt(tenureYears, 2)} years)`
+                  : `${yParts} year${yParts === 1 ? "" : "s"}`
+              }
+            />
+            <Stat
+              label="Interest payouts"
+              value={`${result.quarters} quarterly payment${result.quarters === 1 ? "" : "s"} · ${fmt(annual, 2)}% p.a.`}
+            />
+          </div>
+          <Notice tone="info">
+            In the standard SCSS payout model, interest leaves the account each quarter and the
+            deposit principal is returned at maturity — so “principal at maturity” equals your
+            original deposit, while “total payout” adds all interest received over the tenure.
+          </Notice>
+        </>
+      )}
+    </div>
+  );
+}
