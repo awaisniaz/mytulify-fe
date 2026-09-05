@@ -44,6 +44,7 @@
     { "name": "Inflation Calculator", "slug": "inflation-calculator", "description": "See what today’s money will be worth later — or was worth in the past — using a custom inflation rate.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
     { "name": "SIP Calculator", "slug": "sip-calculator", "description": "Estimate mutual fund SIP maturity value, total invested, and returns — with optional annual step-up.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true },
     { "name": "CAGR Calculator", "slug": "cagr-calculator", "description": "Calculate compound annual growth rate from beginning value, ending value, and years.", "searchVolume": "high", "competition": "low", "complexity": "easy", "clientSide": true },
-    { "name": "FD Calculator", "slug": "fd-calculator", "description": "Calculate fixed deposit maturity amount and interest with monthly, quarterly, or yearly compounding.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true }
+    { "name": "FD Calculator", "slug": "fd-calculator", "description": "Calculate fixed deposit maturity amount and interest with monthly, quarterly, or yearly compounding.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true },
+    { "name": "PPF Calculator", "slug": "ppf-calculator", "description": "Estimate Public Provident Fund maturity, total invested, and interest with yearly contributions and compounding.", "searchVolume": "high", "competition": "medium", "complexity": "easy", "clientSide": true }
   ]
 }

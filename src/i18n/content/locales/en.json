@@ -3288,7 +3288,9 @@
         "calculators/cagr-calculator",
         "calculators/compound-interest-calculator",
         "calculators/emi-calculator",
-        "calculators/inflation-calculator"
+        "calculators/inflation-calculator",
+        "calculators/ppf-calculator",
+        "calculators/fd-calculator"
       ]
     },
     "calculators/cagr-calculator": {
@@ -3371,6 +3373,51 @@
         "calculators/compound-interest-calculator",
         "calculators/cagr-calculator",
         "calculators/emi-calculator",
+        "calculators/inflation-calculator",
+        "calculators/ppf-calculator"
+      ]
+    },
+    "calculators/ppf-calculator": {
+      "name": "PPF Calculator",
+      "description": "Estimate Public Provident Fund maturity, total invested, and interest with yearly contributions and compounding.",
+      "metaTitle": "PPF Calculator – Free Public Provident Fund Maturity Tool | Mytulify",
+      "metaDescription": "Free PPF calculator. Estimate Public Provident Fund maturity, total invested, and interest with yearly contributions. Private in your browser — no signup.",
+      "about": [
+        "A PPF (Public Provident Fund) calculator estimates how yearly contributions can grow at a notified annual interest rate with yearly compounding. It shows total invested, interest earned, and projected maturity value.",
+        "Enter yearly contribution, interest rate, tenure (often 15 years), and an optional opening balance. All math runs in your browser on Mytulify — useful for planning, not a substitute for official post office or bank statements."
+      ],
+      "howTo": {
+        "title": "How to use the PPF calculator",
+        "steps": [
+          "Enter your planned yearly PPF contribution and the annual interest rate you want to model.",
+          "Set tenure in years (15 is the standard block; use more for extension scenarios).",
+          "Optionally add an existing opening balance if the account is already open.",
+          "Read total invested, interest earned, and maturity value."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is a PPF calculator?",
+          "a": "A PPF calculator projects the maturity value of a Public Provident Fund account from yearly deposits, an assumed annual rate, and tenure. It helps you plan contributions before you invest."
+        },
+        {
+          "q": "How is PPF maturity calculated?",
+          "a": "This tool applies each year’s contribution at the start of the year, then compounds interest annually: balance = (balance + contribution) × (1 + rate). Opening balance is included if you provide one."
+        },
+        {
+          "q": "What tenure should I use?",
+          "a": "A standard PPF account runs for 15 years and can often be extended in 5-year blocks. Enter the total years you want to model, including any planned extensions."
+        },
+        {
+          "q": "Is this PPF calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/fd-calculator",
+        "calculators/sip-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/cagr-calculator",
         "calculators/inflation-calculator"
       ]
     },

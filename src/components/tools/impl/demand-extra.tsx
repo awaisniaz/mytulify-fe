@@ -844,6 +844,144 @@ export function CagrCalculator() {
   );
 }
 
+/* ------------------------------ PPF Calculator ----------------------------- */
+/**
+ * Public Provident Fund maturity with yearly contributions.
+ * Deposits are applied at the start of each year; interest compounds yearly
+ * (common planning model used by online PPF calculators).
+ */
+export function ppfMaturity(
+  yearlyContribution: number,
+  annualRatePct: number,
+  years: number,
+  openingBalance = 0,
+): { invested: number; maturity: number; interest: number } {
+  if (
+    !(yearlyContribution >= 0) ||
+    !(annualRatePct >= 0) ||
+    !(years > 0) ||
+    !Number.isFinite(openingBalance) ||
+    openingBalance < 0
+  ) {
+    return { invested: NaN, maturity: NaN, interest: NaN };
+  }
+  const r = annualRatePct / 100;
+  const nYears = Math.max(1, Math.round(years));
+  let balance = openingBalance;
+  let contributions = 0;
+  for (let y = 0; y < nYears; y++) {
+    balance += yearlyContribution;
+    contributions += yearlyContribution;
+    balance *= 1 + r;
+  }
+  const invested = openingBalance + contributions;
+  return { invested, maturity: balance, interest: balance - invested };
+}
+
+export function PpfCalculator() {
+  const [yearly, setYearly] = React.useState("150000");
+  const [rate, setRate] = React.useState("7.1");
+  const [years, setYears] = React.useState("15");
+  const [opening, setOpening] = React.useState("0");
+
+  const contribution = n(yearly);
+  const annual = n(rate);
+  const tenure = Math.round(n(years) || 0);
+  const openBal = n(opening) || 0;
+
+  const valid =
+    Number.isFinite(contribution) &&
+    contribution >= 0 &&
+    Number.isFinite(annual) &&
+    annual >= 0 &&
+    tenure > 0 &&
+    Number.isFinite(openBal) &&
+    openBal >= 0 &&
+    (contribution > 0 || openBal > 0);
+
+  const { invested, maturity, interest } = valid
+    ? ppfMaturity(contribution, annual, tenure, openBal)
+    : { invested: NaN, maturity: NaN, interest: NaN };
+
+  let error = "";
+  if (yearly.trim() === "" || rate.trim() === "" || years.trim() === "") {
+    error = "Enter yearly contribution, interest rate, and tenure.";
+  } else if (!Number.isFinite(contribution) || contribution < 0) {
+    error = "Yearly contribution cannot be negative.";
+  } else if (!Number.isFinite(annual) || annual < 0) {
+    error = "Interest rate cannot be negative.";
+  } else if (!(tenure > 0)) {
+    error = "Tenure must be at least 1 year.";
+  } else if (!Number.isFinite(openBal) || openBal < 0) {
+    error = "Opening balance cannot be negative.";
+  } else if (contribution === 0 && openBal === 0) {
+    error = "Enter a yearly contribution or an opening balance greater than zero.";
+  }
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        PPF rules (contribution limits, lock-in, and the notified rate) can change. This tool uses
+        yearly compounding for planning — confirm final maturity with your bank or post office.
+      </Notice>
+      <Row>
+        <Field label="Yearly contribution" hint="Common planning max is ₹1,50,000 per year">
+          <Input
+            type="number"
+            min={0}
+            value={yearly}
+            onChange={(e) => setYearly(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(contribution) || contribution < 0))}
+          />
+        </Field>
+        <Field label="Annual interest rate (%)" hint="Enter the current notified PPF rate">
+          <Input
+            type="number"
+            min={0}
+            step="0.01"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Tenure (years)" hint="Standard PPF block is 15 years; extensions are in 5-year blocks">
+          <Input
+            type="number"
+            min={1}
+            step="1"
+            value={years}
+            onChange={(e) => setYears(e.target.value)}
+          />
+        </Field>
+        <Field label="Opening balance (optional)" hint="Existing PPF balance before new yearly deposits">
+          <Input
+            type="number"
+            min={0}
+            value={opening}
+            onChange={(e) => setOpening(e.target.value)}
+          />
+        </Field>
+      </Row>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Total invested" value={fmt(invested, 0)} />
+            <Stat label="Interest earned" value={fmt(interest, 0)} />
+            <Stat label="Maturity value" value={fmt(maturity, 0)} />
+          </div>
+          <Stat
+            label="Tenure"
+            value={`${tenure} year${tenure === 1 ? "" : "s"} · rate ${fmt(annual, 2)}% p.a.`}
+          />
+        </>
+      )}
+    </div>
+  );
+}
+
 /* ------------------------------ Reading time ------------------------------- */
 export function ReadingTimeCalculator() {
   const [text, setText] = React.useState(
