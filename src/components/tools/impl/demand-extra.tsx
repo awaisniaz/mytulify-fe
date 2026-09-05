@@ -1024,3 +1024,179 @@ export function ReadingTimeCalculator() {
     </div>
   );
 }
+
+/* ------------------------------ SWP Calculator ----------------------------- */
+/**
+ * Systematic Withdrawal Plan: each month the corpus grows at the monthly rate,
+ * then a fixed withdrawal is taken. If balance cannot cover the withdrawal,
+ * the remaining balance is withdrawn and the plan stops.
+ */
+export function swpProjection(
+  corpus: number,
+  monthlyWithdrawal: number,
+  annualRatePct: number,
+  years: number,
+): {
+  totalWithdrawn: number;
+  finalCorpus: number;
+  returnsEarned: number;
+  monthsLasted: number;
+  depleted: boolean;
+} {
+  if (!(corpus > 0) || !(monthlyWithdrawal > 0) || !(annualRatePct >= 0) || !(years > 0)) {
+    return {
+      totalWithdrawn: NaN,
+      finalCorpus: NaN,
+      returnsEarned: NaN,
+      monthsLasted: 0,
+      depleted: false,
+    };
+  }
+  const months = Math.max(1, Math.round(years * 12));
+  const r = annualRatePct / 100 / 12;
+  let balance = corpus;
+  let totalWithdrawn = 0;
+  let monthsLasted = 0;
+  let depleted = false;
+
+  for (let m = 0; m < months; m++) {
+    balance *= 1 + r;
+    if (balance <= 0) {
+      depleted = true;
+      break;
+    }
+    if (balance < monthlyWithdrawal) {
+      totalWithdrawn += balance;
+      balance = 0;
+      monthsLasted = m + 1;
+      depleted = true;
+      break;
+    }
+    balance -= monthlyWithdrawal;
+    totalWithdrawn += monthlyWithdrawal;
+    monthsLasted = m + 1;
+  }
+
+  const returnsEarned = totalWithdrawn + balance - corpus;
+  return { totalWithdrawn, finalCorpus: balance, returnsEarned, monthsLasted, depleted };
+}
+
+export function SwpCalculator() {
+  const [corpus, setCorpus] = React.useState("1000000");
+  const [withdrawal, setWithdrawal] = React.useState("10000");
+  const [rate, setRate] = React.useState("10");
+  const [years, setYears] = React.useState("10");
+
+  const c = n(corpus);
+  const w = n(withdrawal);
+  const annual = n(rate);
+  const y = n(years);
+  const monthsPlanned = Math.max(0, Math.round((Number.isFinite(y) ? y : 0) * 12));
+
+  let error = "";
+  if (corpus.trim() === "" || withdrawal.trim() === "" || rate.trim() === "" || years.trim() === "") {
+    error = "Enter corpus, monthly withdrawal, return rate, and tenure.";
+  } else if (!Number.isFinite(c) || c <= 0) {
+    error = "Initial corpus must be a positive number.";
+  } else if (!Number.isFinite(w) || w <= 0) {
+    error = "Monthly withdrawal must be a positive number.";
+  } else if (!Number.isFinite(annual) || annual < 0) {
+    error = "Expected return cannot be negative.";
+  } else if (!Number.isFinite(y) || y <= 0) {
+    error = "Tenure must be greater than zero.";
+  }
+
+  const result =
+    !error
+      ? swpProjection(c, w, annual, y)
+      : {
+          totalWithdrawn: NaN,
+          finalCorpus: NaN,
+          returnsEarned: NaN,
+          monthsLasted: 0,
+          depleted: false,
+        };
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Estimates assume a constant monthly return before each withdrawal. Actual mutual fund SWP
+        payouts and NAV returns vary — this is a planning tool, not advice.
+      </Notice>
+      <Row>
+        <Field label="Initial investment (corpus)">
+          <Input
+            type="number"
+            min={0}
+            value={corpus}
+            onChange={(e) => setCorpus(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(c) || c <= 0))}
+          />
+        </Field>
+        <Field label="Monthly withdrawal">
+          <Input
+            type="number"
+            min={0}
+            value={withdrawal}
+            onChange={(e) => setWithdrawal(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(w) || w <= 0))}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Expected annual return (%)">
+          <Input
+            type="number"
+            min={0}
+            step="0.1"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+        <Field label="Tenure (years)">
+          <Input
+            type="number"
+            min={0}
+            step="0.5"
+            value={years}
+            onChange={(e) => setYears(e.target.value)}
+          />
+        </Field>
+      </Row>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          {result.depleted && (
+            <Notice tone="error">
+              Corpus would run out after {result.monthsLasted} month
+              {result.monthsLasted === 1 ? "" : "s"}
+              {monthsPlanned > result.monthsLasted
+                ? ` (before the planned ${monthsPlanned} months). Lower the withdrawal or raise the expected return.`
+                : "."}
+            </Notice>
+          )}
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Total withdrawn" value={fmt(result.totalWithdrawn, 0)} />
+            <Stat label="Estimated returns" value={fmt(result.returnsEarned, 0)} />
+            <Stat label="Final corpus" value={fmt(result.finalCorpus, 0)} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Stat
+              label="Months lasted"
+              value={
+                result.depleted
+                  ? `${result.monthsLasted} / ${monthsPlanned}`
+                  : String(monthsPlanned)
+              }
+            />
+            <Stat
+              label="Planned withdrawals"
+              value={`${fmt(w, 0)} × ${monthsPlanned} = ${fmt(w * monthsPlanned, 0)}`}
+            />
+          </div>
+        </>
+      )}
+    </div>
+  );
+}

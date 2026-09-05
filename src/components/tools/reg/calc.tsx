@@ -20,6 +20,7 @@ import {
   CagrCalculator,
   FdCalculator,
   PpfCalculator,
+  SwpCalculator,
 } from "@/components/tools/impl/demand-extra";
 import { DebtPayoffCalculator, InflationCalculator } from "@/components/tools/impl/engaging-suite";
 
@@ -67,4 +68,5 @@ export default makeReg({
   "cagr-calculator": CagrCalculator,
   "fd-calculator": FdCalculator,
   "ppf-calculator": PpfCalculator,
+  "swp-calculator": SwpCalculator,
 });

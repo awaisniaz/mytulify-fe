@@ -3290,7 +3290,8 @@
         "calculators/emi-calculator",
         "calculators/inflation-calculator",
         "calculators/ppf-calculator",
-        "calculators/fd-calculator"
+        "calculators/fd-calculator",
+        "calculators/swp-calculator"
       ]
     },
     "calculators/cagr-calculator": {
@@ -3329,7 +3330,8 @@
         "calculators/sip-calculator",
         "calculators/compound-interest-calculator",
         "calculators/inflation-calculator",
-        "calculators/profit-margin-calculator"
+        "calculators/profit-margin-calculator",
+        "calculators/swp-calculator"
       ]
     },
     "calculators/fd-calculator": {
@@ -3374,7 +3376,8 @@
         "calculators/cagr-calculator",
         "calculators/emi-calculator",
         "calculators/inflation-calculator",
-        "calculators/ppf-calculator"
+        "calculators/ppf-calculator",
+        "calculators/swp-calculator"
       ]
     },
     "calculators/ppf-calculator": {
@@ -3418,6 +3421,52 @@
         "calculators/sip-calculator",
         "calculators/compound-interest-calculator",
         "calculators/cagr-calculator",
+        "calculators/inflation-calculator",
+        "calculators/swp-calculator"
+      ]
+    },
+    "calculators/swp-calculator": {
+      "name": "SWP Calculator",
+      "description": "Estimate Systematic Withdrawal Plan results — total withdrawn, returns earned, and remaining corpus from monthly withdrawals.",
+      "metaTitle": "SWP Calculator – Free Systematic Withdrawal Plan Tool | Mytulify",
+      "metaDescription": "Free SWP calculator for mutual funds. Estimate total withdrawn, returns earned, and remaining corpus from monthly withdrawals. Private, no signup.",
+      "about": [
+        "An SWP (Systematic Withdrawal Plan) calculator estimates how a mutual fund corpus can support fixed monthly withdrawals while the remaining balance continues to earn an assumed return. It shows total withdrawn, estimated returns during the period, and the final corpus.",
+        "Enter your starting investment, monthly withdrawal, expected annual return, and tenure. If withdrawals are too high, the tool shows when the corpus would run out. All math runs in your browser on Mytulify — useful for planning, not a substitute for scheme statements or advice."
+      ],
+      "howTo": {
+        "title": "How to use the SWP calculator",
+        "steps": [
+          "Enter your initial investment (corpus) and the monthly withdrawal amount.",
+          "Set the expected annual return percentage you want to model.",
+          "Choose the tenure in years.",
+          "Read total withdrawn, estimated returns, final corpus, and whether the plan lasts the full period."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an SWP calculator?",
+          "a": "An SWP calculator projects monthly withdrawals from a lump-sum mutual fund investment at an assumed return rate. It helps you see how long the corpus may last and what could remain at the end of the tenure."
+        },
+        {
+          "q": "How is SWP calculated?",
+          "a": "Each month the remaining corpus grows at the monthly equivalent of your expected annual return, then the fixed withdrawal is deducted. Total withdrawn, estimated returns, and final balance are summed over the tenure."
+        },
+        {
+          "q": "How is SWP different from SIP?",
+          "a": "A SIP invests a fixed amount every month into a fund. An SWP does the opposite: you start with a corpus and withdraw a fixed amount every month while the rest stays invested."
+        },
+        {
+          "q": "Is this SWP calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/sip-calculator",
+        "calculators/cagr-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/fd-calculator",
+        "calculators/ppf-calculator",
         "calculators/inflation-calculator"
       ]
     },
