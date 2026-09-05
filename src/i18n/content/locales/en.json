@@ -3426,7 +3426,8 @@
         "calculators/cagr-calculator",
         "calculators/inflation-calculator",
         "calculators/swp-calculator",
-        "calculators/rd-calculator"
+        "calculators/rd-calculator",
+        "calculators/epf-calculator"
       ]
     },
     "calculators/swp-calculator": {
@@ -3565,7 +3566,102 @@
         "calculators/fd-calculator",
         "calculators/swp-calculator",
         "calculators/inflation-calculator",
-        "calculators/ppf-calculator"
+        "calculators/ppf-calculator",
+        "calculators/epf-calculator"
+      ]
+    },
+    "calculators/epf-calculator": {
+      "name": "EPF Calculator",
+      "description": "Estimate Employee Provident Fund maturity, total contributions, and interest from basic salary, contribution rates, and years of service.",
+      "metaTitle": "EPF Calculator – Free Employee Provident Fund Maturity Tool | Mytulify",
+      "metaDescription": "Free EPF calculator. Estimate Employee Provident Fund maturity, employee and employer contributions, and interest from salary, rates, and years of service. Private, no signup.",
+      "about": [
+        "An EPF (Employee Provident Fund) calculator estimates how monthly provident-fund contributions can grow at an assumed annual interest rate over your years of service. It shows employee contributions, employer EPF contributions, interest earned, and projected maturity value.",
+        "Enter monthly EPF wages (often basic + DA), contribution percentages, an interest rate to model, optional salary hike, and an opening balance. Employer mode supports the common 3.67% EPF share (when part of the employer contribution goes to EPS), a full 12% to EPF, or a custom rate. All math runs in your browser on Mytulify — useful for planning, not a substitute for your EPFO / UAN statement."
+      ],
+      "howTo": {
+        "title": "How to use the EPF calculator",
+        "steps": [
+          "Enter your monthly basic salary (EPF wages) and employee contribution percentage (often 12%).",
+          "Choose how employer contribution to EPF is modeled: 3.67% share, full 12%, or a custom percentage.",
+          "Enter the annual interest rate you want to assume, years of service, optional salary hike, and opening balance.",
+          "Read maturity value, interest earned, and total employee vs employer (EPF) contributions."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an EPF calculator?",
+          "a": "An EPF calculator projects the future value of an Employee Provident Fund account from monthly contributions based on salary, contribution rates, an assumed interest rate, and years of service. It helps you plan retirement savings alongside your payslip deductions."
+        },
+        {
+          "q": "Why is employer contribution often 3.67% in this tool?",
+          "a": "Many employers split the employer contribution so that a portion goes to EPS (pension) and the remainder (commonly illustrated as 3.67%) goes to the EPF account. Use “12% to EPF” or Custom if your employer models differently, or if you want a simplified full-12% scenario."
+        },
+        {
+          "q": "How is EPF maturity estimated here?",
+          "a": "Each month, employee and employer EPF deposits are added to the balance. Interest is accrued monthly on the running balance and credited once per year in the model. Optional annual salary hikes raise contribution amounts from year 2 onward."
+        },
+        {
+          "q": "Is this EPF calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/ppf-calculator",
+        "calculators/fd-calculator",
+        "calculators/sip-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/cagr-calculator",
+        "calculators/inflation-calculator",
+        "calculators/salary-calculator",
+        "calculators/rd-calculator"
+      ]
+    },
+    "calculators/nps-calculator": {
+      "name": "NPS Calculator",
+      "description": "Estimate National Pension System corpus at retirement from monthly contributions, expected return, tenure, and optional step-up — with lump-sum vs annuity split.",
+      "metaTitle": "NPS Calculator – Free National Pension System Corpus Tool | Mytulify",
+      "metaDescription": "Free NPS calculator. Estimate National Pension System corpus at retirement, returns, and lump-sum vs annuity split from monthly contributions. Private, no signup.",
+      "about": [
+        "An NPS (National Pension System) calculator estimates how monthly pension contributions can grow at an assumed annual return until retirement. It shows total invested, estimated returns, projected corpus, and an illustrative split between lump-sum withdrawal and annuity purchase.",
+        "Enter monthly contribution (employee + employer if both apply), expected return, current and retirement ages, optional annual step-up, opening balance, and lump-sum percentage. All math runs in your browser on Mytulify — useful for planning, not a substitute for your PRAN statement or advice."
+      ],
+      "howTo": {
+        "title": "How to use the NPS calculator",
+        "steps": [
+          "Enter your monthly NPS contribution and the expected annual return you want to model.",
+          "Set your current age and target retirement age.",
+          "Optionally add annual contribution step-up %, an opening balance, and adjust the lump-sum percentage at retirement.",
+          "Read corpus at retirement, estimated returns, total invested, and the lump-sum vs annuity purchase illustration."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an NPS calculator?",
+          "a": "An NPS calculator projects the future value of National Pension System contributions from regular monthly deposits, an assumed return rate, and years until retirement. It helps you plan how large a retirement corpus might build."
+        },
+        {
+          "q": "How is NPS corpus estimated here?",
+          "a": "Each month’s contribution is compounded forward at the monthly equivalent of your expected annual return. Optional step-up raises the monthly amount each year. An opening balance is grown for the full tenure and added to contribution growth."
+        },
+        {
+          "q": "What do lump-sum and annuity purchase mean?",
+          "a": "At retirement, NPS rules typically require part of the corpus to buy an annuity that pays a pension, while a portion may be taken as a lump sum. This tool lets you set the lump-sum % for planning; verify current exit rules before you act."
+        },
+        {
+          "q": "Is this NPS calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/epf-calculator",
+        "calculators/ppf-calculator",
+        "calculators/sip-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/cagr-calculator",
+        "calculators/inflation-calculator",
+        "calculators/swp-calculator",
+        "calculators/lumpsum-calculator"
       ]
     },
     "text-tools/reading-time-calculator": {

@@ -1475,3 +1475,497 @@ export function LumpsumCalculator() {
     </div>
   );
 }
+
+/* ------------------------------ EPF calculator ----------------------------- */
+export type EpfEmployerMode = "epf-share" | "full-12" | "custom";
+
+/** Planning model: monthly PF deposits, interest accrued monthly, credited yearly. */
+export function epfMaturity(
+  basicMonthly: number,
+  employeePct: number,
+  employerPct: number,
+  annualRatePct: number,
+  years: number,
+  salaryHikePct = 0,
+  openingBalance = 0,
+): {
+  maturity: number;
+  totalEmployee: number;
+  totalEmployer: number;
+  totalContributed: number;
+  interest: number;
+} {
+  if (
+    !(basicMonthly > 0) ||
+    !(employeePct >= 0) ||
+    !(employerPct >= 0) ||
+    !(annualRatePct >= 0) ||
+    !(years > 0) ||
+    !Number.isFinite(salaryHikePct) ||
+    salaryHikePct < 0 ||
+    !Number.isFinite(openingBalance) ||
+    openingBalance < 0
+  ) {
+    return {
+      maturity: NaN,
+      totalEmployee: NaN,
+      totalEmployer: NaN,
+      totalContributed: NaN,
+      interest: NaN,
+    };
+  }
+
+  const nYears = Math.max(1, Math.round(years));
+  const monthlyRate = annualRatePct / 100 / 12;
+  let balance = openingBalance;
+  let totalEmployee = 0;
+  let totalEmployer = 0;
+  let basic = basicMonthly;
+
+  for (let y = 0; y < nYears; y++) {
+    if (y > 0 && salaryHikePct > 0) {
+      basic *= 1 + salaryHikePct / 100;
+    }
+    const emp = basic * (employeePct / 100);
+    const er = basic * (employerPct / 100);
+    let yearInterest = 0;
+    for (let m = 0; m < 12; m++) {
+      balance += emp + er;
+      totalEmployee += emp;
+      totalEmployer += er;
+      yearInterest += balance * monthlyRate;
+    }
+    balance += yearInterest;
+  }
+
+  const totalContributed = totalEmployee + totalEmployer;
+  return {
+    maturity: balance,
+    totalEmployee,
+    totalEmployer,
+    totalContributed,
+    interest: balance - openingBalance - totalContributed,
+  };
+}
+
+export function EpfCalculator() {
+  const [basic, setBasic] = React.useState("50000");
+  const [empPct, setEmpPct] = React.useState("12");
+  const [employerMode, setEmployerMode] = React.useState<EpfEmployerMode>("epf-share");
+  const [customErPct, setCustomErPct] = React.useState("3.67");
+  const [rate, setRate] = React.useState("8.25");
+  const [years, setYears] = React.useState("20");
+  const [hike, setHike] = React.useState("5");
+  const [opening, setOpening] = React.useState("0");
+
+  const basicN = n(basic);
+  const empN = n(empPct);
+  const customErN = n(customErPct);
+  const rateN = n(rate);
+  const yearsN = Math.round(n(years) || 0);
+  const hikeN = n(hike) || 0;
+  const openN = n(opening) || 0;
+
+  const employerPct =
+    employerMode === "full-12" ? 12 : employerMode === "epf-share" ? 3.67 : customErN;
+
+  const valid =
+    Number.isFinite(basicN) &&
+    basicN > 0 &&
+    Number.isFinite(empN) &&
+    empN >= 0 &&
+    Number.isFinite(employerPct) &&
+    employerPct >= 0 &&
+    Number.isFinite(rateN) &&
+    rateN >= 0 &&
+    yearsN > 0 &&
+    Number.isFinite(hikeN) &&
+    hikeN >= 0 &&
+    Number.isFinite(openN) &&
+    openN >= 0;
+
+  const result = valid
+    ? epfMaturity(basicN, empN, employerPct, rateN, yearsN, hikeN, openN)
+    : {
+        maturity: NaN,
+        totalEmployee: NaN,
+        totalEmployer: NaN,
+        totalContributed: NaN,
+        interest: NaN,
+      };
+
+  let error = "";
+  if (basic.trim() === "" || empPct.trim() === "" || rate.trim() === "" || years.trim() === "") {
+    error = "Enter basic salary, contribution rates, interest rate, and years of service.";
+  } else if (!Number.isFinite(basicN) || basicN <= 0) {
+    error = "Monthly basic salary (EPF wages) must be a positive number.";
+  } else if (!Number.isFinite(empN) || empN < 0) {
+    error = "Employee contribution % cannot be negative.";
+  } else if (employerMode === "custom" && (!Number.isFinite(customErN) || customErN < 0)) {
+    error = "Employer EPF contribution % cannot be negative.";
+  } else if (!Number.isFinite(rateN) || rateN < 0) {
+    error = "Interest rate cannot be negative.";
+  } else if (!(yearsN > 0)) {
+    error = "Years of service must be at least 1.";
+  } else if (!Number.isFinite(hikeN) || hikeN < 0) {
+    error = "Annual salary hike % cannot be negative.";
+  } else if (!Number.isFinite(openN) || openN < 0) {
+    error = "Opening EPF balance cannot be negative.";
+  }
+
+  const monthlyEmp = valid ? basicN * (empN / 100) : NaN;
+  const monthlyEr = valid ? basicN * (employerPct / 100) : NaN;
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Planning estimate only. Real EPF interest is notified periodically and credited per EPFO rules;
+        employer EPS vs EPF splits and wage ceilings can differ by employer. Confirm balances on the
+        official EPFO / UAN portal.
+      </Notice>
+      <Row>
+        <Field label="Monthly basic salary (EPF wages)" hint="Often basic + DA used for PF">
+          <Input
+            type="number"
+            min={0}
+            value={basic}
+            onChange={(e) => setBasic(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(basicN) || basicN <= 0))}
+          />
+        </Field>
+        <Field label="Employee contribution (%)" hint="Common default is 12%">
+          <Input
+            type="number"
+            min={0}
+            step="0.01"
+            value={empPct}
+            onChange={(e) => setEmpPct(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Field label="Employer contribution to EPF">
+        <Select
+          value={employerMode}
+          onChange={(e) => setEmployerMode(e.target.value as EpfEmployerMode)}
+        >
+          <option value="epf-share">3.67% to EPF (common when 8.33% goes to EPS)</option>
+          <option value="full-12">12% to EPF (no EPS split modeled)</option>
+          <option value="custom">Custom employer EPF %</option>
+        </Select>
+      </Field>
+      {employerMode === "custom" && (
+        <Field label="Custom employer EPF contribution (%)">
+          <Input
+            type="number"
+            min={0}
+            step="0.01"
+            value={customErPct}
+            onChange={(e) => setCustomErPct(e.target.value)}
+          />
+        </Field>
+      )}
+      <Row>
+        <Field label="Assumed annual interest rate (%)" hint="Enter the rate you want to model">
+          <Input
+            type="number"
+            min={0}
+            step="0.01"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+        <Field label="Years of service">
+          <Input
+            type="number"
+            min={1}
+            step="1"
+            value={years}
+            onChange={(e) => setYears(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Expected annual salary hike (%)" hint="Applied from year 2 onward; use 0 for flat salary">
+          <Input
+            type="number"
+            min={0}
+            step="0.1"
+            value={hike}
+            onChange={(e) => setHike(e.target.value)}
+          />
+        </Field>
+        <Field label="Opening EPF balance (optional)" hint="Existing PF balance before new contributions">
+          <Input
+            type="number"
+            min={0}
+            value={opening}
+            onChange={(e) => setOpening(e.target.value)}
+          />
+        </Field>
+      </Row>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <Stat label="Maturity value" value={fmt(result.maturity, 0)} />
+            <Stat label="Interest earned" value={fmt(result.interest, 0)} />
+            <Stat label="Employee total" value={fmt(result.totalEmployee, 0)} />
+            <Stat label="Employer (EPF) total" value={fmt(result.totalEmployer, 0)} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Total contributed" value={fmt(result.totalContributed, 0)} />
+            <Stat label="Month 1 employee" value={fmt(monthlyEmp, 0)} />
+            <Stat label="Month 1 employer (EPF)" value={fmt(monthlyEr, 0)} />
+          </div>
+          <Stat
+            label="Model"
+            value={`${yearsN} year${yearsN === 1 ? "" : "s"} · emp ${fmt(empN, 2)}% · er ${fmt(employerPct, 2)}% · ${fmt(rateN, 2)}% p.a.`}
+          />
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------ NPS Calculator ----------------------------- */
+/**
+ * National Pension System planning estimate:
+ * grow optional opening corpus + monthly contributions (optional annual step-up)
+ * at an assumed annual return, then split retirement corpus into lump-sum vs annuity illustration.
+ */
+export function npsCorpus(
+  monthly: number,
+  annualRatePct: number,
+  years: number,
+  stepPct: number,
+  opening: number,
+  lumpSumPct: number,
+): {
+  corpus: number;
+  invested: number;
+  returns: number;
+  lumpSum: number;
+  annuityPurchase: number;
+  months: number;
+} {
+  const months = Math.max(0, Math.round(years * 12));
+  if (!(years > 0) || !(annualRatePct >= 0) || !(monthly >= 0) || !(opening >= 0)) {
+    return {
+      corpus: NaN,
+      invested: NaN,
+      returns: NaN,
+      lumpSum: NaN,
+      annuityPurchase: NaN,
+      months: 0,
+    };
+  }
+  const r = annualRatePct / 100 / 12;
+  const step = Math.max(0, stepPct) / 100;
+  const lump = Math.min(100, Math.max(0, lumpSumPct)) / 100;
+
+  let invested = 0;
+  let contribValue = 0;
+  for (let m = 0; m < months; m++) {
+    const yearIndex = Math.floor(m / 12);
+    const payment = monthly * Math.pow(1 + step, yearIndex);
+    invested += payment;
+    const monthsLeft = months - m;
+    if (r === 0) contribValue += payment;
+    else contribValue += payment * Math.pow(1 + r, monthsLeft);
+  }
+
+  const openingGrown =
+    opening <= 0 ? 0 : r === 0 ? opening : opening * Math.pow(1 + r, months);
+  const corpus = contribValue + openingGrown;
+  const totalIn = invested + opening;
+  const returns = corpus - totalIn;
+
+  return {
+    corpus,
+    invested: totalIn,
+    returns,
+    lumpSum: corpus * lump,
+    annuityPurchase: corpus * (1 - lump),
+    months,
+  };
+}
+
+export function NpsCalculator() {
+  const [monthly, setMonthly] = React.useState("10000");
+  const [rate, setRate] = React.useState("10");
+  const [currentAge, setCurrentAge] = React.useState("30");
+  const [retireAge, setRetireAge] = React.useState("60");
+  const [stepUp, setStepUp] = React.useState("5");
+  const [opening, setOpening] = React.useState("0");
+  const [lumpPct, setLumpPct] = React.useState("60");
+
+  const monthlyN = n(monthly);
+  const rateN = n(rate);
+  const ageN = Math.round(n(currentAge) || 0);
+  const retireN = Math.round(n(retireAge) || 0);
+  const stepN = n(stepUp) || 0;
+  const openN = n(opening) || 0;
+  const lumpN = n(lumpPct);
+  const years = retireN - ageN;
+
+  const valid =
+    Number.isFinite(monthlyN) &&
+    monthlyN >= 0 &&
+    Number.isFinite(rateN) &&
+    rateN >= 0 &&
+    ageN > 0 &&
+    retireN > ageN &&
+    Number.isFinite(stepN) &&
+    stepN >= 0 &&
+    Number.isFinite(openN) &&
+    openN >= 0 &&
+    Number.isFinite(lumpN) &&
+    lumpN >= 0 &&
+    lumpN <= 100 &&
+    (monthlyN > 0 || openN > 0);
+
+  const result = valid
+    ? npsCorpus(monthlyN, rateN, years, stepN, openN, lumpN)
+    : {
+        corpus: NaN,
+        invested: NaN,
+        returns: NaN,
+        lumpSum: NaN,
+        annuityPurchase: NaN,
+        months: 0,
+      };
+
+  let error = "";
+  if (
+    monthly.trim() === "" ||
+    rate.trim() === "" ||
+    currentAge.trim() === "" ||
+    retireAge.trim() === "" ||
+    lumpPct.trim() === ""
+  ) {
+    error = "Enter monthly contribution, expected return, ages, and lump-sum %.";
+  } else if (!Number.isFinite(monthlyN) || monthlyN < 0) {
+    error = "Monthly contribution cannot be negative.";
+  } else if (!Number.isFinite(rateN) || rateN < 0) {
+    error = "Expected annual return cannot be negative.";
+  } else if (!(ageN > 0)) {
+    error = "Current age must be a positive number.";
+  } else if (!(retireN > ageN)) {
+    error = "Retirement age must be greater than current age.";
+  } else if (!Number.isFinite(stepN) || stepN < 0) {
+    error = "Annual step-up % cannot be negative.";
+  } else if (!Number.isFinite(openN) || openN < 0) {
+    error = "Opening NPS balance cannot be negative.";
+  } else if (!Number.isFinite(lumpN) || lumpN < 0 || lumpN > 100) {
+    error = "Lump-sum percentage must be between 0 and 100.";
+  } else if (!(monthlyN > 0 || openN > 0)) {
+    error = "Enter a monthly contribution and/or an opening balance.";
+  }
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Planning estimate only. NPS returns depend on fund choice and markets; exit rules,
+        annuity purchase requirements, and tax treatment can change. Confirm details with your
+        PRAN statement and a qualified advisor — this is not investment advice.
+      </Notice>
+      <Row>
+        <Field label="Monthly contribution" hint="Employee + employer total if both contribute">
+          <Input
+            type="number"
+            min={0}
+            value={monthly}
+            onChange={(e) => setMonthly(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(monthlyN) || monthlyN < 0))}
+          />
+        </Field>
+        <Field label="Expected annual return (%)" hint="Blended equity/debt assumption you want to model">
+          <Input
+            type="number"
+            min={0}
+            step="0.1"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Current age">
+          <Input
+            type="number"
+            min={1}
+            step="1"
+            value={currentAge}
+            onChange={(e) => setCurrentAge(e.target.value)}
+          />
+        </Field>
+        <Field label="Retirement age" hint="Common planning ages are 60 or 65">
+          <Input
+            type="number"
+            min={2}
+            step="1"
+            value={retireAge}
+            onChange={(e) => setRetireAge(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Annual contribution step-up (%)" hint="Raise monthly deposit each year; use 0 for flat">
+          <Input
+            type="number"
+            min={0}
+            step="1"
+            value={stepUp}
+            onChange={(e) => setStepUp(e.target.value)}
+          />
+        </Field>
+        <Field label="Opening NPS balance (optional)" hint="Existing corpus before new contributions">
+          <Input
+            type="number"
+            min={0}
+            value={opening}
+            onChange={(e) => setOpening(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Field
+        label="Lump-sum at retirement (%)"
+        hint="Remainder is illustrated as annuity purchase (rules may require a minimum annuity share)"
+      >
+        <Input
+          type="number"
+          min={0}
+          max={100}
+          step="1"
+          value={lumpPct}
+          onChange={(e) => setLumpPct(e.target.value)}
+        />
+      </Field>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <Stat label="Corpus at retirement" value={fmt(result.corpus, 0)} />
+            <Stat label="Estimated returns" value={fmt(result.returns, 0)} />
+            <Stat label="Total invested" value={fmt(result.invested, 0)} />
+            <Stat label="Years to retirement" value={String(years)} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label={`Lump-sum (${fmt(lumpN, 0)}%)`} value={fmt(result.lumpSum, 0)} />
+            <Stat
+              label={`Annuity purchase (${fmt(100 - lumpN, 0)}%)`}
+              value={fmt(result.annuityPurchase, 0)}
+            />
+            <Stat label="Contribution months" value={String(result.months)} />
+          </div>
+          <Stat
+            label="Model"
+            value={`${ageN}→${retireN} · ${fmt(monthlyN, 0)}/mo · step-up ${fmt(stepN, 0)}% · ${fmt(rateN, 2)}% p.a.`}
+          />
+        </>
+      )}
+    </div>
+  );
+}

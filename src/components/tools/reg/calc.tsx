@@ -23,6 +23,8 @@ import {
   SwpCalculator,
   RdCalculator,
   LumpsumCalculator,
+  EpfCalculator,
+  NpsCalculator,
 } from "@/components/tools/impl/demand-extra";
 import { DebtPayoffCalculator, InflationCalculator } from "@/components/tools/impl/engaging-suite";
 
@@ -73,4 +75,6 @@ export default makeReg({
   "swp-calculator": SwpCalculator,
   "rd-calculator": RdCalculator,
   "lumpsum-calculator": LumpsumCalculator,
+  "epf-calculator": EpfCalculator,
+  "nps-calculator": NpsCalculator,
 });
