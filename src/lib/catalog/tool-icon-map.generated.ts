@@ -51,6 +51,8 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "profit-margin-calculator": "DollarSign",
   "debt-payoff-calculator": "DollarSign",
   "inflation-calculator": "TrendingUp",
+  "sip-calculator": "DollarSign",
+  "cagr-calculator": "DollarSign",
   "color-picker": "Palette",
   "hex-to-rgb": "Palette",
   "rgb-to-hex": "Palette",

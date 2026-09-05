@@ -12,7 +12,13 @@ import { RandomNumber } from "@/components/tools/impl/data";
 import {
   AfghanDateConverter, ZakatCalculator, TasbihCounter, SalaryTaxCalculator,
 } from "@/components/tools/impl/asli-gap";
-import { EmiCalculator, VatGstCalculator, ProfitMarginCalculator } from "@/components/tools/impl/demand-extra";
+import {
+  EmiCalculator,
+  VatGstCalculator,
+  ProfitMarginCalculator,
+  SipCalculator,
+  CagrCalculator,
+} from "@/components/tools/impl/demand-extra";
 import { DebtPayoffCalculator, InflationCalculator } from "@/components/tools/impl/engaging-suite";
 
 export default makeReg({
@@ -55,4 +61,6 @@ export default makeReg({
   "profit-margin-calculator": ProfitMarginCalculator,
   "debt-payoff-calculator": DebtPayoffCalculator,
   "inflation-calculator": InflationCalculator,
+  "sip-calculator": SipCalculator,
+  "cagr-calculator": CagrCalculator,
 });

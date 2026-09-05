@@ -3248,6 +3248,88 @@
         "calculators/salary-calculator"
       ]
     },
+    "calculators/sip-calculator": {
+      "name": "SIP Calculator",
+      "description": "Estimate mutual fund SIP maturity value, total invested, and returns — with optional annual step-up.",
+      "metaTitle": "SIP Calculator – Free Mutual Fund SIP Returns Tool | Mytulify",
+      "metaDescription": "Free SIP calculator for mutual funds. Estimate maturity value, total invested, and returns with optional annual step-up. Private, no signup.",
+      "about": [
+        "A SIP (Systematic Investment Plan) calculator estimates how monthly mutual fund investments can grow at an assumed annual return. It shows total invested amount, estimated gains, and projected maturity value.",
+        "Add an optional annual step-up percentage to model raises in your monthly SIP — a common way to grow wealth as income increases. All math runs in your browser on Mytulify."
+      ],
+      "howTo": {
+        "title": "How to use the SIP calculator",
+        "steps": [
+          "Enter your monthly SIP amount and expected annual return percentage.",
+          "Set the investment tenure in years.",
+          "Optionally add an annual step-up % (for example 10% each year).",
+          "Read total invested, estimated returns, and maturity value."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is a SIP calculator?",
+          "a": "A SIP calculator projects the future value of regular monthly investments using a compound-return formula. It helps you plan mutual fund SIPs before you invest."
+        },
+        {
+          "q": "How is SIP maturity calculated?",
+          "a": "For a fixed monthly SIP, FV = P × [((1+r)^n − 1) / r] × (1+r), where P is the monthly amount, r is the monthly rate, and n is the number of months."
+        },
+        {
+          "q": "What does annual step-up mean?",
+          "a": "Step-up increases your monthly SIP by a fixed percent every year (for example 10%). That usually raises the final corpus more than a flat SIP at the same starting amount."
+        },
+        {
+          "q": "Is this SIP calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no uploads."
+        }
+      ],
+      "related": [
+        "calculators/cagr-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/emi-calculator",
+        "calculators/inflation-calculator"
+      ]
+    },
+    "calculators/cagr-calculator": {
+      "name": "CAGR Calculator",
+      "description": "Calculate compound annual growth rate from beginning value, ending value, and years.",
+      "metaTitle": "CAGR Calculator – Free Compound Annual Growth Rate Tool | Mytulify",
+      "metaDescription": "Calculate CAGR from start value, end value, and years. Free compound annual growth rate calculator for investments and business — no signup.",
+      "about": [
+        "CAGR (Compound Annual Growth Rate) is the steady yearly rate that takes a beginning value to an ending value over a set number of years. Investors use it to compare funds, stocks, and business metrics fairly.",
+        "Enter beginning value, ending value, and years to get CAGR plus total gain. Runs privately in your browser on Mytulify."
+      ],
+      "howTo": {
+        "title": "How to calculate CAGR",
+        "steps": [
+          "Enter the beginning (starting) value of the investment or metric.",
+          "Enter the ending value after the period.",
+          "Enter the number of years between those values.",
+          "Read the CAGR percentage and total gain."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is the CAGR formula?",
+          "a": "CAGR = (Ending value ÷ Beginning value)^(1 ÷ years) − 1. Multiply by 100 for a percentage."
+        },
+        {
+          "q": "Does CAGR include extra deposits?",
+          "a": "No. Classic CAGR assumes a single starting amount that grows to an ending amount. For monthly SIPs, use the SIP calculator instead."
+        },
+        {
+          "q": "Is this CAGR calculator free?",
+          "a": "Yes. Free and unlimited on Mytulify with no account required."
+        }
+      ],
+      "related": [
+        "calculators/sip-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/inflation-calculator",
+        "calculators/profit-margin-calculator"
+      ]
+    },
     "text-tools/reading-time-calculator": {
       "name": "Reading Time Calculator",
       "description": "Estimate how long it takes to read any text based on words per minute.",
