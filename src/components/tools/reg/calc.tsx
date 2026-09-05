@@ -25,6 +25,7 @@ import {
   LumpsumCalculator,
   EpfCalculator,
   NpsCalculator,
+  GratuityCalculator,
 } from "@/components/tools/impl/demand-extra";
 import { DebtPayoffCalculator, InflationCalculator } from "@/components/tools/impl/engaging-suite";
 
@@ -77,4 +78,5 @@ export default makeReg({
   "lumpsum-calculator": LumpsumCalculator,
   "epf-calculator": EpfCalculator,
   "nps-calculator": NpsCalculator,
+  "gratuity-calculator": GratuityCalculator,
 });

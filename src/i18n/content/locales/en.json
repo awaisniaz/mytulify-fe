@@ -3664,6 +3664,53 @@
         "calculators/lumpsum-calculator"
       ]
     },
+    "calculators/gratuity-calculator": {
+      "name": "Gratuity Calculator",
+      "description": "Estimate gratuity payout from last drawn salary and years of service using the Payment of Gratuity Act (÷26) or private (÷30) formula — with half-year rounding.",
+      "metaTitle": "Gratuity Calculator – Free Online Gratuity Amount Tool | Mytulify",
+      "metaDescription": "Free gratuity calculator. Estimate payout from last drawn salary (basic + DA) and service years using Act ÷26 or private ÷30 formulas. Private, no signup.",
+      "about": [
+        "A gratuity calculator estimates the lump-sum amount an employer may pay at resignation, retirement, or other qualifying exits, based on last drawn salary and completed years of service. Under the Payment of Gratuity Act illustration, the common formula is (last drawn salary × 15 × service years) ÷ 26.",
+        "Enter basic + dearness allowance, completed years and extra months, choose Act (÷26) or private (÷30) formula, and optionally set a tax-exemption ceiling for illustration. Half-year rounding can treat leftover months greater than 6 as a full year. All math runs in your browser on Mytulify — useful for planning, not payroll, tax, or legal advice."
+      ],
+      "howTo": {
+        "title": "How to use the gratuity calculator",
+        "steps": [
+          "Enter your last drawn monthly salary used for gratuity (typically basic + DA).",
+          "Choose the Payment of Gratuity Act (÷26) formula or a private / non-Act (÷30) illustration.",
+          "Enter completed years and extra months of service, and pick half-year rounding if you want Act-style year counting.",
+          "Optionally set a tax exemption ceiling to see how much of the estimate sits under vs above that limit, then read estimated gratuity and service years used."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is a gratuity calculator?",
+          "a": "A gratuity calculator estimates a retirement or exit lump sum from last drawn salary and years of service using a standard formula. It helps you plan alongside other employment benefits such as EPF."
+        },
+        {
+          "q": "What is the Payment of Gratuity Act formula?",
+          "a": "The widely used Act-style formula is (last drawn salary × 15 × number of years of service) ÷ 26, where salary is typically basic pay plus dearness allowance. Always confirm how your employer defines wages and rounding."
+        },
+        {
+          "q": "When is the ÷30 formula used?",
+          "a": "Some private or non-Act illustrations use the same 15-days-per-year idea with a 30-day month divisor instead of 26. Use that mode only when it matches the policy you are modeling."
+        },
+        {
+          "q": "Is this gratuity calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/epf-calculator",
+        "calculators/nps-calculator",
+        "calculators/ppf-calculator",
+        "calculators/salary-calculator",
+        "calculators/salary-tax-calculator",
+        "calculators/sip-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/inflation-calculator"
+      ]
+    },
     "text-tools/reading-time-calculator": {
       "name": "Reading Time Calculator",
       "description": "Estimate how long it takes to read any text based on words per minute.",
