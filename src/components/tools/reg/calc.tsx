@@ -19,6 +19,10 @@ import {
   SipCalculator,
   CagrCalculator,
   FdCalculator,
+  PpfCalculator,
+  SwpCalculator,
+  RdCalculator,
+  LumpsumCalculator,
 } from "@/components/tools/impl/demand-extra";
 import { DebtPayoffCalculator, InflationCalculator } from "@/components/tools/impl/engaging-suite";
 
@@ -65,4 +69,8 @@ export default makeReg({
   "sip-calculator": SipCalculator,
   "cagr-calculator": CagrCalculator,
   "fd-calculator": FdCalculator,
+  "ppf-calculator": PpfCalculator,
+  "swp-calculator": SwpCalculator,
+  "rd-calculator": RdCalculator,
+  "lumpsum-calculator": LumpsumCalculator,
 });

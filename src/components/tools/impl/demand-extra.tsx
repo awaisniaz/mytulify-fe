@@ -805,6 +805,159 @@ export function FdCalculator() {
   );
 }
 
+/* ------------------------------ RD Calculator ------------------------------ */
+type RdInterestMode = "quarterly" | "simple";
+
+/**
+ * Recurring deposit maturity.
+ * Quarterly: common bank formula M = P × [((1+i)^n − 1) / (1 − (1+i)^(-1/3))]
+ *   where i = annualRate%/400 and n = tenure months ÷ 3.
+ * Simple: Interest = P × n(n+1)/2 × r/(12×100); maturity = deposits + interest.
+ */
+export function rdMaturity(
+  monthlyDeposit: number,
+  annualRatePct: number,
+  tenureMonths: number,
+  mode: RdInterestMode,
+): { maturity: number; interest: number; invested: number } {
+  const invested = monthlyDeposit * tenureMonths;
+  if (!(monthlyDeposit > 0) || !(tenureMonths > 0) || !(annualRatePct >= 0)) {
+    return { maturity: NaN, interest: NaN, invested: NaN };
+  }
+  if (annualRatePct === 0) {
+    return { maturity: invested, interest: 0, invested };
+  }
+
+  if (mode === "simple") {
+    const interest =
+      (monthlyDeposit * tenureMonths * (tenureMonths + 1) * annualRatePct) / (2 * 12 * 100);
+    return { maturity: invested + interest, interest, invested };
+  }
+
+  // Quarterly compounding — tenure should align to whole quarters for the closed form.
+  const quarters = tenureMonths / 3;
+  if (!Number.isFinite(quarters) || quarters <= 0) {
+    return { maturity: NaN, interest: NaN, invested };
+  }
+  const i = annualRatePct / 400;
+  const factor = (Math.pow(1 + i, quarters) - 1) / (1 - Math.pow(1 + i, -1 / 3));
+  const maturity = monthlyDeposit * factor;
+  return { maturity, interest: maturity - invested, invested };
+}
+
+export function RdCalculator() {
+  const [monthly, setMonthly] = React.useState("5000");
+  const [rate, setRate] = React.useState("7");
+  const [years, setYears] = React.useState("3");
+  const [months, setMonths] = React.useState("0");
+  const [mode, setMode] = React.useState<RdInterestMode>("quarterly");
+
+  const p = n(monthly);
+  const annual = n(rate);
+  const yParts = Math.max(0, n(years) || 0);
+  const mParts = Math.max(0, Math.min(11, Math.round(n(months) || 0)));
+  const tenureMonths = Math.round(yParts * 12 + mParts);
+  const valid =
+    Number.isFinite(p) &&
+    p > 0 &&
+    Number.isFinite(annual) &&
+    annual >= 0 &&
+    tenureMonths > 0;
+
+  const quarterlyAligned = mode !== "quarterly" || tenureMonths % 3 === 0;
+  const { maturity, interest, invested } =
+    valid && quarterlyAligned
+      ? rdMaturity(p, annual, tenureMonths, mode)
+      : { maturity: NaN, interest: NaN, invested: NaN };
+
+  let error = "";
+  if (monthly.trim() === "" || rate.trim() === "") error = "Enter monthly deposit and interest rate.";
+  else if (!Number.isFinite(p) || p <= 0) error = "Monthly deposit must be a positive number.";
+  else if (!Number.isFinite(annual) || annual < 0) error = "Interest rate cannot be negative.";
+  else if (tenureMonths <= 0) error = "Set tenure to at least 1 month.";
+  else if (mode === "quarterly" && tenureMonths % 3 !== 0) {
+    error = "Quarterly compounding needs a tenure in whole quarters (multiples of 3 months). Adjust years/months or switch to simple interest.";
+  }
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Bank RD rates and payout rules vary. Quarterly compounding uses the common closed-form RD
+        formula for planning — confirm final maturity with your bank.
+      </Notice>
+      <Row>
+        <Field label="Monthly deposit">
+          <Input
+            type="number"
+            min={0}
+            value={monthly}
+            onChange={(e) => setMonthly(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(p) || p <= 0))}
+          />
+        </Field>
+        <Field label="Annual interest rate (%)">
+          <Input
+            type="number"
+            min={0}
+            step="0.01"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Tenure — years">
+          <Input
+            type="number"
+            min={0}
+            step="1"
+            value={years}
+            onChange={(e) => setYears(e.target.value)}
+          />
+        </Field>
+        <Field label="Extra months" hint="0–11 (added to years)">
+          <Input
+            type="number"
+            min={0}
+            max={11}
+            step="1"
+            value={months}
+            onChange={(e) => setMonths(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Field label="Interest method">
+        <Select value={mode} onChange={(e) => setMode(e.target.value as RdInterestMode)}>
+          <option value="quarterly">Quarterly compounding (common for bank RDs)</option>
+          <option value="simple">Simple interest</option>
+        </Select>
+      </Field>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Maturity amount" value={fmt(maturity, 0)} />
+            <Stat label="Interest earned" value={fmt(interest, 0)} />
+            <Stat label="Total deposited" value={fmt(invested, 0)} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Stat
+              label="Tenure"
+              value={
+                mParts > 0
+                  ? `${yParts} yr ${mParts} mo (${tenureMonths} months)`
+                  : `${yParts} year${yParts === 1 ? "" : "s"} (${tenureMonths} months)`
+              }
+            />
+            <Stat label="Installments" value={tenureMonths} />
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 /* ------------------------------ CAGR Calculator ---------------------------- */
 export function CagrCalculator() {
   const [begin, setBegin] = React.useState("100000");
@@ -840,6 +993,144 @@ export function CagrCalculator() {
         <Stat label="Total gain" value={fmt(totalGain, 0)} />
         <Stat label="Total gain %" value={Number.isFinite(totalGainPct) ? `${fmt(totalGainPct, 2)}%` : "—"} />
       </div>
+    </div>
+  );
+}
+
+/* ------------------------------ PPF Calculator ----------------------------- */
+/**
+ * Public Provident Fund maturity with yearly contributions.
+ * Deposits are applied at the start of each year; interest compounds yearly
+ * (common planning model used by online PPF calculators).
+ */
+export function ppfMaturity(
+  yearlyContribution: number,
+  annualRatePct: number,
+  years: number,
+  openingBalance = 0,
+): { invested: number; maturity: number; interest: number } {
+  if (
+    !(yearlyContribution >= 0) ||
+    !(annualRatePct >= 0) ||
+    !(years > 0) ||
+    !Number.isFinite(openingBalance) ||
+    openingBalance < 0
+  ) {
+    return { invested: NaN, maturity: NaN, interest: NaN };
+  }
+  const r = annualRatePct / 100;
+  const nYears = Math.max(1, Math.round(years));
+  let balance = openingBalance;
+  let contributions = 0;
+  for (let y = 0; y < nYears; y++) {
+    balance += yearlyContribution;
+    contributions += yearlyContribution;
+    balance *= 1 + r;
+  }
+  const invested = openingBalance + contributions;
+  return { invested, maturity: balance, interest: balance - invested };
+}
+
+export function PpfCalculator() {
+  const [yearly, setYearly] = React.useState("150000");
+  const [rate, setRate] = React.useState("7.1");
+  const [years, setYears] = React.useState("15");
+  const [opening, setOpening] = React.useState("0");
+
+  const contribution = n(yearly);
+  const annual = n(rate);
+  const tenure = Math.round(n(years) || 0);
+  const openBal = n(opening) || 0;
+
+  const valid =
+    Number.isFinite(contribution) &&
+    contribution >= 0 &&
+    Number.isFinite(annual) &&
+    annual >= 0 &&
+    tenure > 0 &&
+    Number.isFinite(openBal) &&
+    openBal >= 0 &&
+    (contribution > 0 || openBal > 0);
+
+  const { invested, maturity, interest } = valid
+    ? ppfMaturity(contribution, annual, tenure, openBal)
+    : { invested: NaN, maturity: NaN, interest: NaN };
+
+  let error = "";
+  if (yearly.trim() === "" || rate.trim() === "" || years.trim() === "") {
+    error = "Enter yearly contribution, interest rate, and tenure.";
+  } else if (!Number.isFinite(contribution) || contribution < 0) {
+    error = "Yearly contribution cannot be negative.";
+  } else if (!Number.isFinite(annual) || annual < 0) {
+    error = "Interest rate cannot be negative.";
+  } else if (!(tenure > 0)) {
+    error = "Tenure must be at least 1 year.";
+  } else if (!Number.isFinite(openBal) || openBal < 0) {
+    error = "Opening balance cannot be negative.";
+  } else if (contribution === 0 && openBal === 0) {
+    error = "Enter a yearly contribution or an opening balance greater than zero.";
+  }
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        PPF rules (contribution limits, lock-in, and the notified rate) can change. This tool uses
+        yearly compounding for planning — confirm final maturity with your bank or post office.
+      </Notice>
+      <Row>
+        <Field label="Yearly contribution" hint="Common planning max is ₹1,50,000 per year">
+          <Input
+            type="number"
+            min={0}
+            value={yearly}
+            onChange={(e) => setYearly(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(contribution) || contribution < 0))}
+          />
+        </Field>
+        <Field label="Annual interest rate (%)" hint="Enter the current notified PPF rate">
+          <Input
+            type="number"
+            min={0}
+            step="0.01"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Tenure (years)" hint="Standard PPF block is 15 years; extensions are in 5-year blocks">
+          <Input
+            type="number"
+            min={1}
+            step="1"
+            value={years}
+            onChange={(e) => setYears(e.target.value)}
+          />
+        </Field>
+        <Field label="Opening balance (optional)" hint="Existing PPF balance before new yearly deposits">
+          <Input
+            type="number"
+            min={0}
+            value={opening}
+            onChange={(e) => setOpening(e.target.value)}
+          />
+        </Field>
+      </Row>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Total invested" value={fmt(invested, 0)} />
+            <Stat label="Interest earned" value={fmt(interest, 0)} />
+            <Stat label="Maturity value" value={fmt(maturity, 0)} />
+          </div>
+          <Stat
+            label="Tenure"
+            value={`${tenure} year${tenure === 1 ? "" : "s"} · rate ${fmt(annual, 2)}% p.a.`}
+          />
+        </>
+      )}
     </div>
   );
 }
@@ -883,6 +1174,304 @@ export function ReadingTimeCalculator() {
         rows={2}
         filename="reading-time.txt"
       />
+    </div>
+  );
+}
+
+/* ------------------------------ SWP Calculator ----------------------------- */
+/**
+ * Systematic Withdrawal Plan: each month the corpus grows at the monthly rate,
+ * then a fixed withdrawal is taken. If balance cannot cover the withdrawal,
+ * the remaining balance is withdrawn and the plan stops.
+ */
+export function swpProjection(
+  corpus: number,
+  monthlyWithdrawal: number,
+  annualRatePct: number,
+  years: number,
+): {
+  totalWithdrawn: number;
+  finalCorpus: number;
+  returnsEarned: number;
+  monthsLasted: number;
+  depleted: boolean;
+} {
+  if (!(corpus > 0) || !(monthlyWithdrawal > 0) || !(annualRatePct >= 0) || !(years > 0)) {
+    return {
+      totalWithdrawn: NaN,
+      finalCorpus: NaN,
+      returnsEarned: NaN,
+      monthsLasted: 0,
+      depleted: false,
+    };
+  }
+  const months = Math.max(1, Math.round(years * 12));
+  const r = annualRatePct / 100 / 12;
+  let balance = corpus;
+  let totalWithdrawn = 0;
+  let monthsLasted = 0;
+  let depleted = false;
+
+  for (let m = 0; m < months; m++) {
+    balance *= 1 + r;
+    if (balance <= 0) {
+      depleted = true;
+      break;
+    }
+    if (balance < monthlyWithdrawal) {
+      totalWithdrawn += balance;
+      balance = 0;
+      monthsLasted = m + 1;
+      depleted = true;
+      break;
+    }
+    balance -= monthlyWithdrawal;
+    totalWithdrawn += monthlyWithdrawal;
+    monthsLasted = m + 1;
+  }
+
+  const returnsEarned = totalWithdrawn + balance - corpus;
+  return { totalWithdrawn, finalCorpus: balance, returnsEarned, monthsLasted, depleted };
+}
+
+export function SwpCalculator() {
+  const [corpus, setCorpus] = React.useState("1000000");
+  const [withdrawal, setWithdrawal] = React.useState("10000");
+  const [rate, setRate] = React.useState("10");
+  const [years, setYears] = React.useState("10");
+
+  const c = n(corpus);
+  const w = n(withdrawal);
+  const annual = n(rate);
+  const y = n(years);
+  const monthsPlanned = Math.max(0, Math.round((Number.isFinite(y) ? y : 0) * 12));
+
+  let error = "";
+  if (corpus.trim() === "" || withdrawal.trim() === "" || rate.trim() === "" || years.trim() === "") {
+    error = "Enter corpus, monthly withdrawal, return rate, and tenure.";
+  } else if (!Number.isFinite(c) || c <= 0) {
+    error = "Initial corpus must be a positive number.";
+  } else if (!Number.isFinite(w) || w <= 0) {
+    error = "Monthly withdrawal must be a positive number.";
+  } else if (!Number.isFinite(annual) || annual < 0) {
+    error = "Expected return cannot be negative.";
+  } else if (!Number.isFinite(y) || y <= 0) {
+    error = "Tenure must be greater than zero.";
+  }
+
+  const result =
+    !error
+      ? swpProjection(c, w, annual, y)
+      : {
+          totalWithdrawn: NaN,
+          finalCorpus: NaN,
+          returnsEarned: NaN,
+          monthsLasted: 0,
+          depleted: false,
+        };
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Estimates assume a constant monthly return before each withdrawal. Actual mutual fund SWP
+        payouts and NAV returns vary — this is a planning tool, not advice.
+      </Notice>
+      <Row>
+        <Field label="Initial investment (corpus)">
+          <Input
+            type="number"
+            min={0}
+            value={corpus}
+            onChange={(e) => setCorpus(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(c) || c <= 0))}
+          />
+        </Field>
+        <Field label="Monthly withdrawal">
+          <Input
+            type="number"
+            min={0}
+            value={withdrawal}
+            onChange={(e) => setWithdrawal(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(w) || w <= 0))}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Expected annual return (%)">
+          <Input
+            type="number"
+            min={0}
+            step="0.1"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+        <Field label="Tenure (years)">
+          <Input
+            type="number"
+            min={0}
+            step="0.5"
+            value={years}
+            onChange={(e) => setYears(e.target.value)}
+          />
+        </Field>
+      </Row>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          {result.depleted && (
+            <Notice tone="error">
+              Corpus would run out after {result.monthsLasted} month
+              {result.monthsLasted === 1 ? "" : "s"}
+              {monthsPlanned > result.monthsLasted
+                ? ` (before the planned ${monthsPlanned} months). Lower the withdrawal or raise the expected return.`
+                : "."}
+            </Notice>
+          )}
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Total withdrawn" value={fmt(result.totalWithdrawn, 0)} />
+            <Stat label="Estimated returns" value={fmt(result.returnsEarned, 0)} />
+            <Stat label="Final corpus" value={fmt(result.finalCorpus, 0)} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Stat
+              label="Months lasted"
+              value={
+                result.depleted
+                  ? `${result.monthsLasted} / ${monthsPlanned}`
+                  : String(monthsPlanned)
+              }
+            />
+            <Stat
+              label="Planned withdrawals"
+              value={`${fmt(w, 0)} × ${monthsPlanned} = ${fmt(w * monthsPlanned, 0)}`}
+            />
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+/* --------------------------- Lumpsum Calculator ---------------------------- */
+type LumpsumCompounding = "yearly" | "monthly";
+
+/**
+ * One-time (lumpsum) investment future value.
+ * Yearly: A = P(1+r)^t — common for mutual-fund lumpsum planners.
+ * Monthly: A = P(1+r/12)^(12t) — compounds more frequently at the same annual rate.
+ */
+export function lumpsumMaturity(
+  principal: number,
+  annualRatePct: number,
+  years: number,
+  compounding: LumpsumCompounding = "yearly",
+): { maturity: number; gains: number } {
+  if (!(principal > 0) || !(years > 0) || !(annualRatePct >= 0)) {
+    return { maturity: NaN, gains: NaN };
+  }
+  const r = annualRatePct / 100;
+  if (r === 0) return { maturity: principal, gains: 0 };
+  const maturity =
+    compounding === "monthly"
+      ? principal * Math.pow(1 + r / 12, 12 * years)
+      : principal * Math.pow(1 + r, years);
+  return { maturity, gains: maturity - principal };
+}
+
+export function LumpsumCalculator() {
+  const [principal, setPrincipal] = React.useState("100000");
+  const [rate, setRate] = React.useState("12");
+  const [years, setYears] = React.useState("10");
+  const [months, setMonths] = React.useState("0");
+  const [compounding, setCompounding] = React.useState<LumpsumCompounding>("yearly");
+
+  const p = n(principal);
+  const annual = n(rate);
+  const yParts = Math.max(0, n(years) || 0);
+  const mParts = Math.max(0, Math.min(11, Math.round(n(months) || 0)));
+  const tenureYears = yParts + mParts / 12;
+  const valid =
+    Number.isFinite(p) &&
+    p > 0 &&
+    Number.isFinite(annual) &&
+    annual >= 0 &&
+    tenureYears > 0;
+
+  const result = React.useMemo(
+    () => (valid ? lumpsumMaturity(p, annual, tenureYears, compounding) : { maturity: NaN, gains: NaN }),
+    [valid, p, annual, tenureYears, compounding],
+  );
+
+  const error = !valid
+    ? "Enter a positive investment amount, a non-negative expected return, and a tenure greater than zero."
+    : "";
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Estimates use compound growth at your assumed annual return. Actual mutual fund returns vary — this is a planning tool, not advice.
+      </Notice>
+      <Row>
+        <Field label="Lumpsum investment amount">
+          <Input
+            type="number"
+            min={0}
+            value={principal}
+            onChange={(e) => setPrincipal(e.target.value)}
+            aria-invalid={!!error && !(p > 0)}
+          />
+        </Field>
+        <Field label="Expected annual return (%)">
+          <Input
+            type="number"
+            min={0}
+            step="0.1"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Tenure (years)">
+          <Input
+            type="number"
+            min={0}
+            step="1"
+            value={years}
+            onChange={(e) => setYears(e.target.value)}
+          />
+        </Field>
+        <Field label="Extra months (0–11)" hint="Optional — added to years">
+          <Input
+            type="number"
+            min={0}
+            max={11}
+            step="1"
+            value={months}
+            onChange={(e) => setMonths(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Field label="Compounding">
+        <Select
+          value={compounding}
+          onChange={(e) => setCompounding(e.target.value as LumpsumCompounding)}
+        >
+          <option value="yearly">Yearly (common for MF lumpsum planners)</option>
+          <option value="monthly">Monthly</option>
+        </Select>
+      </Field>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <div className="grid gap-3 sm:grid-cols-3">
+          <Stat label="Total invested" value={fmt(p, 0)} />
+          <Stat label="Estimated returns" value={fmt(result.gains, 0)} />
+          <Stat label="Maturity value" value={fmt(result.maturity, 0)} />
+        </div>
+      )}
     </div>
   );
 }

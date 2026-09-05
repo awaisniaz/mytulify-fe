@@ -3288,7 +3288,12 @@
         "calculators/cagr-calculator",
         "calculators/compound-interest-calculator",
         "calculators/emi-calculator",
-        "calculators/inflation-calculator"
+        "calculators/inflation-calculator",
+        "calculators/ppf-calculator",
+        "calculators/fd-calculator",
+        "calculators/swp-calculator",
+        "calculators/rd-calculator",
+        "calculators/lumpsum-calculator"
       ]
     },
     "calculators/cagr-calculator": {
@@ -3327,7 +3332,8 @@
         "calculators/sip-calculator",
         "calculators/compound-interest-calculator",
         "calculators/inflation-calculator",
-        "calculators/profit-margin-calculator"
+        "calculators/profit-margin-calculator",
+        "calculators/swp-calculator"
       ]
     },
     "calculators/fd-calculator": {
@@ -3371,7 +3377,195 @@
         "calculators/compound-interest-calculator",
         "calculators/cagr-calculator",
         "calculators/emi-calculator",
-        "calculators/inflation-calculator"
+        "calculators/inflation-calculator",
+        "calculators/ppf-calculator",
+        "calculators/swp-calculator",
+        "calculators/rd-calculator"
+      ]
+    },
+    "calculators/ppf-calculator": {
+      "name": "PPF Calculator",
+      "description": "Estimate Public Provident Fund maturity, total invested, and interest with yearly contributions and compounding.",
+      "metaTitle": "PPF Calculator – Free Public Provident Fund Maturity Tool | Mytulify",
+      "metaDescription": "Free PPF calculator. Estimate Public Provident Fund maturity, total invested, and interest with yearly contributions. Private in your browser — no signup.",
+      "about": [
+        "A PPF (Public Provident Fund) calculator estimates how yearly contributions can grow at a notified annual interest rate with yearly compounding. It shows total invested, interest earned, and projected maturity value.",
+        "Enter yearly contribution, interest rate, tenure (often 15 years), and an optional opening balance. All math runs in your browser on Mytulify — useful for planning, not a substitute for official post office or bank statements."
+      ],
+      "howTo": {
+        "title": "How to use the PPF calculator",
+        "steps": [
+          "Enter your planned yearly PPF contribution and the annual interest rate you want to model.",
+          "Set tenure in years (15 is the standard block; use more for extension scenarios).",
+          "Optionally add an existing opening balance if the account is already open.",
+          "Read total invested, interest earned, and maturity value."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is a PPF calculator?",
+          "a": "A PPF calculator projects the maturity value of a Public Provident Fund account from yearly deposits, an assumed annual rate, and tenure. It helps you plan contributions before you invest."
+        },
+        {
+          "q": "How is PPF maturity calculated?",
+          "a": "This tool applies each year’s contribution at the start of the year, then compounds interest annually: balance = (balance + contribution) × (1 + rate). Opening balance is included if you provide one."
+        },
+        {
+          "q": "What tenure should I use?",
+          "a": "A standard PPF account runs for 15 years and can often be extended in 5-year blocks. Enter the total years you want to model, including any planned extensions."
+        },
+        {
+          "q": "Is this PPF calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/fd-calculator",
+        "calculators/sip-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/cagr-calculator",
+        "calculators/inflation-calculator",
+        "calculators/swp-calculator",
+        "calculators/rd-calculator"
+      ]
+    },
+    "calculators/swp-calculator": {
+      "name": "SWP Calculator",
+      "description": "Estimate Systematic Withdrawal Plan results — total withdrawn, returns earned, and remaining corpus from monthly withdrawals.",
+      "metaTitle": "SWP Calculator – Free Systematic Withdrawal Plan Tool | Mytulify",
+      "metaDescription": "Free SWP calculator for mutual funds. Estimate total withdrawn, returns earned, and remaining corpus from monthly withdrawals. Private, no signup.",
+      "about": [
+        "An SWP (Systematic Withdrawal Plan) calculator estimates how a mutual fund corpus can support fixed monthly withdrawals while the remaining balance continues to earn an assumed return. It shows total withdrawn, estimated returns during the period, and the final corpus.",
+        "Enter your starting investment, monthly withdrawal, expected annual return, and tenure. If withdrawals are too high, the tool shows when the corpus would run out. All math runs in your browser on Mytulify — useful for planning, not a substitute for scheme statements or advice."
+      ],
+      "howTo": {
+        "title": "How to use the SWP calculator",
+        "steps": [
+          "Enter your initial investment (corpus) and the monthly withdrawal amount.",
+          "Set the expected annual return percentage you want to model.",
+          "Choose the tenure in years.",
+          "Read total withdrawn, estimated returns, final corpus, and whether the plan lasts the full period."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an SWP calculator?",
+          "a": "An SWP calculator projects monthly withdrawals from a lump-sum mutual fund investment at an assumed return rate. It helps you see how long the corpus may last and what could remain at the end of the tenure."
+        },
+        {
+          "q": "How is SWP calculated?",
+          "a": "Each month the remaining corpus grows at the monthly equivalent of your expected annual return, then the fixed withdrawal is deducted. Total withdrawn, estimated returns, and final balance are summed over the tenure."
+        },
+        {
+          "q": "How is SWP different from SIP?",
+          "a": "A SIP invests a fixed amount every month into a fund. An SWP does the opposite: you start with a corpus and withdraw a fixed amount every month while the rest stays invested."
+        },
+        {
+          "q": "Is this SWP calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/sip-calculator",
+        "calculators/cagr-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/fd-calculator",
+        "calculators/ppf-calculator",
+        "calculators/inflation-calculator",
+        "calculators/rd-calculator"
+      ]
+    },
+    "calculators/rd-calculator": {
+      "name": "RD Calculator",
+      "description": "Calculate recurring deposit maturity amount and interest from monthly installments, rate, and tenure — with quarterly compounding or simple interest.",
+      "metaTitle": "RD Calculator – Free Recurring Deposit Maturity Tool | Mytulify",
+      "metaDescription": "Free RD calculator for recurring deposits. Estimate maturity amount, interest earned, and total deposited with quarterly compounding or simple interest. Private, no signup.",
+      "about": [
+        "An RD (recurring deposit) calculator estimates how monthly bank deposits can grow at a stated annual interest rate over a fixed tenure. It shows total deposited, interest earned, and projected maturity value.",
+        "Choose quarterly compounding (common for bank RDs) or simple interest. Enter monthly installment, rate, and tenure in years and months. All math runs in your browser on Mytulify — useful for planning, not a substitute for your bank’s official quote."
+      ],
+      "howTo": {
+        "title": "How to use the RD calculator",
+        "steps": [
+          "Enter your monthly deposit amount and the annual interest rate offered by your bank.",
+          "Set the tenure in years and optional extra months (0–11).",
+          "Choose quarterly compounding (typical for bank RDs) or simple interest.",
+          "Read maturity amount, interest earned, and total deposited."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an RD calculator?",
+          "a": "An RD calculator projects the maturity value of a recurring deposit from monthly installments, an annual interest rate, and tenure. It helps you compare bank RD offers before you lock in a plan."
+        },
+        {
+          "q": "How is RD maturity calculated?",
+          "a": "For quarterly compounding, banks commonly use M = P × [((1+i)^n − 1) / (1 − (1+i)^(-1/3))], where P is the monthly deposit, i is the quarterly rate (annual % ÷ 400), and n is the number of quarters. Simple interest uses Interest = P × n(n+1)/2 × r/(12×100)."
+        },
+        {
+          "q": "Why must tenure be a multiple of 3 months for quarterly mode?",
+          "a": "The standard closed-form RD formula counts whole quarters. If your tenure is not a multiple of 3 months, adjust the tenure or switch to simple interest for a rough estimate."
+        },
+        {
+          "q": "Is this RD calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/fd-calculator",
+        "calculators/sip-calculator",
+        "calculators/ppf-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/cagr-calculator",
+        "calculators/swp-calculator",
+        "calculators/inflation-calculator",
+        "calculators/lumpsum-calculator"
+      ]
+    },
+    "calculators/lumpsum-calculator": {
+      "name": "Lumpsum Calculator",
+      "description": "Estimate mutual fund lumpsum maturity value, total invested, and returns from a one-time investment, expected return, and tenure.",
+      "metaTitle": "Lumpsum Calculator – Free Mutual Fund One-Time Investment Tool | Mytulify",
+      "metaDescription": "Free lumpsum calculator for mutual funds. Estimate maturity value and returns from a one-time investment, expected annual return, and tenure. Private, no signup.",
+      "about": [
+        "A lumpsum calculator estimates how a one-time mutual fund investment can grow at an assumed annual return over a set tenure. It shows the amount invested, estimated gains, and projected maturity value.",
+        "Choose yearly compounding (common for mutual-fund planners) or monthly compounding. Enter the investment amount, expected return, and tenure in years plus optional months. All math runs in your browser on Mytulify — useful for planning, not investment advice."
+      ],
+      "howTo": {
+        "title": "How to use the lumpsum calculator",
+        "steps": [
+          "Enter your one-time (lumpsum) investment amount and expected annual return percentage.",
+          "Set the tenure in years and optional extra months (0–11).",
+          "Choose yearly or monthly compounding.",
+          "Read total invested, estimated returns, and maturity value."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is a lumpsum calculator?",
+          "a": "A lumpsum calculator projects the future value of a single one-time investment using a compound-return formula. It helps you plan mutual fund lumpsum investments before you invest."
+        },
+        {
+          "q": "How is lumpsum maturity calculated?",
+          "a": "With yearly compounding, maturity = P × (1 + r)^t, where P is the investment amount, r is the annual rate as a decimal, and t is tenure in years. Monthly compounding uses P × (1 + r/12)^(12t)."
+        },
+        {
+          "q": "Lumpsum vs SIP — which should I model?",
+          "a": "Use a lumpsum calculator when you invest a large amount once. Use a SIP calculator when you invest a fixed amount every month. Many people compare both for the same goal and tenure."
+        },
+        {
+          "q": "Is this lumpsum calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no uploads."
+        }
+      ],
+      "related": [
+        "calculators/sip-calculator",
+        "calculators/cagr-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/fd-calculator",
+        "calculators/swp-calculator",
+        "calculators/inflation-calculator",
+        "calculators/ppf-calculator"
       ]
     },
     "text-tools/reading-time-calculator": {
