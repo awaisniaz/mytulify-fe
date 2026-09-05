@@ -1475,3 +1475,255 @@ export function LumpsumCalculator() {
     </div>
   );
 }
+
+/* ------------------------------ EPF calculator ----------------------------- */
+export type EpfEmployerMode = "epf-share" | "full-12" | "custom";
+
+/** Planning model: monthly PF deposits, interest accrued monthly, credited yearly. */
+export function epfMaturity(
+  basicMonthly: number,
+  employeePct: number,
+  employerPct: number,
+  annualRatePct: number,
+  years: number,
+  salaryHikePct = 0,
+  openingBalance = 0,
+): {
+  maturity: number;
+  totalEmployee: number;
+  totalEmployer: number;
+  totalContributed: number;
+  interest: number;
+} {
+  if (
+    !(basicMonthly > 0) ||
+    !(employeePct >= 0) ||
+    !(employerPct >= 0) ||
+    !(annualRatePct >= 0) ||
+    !(years > 0) ||
+    !Number.isFinite(salaryHikePct) ||
+    salaryHikePct < 0 ||
+    !Number.isFinite(openingBalance) ||
+    openingBalance < 0
+  ) {
+    return {
+      maturity: NaN,
+      totalEmployee: NaN,
+      totalEmployer: NaN,
+      totalContributed: NaN,
+      interest: NaN,
+    };
+  }
+
+  const nYears = Math.max(1, Math.round(years));
+  const monthlyRate = annualRatePct / 100 / 12;
+  let balance = openingBalance;
+  let totalEmployee = 0;
+  let totalEmployer = 0;
+  let basic = basicMonthly;
+
+  for (let y = 0; y < nYears; y++) {
+    if (y > 0 && salaryHikePct > 0) {
+      basic *= 1 + salaryHikePct / 100;
+    }
+    const emp = basic * (employeePct / 100);
+    const er = basic * (employerPct / 100);
+    let yearInterest = 0;
+    for (let m = 0; m < 12; m++) {
+      balance += emp + er;
+      totalEmployee += emp;
+      totalEmployer += er;
+      yearInterest += balance * monthlyRate;
+    }
+    balance += yearInterest;
+  }
+
+  const totalContributed = totalEmployee + totalEmployer;
+  return {
+    maturity: balance,
+    totalEmployee,
+    totalEmployer,
+    totalContributed,
+    interest: balance - openingBalance - totalContributed,
+  };
+}
+
+export function EpfCalculator() {
+  const [basic, setBasic] = React.useState("50000");
+  const [empPct, setEmpPct] = React.useState("12");
+  const [employerMode, setEmployerMode] = React.useState<EpfEmployerMode>("epf-share");
+  const [customErPct, setCustomErPct] = React.useState("3.67");
+  const [rate, setRate] = React.useState("8.25");
+  const [years, setYears] = React.useState("20");
+  const [hike, setHike] = React.useState("5");
+  const [opening, setOpening] = React.useState("0");
+
+  const basicN = n(basic);
+  const empN = n(empPct);
+  const customErN = n(customErPct);
+  const rateN = n(rate);
+  const yearsN = Math.round(n(years) || 0);
+  const hikeN = n(hike) || 0;
+  const openN = n(opening) || 0;
+
+  const employerPct =
+    employerMode === "full-12" ? 12 : employerMode === "epf-share" ? 3.67 : customErN;
+
+  const valid =
+    Number.isFinite(basicN) &&
+    basicN > 0 &&
+    Number.isFinite(empN) &&
+    empN >= 0 &&
+    Number.isFinite(employerPct) &&
+    employerPct >= 0 &&
+    Number.isFinite(rateN) &&
+    rateN >= 0 &&
+    yearsN > 0 &&
+    Number.isFinite(hikeN) &&
+    hikeN >= 0 &&
+    Number.isFinite(openN) &&
+    openN >= 0;
+
+  const result = valid
+    ? epfMaturity(basicN, empN, employerPct, rateN, yearsN, hikeN, openN)
+    : {
+        maturity: NaN,
+        totalEmployee: NaN,
+        totalEmployer: NaN,
+        totalContributed: NaN,
+        interest: NaN,
+      };
+
+  let error = "";
+  if (basic.trim() === "" || empPct.trim() === "" || rate.trim() === "" || years.trim() === "") {
+    error = "Enter basic salary, contribution rates, interest rate, and years of service.";
+  } else if (!Number.isFinite(basicN) || basicN <= 0) {
+    error = "Monthly basic salary (EPF wages) must be a positive number.";
+  } else if (!Number.isFinite(empN) || empN < 0) {
+    error = "Employee contribution % cannot be negative.";
+  } else if (employerMode === "custom" && (!Number.isFinite(customErN) || customErN < 0)) {
+    error = "Employer EPF contribution % cannot be negative.";
+  } else if (!Number.isFinite(rateN) || rateN < 0) {
+    error = "Interest rate cannot be negative.";
+  } else if (!(yearsN > 0)) {
+    error = "Years of service must be at least 1.";
+  } else if (!Number.isFinite(hikeN) || hikeN < 0) {
+    error = "Annual salary hike % cannot be negative.";
+  } else if (!Number.isFinite(openN) || openN < 0) {
+    error = "Opening EPF balance cannot be negative.";
+  }
+
+  const monthlyEmp = valid ? basicN * (empN / 100) : NaN;
+  const monthlyEr = valid ? basicN * (employerPct / 100) : NaN;
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Planning estimate only. Real EPF interest is notified periodically and credited per EPFO rules;
+        employer EPS vs EPF splits and wage ceilings can differ by employer. Confirm balances on the
+        official EPFO / UAN portal.
+      </Notice>
+      <Row>
+        <Field label="Monthly basic salary (EPF wages)" hint="Often basic + DA used for PF">
+          <Input
+            type="number"
+            min={0}
+            value={basic}
+            onChange={(e) => setBasic(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(basicN) || basicN <= 0))}
+          />
+        </Field>
+        <Field label="Employee contribution (%)" hint="Common default is 12%">
+          <Input
+            type="number"
+            min={0}
+            step="0.01"
+            value={empPct}
+            onChange={(e) => setEmpPct(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Field label="Employer contribution to EPF">
+        <Select
+          value={employerMode}
+          onChange={(e) => setEmployerMode(e.target.value as EpfEmployerMode)}
+        >
+          <option value="epf-share">3.67% to EPF (common when 8.33% goes to EPS)</option>
+          <option value="full-12">12% to EPF (no EPS split modeled)</option>
+          <option value="custom">Custom employer EPF %</option>
+        </Select>
+      </Field>
+      {employerMode === "custom" && (
+        <Field label="Custom employer EPF contribution (%)">
+          <Input
+            type="number"
+            min={0}
+            step="0.01"
+            value={customErPct}
+            onChange={(e) => setCustomErPct(e.target.value)}
+          />
+        </Field>
+      )}
+      <Row>
+        <Field label="Assumed annual interest rate (%)" hint="Enter the rate you want to model">
+          <Input
+            type="number"
+            min={0}
+            step="0.01"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+        <Field label="Years of service">
+          <Input
+            type="number"
+            min={1}
+            step="1"
+            value={years}
+            onChange={(e) => setYears(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Expected annual salary hike (%)" hint="Applied from year 2 onward; use 0 for flat salary">
+          <Input
+            type="number"
+            min={0}
+            step="0.1"
+            value={hike}
+            onChange={(e) => setHike(e.target.value)}
+          />
+        </Field>
+        <Field label="Opening EPF balance (optional)" hint="Existing PF balance before new contributions">
+          <Input
+            type="number"
+            min={0}
+            value={opening}
+            onChange={(e) => setOpening(e.target.value)}
+          />
+        </Field>
+      </Row>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <Stat label="Maturity value" value={fmt(result.maturity, 0)} />
+            <Stat label="Interest earned" value={fmt(result.interest, 0)} />
+            <Stat label="Employee total" value={fmt(result.totalEmployee, 0)} />
+            <Stat label="Employer (EPF) total" value={fmt(result.totalEmployer, 0)} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Total contributed" value={fmt(result.totalContributed, 0)} />
+            <Stat label="Month 1 employee" value={fmt(monthlyEmp, 0)} />
+            <Stat label="Month 1 employer (EPF)" value={fmt(monthlyEr, 0)} />
+          </div>
+          <Stat
+            label="Model"
+            value={`${yearsN} year${yearsN === 1 ? "" : "s"} · emp ${fmt(empN, 2)}% · er ${fmt(employerPct, 2)}% · ${fmt(rateN, 2)}% p.a.`}
+          />
+        </>
+      )}
+    </div>
+  );
+}
