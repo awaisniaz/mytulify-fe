@@ -1969,3 +1969,406 @@ export function NpsCalculator() {
     </div>
   );
 }
+
+/* ------------------------------ Gratuity Calculator ------------------------ */
+export type GratuityFormula = "act-26" | "private-30";
+
+/**
+ * Indian gratuity planning estimate.
+ * Act formula: (last drawn salary × 15 × service years) / 26
+ * Private / non-Act illustration: same numerator with ÷30
+ * Half-year rounding: leftover months strictly greater than 6 count as a full year.
+ */
+export function gratuityAmount(
+  lastSalary: number,
+  years: number,
+  months: number,
+  formula: GratuityFormula,
+  roundHalfYear: boolean,
+): {
+  gratuity: number;
+  serviceYears: number;
+  divisor: number;
+  dailyWage: number;
+} {
+  if (!(lastSalary > 0) || years < 0 || months < 0 || months >= 12) {
+    return { gratuity: NaN, serviceYears: NaN, divisor: formula === "act-26" ? 26 : 30, dailyWage: NaN };
+  }
+  const totalMonths = Math.round(years) * 12 + Math.round(months);
+  let serviceYears: number;
+  if (roundHalfYear) {
+    const completed = Math.floor(totalMonths / 12);
+    const rem = totalMonths % 12;
+    serviceYears = rem > 6 ? completed + 1 : completed;
+  } else {
+    serviceYears = totalMonths / 12;
+  }
+  const divisor = formula === "act-26" ? 26 : 30;
+  const dailyWage = lastSalary / divisor;
+  const gratuity = dailyWage * 15 * serviceYears;
+  return { gratuity, serviceYears, divisor, dailyWage };
+}
+
+export function GratuityCalculator() {
+  const [salary, setSalary] = React.useState("50000");
+  const [years, setYears] = React.useState("10");
+  const [months, setMonths] = React.useState("0");
+  const [formula, setFormula] = React.useState<GratuityFormula>("act-26");
+  const [roundHalf, setRoundHalf] = React.useState(true);
+  const [exemptCap, setExemptCap] = React.useState("2000000");
+
+  const salaryN = n(salary);
+  const yearsN = Math.round(n(years) || 0);
+  const monthsN = Math.round(n(months) || 0);
+  const capN = n(exemptCap);
+
+  const valid =
+    Number.isFinite(salaryN) &&
+    salaryN > 0 &&
+    yearsN >= 0 &&
+    monthsN >= 0 &&
+    monthsN < 12 &&
+    (yearsN > 0 || monthsN > 0) &&
+    Number.isFinite(capN) &&
+    capN >= 0;
+
+  const result = valid
+    ? gratuityAmount(salaryN, yearsN, monthsN, formula, roundHalf)
+    : { gratuity: NaN, serviceYears: NaN, divisor: formula === "act-26" ? 26 : 30, dailyWage: NaN };
+
+  const taxableIllustration =
+    valid && Number.isFinite(result.gratuity)
+      ? Math.max(0, result.gratuity - capN)
+      : NaN;
+  const exemptIllustration =
+    valid && Number.isFinite(result.gratuity) ? Math.min(result.gratuity, capN) : NaN;
+  const eligibleHint = valid && result.serviceYears >= 5;
+
+  let error = "";
+  if (salary.trim() === "" || years.trim() === "") {
+    error = "Enter last drawn salary and years of service.";
+  } else if (!Number.isFinite(salaryN) || salaryN <= 0) {
+    error = "Last drawn salary (basic + DA) must be a positive number.";
+  } else if (!(yearsN >= 0) || !Number.isFinite(yearsN)) {
+    error = "Completed years of service cannot be negative.";
+  } else if (!(monthsN >= 0 && monthsN < 12)) {
+    error = "Extra months must be between 0 and 11.";
+  } else if (!(yearsN > 0 || monthsN > 0)) {
+    error = "Enter at least some service tenure (years and/or months).";
+  } else if (!Number.isFinite(capN) || capN < 0) {
+    error = "Tax exemption ceiling cannot be negative.";
+  }
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Planning estimate only. Eligibility, rounding, and tax treatment depend on whether the Payment
+        of Gratuity Act applies to your employer and on current law. Confirm with payroll / HR and a
+        qualified advisor — this is not tax or legal advice.
+      </Notice>
+      <Row>
+        <Field label="Last drawn salary (basic + DA)" hint="Monthly wages used for gratuity">
+          <Input
+            type="number"
+            min={0}
+            value={salary}
+            onChange={(e) => setSalary(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(salaryN) || salaryN <= 0))}
+          />
+        </Field>
+        <Field label="Formula">
+          <Select
+            value={formula}
+            onChange={(e) => setFormula(e.target.value as GratuityFormula)}
+            aria-label="Gratuity formula"
+          >
+            <option value="act-26">Payment of Gratuity Act (÷26)</option>
+            <option value="private-30">Private / non-Act illustration (÷30)</option>
+          </Select>
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Completed years of service">
+          <Input
+            type="number"
+            min={0}
+            step="1"
+            value={years}
+            onChange={(e) => setYears(e.target.value)}
+          />
+        </Field>
+        <Field label="Extra months" hint="0–11; used with half-year rounding">
+          <Input
+            type="number"
+            min={0}
+            max={11}
+            step="1"
+            value={months}
+            onChange={(e) => setMonths(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Field label="Service year rounding">
+        <Select
+          value={roundHalf ? "half" : "exact"}
+          onChange={(e) => setRoundHalf(e.target.value === "half")}
+          aria-label="Service year rounding"
+        >
+          <option value="half">Round up when leftover months &gt; 6 (common Act-style)</option>
+          <option value="exact">Use exact years including fractional months</option>
+        </Select>
+      </Field>
+      <Field
+        label="Tax exemption ceiling (optional)"
+        hint="Illustration only — enter the exemption limit you are modeling; leave high to ignore"
+      >
+        <Input
+          type="number"
+          min={0}
+          value={exemptCap}
+          onChange={(e) => setExemptCap(e.target.value)}
+        />
+      </Field>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          {!eligibleHint && (
+            <Notice tone="info">
+              Many Act-covered cases require about 5 years of continuous service for gratuity on
+              resignation/retirement (exceptions can apply for death or disablement). Your modeled
+              service years are below 5 — treat the amount as a formula illustration only.
+            </Notice>
+          )}
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <Stat label="Estimated gratuity" value={fmt(result.gratuity, 0)} />
+            <Stat label="Service years used" value={fmt(result.serviceYears, roundHalf ? 0 : 2)} />
+            <Stat label={`Daily wage (÷${result.divisor})`} value={fmt(result.dailyWage, 2)} />
+            <Stat label="15 days × years" value={fmt(15 * result.serviceYears, roundHalf ? 0 : 2)} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Exempt (vs your ceiling)" value={fmt(exemptIllustration, 0)} />
+            <Stat label="Above ceiling (illustration)" value={fmt(taxableIllustration, 0)} />
+            <Stat
+              label="Model"
+              value={`${fmt(salaryN, 0)} · ${yearsN}y ${monthsN}m · ÷${result.divisor}`}
+            />
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------ HRA calculator ------------------------------ */
+
+export type HraCityType = "metro" | "non-metro";
+export type HraPeriod = "monthly" | "yearly";
+
+export function hraExemption(input: {
+  basic: number;
+  da: number;
+  hraReceived: number;
+  rentPaid: number;
+  city: HraCityType;
+}): {
+  salaryForHra: number;
+  limitActualHra: number;
+  limitRentMinus10: number;
+  limitCityPercent: number;
+  cityPercent: number;
+  exempt: number;
+  taxable: number;
+  bindingLimit: "actual-hra" | "rent-minus-10" | "city-percent";
+} {
+  const { basic, da, hraReceived, rentPaid, city } = input;
+  const salaryForHra = basic + da;
+  const cityPercent = city === "metro" ? 0.5 : 0.4;
+  const limitActualHra = Math.max(0, hraReceived);
+  const limitRentMinus10 = Math.max(0, rentPaid - 0.1 * salaryForHra);
+  const limitCityPercent = Math.max(0, cityPercent * salaryForHra);
+  const exempt = Math.min(limitActualHra, limitRentMinus10, limitCityPercent);
+  const taxable = Math.max(0, hraReceived - exempt);
+
+  let bindingLimit: "actual-hra" | "rent-minus-10" | "city-percent" = "actual-hra";
+  if (exempt === limitRentMinus10 && limitRentMinus10 <= limitActualHra && limitRentMinus10 <= limitCityPercent) {
+    bindingLimit = "rent-minus-10";
+  } else if (
+    exempt === limitCityPercent &&
+    limitCityPercent <= limitActualHra &&
+    limitCityPercent <= limitRentMinus10
+  ) {
+    bindingLimit = "city-percent";
+  } else {
+    bindingLimit = "actual-hra";
+  }
+
+  return {
+    salaryForHra,
+    limitActualHra,
+    limitRentMinus10,
+    limitCityPercent,
+    cityPercent,
+    exempt,
+    taxable,
+    bindingLimit,
+  };
+}
+
+export function HraCalculator() {
+  const [period, setPeriod] = React.useState<HraPeriod>("monthly");
+  const [basic, setBasic] = React.useState("50000");
+  const [da, setDa] = React.useState("5000");
+  const [hraReceived, setHraReceived] = React.useState("20000");
+  const [rentPaid, setRentPaid] = React.useState("25000");
+  const [city, setCity] = React.useState<HraCityType>("metro");
+
+  const basicN = n(basic);
+  const daN = n(da);
+  const hraN = n(hraReceived);
+  const rentN = n(rentPaid);
+
+  const valid =
+    Number.isFinite(basicN) &&
+    basicN >= 0 &&
+    Number.isFinite(daN) &&
+    daN >= 0 &&
+    Number.isFinite(hraN) &&
+    hraN >= 0 &&
+    Number.isFinite(rentN) &&
+    rentN >= 0 &&
+    (basicN > 0 || daN > 0);
+
+  const result = valid
+    ? hraExemption({
+        basic: basicN,
+        da: daN,
+        hraReceived: hraN,
+        rentPaid: rentN,
+        city,
+      })
+    : null;
+
+  let error = "";
+  if (basic.trim() === "" || hraReceived.trim() === "" || rentPaid.trim() === "") {
+    error = "Enter basic salary, HRA received, and rent paid.";
+  } else if (!Number.isFinite(basicN) || basicN < 0) {
+    error = "Basic salary must be zero or a positive number.";
+  } else if (!Number.isFinite(daN) || daN < 0) {
+    error = "Dearness allowance must be zero or a positive number.";
+  } else if (!(basicN > 0 || daN > 0)) {
+    error = "Enter at least some salary (basic and/or DA) used for the HRA rules.";
+  } else if (!Number.isFinite(hraN) || hraN < 0) {
+    error = "HRA received must be zero or a positive number.";
+  } else if (!Number.isFinite(rentN) || rentN < 0) {
+    error = "Rent paid must be zero or a positive number.";
+  }
+
+  const periodLabel = period === "monthly" ? "per month" : "per year";
+  const bindingLabel =
+    result?.bindingLimit === "rent-minus-10"
+      ? "Rent − 10% of salary"
+      : result?.bindingLimit === "city-percent"
+        ? city === "metro"
+          ? "50% of salary (metro)"
+          : "40% of salary (non-metro)"
+        : "Actual HRA received";
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Planning estimate only. HRA exemption under Section 10(13A) / Rule 2A depends on how your
+        employer defines salary, metro classification, and current tax law. Confirm with payroll / a
+        tax advisor — this is not tax filing advice.
+      </Notice>
+      <Row>
+        <Field label="Input period" hint="Use the same period for all money fields">
+          <Select
+            value={period}
+            onChange={(e) => setPeriod(e.target.value as HraPeriod)}
+            aria-label="Input period"
+          >
+            <option value="monthly">Monthly amounts</option>
+            <option value="yearly">Yearly amounts</option>
+          </Select>
+        </Field>
+        <Field label="City type" hint="Metro = Delhi, Mumbai, Kolkata, Chennai (classic 50% rule)">
+          <Select
+            value={city}
+            onChange={(e) => setCity(e.target.value as HraCityType)}
+            aria-label="City type for HRA"
+          >
+            <option value="metro">Metro (50% of salary)</option>
+            <option value="non-metro">Non-metro (40% of salary)</option>
+          </Select>
+        </Field>
+      </Row>
+      <Row>
+        <Field label={`Basic salary (${periodLabel})`}>
+          <Input
+            type="number"
+            min={0}
+            value={basic}
+            onChange={(e) => setBasic(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(basicN) || basicN < 0))}
+          />
+        </Field>
+        <Field label={`Dearness allowance (${periodLabel})`} hint="Include DA that forms part of salary for HRA">
+          <Input type="number" min={0} value={da} onChange={(e) => setDa(e.target.value)} />
+        </Field>
+      </Row>
+      <Row>
+        <Field label={`HRA received (${periodLabel})`}>
+          <Input
+            type="number"
+            min={0}
+            value={hraReceived}
+            onChange={(e) => setHraReceived(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(hraN) || hraN < 0))}
+          />
+        </Field>
+        <Field label={`Rent paid (${periodLabel})`} hint="Actual rent for the same period">
+          <Input
+            type="number"
+            min={0}
+            value={rentPaid}
+            onChange={(e) => setRentPaid(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(rentN) || rentN < 0))}
+          />
+        </Field>
+      </Row>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : result ? (
+        <>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <Stat label={`Exempt HRA (${periodLabel})`} value={fmt(result.exempt, 0)} />
+            <Stat label={`Taxable HRA (${periodLabel})`} value={fmt(result.taxable, 0)} />
+            <Stat label={`Salary for HRA (basic + DA)`} value={fmt(result.salaryForHra, 0)} />
+            <Stat label="Binding limit" value={bindingLabel} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Limit 1 — actual HRA" value={fmt(result.limitActualHra, 0)} />
+            <Stat label="Limit 2 — rent − 10% salary" value={fmt(result.limitRentMinus10, 0)} />
+            <Stat
+              label={`Limit 3 — ${Math.round(result.cityPercent * 100)}% of salary`}
+              value={fmt(result.limitCityPercent, 0)}
+            />
+          </div>
+          {result.limitRentMinus10 === 0 && rentN > 0 && (
+            <Notice tone="info">
+              Rent minus 10% of salary is zero or negative at these inputs — that often happens when
+              rent is low relative to basic + DA. Exemption then cannot exceed that rent-based limit.
+            </Notice>
+          )}
+          {hraN === 0 && (
+            <Notice tone="info">
+              HRA received is zero, so exempt and taxable HRA are both zero. Enter the HRA component
+              from your payslip to model exemption.
+            </Notice>
+          )}
+        </>
+      ) : null}
+    </div>
+  );
+}

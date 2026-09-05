@@ -3664,6 +3664,100 @@
         "calculators/lumpsum-calculator"
       ]
     },
+    "calculators/gratuity-calculator": {
+      "name": "Gratuity Calculator",
+      "description": "Estimate gratuity payout from last drawn salary and years of service using the Payment of Gratuity Act (÷26) or private (÷30) formula — with half-year rounding.",
+      "metaTitle": "Gratuity Calculator – Free Online Gratuity Amount Tool | Mytulify",
+      "metaDescription": "Free gratuity calculator. Estimate payout from last drawn salary (basic + DA) and service years using Act ÷26 or private ÷30 formulas. Private, no signup.",
+      "about": [
+        "A gratuity calculator estimates the lump-sum amount an employer may pay at resignation, retirement, or other qualifying exits, based on last drawn salary and completed years of service. Under the Payment of Gratuity Act illustration, the common formula is (last drawn salary × 15 × service years) ÷ 26.",
+        "Enter basic + dearness allowance, completed years and extra months, choose Act (÷26) or private (÷30) formula, and optionally set a tax-exemption ceiling for illustration. Half-year rounding can treat leftover months greater than 6 as a full year. All math runs in your browser on Mytulify — useful for planning, not payroll, tax, or legal advice."
+      ],
+      "howTo": {
+        "title": "How to use the gratuity calculator",
+        "steps": [
+          "Enter your last drawn monthly salary used for gratuity (typically basic + DA).",
+          "Choose the Payment of Gratuity Act (÷26) formula or a private / non-Act (÷30) illustration.",
+          "Enter completed years and extra months of service, and pick half-year rounding if you want Act-style year counting.",
+          "Optionally set a tax exemption ceiling to see how much of the estimate sits under vs above that limit, then read estimated gratuity and service years used."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is a gratuity calculator?",
+          "a": "A gratuity calculator estimates a retirement or exit lump sum from last drawn salary and years of service using a standard formula. It helps you plan alongside other employment benefits such as EPF."
+        },
+        {
+          "q": "What is the Payment of Gratuity Act formula?",
+          "a": "The widely used Act-style formula is (last drawn salary × 15 × number of years of service) ÷ 26, where salary is typically basic pay plus dearness allowance. Always confirm how your employer defines wages and rounding."
+        },
+        {
+          "q": "When is the ÷30 formula used?",
+          "a": "Some private or non-Act illustrations use the same 15-days-per-year idea with a 30-day month divisor instead of 26. Use that mode only when it matches the policy you are modeling."
+        },
+        {
+          "q": "Is this gratuity calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/epf-calculator",
+        "calculators/nps-calculator",
+        "calculators/ppf-calculator",
+        "calculators/salary-calculator",
+        "calculators/salary-tax-calculator",
+        "calculators/sip-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/inflation-calculator"
+      ]
+    },
+    "calculators/hra-calculator": {
+      "name": "HRA Calculator",
+      "description": "Estimate House Rent Allowance (HRA) tax exemption under Section 10(13A) — the minimum of actual HRA, rent minus 10% of salary, and 40%/50% metro rule.",
+      "metaTitle": "HRA Calculator – Free House Rent Allowance Exemption Tool | Mytulify",
+      "metaDescription": "Free HRA calculator. Estimate Section 10(13A) House Rent Allowance exemption from basic, DA, HRA, rent, and metro vs non-metro. Private, no signup.",
+      "about": [
+        "An HRA (House Rent Allowance) calculator estimates how much of the HRA on your salary may be tax-exempt under Section 10(13A) of the Income-tax Act, using the classic three-limit Rule 2A style test: actual HRA received, rent paid minus 10% of salary (basic + DA), and 50% of salary in metro cities or 40% elsewhere.",
+        "Enter basic, dearness allowance, HRA received, and rent paid for the same monthly or yearly period, then choose metro or non-metro. The tool shows exempt HRA, taxable HRA, each of the three limits, and which limit is binding. All math runs in your browser on Mytulify — useful for planning, not tax filing or payroll advice."
+      ],
+      "howTo": {
+        "title": "How to use the HRA calculator",
+        "steps": [
+          "Choose monthly or yearly inputs so every amount uses the same period.",
+          "Enter basic salary and dearness allowance that form salary for HRA purposes.",
+          "Enter HRA received and actual rent paid, then select metro (50%) or non-metro (40%).",
+          "Read exempt HRA, taxable HRA, the three statutory-style limits, and which limit binds your case."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an HRA calculator?",
+          "a": "An HRA calculator estimates tax-exempt House Rent Allowance using basic + DA, HRA received, rent paid, and whether you live in a metro or non-metro city under the common three-limit exemption method."
+        },
+        {
+          "q": "How is HRA exemption calculated?",
+          "a": "Exempt HRA is the minimum of: (1) actual HRA received, (2) rent paid minus 10% of salary (basic + DA), and (3) 50% of salary for metro cities or 40% for non-metro. Taxable HRA is HRA received minus the exempt amount."
+        },
+        {
+          "q": "Which cities count as metro for HRA?",
+          "a": "The classic metro list used in many HRA illustrations is Delhi, Mumbai, Kolkata, and Chennai (50% rule). Other cities typically use the 40% rule. Confirm current classification with your employer or advisor."
+        },
+        {
+          "q": "Is this HRA calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no salary data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/salary-tax-calculator",
+        "calculators/salary-calculator",
+        "calculators/paycheck-calculator",
+        "calculators/epf-calculator",
+        "calculators/gratuity-calculator",
+        "calculators/nps-calculator",
+        "calculators/vat-gst-calculator",
+        "calculators/inflation-calculator"
+      ]
+    },
     "text-tools/reading-time-calculator": {
       "name": "Reading Time Calculator",
       "description": "Estimate how long it takes to read any text based on words per minute.",
