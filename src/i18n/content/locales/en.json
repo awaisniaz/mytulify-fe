@@ -3291,7 +3291,8 @@
         "calculators/inflation-calculator",
         "calculators/ppf-calculator",
         "calculators/fd-calculator",
-        "calculators/swp-calculator"
+        "calculators/swp-calculator",
+        "calculators/rd-calculator"
       ]
     },
     "calculators/cagr-calculator": {
@@ -3377,7 +3378,8 @@
         "calculators/emi-calculator",
         "calculators/inflation-calculator",
         "calculators/ppf-calculator",
-        "calculators/swp-calculator"
+        "calculators/swp-calculator",
+        "calculators/rd-calculator"
       ]
     },
     "calculators/ppf-calculator": {
@@ -3422,7 +3424,8 @@
         "calculators/compound-interest-calculator",
         "calculators/cagr-calculator",
         "calculators/inflation-calculator",
-        "calculators/swp-calculator"
+        "calculators/swp-calculator",
+        "calculators/rd-calculator"
       ]
     },
     "calculators/swp-calculator": {
@@ -3467,6 +3470,53 @@
         "calculators/compound-interest-calculator",
         "calculators/fd-calculator",
         "calculators/ppf-calculator",
+        "calculators/inflation-calculator",
+        "calculators/rd-calculator"
+      ]
+    },
+    "calculators/rd-calculator": {
+      "name": "RD Calculator",
+      "description": "Calculate recurring deposit maturity amount and interest from monthly installments, rate, and tenure — with quarterly compounding or simple interest.",
+      "metaTitle": "RD Calculator – Free Recurring Deposit Maturity Tool | Mytulify",
+      "metaDescription": "Free RD calculator for recurring deposits. Estimate maturity amount, interest earned, and total deposited with quarterly compounding or simple interest. Private, no signup.",
+      "about": [
+        "An RD (recurring deposit) calculator estimates how monthly bank deposits can grow at a stated annual interest rate over a fixed tenure. It shows total deposited, interest earned, and projected maturity value.",
+        "Choose quarterly compounding (common for bank RDs) or simple interest. Enter monthly installment, rate, and tenure in years and months. All math runs in your browser on Mytulify — useful for planning, not a substitute for your bank’s official quote."
+      ],
+      "howTo": {
+        "title": "How to use the RD calculator",
+        "steps": [
+          "Enter your monthly deposit amount and the annual interest rate offered by your bank.",
+          "Set the tenure in years and optional extra months (0–11).",
+          "Choose quarterly compounding (typical for bank RDs) or simple interest.",
+          "Read maturity amount, interest earned, and total deposited."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an RD calculator?",
+          "a": "An RD calculator projects the maturity value of a recurring deposit from monthly installments, an annual interest rate, and tenure. It helps you compare bank RD offers before you lock in a plan."
+        },
+        {
+          "q": "How is RD maturity calculated?",
+          "a": "For quarterly compounding, banks commonly use M = P × [((1+i)^n − 1) / (1 − (1+i)^(-1/3))], where P is the monthly deposit, i is the quarterly rate (annual % ÷ 400), and n is the number of quarters. Simple interest uses Interest = P × n(n+1)/2 × r/(12×100)."
+        },
+        {
+          "q": "Why must tenure be a multiple of 3 months for quarterly mode?",
+          "a": "The standard closed-form RD formula counts whole quarters. If your tenure is not a multiple of 3 months, adjust the tenure or switch to simple interest for a rough estimate."
+        },
+        {
+          "q": "Is this RD calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/fd-calculator",
+        "calculators/sip-calculator",
+        "calculators/ppf-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/cagr-calculator",
+        "calculators/swp-calculator",
         "calculators/inflation-calculator"
       ]
     },

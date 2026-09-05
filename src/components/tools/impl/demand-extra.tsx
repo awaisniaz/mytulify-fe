@@ -805,6 +805,159 @@ export function FdCalculator() {
   );
 }
 
+/* ------------------------------ RD Calculator ------------------------------ */
+type RdInterestMode = "quarterly" | "simple";
+
+/**
+ * Recurring deposit maturity.
+ * Quarterly: common bank formula M = P × [((1+i)^n − 1) / (1 − (1+i)^(-1/3))]
+ *   where i = annualRate%/400 and n = tenure months ÷ 3.
+ * Simple: Interest = P × n(n+1)/2 × r/(12×100); maturity = deposits + interest.
+ */
+export function rdMaturity(
+  monthlyDeposit: number,
+  annualRatePct: number,
+  tenureMonths: number,
+  mode: RdInterestMode,
+): { maturity: number; interest: number; invested: number } {
+  const invested = monthlyDeposit * tenureMonths;
+  if (!(monthlyDeposit > 0) || !(tenureMonths > 0) || !(annualRatePct >= 0)) {
+    return { maturity: NaN, interest: NaN, invested: NaN };
+  }
+  if (annualRatePct === 0) {
+    return { maturity: invested, interest: 0, invested };
+  }
+
+  if (mode === "simple") {
+    const interest =
+      (monthlyDeposit * tenureMonths * (tenureMonths + 1) * annualRatePct) / (2 * 12 * 100);
+    return { maturity: invested + interest, interest, invested };
+  }
+
+  // Quarterly compounding — tenure should align to whole quarters for the closed form.
+  const quarters = tenureMonths / 3;
+  if (!Number.isFinite(quarters) || quarters <= 0) {
+    return { maturity: NaN, interest: NaN, invested };
+  }
+  const i = annualRatePct / 400;
+  const factor = (Math.pow(1 + i, quarters) - 1) / (1 - Math.pow(1 + i, -1 / 3));
+  const maturity = monthlyDeposit * factor;
+  return { maturity, interest: maturity - invested, invested };
+}
+
+export function RdCalculator() {
+  const [monthly, setMonthly] = React.useState("5000");
+  const [rate, setRate] = React.useState("7");
+  const [years, setYears] = React.useState("3");
+  const [months, setMonths] = React.useState("0");
+  const [mode, setMode] = React.useState<RdInterestMode>("quarterly");
+
+  const p = n(monthly);
+  const annual = n(rate);
+  const yParts = Math.max(0, n(years) || 0);
+  const mParts = Math.max(0, Math.min(11, Math.round(n(months) || 0)));
+  const tenureMonths = Math.round(yParts * 12 + mParts);
+  const valid =
+    Number.isFinite(p) &&
+    p > 0 &&
+    Number.isFinite(annual) &&
+    annual >= 0 &&
+    tenureMonths > 0;
+
+  const quarterlyAligned = mode !== "quarterly" || tenureMonths % 3 === 0;
+  const { maturity, interest, invested } =
+    valid && quarterlyAligned
+      ? rdMaturity(p, annual, tenureMonths, mode)
+      : { maturity: NaN, interest: NaN, invested: NaN };
+
+  let error = "";
+  if (monthly.trim() === "" || rate.trim() === "") error = "Enter monthly deposit and interest rate.";
+  else if (!Number.isFinite(p) || p <= 0) error = "Monthly deposit must be a positive number.";
+  else if (!Number.isFinite(annual) || annual < 0) error = "Interest rate cannot be negative.";
+  else if (tenureMonths <= 0) error = "Set tenure to at least 1 month.";
+  else if (mode === "quarterly" && tenureMonths % 3 !== 0) {
+    error = "Quarterly compounding needs a tenure in whole quarters (multiples of 3 months). Adjust years/months or switch to simple interest.";
+  }
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Bank RD rates and payout rules vary. Quarterly compounding uses the common closed-form RD
+        formula for planning — confirm final maturity with your bank.
+      </Notice>
+      <Row>
+        <Field label="Monthly deposit">
+          <Input
+            type="number"
+            min={0}
+            value={monthly}
+            onChange={(e) => setMonthly(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(p) || p <= 0))}
+          />
+        </Field>
+        <Field label="Annual interest rate (%)">
+          <Input
+            type="number"
+            min={0}
+            step="0.01"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Tenure — years">
+          <Input
+            type="number"
+            min={0}
+            step="1"
+            value={years}
+            onChange={(e) => setYears(e.target.value)}
+          />
+        </Field>
+        <Field label="Extra months" hint="0–11 (added to years)">
+          <Input
+            type="number"
+            min={0}
+            max={11}
+            step="1"
+            value={months}
+            onChange={(e) => setMonths(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Field label="Interest method">
+        <Select value={mode} onChange={(e) => setMode(e.target.value as RdInterestMode)}>
+          <option value="quarterly">Quarterly compounding (common for bank RDs)</option>
+          <option value="simple">Simple interest</option>
+        </Select>
+      </Field>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Maturity amount" value={fmt(maturity, 0)} />
+            <Stat label="Interest earned" value={fmt(interest, 0)} />
+            <Stat label="Total deposited" value={fmt(invested, 0)} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Stat
+              label="Tenure"
+              value={
+                mParts > 0
+                  ? `${yParts} yr ${mParts} mo (${tenureMonths} months)`
+                  : `${yParts} year${yParts === 1 ? "" : "s"} (${tenureMonths} months)`
+              }
+            />
+            <Stat label="Installments" value={tenureMonths} />
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 /* ------------------------------ CAGR Calculator ---------------------------- */
 export function CagrCalculator() {
   const [begin, setBegin] = React.useState("100000");
