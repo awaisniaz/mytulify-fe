@@ -3758,6 +3758,53 @@
         "calculators/inflation-calculator"
       ]
     },
+    "calculators/ssy-calculator": {
+      "name": "SSY Calculator",
+      "description": "Estimate Sukanya Samriddhi Yojana maturity, total invested, and interest — deposits for up to 15 years, compounding through the full 21-year account tenure.",
+      "metaTitle": "SSY Calculator – Free Sukanya Samriddhi Yojana Maturity Tool | Mytulify",
+      "metaDescription": "Free SSY calculator. Estimate Sukanya Samriddhi Yojana maturity, total invested, and interest with yearly deposits and compounding through account maturity. Private, no signup.",
+      "about": [
+        "An SSY (Sukanya Samriddhi Yojana) calculator estimates how yearly deposits into a girl-child savings account can grow at a notified annual interest rate. The common planning pattern is deposits for up to 15 years from opening, with the account continuing to earn interest until a longer maturity (often modeled as 21 years).",
+        "Enter yearly deposit, interest rate, deposit years, maturity years, and an optional opening balance. The tool shows total invested, interest earned, and projected maturity value. All math runs in your browser on Mytulify — useful for planning, not a substitute for bank or post office statements or tax advice."
+      ],
+      "howTo": {
+        "title": "How to use the SSY calculator",
+        "steps": [
+          "Enter your planned yearly SSY deposit and the annual interest rate you want to model.",
+          "Set deposit years (often 15) and maturity years (often 21 from account opening).",
+          "Optionally add an existing opening balance if the account is already open.",
+          "Read total invested, interest earned, and maturity value — including growth after deposits stop."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an SSY calculator?",
+          "a": "An SSY calculator projects the maturity value of a Sukanya Samriddhi Yojana account from yearly deposits, an assumed annual rate, how many years you deposit, and how many years until maturity. It helps families plan contributions before locking in money."
+        },
+        {
+          "q": "How is SSY maturity calculated here?",
+          "a": "Each year in the deposit window, the yearly deposit is added at the start of the year, then interest compounds annually. After deposits stop, the balance continues compounding each year until the maturity year you model — without new contributions."
+        },
+        {
+          "q": "Why are deposit years and maturity years separate?",
+          "a": "SSY commonly allows deposits for a limited window (often 15 years) while the account can keep earning interest until a later maturity (often illustrated as 21 years from opening). Separating the two lets you model that pattern accurately."
+        },
+        {
+          "q": "Is this SSY calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/ppf-calculator",
+        "calculators/fd-calculator",
+        "calculators/rd-calculator",
+        "calculators/sip-calculator",
+        "calculators/epf-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/cagr-calculator",
+        "calculators/inflation-calculator"
+      ]
+    },
     "text-tools/reading-time-calculator": {
       "name": "Reading Time Calculator",
       "description": "Estimate how long it takes to read any text based on words per minute.",

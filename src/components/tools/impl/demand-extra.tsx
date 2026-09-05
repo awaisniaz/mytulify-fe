@@ -2372,3 +2372,200 @@ export function HraCalculator() {
     </div>
   );
 }
+
+/* ------------------------------ SSY Calculator ----------------------------- */
+/**
+ * Sukanya Samriddhi Yojana maturity with yearly contributions for a deposit
+ * window, then continued yearly compounding until account maturity.
+ * Common planning model: deposits for up to 15 years; account often matures
+ * at 21 years from opening (interest continues after deposits stop).
+ */
+export function ssyMaturity(
+  yearlyContribution: number,
+  annualRatePct: number,
+  depositYears: number,
+  maturityYears: number,
+  openingBalance = 0,
+): { invested: number; maturity: number; interest: number; depositYearsUsed: number } {
+  if (
+    !(yearlyContribution >= 0) ||
+    !(annualRatePct >= 0) ||
+    !(depositYears > 0) ||
+    !(maturityYears > 0) ||
+    !Number.isFinite(openingBalance) ||
+    openingBalance < 0
+  ) {
+    return { invested: NaN, maturity: NaN, interest: NaN, depositYearsUsed: 0 };
+  }
+  const r = annualRatePct / 100;
+  const nMaturity = Math.max(1, Math.round(maturityYears));
+  const nDeposit = Math.min(Math.max(1, Math.round(depositYears)), nMaturity);
+  let balance = openingBalance;
+  let contributions = 0;
+  for (let y = 0; y < nMaturity; y++) {
+    if (y < nDeposit) {
+      balance += yearlyContribution;
+      contributions += yearlyContribution;
+    }
+    balance *= 1 + r;
+  }
+  const invested = openingBalance + contributions;
+  return {
+    invested,
+    maturity: balance,
+    interest: balance - invested,
+    depositYearsUsed: nDeposit,
+  };
+}
+
+export function SsyCalculator() {
+  const [yearly, setYearly] = React.useState("150000");
+  const [rate, setRate] = React.useState("8.2");
+  const [depositYears, setDepositYears] = React.useState("15");
+  const [maturityYears, setMaturityYears] = React.useState("21");
+  const [opening, setOpening] = React.useState("0");
+
+  const contribution = n(yearly);
+  const annual = n(rate);
+  const depositTenure = Math.round(n(depositYears) || 0);
+  const maturityTenure = Math.round(n(maturityYears) || 0);
+  const openBal = n(opening) || 0;
+
+  const valid =
+    Number.isFinite(contribution) &&
+    contribution >= 0 &&
+    Number.isFinite(annual) &&
+    annual >= 0 &&
+    depositTenure > 0 &&
+    maturityTenure > 0 &&
+    depositTenure <= maturityTenure &&
+    Number.isFinite(openBal) &&
+    openBal >= 0 &&
+    (contribution > 0 || openBal > 0);
+
+  const { invested, maturity, interest, depositYearsUsed } = valid
+    ? ssyMaturity(contribution, annual, depositTenure, maturityTenure, openBal)
+    : { invested: NaN, maturity: NaN, interest: NaN, depositYearsUsed: 0 };
+
+  const growthYearsAfterDeposits = Math.max(0, maturityTenure - depositYearsUsed);
+
+  let error = "";
+  if (
+    yearly.trim() === "" ||
+    rate.trim() === "" ||
+    depositYears.trim() === "" ||
+    maturityYears.trim() === ""
+  ) {
+    error = "Enter yearly deposit, interest rate, deposit years, and maturity years.";
+  } else if (!Number.isFinite(contribution) || contribution < 0) {
+    error = "Yearly deposit cannot be negative.";
+  } else if (!Number.isFinite(annual) || annual < 0) {
+    error = "Interest rate cannot be negative.";
+  } else if (!(depositTenure > 0)) {
+    error = "Deposit years must be at least 1.";
+  } else if (!(maturityTenure > 0)) {
+    error = "Maturity years must be at least 1.";
+  } else if (depositTenure > maturityTenure) {
+    error = "Deposit years cannot exceed maturity years.";
+  } else if (!Number.isFinite(openBal) || openBal < 0) {
+    error = "Opening balance cannot be negative.";
+  } else if (contribution === 0 && openBal === 0) {
+    error = "Enter a yearly deposit or an opening balance greater than zero.";
+  }
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        SSY rules (deposit limits, girl-child eligibility, premature closure, and the notified rate)
+        can change. This tool uses yearly compounding for planning — confirm final maturity with your
+        bank or post office. Not investment or tax advice.
+      </Notice>
+      <Row>
+        <Field label="Yearly deposit" hint="Common planning max is ₹1,50,000 per financial year">
+          <Input
+            type="number"
+            min={0}
+            value={yearly}
+            onChange={(e) => setYearly(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(contribution) || contribution < 0))}
+          />
+        </Field>
+        <Field label="Annual interest rate (%)" hint="Enter the current notified SSY rate">
+          <Input
+            type="number"
+            min={0}
+            step="0.01"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field
+          label="Deposit years"
+          hint="Deposits are commonly allowed for 15 years from account opening"
+        >
+          <Input
+            type="number"
+            min={1}
+            step="1"
+            value={depositYears}
+            onChange={(e) => setDepositYears(e.target.value)}
+            aria-invalid={Boolean(
+              error && (!(depositTenure > 0) || depositTenure > maturityTenure),
+            )}
+          />
+        </Field>
+        <Field
+          label="Maturity years"
+          hint="Standard SSY tenure is often modeled as 21 years from opening"
+        >
+          <Input
+            type="number"
+            min={1}
+            step="1"
+            value={maturityYears}
+            onChange={(e) => setMaturityYears(e.target.value)}
+            aria-invalid={Boolean(error && (!(maturityTenure > 0) || depositTenure > maturityTenure))}
+          />
+        </Field>
+      </Row>
+      <Field label="Opening balance (optional)" hint="Existing SSY balance before new yearly deposits">
+        <Input
+          type="number"
+          min={0}
+          value={opening}
+          onChange={(e) => setOpening(e.target.value)}
+        />
+      </Field>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Total invested" value={fmt(invested, 0)} />
+            <Stat label="Interest earned" value={fmt(interest, 0)} />
+            <Stat label="Maturity value" value={fmt(maturity, 0)} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Stat
+              label="Deposit window"
+              value={`${depositYearsUsed} year${depositYearsUsed === 1 ? "" : "s"} of deposits`}
+            />
+            <Stat
+              label="Account tenure"
+              value={`${maturityTenure} year${maturityTenure === 1 ? "" : "s"} · ${fmt(annual, 2)}% p.a.`}
+            />
+          </div>
+          {growthYearsAfterDeposits > 0 && (
+            <Notice tone="info">
+              After deposits stop, the balance keeps compounding for {growthYearsAfterDeposits} more
+              year{growthYearsAfterDeposits === 1 ? "" : "s"} until the modeled maturity year — that
+              is a common SSY planning pattern (15 years of deposits inside a longer account life).
+            </Notice>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
