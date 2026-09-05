@@ -20,6 +20,8 @@ export const site = {
     "developer tools",
     "unit converter",
     "calculator",
+    "sip calculator",
+    "cagr calculator",
     "freelancer tools",
     "freelance contract",
   ],

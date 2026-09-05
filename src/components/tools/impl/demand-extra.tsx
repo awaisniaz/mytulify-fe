@@ -574,6 +574,129 @@ export function ProfitMarginCalculator() {
   );
 }
 
+/* ------------------------------ SIP Calculator ----------------------------- */
+/** Future value of a level monthly SIP (end-of-month deposits). */
+function sipFutureValue(monthly: number, annualRatePct: number, months: number): number {
+  if (months <= 0 || monthly <= 0) return 0;
+  const r = annualRatePct / 100 / 12;
+  if (r === 0) return monthly * months;
+  return monthly * ((Math.pow(1 + r, months) - 1) / r) * (1 + r);
+}
+
+/** Step-up SIP: monthly amount grows by stepPct each year. */
+function stepUpSipFutureValue(
+  startMonthly: number,
+  annualRatePct: number,
+  years: number,
+  stepPct: number,
+): { invested: number; maturity: number } {
+  const monthsTotal = Math.max(0, Math.round(years * 12));
+  if (monthsTotal === 0 || startMonthly <= 0) return { invested: 0, maturity: 0 };
+  const r = annualRatePct / 100 / 12;
+  const step = stepPct / 100;
+  let invested = 0;
+  let maturity = 0;
+  for (let m = 0; m < monthsTotal; m++) {
+    const yearIndex = Math.floor(m / 12);
+    const payment = startMonthly * Math.pow(1 + step, yearIndex);
+    invested += payment;
+    const monthsLeft = monthsTotal - m;
+    if (r === 0) maturity += payment;
+    else maturity += payment * Math.pow(1 + r, monthsLeft);
+  }
+  return { invested, maturity };
+}
+
+export function SipCalculator() {
+  const [monthly, setMonthly] = React.useState("10000");
+  const [rate, setRate] = React.useState("12");
+  const [years, setYears] = React.useState("10");
+  const [stepUp, setStepUp] = React.useState("0");
+
+  const p = Math.max(0, n(monthly) || 0);
+  const annual = Math.max(0, n(rate) || 0);
+  const y = Math.max(0, n(years) || 0);
+  const step = Math.max(0, n(stepUp) || 0);
+  const months = Math.max(0, Math.round(y * 12));
+
+  const result = React.useMemo(() => {
+    if (step > 0) return stepUpSipFutureValue(p, annual, y, step);
+    const maturity = sipFutureValue(p, annual, months);
+    return { invested: p * months, maturity };
+  }, [p, annual, y, months, step]);
+
+  const gains = result.maturity - result.invested;
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        Estimates use the standard SIP future-value formula. Actual mutual fund returns vary — this is a planning tool, not advice.
+      </Notice>
+      <Row>
+        <Field label="Monthly SIP amount">
+          <Input type="number" min={0} value={monthly} onChange={(e) => setMonthly(e.target.value)} />
+        </Field>
+        <Field label="Expected annual return (%)">
+          <Input type="number" min={0} step="0.1" value={rate} onChange={(e) => setRate(e.target.value)} />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Tenure (years)">
+          <Input type="number" min={0} step="0.5" value={years} onChange={(e) => setYears(e.target.value)} />
+        </Field>
+        <Field label="Annual step-up (%)" hint="Optional — increase SIP each year (e.g. 10)">
+          <Input type="number" min={0} step="1" value={stepUp} onChange={(e) => setStepUp(e.target.value)} />
+        </Field>
+      </Row>
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Stat label="Total invested" value={fmt(result.invested, 0)} />
+        <Stat label="Estimated returns" value={fmt(gains, 0)} />
+        <Stat label="Maturity value" value={fmt(result.maturity, 0)} />
+      </div>
+      <Stat label="Months" value={months} />
+    </div>
+  );
+}
+
+/* ------------------------------ CAGR Calculator ---------------------------- */
+export function CagrCalculator() {
+  const [begin, setBegin] = React.useState("100000");
+  const [end, setEnd] = React.useState("250000");
+  const [years, setYears] = React.useState("5");
+
+  const b = n(begin);
+  const e = n(end);
+  const y = n(years);
+  const valid = Number.isFinite(b) && Number.isFinite(e) && b > 0 && e > 0 && y > 0;
+  const cagr = valid ? Math.pow(e / b, 1 / y) - 1 : NaN;
+  const totalGain = valid ? e - b : NaN;
+  const totalGainPct = valid ? ((e - b) / b) * 100 : NaN;
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        CAGR smooths multi-year growth into one annual rate. It ignores interim deposits and withdrawals.
+      </Notice>
+      <Row>
+        <Field label="Beginning value">
+          <Input type="number" min={0} value={begin} onChange={(e) => setBegin(e.target.value)} />
+        </Field>
+        <Field label="Ending value">
+          <Input type="number" min={0} value={end} onChange={(e) => setEnd(e.target.value)} />
+        </Field>
+      </Row>
+      <Field label="Number of years">
+        <Input type="number" min={0.01} step="0.1" value={years} onChange={(e) => setYears(e.target.value)} />
+      </Field>
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Stat label="CAGR" value={Number.isFinite(cagr) ? `${fmt(cagr * 100, 2)}%` : "—"} />
+        <Stat label="Total gain" value={fmt(totalGain, 0)} />
+        <Stat label="Total gain %" value={Number.isFinite(totalGainPct) ? `${fmt(totalGainPct, 2)}%` : "—"} />
+      </div>
+    </div>
+  );
+}
+
 /* ------------------------------ Reading time ------------------------------- */
 export function ReadingTimeCalculator() {
   const [text, setText] = React.useState(
