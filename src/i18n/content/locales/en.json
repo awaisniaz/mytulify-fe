@@ -3330,6 +3330,50 @@
         "calculators/profit-margin-calculator"
       ]
     },
+    "calculators/fd-calculator": {
+      "name": "FD Calculator",
+      "description": "Calculate fixed deposit maturity amount and interest with monthly, quarterly, or yearly compounding.",
+      "metaTitle": "FD Calculator – Free Fixed Deposit Maturity & Interest Tool | Mytulify",
+      "metaDescription": "Free FD calculator for fixed deposits. Estimate maturity amount and interest with monthly, quarterly, half-yearly, or yearly compounding. Private, no signup.",
+      "about": [
+        "An FD (fixed deposit) calculator estimates how much a bank deposit will be worth at maturity for a given principal, interest rate, tenure, and compounding frequency. Most bank FDs compound quarterly.",
+        "Enter your deposit amount, annual rate, years and months, then choose compounding (or simple interest). See maturity value, interest earned, and effective annual yield — all in your browser on Mytulify."
+      ],
+      "howTo": {
+        "title": "How to use the FD calculator",
+        "steps": [
+          "Enter the deposit (principal) amount and the annual interest rate offered by your bank.",
+          "Set the tenure in years and optional extra months (0–11).",
+          "Choose compounding frequency — quarterly is common for bank FDs — or simple interest.",
+          "Read maturity amount, interest earned, and effective annual yield."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an FD calculator?",
+          "a": "An FD calculator projects the maturity value of a fixed deposit using principal, rate, tenure, and compounding. It helps you compare bank offers before you lock in money."
+        },
+        {
+          "q": "How is FD maturity calculated?",
+          "a": "For compound interest: A = P × (1 + r/n)^(n×t), where P is principal, r is annual rate (decimal), n is compounding periods per year, and t is tenure in years. Simple interest uses A = P × (1 + r×t)."
+        },
+        {
+          "q": "Why does compounding frequency matter?",
+          "a": "More frequent compounding (for example monthly vs yearly) usually earns slightly more interest at the same headline rate, because interest is added to the principal more often."
+        },
+        {
+          "q": "Is this FD calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/sip-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/cagr-calculator",
+        "calculators/emi-calculator",
+        "calculators/inflation-calculator"
+      ]
+    },
     "text-tools/reading-time-calculator": {
       "name": "Reading Time Calculator",
       "description": "Estimate how long it takes to read any text based on words per minute.",

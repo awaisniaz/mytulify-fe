@@ -18,6 +18,7 @@ import {
   ProfitMarginCalculator,
   SipCalculator,
   CagrCalculator,
+  FdCalculator,
 } from "@/components/tools/impl/demand-extra";
 import { DebtPayoffCalculator, InflationCalculator } from "@/components/tools/impl/engaging-suite";
 
@@ -63,4 +64,5 @@ export default makeReg({
   "inflation-calculator": InflationCalculator,
   "sip-calculator": SipCalculator,
   "cagr-calculator": CagrCalculator,
+  "fd-calculator": FdCalculator,
 });
