@@ -3617,6 +3617,53 @@
         "calculators/rd-calculator"
       ]
     },
+    "calculators/nps-calculator": {
+      "name": "NPS Calculator",
+      "description": "Estimate National Pension System corpus at retirement from monthly contributions, expected return, tenure, and optional step-up — with lump-sum vs annuity split.",
+      "metaTitle": "NPS Calculator – Free National Pension System Corpus Tool | Mytulify",
+      "metaDescription": "Free NPS calculator. Estimate National Pension System corpus at retirement, returns, and lump-sum vs annuity split from monthly contributions. Private, no signup.",
+      "about": [
+        "An NPS (National Pension System) calculator estimates how monthly pension contributions can grow at an assumed annual return until retirement. It shows total invested, estimated returns, projected corpus, and an illustrative split between lump-sum withdrawal and annuity purchase.",
+        "Enter monthly contribution (employee + employer if both apply), expected return, current and retirement ages, optional annual step-up, opening balance, and lump-sum percentage. All math runs in your browser on Mytulify — useful for planning, not a substitute for your PRAN statement or advice."
+      ],
+      "howTo": {
+        "title": "How to use the NPS calculator",
+        "steps": [
+          "Enter your monthly NPS contribution and the expected annual return you want to model.",
+          "Set your current age and target retirement age.",
+          "Optionally add annual contribution step-up %, an opening balance, and adjust the lump-sum percentage at retirement.",
+          "Read corpus at retirement, estimated returns, total invested, and the lump-sum vs annuity purchase illustration."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an NPS calculator?",
+          "a": "An NPS calculator projects the future value of National Pension System contributions from regular monthly deposits, an assumed return rate, and years until retirement. It helps you plan how large a retirement corpus might build."
+        },
+        {
+          "q": "How is NPS corpus estimated here?",
+          "a": "Each month’s contribution is compounded forward at the monthly equivalent of your expected annual return. Optional step-up raises the monthly amount each year. An opening balance is grown for the full tenure and added to contribution growth."
+        },
+        {
+          "q": "What do lump-sum and annuity purchase mean?",
+          "a": "At retirement, NPS rules typically require part of the corpus to buy an annuity that pays a pension, while a portion may be taken as a lump sum. This tool lets you set the lump-sum % for planning; verify current exit rules before you act."
+        },
+        {
+          "q": "Is this NPS calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/epf-calculator",
+        "calculators/ppf-calculator",
+        "calculators/sip-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/cagr-calculator",
+        "calculators/inflation-calculator",
+        "calculators/swp-calculator",
+        "calculators/lumpsum-calculator"
+      ]
+    },
     "text-tools/reading-time-calculator": {
       "name": "Reading Time Calculator",
       "description": "Estimate how long it takes to read any text based on words per minute.",
