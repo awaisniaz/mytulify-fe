@@ -3800,9 +3800,104 @@
         "calculators/rd-calculator",
         "calculators/sip-calculator",
         "calculators/epf-calculator",
+        "calculators/scss-calculator",
         "calculators/compound-interest-calculator",
         "calculators/cagr-calculator",
         "calculators/inflation-calculator"
+      ]
+    },
+    "calculators/scss-calculator": {
+      "name": "SCSS Calculator",
+      "description": "Estimate Senior Citizen Savings Scheme quarterly interest, total interest over tenure, and principal returned at maturity from a lump-sum deposit.",
+      "metaTitle": "SCSS Calculator – Free Senior Citizen Savings Scheme Tool | Mytulify",
+      "metaDescription": "Free SCSS calculator. Estimate Senior Citizen Savings Scheme quarterly interest, total interest over tenure, and principal returned at maturity. Private, no signup.",
+      "about": [
+        "An SCSS (Senior Citizen Savings Scheme) calculator estimates quarterly interest payouts and total interest from a one-time lump-sum deposit at a notified annual rate. Unlike compounding FDs, SCSS interest is typically paid out each quarter while the principal is returned at maturity.",
+        "Enter deposit amount, interest rate, and tenure (commonly modeled as 5 years, with optional extra months for partial-year scenarios). The tool shows quarterly interest, annual interest, total interest, principal at maturity, and total payout. All math runs in your browser on Mytulify — useful for planning, not a substitute for bank or post office statements or tax advice."
+      ],
+      "howTo": {
+        "title": "How to use the SCSS calculator",
+        "steps": [
+          "Enter your planned lump-sum SCSS deposit and the annual interest rate you want to model.",
+          "Set tenure in years (often 5) and optional extra months if you are modeling a partial period.",
+          "Read quarterly interest, total interest over the tenure, and principal returned at maturity.",
+          "Use total payout (principal + all interest) to see the full cash received across the account life."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an SCSS calculator?",
+          "a": "An SCSS calculator projects Senior Citizen Savings Scheme interest from a lump-sum deposit, an assumed annual rate, and tenure. It typically highlights quarterly payouts and the principal returned at maturity."
+        },
+        {
+          "q": "How is SCSS interest calculated here?",
+          "a": "Annual interest is deposit × rate. Quarterly interest is that annual amount divided by four. Total interest is annual interest × tenure years. Principal at maturity equals the original deposit in the standard payout model, because interest is paid out rather than compounded into the account."
+        },
+        {
+          "q": "Does SCSS compound interest into the deposit?",
+          "a": "In the common SCSS planning model used here, interest is paid out quarterly and does not compound into the principal. If you need a compounding deposit comparison, use the FD Calculator instead."
+        },
+        {
+          "q": "Is this SCSS calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/fd-calculator",
+        "calculators/ppf-calculator",
+        "calculators/ssy-calculator",
+        "calculators/rd-calculator",
+        "calculators/nps-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/inflation-calculator",
+        "calculators/cagr-calculator"
+      ]
+    },
+    "calculators/nsc-calculator": {
+      "name": "NSC Calculator",
+      "description": "Estimate National Savings Certificate maturity amount and interest from a lump-sum deposit, notified rate, and tenure — with annual compounding.",
+      "metaTitle": "NSC Calculator – Free National Savings Certificate Tool | Mytulify",
+      "metaDescription": "Free NSC calculator. Estimate National Savings Certificate maturity and interest with annual compounding from deposit, rate, and tenure. Private, no signup.",
+      "about": [
+        "An NSC (National Savings Certificate) calculator estimates maturity value and interest from a one-time certificate purchase at a notified annual rate. Interest is typically compounded annually and paid at maturity — commonly modeled over a 5-year block for NSC VIII Issue planning.",
+        "Enter certificate amount, interest rate, and tenure (often 5 years, with optional extra months for partial-year scenarios). The tool shows maturity amount, interest earned, effective annual yield, and a year-by-year compounding table. All math runs in your browser on Mytulify — useful for planning, not a substitute for post office statements or tax advice."
+      ],
+      "howTo": {
+        "title": "How to use the NSC calculator",
+        "steps": [
+          "Enter your planned lump-sum NSC purchase amount and the annual interest rate you want to model.",
+          "Set tenure in years (often 5) and optional extra months if you are modeling a partial period.",
+          "Read maturity amount, interest earned, and effective annual yield.",
+          "Scan the year-by-year table to see how annual compounding builds the closing balance."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an NSC calculator?",
+          "a": "An NSC calculator projects National Savings Certificate maturity and interest from a lump-sum purchase, an assumed annual rate, and tenure. It typically compounds interest yearly until maturity."
+        },
+        {
+          "q": "How is NSC interest calculated here?",
+          "a": "Each full year, interest equals opening balance × rate. That interest is added to the balance for the next year. Any remaining fractional year applies a pro-rated interest on the latest balance. Maturity is the final closing balance; interest earned is maturity minus the original purchase amount."
+        },
+        {
+          "q": "Does NSC compound interest annually?",
+          "a": "Yes — in the common NSC planning model used here, interest compounds annually and is reflected in the maturity amount rather than paid out each quarter. If you need quarterly payout modeling, try the SCSS Calculator instead."
+        },
+        {
+          "q": "Is this NSC calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/fd-calculator",
+        "calculators/ppf-calculator",
+        "calculators/scss-calculator",
+        "calculators/ssy-calculator",
+        "calculators/rd-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/inflation-calculator",
+        "calculators/cagr-calculator"
       ]
     },
     "text-tools/reading-time-calculator": {
