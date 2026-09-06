@@ -29,6 +29,7 @@ import {
   HraCalculator,
   SsyCalculator,
   ScssCalculator,
+  NscCalculator,
 } from "@/components/tools/impl/demand-extra";
 import { DebtPayoffCalculator, InflationCalculator } from "@/components/tools/impl/engaging-suite";
 
@@ -85,4 +86,5 @@ export default makeReg({
   "hra-calculator": HraCalculator,
   "ssy-calculator": SsyCalculator,
   "scss-calculator": ScssCalculator,
+  "nsc-calculator": NscCalculator,
 });

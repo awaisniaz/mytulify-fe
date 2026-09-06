@@ -2746,3 +2746,213 @@ export function ScssCalculator() {
     </div>
   );
 }
+
+/* ------------------------------ NSC Calculator ----------------------------- */
+/**
+ * National Savings Certificate planning model: lump-sum purchase, interest
+ * compounded annually and paid at maturity (commonly modeled as 5 years).
+ */
+export function nscMaturity(
+  principal: number,
+  annualRatePct: number,
+  tenureYears: number,
+): {
+  maturity: number;
+  interest: number;
+  effectiveYield: number;
+  yearlyRows: { year: number; opening: number; interest: number; closing: number }[];
+} {
+  if (!(principal > 0) || !(annualRatePct >= 0) || !(tenureYears > 0)) {
+    return { maturity: NaN, interest: NaN, effectiveYield: NaN, yearlyRows: [] };
+  }
+  const r = annualRatePct / 100;
+  const fullYears = Math.floor(tenureYears);
+  const frac = tenureYears - fullYears;
+  const yearlyRows: { year: number; opening: number; interest: number; closing: number }[] = [];
+  let balance = principal;
+  for (let y = 1; y <= fullYears; y++) {
+    const opening = balance;
+    const yearInterest = opening * r;
+    const closing = opening + yearInterest;
+    yearlyRows.push({ year: y, opening, interest: yearInterest, closing });
+    balance = closing;
+  }
+  if (frac > 0.0001) {
+    const opening = balance;
+    const yearInterest = opening * r * frac;
+    const closing = opening + yearInterest;
+    yearlyRows.push({
+      year: fullYears + 1,
+      opening,
+      interest: yearInterest,
+      closing,
+    });
+    balance = closing;
+  }
+  const maturity = balance;
+  const interest = maturity - principal;
+  const effectiveYield = ((maturity / principal - 1) / tenureYears) * 100;
+  return { maturity, interest, effectiveYield, yearlyRows };
+}
+
+export function NscCalculator() {
+  const [principal, setPrincipal] = React.useState("100000");
+  const [rate, setRate] = React.useState("7.7");
+  const [years, setYears] = React.useState("5");
+  const [months, setMonths] = React.useState("0");
+
+  const p = n(principal);
+  const annual = n(rate);
+  const yParts = Math.max(0, n(years) || 0);
+  const mParts = Math.max(0, Math.min(11, Math.round(n(months) || 0)));
+  const tenureYears = yParts + mParts / 12;
+
+  const valid =
+    Number.isFinite(p) &&
+    p > 0 &&
+    Number.isFinite(annual) &&
+    annual >= 0 &&
+    tenureYears > 0;
+
+  const result = valid
+    ? nscMaturity(p, annual, tenureYears)
+    : { maturity: NaN, interest: NaN, effectiveYield: NaN, yearlyRows: [] };
+
+  let error = "";
+  if (principal.trim() === "" || rate.trim() === "") {
+    error = "Enter certificate amount and interest rate.";
+  } else if (!Number.isFinite(p) || p <= 0) {
+    error = "Certificate amount must be a positive number.";
+  } else if (!Number.isFinite(annual) || annual < 0) {
+    error = "Interest rate cannot be negative.";
+  } else if (tenureYears <= 0) {
+    error = "Set tenure to at least 1 month.";
+  }
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        NSC interest is typically compounded annually and paid at maturity. Eligibility, purchase
+        limits, premature encashment, tax treatment (including any 80C planning), and the notified
+        rate can change — confirm with your post office or bank. Not investment or tax advice.
+      </Notice>
+      <Row>
+        <Field
+          label="Certificate amount (lump sum)"
+          hint="One-time NSC purchase you want to model"
+        >
+          <Input
+            type="number"
+            min={0}
+            value={principal}
+            onChange={(e) => setPrincipal(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(p) || p <= 0))}
+          />
+        </Field>
+        <Field label="Annual interest rate (%)" hint="Enter the current notified NSC rate">
+          <Input
+            type="number"
+            min={0}
+            step="0.01"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Tenure — years" hint="Standard NSC VIII Issue is often modeled as 5 years">
+          <Input
+            type="number"
+            min={0}
+            step="1"
+            value={years}
+            onChange={(e) => setYears(e.target.value)}
+            aria-invalid={Boolean(error && tenureYears <= 0)}
+          />
+        </Field>
+        <Field label="Extra months" hint="0–11 (added to years); useful for partial-year models">
+          <Input
+            type="number"
+            min={0}
+            max={11}
+            step="1"
+            value={months}
+            onChange={(e) => setMonths(e.target.value)}
+          />
+        </Field>
+      </Row>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Maturity amount" value={fmt(result.maturity, 0)} />
+            <Stat label="Interest earned" value={fmt(result.interest, 0)} />
+            <Stat
+              label="Effective annual yield"
+              value={
+                Number.isFinite(result.effectiveYield)
+                  ? `${fmt(result.effectiveYield, 2)}%`
+                  : "—"
+              }
+            />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Stat
+              label="Tenure"
+              value={
+                mParts > 0
+                  ? `${yParts} yr ${mParts} mo (${fmt(tenureYears, 2)} years)`
+                  : `${yParts} year${yParts === 1 ? "" : "s"}`
+              }
+            />
+            <Stat
+              label="Compounding"
+              value={`Annual · ${fmt(annual, 2)}% p.a.`}
+            />
+          </div>
+          {result.yearlyRows.length > 0 && (
+            <div className="overflow-x-auto rounded-xl border border-border">
+              <table className="w-full min-w-[28rem] text-left text-sm">
+                <caption className="sr-only">
+                  Year-by-year NSC interest and closing balance
+                </caption>
+                <thead className="bg-surface-2 text-muted">
+                  <tr>
+                    <th scope="col" className="px-3 py-2 font-medium">
+                      Year
+                    </th>
+                    <th scope="col" className="px-3 py-2 font-medium">
+                      Opening
+                    </th>
+                    <th scope="col" className="px-3 py-2 font-medium">
+                      Interest
+                    </th>
+                    <th scope="col" className="px-3 py-2 font-medium">
+                      Closing
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {result.yearlyRows.map((row) => (
+                    <tr key={row.year} className="border-t border-border">
+                      <td className="px-3 py-2">{row.year}</td>
+                      <td className="px-3 py-2">{fmt(row.opening, 0)}</td>
+                      <td className="px-3 py-2">{fmt(row.interest, 0)}</td>
+                      <td className="px-3 py-2 font-medium">{fmt(row.closing, 0)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          <Notice tone="info">
+            In this planning model, each year’s interest is added to the certificate balance and
+            compounds the next year. Maturity is the final closing balance; interest earned is
+            maturity minus your original purchase amount.
+          </Notice>
+        </>
+      )}
+    </div>
+  );
+}
