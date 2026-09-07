@@ -6,7 +6,8 @@ import {
   createChatCompletion,
   isAiConfigured,
 } from "@/lib/ai/client";
-import { getAiTool, type AiInput } from "@/lib/ai/tools";
+import { getAiTool, isOcrToolSlug, type AiInput } from "@/lib/ai/tools";
+import { parseOcrResponse } from "@/lib/ai/ocr-result";
 import {
   checkAiAllowance,
   incrementUsage,
@@ -89,14 +90,17 @@ export async function POST(
       { vision: images.length > 0 },
     );
 
-    const text = completion.choices[0]?.message?.content?.trim() ?? "";
+    const raw = completion.choices[0]?.message?.content?.trim() ?? "";
+    const body = isOcrToolSlug(slug)
+      ? parseOcrResponse(raw, input.translateTo)
+      : { text: raw };
 
     const headers: HeadersInit = { "Content-Type": "application/json" };
     if (!allowance.isPro) {
       headers["Set-Cookie"] = usageSetCookieHeader(incrementUsage(request));
     }
 
-    return new Response(JSON.stringify({ text }), { status: 200, headers });
+    return new Response(JSON.stringify(body), { status: 200, headers });
   } catch (err) {
     if (err instanceof AiNotConfiguredError) {
       return json({ error: aiConfigErrorMessage() }, 503);

@@ -7,7 +7,7 @@ import { AiUsageBanner, notifyUsageUpdated } from "@/components/billing/AiUsageB
 import { proHeaders } from "@/lib/billing/client";
 import { Icon } from "@/components/ui/Icon";
 import { cn, readAsDataURL } from "@/lib/utils";
-import { AI_TOOLS, type AiField, type AiInput } from "@/lib/ai/tools";
+import { AI_TOOLS, isOcrToolSlug, type AiField, type AiInput } from "@/lib/ai/tools";
 import { fetchPageHtml } from "@/components/tools/fetch-from-url";
 
 /** Read an image file and downscale it to keep the request payload reasonable. */
@@ -118,6 +118,43 @@ function ResultSkeleton() {
   );
 }
 
+function ResultPanel({
+  label,
+  value,
+  loading,
+  mono,
+}: {
+  label: string;
+  value: string;
+  loading: boolean;
+  mono?: boolean;
+}) {
+  return (
+    <Field label={label}>
+      <div className="rounded-xl border border-border bg-surface-2 p-4">
+        {loading ? (
+          <ResultSkeleton />
+        ) : (
+          <pre
+            dir="auto"
+            className={cn(
+              "max-h-[32rem] overflow-auto whitespace-pre-wrap break-words text-sm leading-relaxed",
+              mono && "font-mono",
+            )}
+          >
+            {value}
+          </pre>
+        )}
+      </div>
+      {!loading && value && (
+        <div className="mt-2">
+          <CopyButton value={value} />
+        </div>
+      )}
+    </Field>
+  );
+}
+
 /* --------------------------------- main ------------------------------------ */
 export function AiTool({ slug }: { slug: string }) {
   const tool = AI_TOOLS[slug];
@@ -132,16 +169,23 @@ export function AiTool({ slug }: { slug: string }) {
 
   const [values, setValues] = React.useState<AiInput>(initial);
   const [output, setOutput] = React.useState("");
+  const [ocrOriginal, setOcrOriginal] = React.useState("");
+  const [ocrTranslation, setOcrTranslation] = React.useState("");
+  const [ocrTarget, setOcrTarget] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
 
   if (!tool) return <Notice tone="error">Unknown AI tool.</Notice>;
 
+  const wantsTranslation = isOcrToolSlug(slug) && Boolean(values.translateTo && values.translateTo !== "none");
   const set = (name: string, v: string) => setValues((s) => ({ ...s, [name]: v }));
 
   async function run() {
     setError("");
     setOutput("");
+    setOcrOriginal("");
+    setOcrTranslation("");
+    setOcrTarget("");
     setLoading(true);
     try {
       let payload: AiInput = { ...values };
@@ -164,6 +208,9 @@ export function AiTool({ slug }: { slug: string }) {
       });
       const data = (await res.json()) as {
         text?: string;
+        original?: string;
+        translation?: string;
+        translationLanguage?: string;
         error?: string;
         code?: string;
         upgradeUrl?: string;
@@ -172,6 +219,9 @@ export function AiTool({ slug }: { slug: string }) {
         setError(data.error ?? "Something went wrong.");
       } else {
         setOutput(data.text ?? "");
+        setOcrOriginal(data.original ?? "");
+        setOcrTranslation(data.translation ?? "");
+        setOcrTarget(data.translationLanguage ?? "");
         notifyUsageUpdated();
       }
     } catch (e) {
@@ -236,29 +286,31 @@ export function AiTool({ slug }: { slug: string }) {
         </Notice>
       )}
 
-      {(loading || output) && (
-        <Field label={tool.outputLabel}>
-          <div className="rounded-xl border border-border bg-surface-2 p-4">
-            {loading ? (
-              <ResultSkeleton />
-            ) : (
-              <pre
-                className={cn(
-                  "max-h-[32rem] overflow-auto whitespace-pre-wrap break-words text-sm leading-relaxed",
-                  tool.mono && "font-mono",
-                )}
-              >
-                {output}
-              </pre>
+      {(loading || output || ocrOriginal) &&
+        (wantsTranslation || ocrTranslation ? (
+          <div className="space-y-4">
+            <ResultPanel
+              label="Original text"
+              value={ocrOriginal || output}
+              loading={loading}
+              mono={tool.mono}
+            />
+            <ResultPanel
+              label={ocrTarget ? `Translation (${ocrTarget})` : "Translation"}
+              value={ocrTranslation}
+              loading={loading}
+              mono={tool.mono}
+            />
+            {!loading && ocrOriginal && ocrTranslation && (
+              <CopyButton
+                value={`Original\n\n${ocrOriginal}\n\nTranslation (${ocrTarget})\n\n${ocrTranslation}`}
+                label="Copy both"
+              />
             )}
           </div>
-          {!loading && output && (
-            <div className="mt-2">
-              <CopyButton value={output} />
-            </div>
-          )}
-        </Field>
-      )}
+        ) : (
+          <ResultPanel label={tool.outputLabel} value={output} loading={loading} mono={tool.mono} />
+        ))}
 
       <p className="flex items-start gap-2 text-xs text-muted">
         <Icon name="Info" className="mt-0.5 h-3.5 w-3.5 shrink-0" />

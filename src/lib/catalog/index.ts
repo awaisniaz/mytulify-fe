@@ -48,7 +48,7 @@ const handwritingOcr: CategoryData = {
   name: "Handwriting OCR",
   slug: "handwriting-ocr",
   description:
-    "AI-powered handwriting-to-text (OCR) tools for 30+ languages. Upload a photo of handwriting and get accurate, editable digital text in seconds.",
+    "AI-powered handwriting-to-text (OCR) tools for 30+ languages. Upload a photo of handwriting and get accurate, editable digital text — with optional translation into another language.",
   tools: ocrCatalogTools(),
 };
 

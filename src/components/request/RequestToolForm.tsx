@@ -10,10 +10,12 @@ export function RequestToolForm({ categories }: { categories: CategoryOption[] }
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [category, setCategory] = React.useState(categories[0]?.slug ?? "");
+  const [requesterName, setRequesterName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
   const [done, setDone] = React.useState(false);
+  const [doneHadEmail, setDoneHadEmail] = React.useState(false);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -31,6 +33,7 @@ export function RequestToolForm({ categories }: { categories: CategoryOption[] }
           toolName: name.trim(),
           description: description.trim(),
           category: category || null,
+          name: requesterName.trim() || null,
           email: email.trim() || null,
         }),
       });
@@ -39,9 +42,11 @@ export function RequestToolForm({ categories }: { categories: CategoryOption[] }
         setError(data.error || "Could not submit. Please try again.");
         return;
       }
+      setDoneHadEmail(Boolean(email.trim()));
       setDone(true);
       setName("");
       setDescription("");
+      setRequesterName("");
       setEmail("");
     } catch {
       setError("Network error. Please try again.");
@@ -53,13 +58,16 @@ export function RequestToolForm({ categories }: { categories: CategoryOption[] }
   if (done) {
     return (
       <Notice tone="success">
-        Thanks! We&apos;ll consider this for a future update.
-        {email ? " If we ship it, we may email you at the address you provided." : ""}
+        Thanks! Your request was sent to the Mytulify team.
+        {doneHadEmail ? " If we ship it, we may email you at the address you provided." : ""}
         {" "}
         <button
           type="button"
           className="font-semibold underline"
-          onClick={() => setDone(false)}
+          onClick={() => {
+            setDone(false);
+            setDoneHadEmail(false);
+          }}
         >
           Submit another idea
         </button>
@@ -99,13 +107,23 @@ export function RequestToolForm({ categories }: { categories: CategoryOption[] }
           <option value="other">Other / not sure</option>
         </Select>
       </Field>
-      <Field label="Email (optional)" hint="So we can tell you if we build it">
+      <Field label="Your name" hint="Optional">
+        <Input
+          value={requesterName}
+          onChange={(e) => setRequesterName(e.target.value)}
+          placeholder="Your name"
+          maxLength={120}
+          autoComplete="name"
+        />
+      </Field>
+      <Field label="Your email" hint="Optional — so we can tell you if we build it">
         <Input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
           maxLength={200}
+          autoComplete="email"
         />
       </Field>
       {error && <Notice tone="error">{error}</Notice>}

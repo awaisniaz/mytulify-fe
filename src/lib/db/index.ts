@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS tool_requests (
   tool_name TEXT NOT NULL,
   description TEXT NOT NULL,
   category TEXT,
+  requester_name TEXT,
   email TEXT,
   created_at INTEGER NOT NULL
 );
@@ -51,7 +52,21 @@ async function initDb(): Promise<void> {
   });
 
   await client.executeMultiple(SCHEMA_SQL);
+  await ensureColumn(client, "tool_requests", "requester_name", "TEXT");
   db = drizzle(client, { schema });
+}
+
+async function ensureColumn(
+  c: Client,
+  table: string,
+  column: string,
+  type: string,
+): Promise<void> {
+  const info = await c.execute(`PRAGMA table_info(${table})`);
+  const exists = info.rows.some((row) => String(row.name) === column);
+  if (!exists) {
+    await c.execute(`ALTER TABLE ${table} ADD COLUMN ${column} ${type}`);
+  }
 }
 
 /** Lazy-init SQLite/Turso database (auto-creates tables on first use). */
