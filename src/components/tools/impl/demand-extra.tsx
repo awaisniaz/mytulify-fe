@@ -2956,3 +2956,198 @@ export function NscCalculator() {
     </div>
   );
 }
+
+/* ------------------------------ ROI Calculator ----------------------------- */
+type RoiInputMode = "gain" | "final";
+
+function roiFromCostAndGain(cost: number, gain: number) {
+  const finalValue = cost + gain;
+  const roiPct = cost !== 0 ? (gain / cost) * 100 : NaN;
+  const multiple = cost !== 0 ? finalValue / cost : NaN;
+  return { gain, finalValue, roiPct, multiple };
+}
+
+function annualizedRoiPct(cost: number, finalValue: number, years: number) {
+  if (!(cost > 0) || !(finalValue > 0) || !(years > 0)) return NaN;
+  return (Math.pow(finalValue / cost, 1 / years) - 1) * 100;
+}
+
+export function RoiCalculator() {
+  const [mode, setMode] = React.useState<RoiInputMode>("gain");
+  const [cost, setCost] = React.useState("10000");
+  const [gain, setGain] = React.useState("2500");
+  const [finalValue, setFinalValue] = React.useState("12500");
+  const [years, setYears] = React.useState("1");
+  const [targetRoi, setTargetRoi] = React.useState("25");
+
+  const c = n(cost);
+  const g = n(gain);
+  const fv = n(finalValue);
+  const y = n(years);
+  const tr = n(targetRoi);
+
+  const derived =
+    mode === "gain"
+      ? Number.isFinite(c) && Number.isFinite(g)
+        ? roiFromCostAndGain(c, g)
+        : null
+      : Number.isFinite(c) && Number.isFinite(fv)
+        ? roiFromCostAndGain(c, fv - c)
+        : null;
+
+  const holdingYears = Number.isFinite(y) && y > 0 ? y : NaN;
+  const annualized =
+    derived && Number.isFinite(holdingYears)
+      ? annualizedRoiPct(c, derived.finalValue, holdingYears)
+      : NaN;
+  const simpleAnnual =
+    derived && Number.isFinite(derived.roiPct) && Number.isFinite(holdingYears)
+      ? derived.roiPct / holdingYears
+      : NaN;
+
+  let error = "";
+  if (cost.trim() === "") {
+    error = "Enter the initial investment or cost.";
+  } else if (!Number.isFinite(c) || c <= 0) {
+    error = "Cost / investment must be a positive number.";
+  } else if (mode === "gain" && gain.trim() === "") {
+    error = "Enter net gain (profit). Use a negative number for a loss.";
+  } else if (mode === "gain" && !Number.isFinite(g)) {
+    error = "Gain must be a valid number.";
+  } else if (mode === "final" && finalValue.trim() === "") {
+    error = "Enter the final value of the investment.";
+  } else if (mode === "final" && !Number.isFinite(fv)) {
+    error = "Final value must be a valid number.";
+  } else if (years.trim() !== "" && (!Number.isFinite(y) || y < 0)) {
+    error = "Holding period cannot be negative.";
+  }
+
+  const valid = !error && derived != null;
+
+  const gainForTarget =
+    Number.isFinite(c) && c > 0 && Number.isFinite(tr) ? (c * tr) / 100 : NaN;
+  const finalForTarget =
+    Number.isFinite(c) && Number.isFinite(gainForTarget) ? c + gainForTarget : NaN;
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        ROI = net gain ÷ cost × 100. Annualized ROI compounds over the holding period (same idea as
+        CAGR when final value is positive). Planning math only — not investment advice.
+      </Notice>
+      <Field label="Input mode">
+        <Select
+          value={mode}
+          onChange={(e) => setMode(e.target.value as RoiInputMode)}
+          aria-label="ROI input mode"
+        >
+          <option value="gain">Cost + net gain (profit or loss)</option>
+          <option value="final">Cost + final value</option>
+        </Select>
+      </Field>
+      <Row>
+        <Field label="Cost / initial investment" hint="What you spent or invested">
+          <Input
+            type="number"
+            min={0}
+            value={cost}
+            onChange={(e) => setCost(e.target.value)}
+            aria-invalid={Boolean(error && (!Number.isFinite(c) || c <= 0))}
+          />
+        </Field>
+        {mode === "gain" ? (
+          <Field label="Net gain" hint="Profit positive; loss negative (e.g. -500)">
+            <Input
+              type="number"
+              value={gain}
+              onChange={(e) => setGain(e.target.value)}
+              aria-invalid={Boolean(error && mode === "gain" && !Number.isFinite(g))}
+            />
+          </Field>
+        ) : (
+          <Field label="Final value" hint="What the investment is worth now">
+            <Input
+              type="number"
+              value={finalValue}
+              onChange={(e) => setFinalValue(e.target.value)}
+              aria-invalid={Boolean(error && mode === "final" && !Number.isFinite(fv))}
+            />
+          </Field>
+        )}
+      </Row>
+      <Field
+        label="Holding period (years)"
+        hint="Optional — enables annualized ROI. Use decimals (e.g. 0.5 for 6 months)."
+      >
+        <Input
+          type="number"
+          min={0}
+          step="0.1"
+          value={years}
+          onChange={(e) => setYears(e.target.value)}
+          aria-invalid={Boolean(error && years.trim() !== "" && (!Number.isFinite(y) || y < 0))}
+        />
+      </Field>
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : valid && derived ? (
+        <>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Net gain" value={fmt(derived.gain, 2)} />
+            <Stat label="ROI" value={`${fmt(derived.roiPct, 2)}%`} />
+            <Stat label="Final value" value={fmt(derived.finalValue, 2)} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat
+              label="Return multiple"
+              value={Number.isFinite(derived.multiple) ? `${fmt(derived.multiple, 3)}×` : "—"}
+            />
+            <Stat
+              label="Annualized ROI"
+              value={
+                Number.isFinite(annualized)
+                  ? `${fmt(annualized, 2)}%`
+                  : holdingYears > 0 && derived.finalValue <= 0
+                    ? "N/A (final ≤ 0)"
+                    : "—"
+              }
+            />
+            <Stat
+              label="Simple annual ROI"
+              value={Number.isFinite(simpleAnnual) ? `${fmt(simpleAnnual, 2)}% / yr` : "—"}
+            />
+          </div>
+          {holdingYears > 0 && (
+            <Notice tone="info">
+              Annualized ROI uses compound growth over {fmt(holdingYears, 2)} year
+              {holdingYears === 1 ? "" : "s"}. Simple annual ROI divides total ROI by years (no
+              compounding).
+            </Notice>
+          )}
+        </>
+      ) : null}
+
+      <div className="space-y-3 border-t border-border pt-4">
+        <p className="text-sm font-medium">Reverse: gain needed for a target ROI</p>
+        <Field label="Target ROI (%)">
+          <Input
+            type="number"
+            step="0.1"
+            value={targetRoi}
+            onChange={(e) => setTargetRoi(e.target.value)}
+          />
+        </Field>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Stat
+            label="Gain needed"
+            value={Number.isFinite(gainForTarget) ? fmt(gainForTarget, 2) : "—"}
+          />
+          <Stat
+            label="Final value needed"
+            value={Number.isFinite(finalForTarget) ? fmt(finalForTarget, 2) : "—"}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
