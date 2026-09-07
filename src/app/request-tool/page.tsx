@@ -30,8 +30,8 @@ export default function RequestToolPage() {
         Request a tool
       </h1>
       <p className="mt-3 text-muted">
-        Missing something from our {TOTAL_TOOLS}+ tools? Describe the idea — we review every request
-        when planning new releases.
+        Missing something from our {TOTAL_TOOLS}+ tools? Describe the idea — every request is emailed
+        to the team and reviewed when we plan new releases.
       </p>
 
       <div className="mt-8 rounded-2xl border border-border bg-surface p-6 sm:p-8">

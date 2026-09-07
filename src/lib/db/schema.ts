@@ -33,6 +33,7 @@ export const toolRequests = sqliteTable(
     toolName: text("tool_name").notNull(),
     description: text("description").notNull(),
     category: text("category"),
+    requesterName: text("requester_name"),
     email: text("email"),
     createdAt: integer("created_at").notNull(),
   },

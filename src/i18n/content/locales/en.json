@@ -72,7 +72,7 @@
     },
     "handwriting-ocr": {
       "name": "Handwriting OCR",
-      "description": "AI-powered handwriting-to-text OCR for 30+ languages. Upload a photo and get accurate editable text in seconds.",
+      "description": "AI-powered handwriting-to-text OCR for 30+ languages. Upload a photo, extract the original text, and optionally translate it.",
       "tagline": "Handwriting to text in 30+ languages"
     },
     "freelancer-tools": {

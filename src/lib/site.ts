@@ -9,6 +9,8 @@ export const site = {
   locale: "en_US",
   twitter: "@mytulify",
   supportEmail: "support@mytulify.com",
+  /** Inbox for /request-tool submissions. */
+  requestNotifyEmail: "mytulif@gmail.com",
   keywords: [
     "online tools",
     "free online tools",

@@ -654,7 +654,21 @@ export const OCR_LANGUAGES = [
 export const ocrSlug = (lang: string) =>
   "handwriting-to-text-" + lang.toLowerCase().replace(/\s+/g, "-");
 
+/** Translation targets for OCR tools (OCR languages + Urdu). English/Urdu first. */
+const TRANSLATE_PRIORITY = ["English", "Urdu"] as const;
+export const TRANSLATE_LANGUAGES = [
+  ...TRANSLATE_PRIORITY,
+  ...OCR_LANGUAGES.filter((l) => !TRANSLATE_PRIORITY.includes(l as (typeof TRANSLATE_PRIORITY)[number])).sort((a, b) =>
+    a.localeCompare(b),
+  ),
+];
+
+export function isOcrToolSlug(slug: string): boolean {
+  return slug === "handwriting-to-text" || slug.startsWith("handwriting-to-text-");
+}
+
 function makeOcrTool(lang: string | null): AiTool {
+  const defaultTranslate = lang === "English" ? "none" : "English";
   return {
     slug: lang ? ocrSlug(lang) : "handwriting-to-text",
     cta: "Extract text",
@@ -677,21 +691,49 @@ function makeOcrTool(lang: string | null): AiTool {
           { value: "markdown", label: "Keep formatting (Markdown)" },
         ],
       },
+      {
+        name: "translateTo",
+        type: "select",
+        label: "Translate to",
+        default: defaultTranslate,
+        options: [
+          { value: "none", label: "Original only (no translation)" },
+          ...TRANSLATE_LANGUAGES.map((l) => ({ value: l, label: l })),
+        ],
+      },
     ],
-    maxTokens: 2000,
+    maxTokens: 4000,
     effort: "low",
-    system: ({ format }) =>
-      `You are an expert OCR engine that reads handwriting${lang ? ` written in ${lang}` : ""}. Transcribe the handwritten text in the image exactly as written${
-        lang ? `, keeping it in ${lang}` : ", keeping it in its original language"
-      }. ${
+    system: ({ format, translateTo }) => {
+      const style =
         format === "markdown"
           ? "Preserve structure with Markdown (headings, lists, line breaks)."
-          : "Output plain text and preserve line breaks."
-      } Do not translate, summarise or add commentary. Mark any unreadable part as [illegible]. Output only the transcription.`,
-    buildUser: () =>
-      lang
+          : "Output plain text and preserve line breaks.";
+      const source = lang
+        ? `written in ${lang}. Transcribe exactly as written, keeping it in ${lang}`
+        : "in any language. Transcribe exactly as written, keeping it in its original language";
+      const target = translateTo && translateTo !== "none" ? translateTo : "";
+      if (!target) {
+        return `You are an expert OCR engine that reads handwriting ${source}. ${style} Do not translate, summarise or add commentary. Mark any unreadable part as [illegible]. Output only the transcription.`;
+      }
+      return `You are an expert OCR engine that reads handwriting ${source}. ${style} Mark any unreadable part as [illegible]. Then translate the transcription into ${target}, keeping the same structure and line breaks. Do not add commentary.
+
+Output EXACTLY this format and nothing else:
+<<<ORIGINAL>>>
+{exact transcription in the source language}
+<<<TRANSLATION>>>
+{accurate translation into ${target}}
+<<<END>>>`;
+    },
+    buildUser: ({ translateTo }) => {
+      const transcribe = lang
         ? `Transcribe the ${lang} handwriting in this image.`
-        : "Transcribe the handwriting in this image in its original language.",
+        : "Transcribe the handwriting in this image in its original language.";
+      if (translateTo && translateTo !== "none") {
+        return `${transcribe} Then translate the transcription into ${translateTo}.`;
+      }
+      return transcribe;
+    },
   };
 }
 
@@ -721,13 +763,13 @@ export function ocrCatalogTools(): {
     row(
       "Handwriting to Text (OCR)",
       "handwriting-to-text",
-      "Convert a photo of handwriting into digital text in any language using AI vision.",
+      "Convert a photo of handwriting into digital text in any language, then optionally translate it.",
     ),
     ...OCR_LANGUAGES.map((l) =>
       row(
         `${l} Handwriting to Text`,
         ocrSlug(l),
-        `Convert ${l} handwriting from a photo into editable ${l} text with AI-powered OCR.`,
+        `Convert ${l} handwriting from a photo into editable ${l} text, with optional translation into another language.`,
       ),
     ),
   ];

@@ -59,7 +59,7 @@ export function localizeTool(content: ContentBundle, tool: Tool): LocalizedTool 
     if (!base.about?.length) {
       base.about = [
         directAnswerLead(name, base.description),
-        "Upload a clear photo or scan, wait a few seconds, then copy or download the transcription. The Free plan includes limited daily AI runs; Pro unlocks unlimited OCR.",
+        "Upload a clear photo or scan, pick a translation language if you need one, then copy the original text and the translation. The Free plan includes limited daily AI runs; Pro unlocks unlimited OCR.",
       ];
     }
     if (!base.faq?.length) {
@@ -75,6 +75,10 @@ export function localizeTool(content: ContentBundle, tool: Tool): LocalizedTool 
         {
           q: "What image quality works best?",
           a: "Use a well-lit, sharp photo with the writing filling most of the frame. Avoid heavy glare, blur, or extreme angles for the most accurate transcription from the OCR model.",
+        },
+        {
+          q: "Can I translate the extracted text?",
+          a: "Yes. After OCR, choose a language under Translate to. You will see the original transcription and a translation side by side. Pick Original only if you just want the source text.",
         },
         {
           q: "Is my handwriting photo stored?",
