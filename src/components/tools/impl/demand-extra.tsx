@@ -3151,3 +3151,306 @@ export function RoiCalculator() {
     </div>
   );
 }
+
+/* ------------------------------ XIRR Calculator ---------------------------- */
+type XirrRow = { id: string; date: string; amount: string };
+
+function newXirrId() {
+  return `cf-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function parseIsoDateLocal(iso: string): Date | null {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso.trim());
+  if (!m) return null;
+  const y = Number(m[1]);
+  const mo = Number(m[2]);
+  const d = Number(m[3]);
+  const dt = new Date(y, mo - 1, d);
+  if (dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== d) return null;
+  return dt;
+}
+
+function yearFraction(from: Date, to: Date) {
+  // Excel XIRR convention: actual days / 365
+  return (to.getTime() - from.getTime()) / (365 * 24 * 60 * 60 * 1000);
+}
+
+function xirrNpv(rate: number, flows: { date: Date; amount: number }[]) {
+  const d0 = flows[0]!.date;
+  let sum = 0;
+  for (const f of flows) {
+    const t = yearFraction(d0, f.date);
+    sum += f.amount / Math.pow(1 + rate, t);
+  }
+  return sum;
+}
+
+function xirrNpvDerivative(rate: number, flows: { date: Date; amount: number }[]) {
+  const d0 = flows[0]!.date;
+  let sum = 0;
+  for (const f of flows) {
+    const t = yearFraction(d0, f.date);
+    if (t === 0) continue;
+    sum -= (t * f.amount) / Math.pow(1 + rate, t + 1);
+  }
+  return sum;
+}
+
+/** Excel-style XIRR via Newton–Raphson with bisection fallback. Returns decimal rate. */
+function solveXirr(
+  flows: { date: Date; amount: number }[],
+  guess = 0.1,
+): { rate: number; converged: boolean } {
+  const sorted = [...flows].sort((a, b) => a.date.getTime() - b.date.getTime());
+  let rate = Number.isFinite(guess) ? guess : 0.1;
+
+  for (let i = 0; i < 80; i++) {
+    if (rate <= -0.999999) rate = -0.9999;
+    const f = xirrNpv(rate, sorted);
+    const df = xirrNpvDerivative(rate, sorted);
+    if (!Number.isFinite(f) || !Number.isFinite(df) || Math.abs(df) < 1e-14) break;
+    const next = rate - f / df;
+    if (!Number.isFinite(next)) break;
+    if (Math.abs(next - rate) < 1e-10) return { rate: next, converged: true };
+    rate = next;
+  }
+
+  // Bisection on a wide bracket when Newton fails (common with odd cash-flow signs).
+  let lo = -0.99;
+  let hi = 10;
+  let flo = xirrNpv(lo, sorted);
+  let fhi = xirrNpv(hi, sorted);
+  if (!Number.isFinite(flo) || !Number.isFinite(fhi) || flo * fhi > 0) {
+    // Expand high side once.
+    hi = 100;
+    fhi = xirrNpv(hi, sorted);
+    if (!Number.isFinite(fhi) || flo * fhi > 0) {
+      return { rate: Number.NaN, converged: false };
+    }
+  }
+  for (let i = 0; i < 200; i++) {
+    const mid = (lo + hi) / 2;
+    const fm = xirrNpv(mid, sorted);
+    if (!Number.isFinite(fm)) return { rate: Number.NaN, converged: false };
+    if (Math.abs(fm) < 1e-10 || Math.abs(hi - lo) < 1e-12) {
+      return { rate: mid, converged: true };
+    }
+    if (flo * fm <= 0) {
+      hi = mid;
+      fhi = fm;
+    } else {
+      lo = mid;
+      flo = fm;
+    }
+  }
+  return { rate: (lo + hi) / 2, converged: true };
+}
+
+const DEFAULT_XIRR_ROWS: XirrRow[] = [
+  { id: "cf-1", date: "2023-01-01", amount: "-100000" },
+  { id: "cf-2", date: "2023-07-01", amount: "-25000" },
+  { id: "cf-3", date: "2024-01-15", amount: "15000" },
+  { id: "cf-4", date: "2025-01-01", amount: "140000" },
+];
+
+export function XirrCalculator() {
+  const [rows, setRows] = React.useState<XirrRow[]>(DEFAULT_XIRR_ROWS);
+  const [guessPct, setGuessPct] = React.useState("10");
+
+  const parsed = rows.map((r) => {
+    const date = parseIsoDateLocal(r.date);
+    const amount = n(r.amount);
+    return { ...r, date, amount };
+  });
+
+  const flows = parsed
+    .filter((r) => r.date != null && Number.isFinite(r.amount) && r.amount !== 0)
+    .map((r) => ({ date: r.date as Date, amount: r.amount }));
+
+  const hasNeg = flows.some((f) => f.amount < 0);
+  const hasPos = flows.some((f) => f.amount > 0);
+  const uniqueDates = new Set(flows.map((f) => f.date.getTime())).size;
+
+  let error = "";
+  if (rows.length < 2) {
+    error = "Add at least two cash flows (dates and amounts).";
+  } else if (parsed.some((r) => !r.date)) {
+    error = "Every cash flow needs a valid date (YYYY-MM-DD).";
+  } else if (parsed.some((r) => !Number.isFinite(r.amount))) {
+    error = "Every amount must be a valid number (use negative for money out / investments).";
+  } else if (parsed.some((r) => r.amount === 0)) {
+    error = "Amounts cannot be zero — remove empty rows or enter a non-zero value.";
+  } else if (!hasNeg || !hasPos) {
+    error =
+      "XIRR needs at least one negative and one positive cash flow (Excel convention: investments negative, inflows positive).";
+  } else if (uniqueDates < 2) {
+    error = "Cash flows must span at least two different dates.";
+  } else if (guessPct.trim() !== "" && !Number.isFinite(n(guessPct))) {
+    error = "Initial guess must be a valid percentage.";
+  }
+
+  const guess = Number.isFinite(n(guessPct)) ? n(guessPct) / 100 : 0.1;
+  const solved =
+    !error && flows.length >= 2 ? solveXirr(flows, guess) : { rate: Number.NaN, converged: false };
+
+  if (!error && !solved.converged) {
+    error =
+      "Could not solve XIRR for these cash flows. Check signs, dates, and try a different initial guess.";
+  }
+
+  const xirrPct = solved.converged ? solved.rate * 100 : Number.NaN;
+  const totalOut = flows.filter((f) => f.amount < 0).reduce((s, f) => s + Math.abs(f.amount), 0);
+  const totalIn = flows.filter((f) => f.amount > 0).reduce((s, f) => s + f.amount, 0);
+  const net = totalIn - totalOut;
+  const spanYears =
+    flows.length >= 2
+      ? yearFraction(
+          flows.reduce((a, b) => (a.date < b.date ? a : b)).date,
+          flows.reduce((a, b) => (a.date > b.date ? a : b)).date,
+        )
+      : Number.NaN;
+
+  const updateRow = (id: string, patch: Partial<XirrRow>) => {
+    setRows((prev) => prev.map((r) => (r.id === id ? { ...r, ...patch } : r)));
+  };
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">
+        XIRR is the annualized rate that makes the NPV of dated cash flows equal zero (Excel XIRR /
+        day-count = actual/365). Use negative amounts for investments or money you pay out, and
+        positive amounts for redemptions, dividends, or ending market value. Planning math only — not
+        investment advice.
+      </Notice>
+
+      <div className="overflow-x-auto rounded-xl border border-border">
+        <table className="w-full min-w-[28rem] text-left text-sm">
+          <caption className="sr-only">Dated cash flows for XIRR</caption>
+          <thead className="bg-surface-2 text-muted">
+            <tr>
+              <th scope="col" className="px-3 py-2 font-medium">
+                Date
+              </th>
+              <th scope="col" className="px-3 py-2 font-medium">
+                Amount
+              </th>
+              <th scope="col" className="px-3 py-2 font-medium">
+                <span className="sr-only">Actions</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r, i) => (
+              <tr key={r.id} className="border-t border-border">
+                <td className="px-3 py-2">
+                  <Input
+                    type="date"
+                    value={r.date}
+                    onChange={(e) => updateRow(r.id, { date: e.target.value })}
+                    aria-label={`Cash flow ${i + 1} date`}
+                    aria-invalid={Boolean(error && !parseIsoDateLocal(r.date))}
+                  />
+                </td>
+                <td className="px-3 py-2">
+                  <Input
+                    type="number"
+                    step="any"
+                    value={r.amount}
+                    onChange={(e) => updateRow(r.id, { amount: e.target.value })}
+                    aria-label={`Cash flow ${i + 1} amount`}
+                    aria-invalid={Boolean(error && !Number.isFinite(n(r.amount)))}
+                    placeholder="Negative = out"
+                  />
+                </td>
+                <td className="px-3 py-2">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => setRows((prev) => prev.filter((x) => x.id !== r.id))}
+                    disabled={rows.length <= 2}
+                    aria-label={`Remove cash flow ${i + 1}`}
+                  >
+                    ✕
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          onClick={() =>
+            setRows((prev) => {
+              const last = prev[prev.length - 1];
+              const lastDate = last ? parseIsoDateLocal(last.date) : null;
+              const next = lastDate
+                ? new Date(lastDate.getFullYear(), lastDate.getMonth() + 1, lastDate.getDate())
+                : new Date();
+              const y = next.getFullYear();
+              const m = String(next.getMonth() + 1).padStart(2, "0");
+              const d = String(next.getDate()).padStart(2, "0");
+              return [
+                ...prev,
+                { id: newXirrId(), date: `${y}-${m}-${d}`, amount: "-5000" },
+              ];
+            })
+          }
+        >
+          + Add cash flow
+        </Button>
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          onClick={() => setRows(DEFAULT_XIRR_ROWS.map((r) => ({ ...r, id: newXirrId() })))}
+        >
+          Reset sample
+        </Button>
+      </div>
+
+      <Field
+        label="Initial guess (%)"
+        hint="Optional Newton starting point — try 10 for typical portfolios, or a higher value for very strong returns"
+      >
+        <Input
+          type="number"
+          step="0.1"
+          value={guessPct}
+          onChange={(e) => setGuessPct(e.target.value)}
+          aria-label="XIRR initial guess percent"
+        />
+      </Field>
+
+      {error ? (
+        <Notice tone="error">{error}</Notice>
+      ) : (
+        <>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="XIRR" value={`${fmt(xirrPct, 4)}%`} />
+            <Stat label="Total invested (outflows)" value={fmt(totalOut, 2)} />
+            <Stat label="Total received (inflows)" value={fmt(totalIn, 2)} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Stat label="Net profit" value={fmt(net, 2)} />
+            <Stat
+              label="Cash-flow span"
+              value={Number.isFinite(spanYears) ? `${fmt(spanYears, 2)} years` : "—"}
+            />
+            <Stat label="Cash flows used" value={String(flows.length)} />
+          </div>
+          <Notice tone="info">
+            Absolute net profit ignores timing. XIRR annualizes the path so irregular SIPs, top-ups,
+            and redemptions stay comparable to a single yearly rate (unlike classic CAGR, which needs
+            one start value and one end value).
+          </Notice>
+        </>
+      )}
+    </div>
+  );
+}

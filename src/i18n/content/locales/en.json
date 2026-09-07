@@ -3951,6 +3951,53 @@
         "calculators/percentage-calculator"
       ]
     },
+    "calculators/xirr-calculator": {
+      "name": "XIRR Calculator",
+      "description": "Calculate annualized XIRR from irregular dated cash flows — investments, SIPs with gaps, and redemptions — Excel-compatible planning math in your browser.",
+      "metaTitle": "XIRR Calculator – Free Irregular Cash Flow Return Tool | Mytulify",
+      "metaDescription": "Free XIRR calculator. Find annualized return from irregular dated cash flows (SIPs, top-ups, redemptions). Excel-style math in your browser — private, no signup.",
+      "about": [
+        "An XIRR calculator finds the annualized internal rate of return for cash flows that happen on different dates. Unlike CAGR (one start value, one end value) or a single ROI %, XIRR fits SIPs with missed months, lumpsum plus top-ups, partial redemptions, and a final market value into one comparable yearly rate.",
+        "Enter each date and amount using Excel’s sign convention (investments negative, money received positive), optionally set an initial guess, and read XIRR %, total outflows, inflows, and net profit. All math runs in your browser on Mytulify — useful for planning, not investment advice."
+      ],
+      "howTo": {
+        "title": "How to use the XIRR calculator",
+        "steps": [
+          "Add each cash flow with its date. Use negative amounts for investments or money paid out.",
+          "Use positive amounts for dividends, redemptions, or the ending market value of your holding.",
+          "Optionally adjust the initial guess (%) if the solver needs a better starting point.",
+          "Read XIRR, total invested, total received, net profit, and the cash-flow span in years."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an XIRR calculator?",
+          "a": "An XIRR calculator solves for the annualized rate that makes the net present value of dated cash flows equal zero. It is the standard way to measure return when money moves in and out on irregular dates."
+        },
+        {
+          "q": "How is XIRR different from CAGR?",
+          "a": "CAGR needs one beginning value, one ending value, and a fixed number of years. XIRR accepts many dated amounts (deposits, withdrawals, final value) and still returns a single annualized rate — better for real SIP and portfolio histories."
+        },
+        {
+          "q": "Should investments be negative?",
+          "a": "Yes in the Excel-compatible convention used here: money you invest or pay out is negative; money you receive (including ending value) is positive. You need at least one negative and one positive flow."
+        },
+        {
+          "q": "Is this XIRR calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/cagr-calculator",
+        "calculators/roi-calculator",
+        "calculators/sip-calculator",
+        "calculators/lumpsum-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/swp-calculator",
+        "calculators/inflation-calculator",
+        "calculators/profit-margin-calculator"
+      ]
+    },
     "text-tools/reading-time-calculator": {
       "name": "Reading Time Calculator",
       "description": "Estimate how long it takes to read any text based on words per minute.",
