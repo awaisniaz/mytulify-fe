@@ -81,7 +81,7 @@
     "name": "Calculators",
     "icon": "Calculator",
     "gradient": "from-teal-500 to-cyan-600",
-    "toolCount": 36
+    "toolCount": 54
   },
   {
     "slug": "unit-converters",

@@ -3900,6 +3900,57 @@
         "calculators/cagr-calculator"
       ]
     },
+    "calculators/roi-calculator": {
+      "name": "ROI Calculator",
+      "description": "Calculate return on investment (ROI %), net profit, and annualized ROI from cost and gain or final value — with optional holding period.",
+      "metaTitle": "ROI Calculator – Free Return on Investment Tool | Mytulify",
+      "metaDescription": "Free ROI calculator. Compute return on investment %, net gain, return multiple, and annualized ROI from cost and profit or final value. Private, no signup.",
+      "about": [
+        "An ROI (return on investment) calculator measures how much you gained or lost relative to what you spent. The classic formula is ROI % = (net gain ÷ cost) × 100. You can also start from a final value: net gain = final value − cost.",
+        "Enter cost and either net gain or final value, optionally add a holding period in years, and get ROI %, net gain, final value, return multiple, annualized ROI (compound), and simple annual ROI. A reverse section shows the gain needed for a target ROI. All math runs in your browser on Mytulify — useful for planning, not investment advice."
+      ],
+      "howTo": {
+        "title": "How to use the ROI calculator",
+        "steps": [
+          "Choose input mode: cost + net gain, or cost + final value.",
+          "Enter your initial investment (cost) and the matching gain or ending value.",
+          "Optionally set holding period in years to see annualized and simple annual ROI.",
+          "Use the reverse section to find the gain (and final value) needed for a target ROI %."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an ROI calculator?",
+          "a": "An ROI calculator computes return on investment as a percentage of cost, plus related figures like net gain, final value, and optionally annualized ROI over a holding period."
+        },
+        {
+          "q": "How is ROI calculated?",
+          "a": "ROI % = (net gain ÷ cost) × 100, where net gain is profit (or loss) relative to the initial investment. If you enter final value instead, net gain = final value − cost."
+        },
+        {
+          "q": "What is annualized ROI vs simple annual ROI?",
+          "a": "Annualized ROI compounds growth over the holding period (similar to CAGR when final value is positive). Simple annual ROI divides total ROI % by years with no compounding."
+        },
+        {
+          "q": "How is ROI different from profit margin?",
+          "a": "ROI divides gain by cost (what you invested). Profit margin divides profit by selling price (revenue). Use ROI for investment efficiency and margin for pricing/sales profitability."
+        },
+        {
+          "q": "Is this ROI calculator free?",
+          "a": "Yes. Unlimited use in your browser on Mytulify — no signup and no data uploaded to a server."
+        }
+      ],
+      "related": [
+        "calculators/profit-margin-calculator",
+        "calculators/cagr-calculator",
+        "calculators/compound-interest-calculator",
+        "calculators/lumpsum-calculator",
+        "calculators/sip-calculator",
+        "calculators/inflation-calculator",
+        "calculators/fd-calculator",
+        "calculators/percentage-calculator"
+      ]
+    },
     "text-tools/reading-time-calculator": {
       "name": "Reading Time Calculator",
       "description": "Estimate how long it takes to read any text based on words per minute.",
