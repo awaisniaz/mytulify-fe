@@ -66,6 +66,7 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "scss-calculator": "DollarSign",
   "nsc-calculator": "DollarSign",
   "roi-calculator": "DollarSign",
+  "xirr-calculator": "DollarSign",
   "color-picker": "Palette",
   "hex-to-rgb": "Palette",
   "rgb-to-hex": "Palette",
