@@ -132,6 +132,46 @@ export function CategoryCard({
   );
 }
 
+/** Dense directory row used on the homepage catalog. */
+export function CompactToolLink({
+  tool,
+  label,
+  comingSoonLabel = "Coming soon",
+}: {
+  tool: Tool;
+  label?: LocalizedTool;
+  comingSoonLabel?: string;
+}) {
+  const toolIcon = getToolIcon(tool);
+  const present = getToolIconPresentation(tool);
+  const name = label?.name ?? tool.name;
+  const description = label?.description ?? tool.description;
+  const soon = !isToolAvailable(tool);
+
+  return (
+    <Link
+      href={toolHref(tool)}
+      prefetch={false}
+      className="group flex items-center gap-3 rounded-xl border border-border bg-surface px-3 py-2.5 transition-colors hover:border-brand/50 hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      <span className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-lg ring-1", present.bg, present.ring)}>
+        <Icon name={toolIcon} className={cn("h-4 w-4", present.fg)} />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="flex items-center gap-2">
+          <span className="truncate text-sm font-semibold leading-tight group-hover:text-brand">{name}</span>
+          {soon ? (
+            <span className="shrink-0 rounded-md bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-bold uppercase text-amber-700 dark:text-amber-400">
+              {comingSoonLabel}
+            </span>
+          ) : null}
+        </span>
+        <span className="mt-0.5 block truncate text-xs text-muted">{description}</span>
+      </span>
+    </Link>
+  );
+}
+
 export function SectionHeader({
   label,
   title,
