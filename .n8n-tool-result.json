@@ -1,0 +1,7 @@
+{
+  "tool_name": "ROI Calculator",
+  "tool_route": "/calculators/roi-calculator",
+  "blog_1": "ROI Calculator Guide — Measure Return on Investment Clearly",
+  "blog_2": "ROI vs Profit Margin — Investment Return or Sales Profitability",
+  "market_research": "Catalog-gap analysis (web research unavailable): calculators already cover profit margin, CAGR, compound interest, SIP/lumpsum and many savings schemes, but had no dedicated ROI tool despite ROI being a distinct high-intent metric (gain÷cost, optionally annualized). Selected ROI Calculator to close that gap and pair naturally with the existing Profit Margin and CAGR tools."
+}

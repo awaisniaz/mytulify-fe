@@ -30,6 +30,8 @@ import {
   SsyCalculator,
   ScssCalculator,
   NscCalculator,
+  RoiCalculator,
+  XirrCalculator,
 } from "@/components/tools/impl/demand-extra";
 import { DebtPayoffCalculator, InflationCalculator } from "@/components/tools/impl/engaging-suite";
 
@@ -87,4 +89,6 @@ export default makeReg({
   "ssy-calculator": SsyCalculator,
   "scss-calculator": ScssCalculator,
   "nsc-calculator": NscCalculator,
+  "roi-calculator": RoiCalculator,
+  "xirr-calculator": XirrCalculator,
 });
