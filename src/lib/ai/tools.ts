@@ -493,6 +493,71 @@ Rules:
     buildUser: ({ jobTitle, company, jobDescription, background }) =>
       `Role: ${jobTitle}\nCompany: ${company}\n\n--- Job description ---\n${jobDescription}\n\n--- Candidate background ---\n${background}`,
   },
+
+  "ats-resume-checker": {
+    slug: "ats-resume-checker",
+    cta: "Check ATS score",
+    outputLabel: "ATS report",
+    fields: [
+      {
+        name: "resumeText",
+        type: "textarea",
+        label: "Parsed résumé text",
+        required: true,
+        rows: 10,
+      },
+      {
+        name: "jobDescription",
+        type: "textarea",
+        label: "Job description",
+        rows: 8,
+      },
+      {
+        name: "parseNotes",
+        type: "textarea",
+        label: "Parser notes",
+        rows: 4,
+      },
+    ],
+    maxTokens: 3500,
+    effort: "high",
+    think: true,
+    system: () =>
+      `You are a senior recruiter and ATS (Applicant Tracking System) specialist who has configured Workday, Greenhouse, Lever, Taleo, and iCIMS. You review the PLAIN TEXT an ATS extracted from a résumé — not the designed PDF a human sees.
+
+Return ONLY valid JSON (no markdown fences, no preamble) with this shape:
+{
+  "contentScore": 0-100,
+  "summary": "2-3 sentence overall verdict for the candidate",
+  "issues": [
+    {
+      "severity": "critical" | "warning" | "info",
+      "category": "content" | "keywords" | "structure" | "contact",
+      "title": "short label",
+      "detail": "2-4 sentences: what is wrong, why ATS/recruiters care, quote a snippet from the résumé when possible",
+      "howToFix": "concrete edit the candidate should make",
+      "example": "optional improved bullet or heading"
+    }
+  ],
+  "strengths": ["short bullets of what already works"],
+  "keywordSuggestions": ["terms from the job ad that are missing or weakly used — only if a job description was provided"],
+  "bulletRewrites": [{ "original": "weak bullet from the résumé", "improved": "ATS-friendly rewrite that stays truthful" }]
+}
+
+Rules:
+- Do NOT invent employers, degrees, tools, or metrics.
+- Prefer 6–10 issues, most specific and actionable. Skip generic fluff ("use action verbs") unless you quote a real weak line.
+- If a job description is present, tailor keyword gaps to THAT ad.
+- If the parsed text is garbled, say so as a critical parse issue.
+- contentScore is about writing quality and role fit in the extracted text, not file format.`,
+    buildUser: ({ resumeText, jobDescription, parseNotes }) => {
+      const jd = jobDescription?.trim()
+        ? `--- Job description ---\n${jobDescription.trim()}`
+        : "--- Job description ---\n(none provided — skip keywordSuggestions and judge generic professional quality only)";
+      const notes = parseNotes?.trim() ? `\n\n--- Automated parser notes ---\n${parseNotes.trim()}` : "";
+      return `${jd}${notes}\n\n--- Parsed résumé text (what the ATS extracted) ---\n${resumeText}`;
+    },
+  },
 };
 
 /* ------------------------------------------------------ AI SEO workflows --- */
