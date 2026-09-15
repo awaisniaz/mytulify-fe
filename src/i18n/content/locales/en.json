@@ -2,7 +2,7 @@
   "categories": {
     "ai-tools": {
       "name": "AI-Powered Tools",
-      "description": "AI assistants for developers and job seekers — explain code, generate SQL, write cover letters, debug errors, commits, docs and tests.",
+      "description": "AI assistants for developers and job seekers — explain code, generate SQL, write cover letters, check résumés for ATS, debug errors, commits, docs and tests.",
       "tagline": "AI for developers & job seekers"
     },
     "calculators": {
@@ -182,10 +182,61 @@
         }
       ],
       "related": [
+        "ai-tools/ats-resume-checker",
         "freelancer-tools/proposal-generator",
         "freelancer-tools/email-templates-generator",
         "text-tools/word-counter",
         "ai-tools/readme-generator"
+      ]
+    },
+    "ai-tools/ats-resume-checker": {
+      "name": "ATS Resume Checker",
+      "description": "Upload a CV and a job ad — see ATS parseability, keyword match, and a detailed issue list with fixes.",
+      "metaTitle": "Free ATS Resume Checker – Upload CV & Fix Issues | Mytulify",
+      "metaDescription": "Check if your résumé will parse in Workday, Greenhouse, Taleo and similar ATS. Upload PDF or DOCX, paste the job ad, get a score, keyword gaps, and how to fix each issue.",
+      "about": [
+        "Applicant Tracking Systems do not see your designed PDF. They extract plain text, map headings like Experience and Skills, then score overlap with the job description. Multi-column layouts, tables, icons, and contact details in headers are the usual reasons a strong candidate looks unqualified in the ATS view.",
+        "This ATS Resume Checker first parses your file in the browser the way a parser would — reading order, columns, images, tables, missing sections, dates, and contact fields. It then matches keywords from the job posting and runs an AI review that quotes weak bullets and shows rewrites.",
+        "Use it before Easy Apply, Workday, or any portal upload. Fix critical parse issues first, then close keyword gaps with skills you actually have. Pair it with the AI Cover Letter Generator so the letter and résumé share the same language as the ad."
+      ],
+      "howTo": {
+        "title": "How to run an ATS check on your CV",
+        "steps": [
+          "Upload the PDF or DOCX you will actually submit (or paste the résumé text).",
+          "Paste the full job description, including requirements and responsibilities.",
+          "Click Check ATS score. Review Parse, Format, Structure, Content, and Keywords.",
+          "Open Issues — start with Critical, then Warnings. Each item includes why it fails ATS and how to fix it.",
+          "Open What ATS sees and confirm names, dates, and skills are in a sensible order. Re-export a single-column PDF and check again."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is an ATS resume check?",
+          "a": "It simulates how Applicant Tracking Systems extract text from your CV, map standard sections, and score keywords against a job ad. You get a 0–100 score, a list of issues with fixes, and the plain text the parser actually stored."
+        },
+        {
+          "q": "Which file should I upload?",
+          "a": "A text-based PDF is what most employers request. DOCX also works. Avoid screenshots, Canva image exports, and old .doc files — those often extract as empty or garbled."
+        },
+        {
+          "q": "Is this the same as Workday or Greenhouse?",
+          "a": "It is not a live login to those products. It uses the same failure modes they are known for: columns, tables, headers/footers, missing section titles, and job-ad keyword overlap. Always re-check after you edit the file."
+        },
+        {
+          "q": "Do I have to paste a job description?",
+          "a": "You can check parseability and structure without one. Keyword match — the part that decides rank — needs the posting. Paste the full ad for a proper score."
+        },
+        {
+          "q": "Is my CV stored?",
+          "a": "Parsing runs in your browser. The AI review sends extracted text to Mytulify servers to generate the report and is not kept as a long-term archive. Avoid uploading documents you would not share with any online tool."
+        }
+      ],
+      "related": [
+        "ai-tools/cover-letter-generator",
+        "freelancer-tools/proposal-generator",
+        "freelancer-tools/email-templates-generator",
+        "text-tools/word-counter",
+        "pdf-tools/pdf-to-word"
       ]
     },
     "calculators/bmi-calculator": {
