@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { HomeHero } from "@/components/home/HomeHero";
 import { HomeCatalog } from "@/components/home/HomeCatalog";
+import { DisplayAd } from "@/components/ads/DisplayAd";
 import { Icon } from "@/components/ui/Icon";
 import { site } from "@/lib/site";
 import { socialMeta, pageAlternates } from "@/lib/seo";
@@ -60,6 +61,10 @@ export default async function Home() {
           ))}
         </div>
       </section>
+
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+        <DisplayAd />
+      </div>
 
       <HomeCatalog />
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { AllToolsBrowser } from "@/components/AllToolsBrowser";
+import { DisplayAd } from "@/components/ads/DisplayAd";
 import { ALL_TOOLS, CATEGORIES, TOTAL_TOOLS, TOTAL_CATEGORIES } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { socialMeta, pageAlternates, clampMetaDescription } from "@/lib/seo";
@@ -50,6 +51,9 @@ export default async function ToolsPage() {
       <div className="mb-8 border-b border-border pb-6">
         <h1 className="text-2xl font-bold sm:text-3xl">{s.toolsPageTitle.replace("{n}", String(TOTAL_TOOLS))}</h1>
         <p className="mt-1 text-muted">{s.toolsPageSub.replace("{cats}", String(TOTAL_CATEGORIES))}</p>
+      </div>
+      <div className="mb-8">
+        <DisplayAd />
       </div>
       <Suspense fallback={<div className="skeleton h-64 rounded-xl" />}>
         <AllToolsBrowser
