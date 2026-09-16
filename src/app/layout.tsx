@@ -10,6 +10,9 @@ import { LazyEnhancementsShell } from "@/components/LazyEnhancementsShell";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { AhrefsAnalytics } from "@/components/analytics/AhrefsAnalytics";
 import { AdSenseScript } from "@/components/ads/AdSenseScript";
+import { InFeedAd } from "@/components/ads/InFeedAd";
+import { InArticleAd } from "@/components/ads/InArticleAd";
+import { MultiplexAd } from "@/components/ads/MultiplexAd";
 import { ads } from "@/lib/ads";
 import { themeScript } from "@/lib/theme-script";
 import { getLocale } from "@/i18n/locale";
@@ -98,13 +101,18 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-        <AdSenseScript />
       </head>
       <body className="flex min-h-full flex-col">
+        <AdSenseScript />
         <GoogleAnalytics />
         <AhrefsAnalytics />
         <Header />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1">
+          {children}
+          <InArticleAd className="mx-auto max-w-7xl px-4 py-6 sm:px-6" />
+          <InFeedAd className="mx-auto max-w-7xl px-4 pb-6 sm:px-6" />
+          <MultiplexAd className="mx-auto max-w-7xl px-4 pb-8 sm:px-6" />
+        </main>
         <Footer />
         <LazyEnhancementsShell />
       </body>

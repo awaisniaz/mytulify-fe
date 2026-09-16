@@ -17,7 +17,7 @@ export function SideAdsMount() {
   const [isPro, setIsPro] = useState(false);
 
   useEffect(() => {
-    if (!ads.enabled) return;
+    if (!ads.railsEnabled) return;
     if (!window.matchMedia("(min-width: 1280px)").matches) return;
     if (isAdFreePath(path)) return;
 
@@ -42,7 +42,7 @@ export function SideAdsMount() {
     };
   }, [path]);
 
-  if (!ads.enabled || !active || isAdFreePath(path) || isPro) return null;
+  if (!ads.railsEnabled || !active || isAdFreePath(path) || isPro) return null;
 
   return (
     <>

@@ -13,6 +13,7 @@ import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
 import { socialMeta, pageAlternates } from "@/lib/seo";
 import { faqPageJsonLd, howToJsonLd, howToProse, softwareApplicationJsonLd, breadcrumbJsonLd, toolQuickFacts } from "@/lib/aeo";
 import { ToolShareEmbed } from "@/components/tools/ToolShareEmbed";
+import { DisplayAd } from "@/components/ads/DisplayAd";
 import { getLocale, getMetadataLocale } from "@/i18n/locale";
 import {
   buildFaq, buildHowTo, getContent, localizeCategory, localizeTool, toolAboutParagraphs, toolMeta,
@@ -210,6 +211,10 @@ export default async function ToolPage({
             description={s.comingSoonBody}
           />
         )}
+      </div>
+
+      <div className="mt-8">
+        <DisplayAd />
       </div>
 
       <section className="mt-12 prose-tool">

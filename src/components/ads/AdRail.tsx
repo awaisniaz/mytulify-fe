@@ -45,7 +45,7 @@ export function AdRail({ side }: { side: AdSide }) {
     };
   }, [slotId]);
 
-  if (!ads.enabled || !slotId || !ads.clientId) return null;
+  if (!ads.railsEnabled || !slotId || !ads.clientId) return null;
 
   return (
     <aside className="ad-rail w-[160px] shrink-0" aria-label="Advertisement">

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { CATEGORIES, getCategory, isToolAvailable } from "@/lib/catalog";
 import { ToolCard } from "@/components/cards";
+import { DisplayAd } from "@/components/ads/DisplayAd";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
@@ -120,6 +121,10 @@ export default async function CategoryPage({
             </span>
           </div>
         </div>
+      </div>
+
+      <div className="mb-8">
+        <DisplayAd />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
