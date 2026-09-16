@@ -9,6 +9,8 @@ import { Footer } from "@/components/Footer";
 import { LazyEnhancementsShell } from "@/components/LazyEnhancementsShell";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { AhrefsAnalytics } from "@/components/analytics/AhrefsAnalytics";
+import { AdSenseScript } from "@/components/ads/AdSenseScript";
+import { ads } from "@/lib/ads";
 import { themeScript } from "@/lib/theme-script";
 import { getLocale } from "@/i18n/locale";
 import { getMessaging } from "@/i18n/messaging";
@@ -50,6 +52,7 @@ export async function generateMetadata(): Promise<Metadata> {
     }),
     other: {
       monetag: process.env.MONETAG_SITE_ID ?? "30db1df687f8615565490f41f36dce91",
+      "google-adsense-account": ads.clientId,
     },
   };
 }
@@ -95,6 +98,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <AdSenseScript />
       </head>
       <body className="flex min-h-full flex-col">
         <GoogleAnalytics />

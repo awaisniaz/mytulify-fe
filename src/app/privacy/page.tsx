@@ -48,7 +48,7 @@ const SECTIONS = [
   {
     icon: "Globe",
     title: "Advertising",
-    body: "Some pages show Google AdSense ads (homepage, listings, below tools). We show at most one ad per page and never inside the tool workspace. Ad partners may use cookies — see Google's advertising policies for details.",
+    body: "Some pages show Google AdSense ads. Ads are not placed inside the tool workspace. Ad partners may use cookies — see Google's advertising policies for details.",
   },
 ] as const;
 
