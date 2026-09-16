@@ -17,6 +17,7 @@ export function SideAdsMount() {
   const [isPro, setIsPro] = useState(false);
 
   useEffect(() => {
+    if (!ads.enabled) return;
     if (!window.matchMedia("(min-width: 1280px)").matches) return;
     if (isAdFreePath(path)) return;
 
@@ -24,17 +25,7 @@ export function SideAdsMount() {
     syncPro();
     window.addEventListener(APP_EVENTS.proUpdated, syncPro);
 
-    const start = () => {
-      if (ads.enabled && ads.clientId && !document.getElementById("adsense-init")) {
-        const script = document.createElement("script");
-        script.id = "adsense-init";
-        script.async = true;
-        script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ads.clientId}`;
-        script.crossOrigin = "anonymous";
-        document.head.appendChild(script);
-      }
-      setActive(true);
-    };
+    const start = () => setActive(true);
     let idleId: number | undefined;
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
@@ -51,7 +42,7 @@ export function SideAdsMount() {
     };
   }, [path]);
 
-  if (!active || isAdFreePath(path) || isPro) return null;
+  if (!ads.enabled || !active || isAdFreePath(path) || isPro) return null;
 
   return (
     <>

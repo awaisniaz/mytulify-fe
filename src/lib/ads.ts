@@ -1,26 +1,27 @@
-/** Google AdSense — keep simple. Flip ADS_LIVE when your account is ready. */
+/** Google AdSense — one publisher, one script load. */
 
-const ADS_LIVE = false;
+const LIVE_CLIENT = "ca-pub-7509015640782855";
 
-const TEST = {
-  client: "ca-pub-3940256099942544",
-  left: "1033173712",
-  right: "6300978111",
-} as const;
+const clientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT?.trim() || LIVE_CLIENT;
+const left = process.env.NEXT_PUBLIC_AD_SLOT_LEFT?.trim() || "";
+const right = process.env.NEXT_PUBLIC_AD_SLOT_RIGHT?.trim() || "";
 
-const clientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT?.trim() || (ADS_LIVE ? "" : TEST.client);
-const left = process.env.NEXT_PUBLIC_AD_SLOT_LEFT?.trim() || TEST.left;
-const right = process.env.NEXT_PUBLIC_AD_SLOT_RIGHT?.trim() || TEST.right;
+/** Skip AdSense on `next dev` to avoid invalid traffic; production (or ADS_LIVE=1) loads it. */
+const scriptEnabled =
+  Boolean(clientId) &&
+  (process.env.NODE_ENV === "production" || process.env.NEXT_PUBLIC_ADS_LIVE === "1");
 
 export const sideRails = {
-  left: left === right ? null : left,
-  right,
+  left: left && left !== right ? left : null,
+  right: right || null,
 } as const;
 
 export const ads = {
-  enabled: ADS_LIVE && Boolean(clientId) && Boolean(sideRails.left || sideRails.right),
   clientId,
-  isTestMode: !process.env.NEXT_PUBLIC_ADSENSE_CLIENT?.trim(),
+  scriptEnabled,
+  /** Manual rail units — only when you create ad units and set slot env vars. */
+  enabled: scriptEnabled && Boolean(sideRails.left || sideRails.right),
+  isTestMode: false,
   sideRails,
   bothSides: Boolean(sideRails.left && sideRails.right),
   /** @deprecated */
@@ -59,5 +60,3 @@ export function isAdFreePath(path: string): boolean {
   if (path.startsWith("/auth/") || path.startsWith("/pricing/")) return true;
   return false;
 }
-
-

@@ -1,17 +1,17 @@
-import Script from "next/script";
 import { ads } from "@/lib/ads";
 
-/** Loads AdSense once site-wide. No-op when ads are disabled. */
+/**
+ * Loads AdSense once site-wide (Auto Ads + account verification).
+ * Do not paste this snippet more than once — duplicate loaders are invalid.
+ */
 export function AdSenseScript() {
-  if (!ads.enabled || !ads.clientId) return null;
+  if (!ads.scriptEnabled || !ads.clientId) return null;
 
   return (
-    <Script
-      id="adsense-init"
+    <script
       async
       src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ads.clientId}`}
       crossOrigin="anonymous"
-      strategy="lazyOnload"
     />
   );
 }
