@@ -11,9 +11,13 @@ const THEMES = {
   seo: { from: "#1d4ed8", mid: "#2563eb", to: "#1e3a8a", accent: "#93c5fd", label: "SEO" },
   "photos-design": { from: "#6d28d9", mid: "#7c3aed", to: "#4c1d95", accent: "#d8b4fe", label: "Photos & Design" },
   career: { from: "#be185d", mid: "#db2777", to: "#831843", accent: "#f9a8d4", label: "Career" },
+  "ai-tech": { from: "#4f46e5", mid: "#6366f1", to: "#1e1b4b", accent: "#c7d2fe", label: "AI & Tech" },
 };
 
 function inferCategory(slug) {
+  if (/(chatgpt|claude|gemini|copilot|cursor|midjourney|dalle|grammarly|elevenlabs|quillbot)/.test(slug)) {
+    return "ai-tech";
+  }
   if (slug.includes("-vs-")) return "comparisons";
   if (slug.includes("utm")) return "seo";
   if (slug.includes("photo") || slug.includes("aspect-ratio")) return "photos-design";
@@ -99,6 +103,17 @@ function motif(category, h, accent) {
         <circle cx="880" cy="250" r="18" fill="${accent}"/>
         <polygon points="860,330 910,280 970,340 1020,300 1080,360 860,360" fill="${accent}" opacity="0.5"/>
       </g>`;
+  }
+  if (category === "ai-tech") {
+    return `
+      <g opacity="0.4" fill="none" stroke="${accent}" stroke-width="10">
+        <rect x="860" y="210" width="260" height="150" rx="28"/>
+        <path d="M920 360 L900 410 L960 360"/>
+      </g>
+      <circle cx="920" cy="270" r="10" fill="${accent}" opacity="0.7"/>
+      <circle cx="960" cy="270" r="10" fill="${accent}" opacity="0.7"/>
+      <circle cx="1000" cy="270" r="10" fill="${accent}" opacity="0.7"/>
+      <text x="990" y="480" text-anchor="middle" fill="${accent}" font-size="28" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800" opacity="0.75">VS</text>`;
   }
   return `
     <g opacity="0.35" fill="${accent}">

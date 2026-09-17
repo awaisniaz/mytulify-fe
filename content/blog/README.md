@@ -29,7 +29,8 @@ relatedToolSlugs:
 ```
 
 - `slug` should match the filename (without `.md`)
-- `category` is one of: `personal-finance`, `comparisons`, `seo`, `photos-design`, `career`
+- `category` is one of: `personal-finance`, `comparisons`, `seo`, `photos-design`, `career`, `ai-tech`
+- Set `affiliateDisclosure: true` on posts that include partner / affiliate product links
 - `relatedToolSlugs` use `category/slug` keys from the catalog
 - `featuredImage` is a path under `public/` (unique cover at `/blog/covers/{slug}.svg`)
 - Sitemap `lastmod` uses `updatedDate`, then git history / file mtime of this `.md` file
