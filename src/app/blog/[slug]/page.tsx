@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ShareButtons } from "@/components/blog/ShareButtons";
+import { BlogCover } from "@/components/blog/BlogCover";
 import { Icon } from "@/components/ui/Icon";
-import { formatPostDate, getAllPosts, getPostBySlug } from "@/lib/blog";
+import { formatPostDate, getAllPosts, getBlogCategory, getPostBySlug } from "@/lib/blog";
 import { getTool, getToolIcon, isToolAvailable, toolHref } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { englishOnlyPageMeta, clampMetaDescription } from "@/lib/seo";
@@ -29,11 +29,26 @@ export async function generateMetadata({
   const title = post.title;
   const description = clampMetaDescription(post.metaDescription || post.excerpt);
   const path = `/blog/${post.slug}`;
-  return englishOnlyPageMeta(path, locale, {
+  const image = post.featuredImage.startsWith("http")
+    ? post.featuredImage
+    : `${site.url}${post.featuredImage}`;
+  const meta = englishOnlyPageMeta(path, locale, {
     title: { absolute: `${title} | ${site.name} Blog` },
     description,
     socialTitle: `${title} · ${site.name}`,
   });
+  return {
+    ...meta,
+    openGraph: {
+      ...meta.openGraph,
+      type: "article",
+      images: [{ url: image, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      ...meta.twitter,
+      images: [image],
+    },
+  };
 }
 
 export default async function BlogPostPage({
@@ -44,11 +59,12 @@ export default async function BlogPostPage({
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) notFound();
+  const category = getBlogCategory(post.category);
 
   const related = post.relatedToolSlugs
     .map((key) => {
-      const [category, toolSlug] = key.split("/");
-      return category && toolSlug ? getTool(category, toolSlug) : undefined;
+      const [toolCategory, toolSlug] = key.split("/");
+      return toolCategory && toolSlug ? getTool(toolCategory, toolSlug) : undefined;
     })
     .filter((t): t is NonNullable<typeof t> => t != null && isToolAvailable(t))
     .slice(0, 4);
@@ -65,6 +81,7 @@ export default async function BlogPostPage({
         : `${site.url}${post.featuredImage}`,
       datePublished: post.publishedDate,
       dateModified: post.updatedDate,
+      articleSection: category?.name,
       author: { "@type": "Organization", name: post.author },
       publisher: {
         "@type": "Organization",
@@ -73,11 +90,14 @@ export default async function BlogPostPage({
       },
       mainEntityOfPage: url,
     },
-    breadcrumbJsonLd([
-      { name: "Home", item: site.url },
-      { name: "Blog", item: `${site.url}/blog` },
-      { name: post.title, item: url },
-    ]),
+        breadcrumbJsonLd([
+          { name: "Home", item: site.url },
+          { name: "Blog", item: `${site.url}/blog` },
+          ...(category
+            ? [{ name: category.name, item: `${site.url}/blog?category=${category.slug}` }]
+            : []),
+          { name: post.title, item: url },
+        ]),
   ];
 
   return (
@@ -88,12 +108,24 @@ export default async function BlogPostPage({
         <Link href="/" className="hover:text-foreground">Home</Link>
         <Icon name="ChevronRight" className="h-4 w-4" />
         <Link href="/blog" className="hover:text-foreground">Blog</Link>
+        {category && (
+          <>
+            <Icon name="ChevronRight" className="h-4 w-4" />
+            <Link href={`/blog?category=${category.slug}`} className="hover:text-foreground">{category.name}</Link>
+          </>
+        )}
         <Icon name="ChevronRight" className="h-4 w-4" />
         <span className="text-foreground line-clamp-1">{post.title}</span>
       </nav>
 
       <header>
-        <p className="section-label">Blog</p>
+        {category ? (
+          <Link href={`/blog?category=${category.slug}`} className="section-label hover:text-brand">
+            {category.name}
+          </Link>
+        ) : (
+          <p className="section-label">Blog</p>
+        )}
         <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">{post.title}</h1>
         <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
           <span>{post.author}</span>
@@ -110,15 +142,8 @@ export default async function BlogPostPage({
         </div>
       </header>
 
-      <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-2xl border border-border bg-surface-2">
-        <Image
-          src={post.featuredImage}
-          alt={`Featured image for ${post.title}`}
-          fill
-          priority
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 768px"
-        />
+      <div className="mt-8 overflow-hidden rounded-2xl border border-border">
+        <BlogCover post={post} className="rounded-2xl" priority />
       </div>
 
       <div

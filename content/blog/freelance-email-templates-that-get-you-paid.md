@@ -1,10 +1,11 @@
 ---
 title: 5 Freelance Email Templates That Actually Get You Paid (Copy & Paste)
 slug: freelance-email-templates-that-get-you-paid
+category: career
 excerpt: Copy-paste freelance emails for invoice reminders, follow-ups, cold pitches, and scope changes — wording that gets replies without sounding pushy.
 publishedDate: 2026-07-21
 updatedDate: 2026-07-21
-featuredImage: /og-share.png
+featuredImage: /blog/covers/freelance-email-templates-that-get-you-paid.svg
 author: Mytulify Team
 metaDescription: Five copy-and-paste freelance email templates for invoice reminders, proposal follow-ups, cold pitches, and scope changes — plus tips that improve response rates.
 relatedToolSlugs:

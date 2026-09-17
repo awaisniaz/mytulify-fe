@@ -1,10 +1,11 @@
 ---
 title: SIP vs Lumpsum — Which Investment Style Fits Your Cash Flow?
 slug: sip-vs-lumpsum
+category: comparisons
 excerpt: Compare SIP and lumpsum mutual fund investing — cash-flow fit, compounding timing, and how to run both scenarios with free online calculators before you decide.
 publishedDate: 2026-09-05
 updatedDate: 2026-09-05
-featuredImage: /og-share.png
+featuredImage: /blog/covers/sip-vs-lumpsum.svg
 author: Mytulify Team
 metaDescription: SIP vs lumpsum explained — when to invest monthly vs one-time, how compounding differs, and how to compare both with free SIP and lumpsum calculators.
 relatedToolSlugs:

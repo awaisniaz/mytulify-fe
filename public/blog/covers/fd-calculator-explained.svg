@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="FD Calculator Explained — How to Calculate Fixed Deposit Maturity">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="55%" stop-color="#0d9488"/>
+      <stop offset="100%" stop-color="#042f2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="265" cy="196" r="225" fill="#5eead4" opacity="0.12"/>
+  <circle cx="895" cy="432" r="105" fill="#000" opacity="0.18"/>
+  
+      <g fill="#5eead4" opacity="0.22">
+        <rect x="860" y="375" width="44" height="95" rx="8"/>
+        <rect x="920" y="346" width="44" height="124" rx="8"/>
+        <rect x="980" y="315" width="44" height="205" rx="8"/>
+        <rect x="1040" y="300" width="44" height="220" rx="8"/>
+      </g>
+      <path d="M850 470 L910 392.5 L970 348.6666666666667 L1090 280" fill="none" stroke="#5eead4" stroke-width="10" stroke-linecap="round" opacity="0.55"/>
+      <circle cx="1090" cy="280" r="14" fill="#5eead4" opacity="0.8"/>
+  <rect x="72" y="72" width="8" height="48" rx="4" fill="#5eead4"/>
+  <text x="92" y="106" fill="#5eead4" font-size="22" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="700" letter-spacing="2">PERSONAL FINANCE</text>
+  <text x="72" y="194" fill="#fff" font-size="46" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">FD Calculator Explained —</text>
+<text x="72" y="252" fill="#fff" font-size="46" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">How to Calculate Fixed</text>
+<text x="72" y="310" fill="#fff" font-size="46" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">Deposit Maturity</text>
+  <text x="72" y="560" fill="#fff" opacity="0.7" font-size="22" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="600">Mytulify Blog</text>
+</svg>

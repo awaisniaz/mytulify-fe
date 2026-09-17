@@ -1,10 +1,11 @@
 ---
 title: How to Build UTM Links That Actually Track in GA4
 slug: utm-builder-guide
+category: seo
 excerpt: Learn what each UTM parameter means, how to name campaigns consistently, and how to generate clean tracking links with Mytulify’s free UTM builder.
 publishedDate: 2026-07-10
 updatedDate: 2026-07-14
-featuredImage: /og-share.png
+featuredImage: /blog/covers/utm-builder-guide.svg
 author: Mytulify Team
 metaDescription: Free guide to UTM parameters for Google Analytics 4 — naming tips and a step-by-step walkthrough of Mytulify’s UTM builder.
 relatedToolSlugs:

@@ -1,10 +1,11 @@
 ---
 title: NSC vs FD — Annual Compounding or Flexible Bank Deposit
 slug: nsc-vs-fd
+category: comparisons
 excerpt: Compare National Savings Certificates and fixed deposits on compounding style, tenure feel, and planning math — then estimate results with free NSC and FD calculators on Mytulify.
 publishedDate: 2026-09-06
 updatedDate: 2026-09-06
-featuredImage: /og-share.png
+featuredImage: /blog/covers/nsc-vs-fd.svg
 author: Mytulify Team
 metaDescription: NSC vs FD explained — annual compounding to maturity vs flexible bank compounding, tenure differences, and how to estimate both with free calculators on Mytulify.
 relatedToolSlugs:

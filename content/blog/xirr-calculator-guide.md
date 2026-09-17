@@ -1,10 +1,11 @@
 ---
 title: XIRR Calculator Guide — Annualized Return for Irregular Cash Flows
 slug: xirr-calculator-guide
+category: personal-finance
 excerpt: Learn how an XIRR calculator turns dated investments, top-ups, and redemptions into one annualized return — then run the numbers free in your browser.
 publishedDate: 2026-09-07
 updatedDate: 2026-09-07
-featuredImage: /og-share.png
+featuredImage: /blog/covers/xirr-calculator-guide.svg
 author: Mytulify Team
 metaDescription: How an XIRR calculator works — dated cash flows, Excel sign convention, and annualized return. Use Mytulify’s free XIRR tool privately in your browser.
 relatedToolSlugs:

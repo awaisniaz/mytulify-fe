@@ -1,10 +1,11 @@
 ---
 title: Fixed Deposit vs SIP — How to Compare Safe Returns and Growth
 slug: fixed-deposit-vs-sip
+category: comparisons
 excerpt: Compare fixed deposits and mutual fund SIPs on risk, liquidity, and expected growth — and use free FD and SIP calculators to run side-by-side numbers.
 publishedDate: 2026-09-05
 updatedDate: 2026-09-05
-featuredImage: /og-share.png
+featuredImage: /blog/covers/fixed-deposit-vs-sip.svg
 author: Mytulify Team
 metaDescription: Fixed deposit vs SIP explained — risk, returns, liquidity, and when to use each. Run numbers with free FD and SIP calculators on Mytulify.
 relatedToolSlugs:

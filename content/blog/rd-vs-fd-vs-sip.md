@@ -1,10 +1,11 @@
 ---
 title: RD vs FD vs SIP — Which Savings Habit Fits Your Goal?
 slug: rd-vs-fd-vs-sip
+category: comparisons
 excerpt: Compare recurring deposits, fixed deposits, and mutual fund SIPs — deposit style, risk, liquidity, and when each tool’s calculator helps you plan.
 publishedDate: 2026-09-05
 updatedDate: 2026-09-05
-featuredImage: /og-share.png
+featuredImage: /blog/covers/rd-vs-fd-vs-sip.svg
 author: Mytulify Team
 metaDescription: RD vs FD vs SIP explained — how recurring deposits, fixed deposits, and SIPs differ in deposits, risk, and returns, with free calculators to compare scenarios.
 relatedToolSlugs:

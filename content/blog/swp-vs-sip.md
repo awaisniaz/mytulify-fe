@@ -1,10 +1,11 @@
 ---
 title: SWP vs SIP — When to Invest Monthly and When to Withdraw
 slug: swp-vs-sip
+category: comparisons
 excerpt: Clear comparison of Systematic Investment Plans and Systematic Withdrawal Plans — goals, cash flow direction, and how to use both calculators when planning mutual fund goals.
 publishedDate: 2026-09-05
 updatedDate: 2026-09-05
-featuredImage: /og-share.png
+featuredImage: /blog/covers/swp-vs-sip.svg
 author: Mytulify Team
 metaDescription: SWP vs SIP explained — differences in cash flow, ideal use cases, and how to plan with free SIP and SWP calculators before you invest or withdraw.
 relatedToolSlugs:

@@ -1,10 +1,11 @@
 ---
 title: Aspect Ratios for YouTube, Reels & Instagram (Quick Guide)
 slug: aspect-ratio-for-social
+category: photos-design
 excerpt: Stop guessing crop sizes. Here’s the aspect ratio cheat sheet for YouTube, Shorts/Reels, Instagram feed, and how to calculate any custom size.
 publishedDate: 2026-07-05
 updatedDate: 2026-07-11
-featuredImage: /og-share.png
+featuredImage: /blog/covers/aspect-ratio-for-social.svg
 author: Mytulify Team
 metaDescription: Aspect ratio cheat sheet for YouTube 16:9, Reels 9:16, Instagram 1:1 and 4:5 — plus a free calculator to scale any width and height.
 relatedToolSlugs:

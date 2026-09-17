@@ -1,10 +1,11 @@
 ---
 title: SCSS vs FD — Quarterly Payouts or Compounding Maturity
 slug: scss-vs-fd
+category: comparisons
 excerpt: Compare Senior Citizen Savings Scheme and fixed deposits on payout style, tenure feel, and planning math — then estimate results with free SCSS and FD calculators on Mytulify.
 publishedDate: 2026-09-06
 updatedDate: 2026-09-06
-featuredImage: /og-share.png
+featuredImage: /blog/covers/scss-vs-fd.svg
 author: Mytulify Team
 metaDescription: SCSS vs FD explained — quarterly interest payouts vs compounding maturity, tenure differences, and how to estimate both with free calculators on Mytulify.
 relatedToolSlugs:

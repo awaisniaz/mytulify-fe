@@ -1,10 +1,11 @@
 ---
 title: HRA vs Take-Home Pay — What Changes on Your Payslip
 slug: hra-vs-take-home-pay
+category: comparisons
 excerpt: Compare how House Rent Allowance exemption affects taxable salary versus the broader take-home picture — then estimate exempt vs taxable HRA with free calculators on Mytulify.
 publishedDate: 2026-09-06
 updatedDate: 2026-09-06
-featuredImage: /og-share.png
+featuredImage: /blog/covers/hra-vs-take-home-pay.svg
 author: Mytulify Team
 metaDescription: HRA vs take-home pay explained — how House Rent Allowance exemption changes taxable income vs net salary. Estimate with free HRA and salary tax calculators on Mytulify.
 relatedToolSlugs:

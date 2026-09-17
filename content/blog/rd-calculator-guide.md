@@ -1,10 +1,11 @@
 ---
 title: RD Calculator Guide — Estimate Recurring Deposit Maturity Before You Save
 slug: rd-calculator-guide
+category: personal-finance
 excerpt: Learn how a recurring deposit (RD) calculator works, the quarterly compounding formula banks often use, and how to estimate maturity, interest, and total deposits online.
 publishedDate: 2026-09-05
 updatedDate: 2026-09-05
-featuredImage: /og-share.png
+featuredImage: /blog/covers/rd-calculator-guide.svg
 author: Mytulify Team
 metaDescription: Free RD calculator guide — recurring deposit formula, quarterly compounding vs simple interest, and how to estimate maturity amount and interest online.
 relatedToolSlugs:

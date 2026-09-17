@@ -1,10 +1,11 @@
 ---
 title: HRA Calculator Explained — Estimate Your House Rent Allowance Exemption
 slug: hra-calculator-guide
+category: personal-finance
 excerpt: Learn how an HRA calculator estimates Section 10(13A) House Rent Allowance exemption from basic, DA, HRA received, rent paid, and the metro vs non-metro rule — then run the numbers free in your browser.
 publishedDate: 2026-09-06
 updatedDate: 2026-09-06
-featuredImage: /og-share.png
+featuredImage: /blog/covers/hra-calculator-guide.svg
 author: Mytulify Team
 metaDescription: How an HRA calculator works — basic + DA, rent paid, metro 50% vs non-metro 40%, and the three exemption limits. Use Mytulify’s free HRA calculator privately.
 relatedToolSlugs:

@@ -2,6 +2,61 @@ import { readdirSync, readFileSync, statSync, existsSync } from "fs";
 import path from "path";
 import { marked } from "marked";
 
+export type BlogCategory = {
+  slug: string;
+  name: string;
+  description: string;
+  icon: string;
+};
+
+export const BLOG_CATEGORIES: readonly BlogCategory[] = [
+  {
+    slug: "personal-finance",
+    name: "Personal Finance",
+    description: "SIP, EMI, PPF, FD, EPF, NPS, and other money calculators.",
+    icon: "TrendingUp",
+  },
+  {
+    slug: "comparisons",
+    name: "Comparisons",
+    description: "Side-by-side guides: SIP vs lumpsum, PPF vs FD, EPF vs NPS, and more.",
+    icon: "GitCompare",
+  },
+  {
+    slug: "seo",
+    name: "SEO",
+    description: "Campaign tracking, UTMs, and search-friendly workflows.",
+    icon: "Search",
+  },
+  {
+    slug: "photos-design",
+    name: "Photos & Design",
+    description: "Image workflows, duplicate photos, and social aspect ratios.",
+    icon: "Image",
+  },
+  {
+    slug: "career",
+    name: "Career",
+    description: "Cover letters, freelance emails, and job-search tools.",
+    icon: "Briefcase",
+  },
+] as const;
+
+export const BLOG_CATEGORY_SLUGS = BLOG_CATEGORIES.map((c) => c.slug);
+
+export function getBlogCategory(slug: string | undefined): BlogCategory | undefined {
+  if (!slug) return undefined;
+  return BLOG_CATEGORIES.find((c) => c.slug === slug);
+}
+
+export function inferBlogCategory(slug: string): string {
+  if (slug.includes("-vs-")) return "comparisons";
+  if (slug.includes("utm")) return "seo";
+  if (slug.includes("photo") || slug.includes("aspect-ratio")) return "photos-design";
+  if (slug.includes("cover-letter") || slug.includes("freelance-email")) return "career";
+  return "personal-finance";
+}
+
 export type BlogPostMeta = {
   title: string;
   slug: string;
@@ -9,6 +64,7 @@ export type BlogPostMeta = {
   publishedDate: string;
   updatedDate: string;
   featuredImage: string;
+  category: string;
   relatedToolSlugs: string[];
   metaDescription: string;
   author: string;
@@ -58,13 +114,16 @@ function wordCount(text: string) {
 
 function toMeta(data: Record<string, unknown>, fallbackSlug: string): BlogPostMeta {
   const related = data.relatedToolSlugs;
+  const slug = String(data.slug ?? fallbackSlug);
+  const category = String(data.category ?? inferBlogCategory(slug));
   return {
     title: String(data.title ?? fallbackSlug),
-    slug: String(data.slug ?? fallbackSlug),
+    slug,
     excerpt: String(data.excerpt ?? ""),
     publishedDate: String(data.publishedDate ?? "2026-01-01"),
     updatedDate: String(data.updatedDate ?? data.publishedDate ?? "2026-01-01"),
-    featuredImage: String(data.featuredImage ?? "/og-share.png"),
+    featuredImage: String(data.featuredImage ?? `/blog/covers/${slug}.svg`),
+    category: getBlogCategory(category) ? category : inferBlogCategory(slug),
     relatedToolSlugs: Array.isArray(related) ? related.map(String) : [],
     metaDescription: String(data.metaDescription ?? data.excerpt ?? ""),
     author: String(data.author ?? "Mytulify Team"),
@@ -108,6 +167,10 @@ export function getPostBySlug(slug: string): BlogPost | null {
 
 export function getPostSlugs(): string[] {
   return getAllPosts().map((p) => p.slug);
+}
+
+export function getPostsByCategory(category: string): BlogPost[] {
+  return getAllPosts().filter((p) => p.category === category);
 }
 
 export function postFileMtime(fileRel: string): Date | null {

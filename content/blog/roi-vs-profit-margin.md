@@ -1,10 +1,11 @@
 ---
 title: ROI vs Profit Margin — Investment Return or Sales Profitability
 slug: roi-vs-profit-margin
+category: comparisons
 excerpt: Compare ROI and profit margin — what each measures, when to use which, and how to estimate both with free calculators on Mytulify.
 publishedDate: 2026-09-07
 updatedDate: 2026-09-07
-featuredImage: /og-share.png
+featuredImage: /blog/covers/roi-vs-profit-margin.svg
 author: Mytulify Team
 metaDescription: ROI vs profit margin explained — gain ÷ cost vs profit ÷ selling price, when each metric fits, and how to calculate both free on Mytulify.
 relatedToolSlugs:

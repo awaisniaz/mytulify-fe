@@ -1,10 +1,11 @@
 ---
 title: How to Find Duplicate Photos Without Uploading Them (Free Browser Guide)
 slug: find-duplicate-photos-without-uploading
+category: photos-design
 excerpt: Clean up your camera roll and Downloads folder with a free duplicate photo finder that runs in your browser — perceptual hashing catches similar shots, not just exact copies.
 publishedDate: 2026-07-27
 updatedDate: 2026-07-27
-featuredImage: /og-share.png
+featuredImage: /blog/covers/find-duplicate-photos-without-uploading.svg
 author: Mytulify Team
 metaDescription: Free guide to finding duplicate photos online without uploading. Learn perceptual vs exact matching, similarity thresholds, and use Mytulify’s private Duplicate Photo Finder.
 relatedToolSlugs:

@@ -1,10 +1,11 @@
 ---
 title: SSY vs PPF — Which Long-Term Savings Plan Fits Your Goal
 slug: ssy-vs-ppf
+category: comparisons
 excerpt: Compare Sukanya Samriddhi Yojana and Public Provident Fund on deposit window, tenure, purpose, and planning math — then estimate maturity with free SSY and PPF calculators on Mytulify.
 publishedDate: 2026-09-06
 updatedDate: 2026-09-06
-featuredImage: /og-share.png
+featuredImage: /blog/covers/ssy-vs-ppf.svg
 author: Mytulify Team
 metaDescription: SSY vs PPF explained — deposit years, maturity tenure, girl-child vs general PPF planning, and how to estimate maturity with free calculators on Mytulify.
 relatedToolSlugs:

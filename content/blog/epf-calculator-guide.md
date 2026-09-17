@@ -1,10 +1,11 @@
 ---
 title: EPF Calculator Explained — Estimate Your Provident Fund Maturity
 slug: epf-calculator-guide
+category: personal-finance
 excerpt: Learn how an EPF calculator estimates Employee Provident Fund maturity from salary, contribution rates, interest, and years of service — then run the numbers free in your browser.
 publishedDate: 2026-09-05
 updatedDate: 2026-09-05
-featuredImage: /og-share.png
+featuredImage: /blog/covers/epf-calculator-guide.svg
 author: Mytulify Team
 metaDescription: How an EPF calculator works — salary, employee and employer contributions, interest, and tenure. Use Mytulify’s free EPF calculator to estimate maturity privately.
 relatedToolSlugs:
