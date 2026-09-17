@@ -1,10 +1,11 @@
 ---
 title: PPF vs FD vs SIP — Which Savings Option Fits Your Goal?
 slug: ppf-vs-fd-vs-sip
+category: comparisons
 excerpt: Compare Public Provident Fund, fixed deposits, and mutual fund SIPs by cash flow, risk, and time horizon — then run the numbers with free PPF, FD, and SIP calculators.
 publishedDate: 2026-09-05
 updatedDate: 2026-09-05
-featuredImage: /og-share.png
+featuredImage: /blog/covers/ppf-vs-fd-vs-sip.svg
 author: Mytulify Team
 metaDescription: PPF vs FD vs SIP explained — cash flow, lock-in, and return style compared. Use free PPF, FD, and SIP calculators on Mytulify to estimate maturity before you invest.
 relatedToolSlugs:

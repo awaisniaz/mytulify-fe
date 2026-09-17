@@ -1,10 +1,11 @@
 ---
 title: NPS vs EPF vs PPF — Which Retirement Savings Path Fits You?
 slug: nps-vs-epf-vs-ppf
+category: comparisons
 excerpt: Compare National Pension System, Employee Provident Fund, and Public Provident Fund by cash flow, return style, and planning horizon — then estimate each with free calculators on Mytulify.
 publishedDate: 2026-09-06
 updatedDate: 2026-09-06
-featuredImage: /og-share.png
+featuredImage: /blog/covers/nps-vs-epf-vs-ppf.svg
 author: Mytulify Team
 metaDescription: NPS vs EPF vs PPF explained — contribution style, risk feel, and planning differences. Estimate each with free NPS, EPF, and PPF calculators on Mytulify.
 relatedToolSlugs:

@@ -1,10 +1,11 @@
 ---
 title: Gratuity vs EPF — How They Differ at Exit
 slug: gratuity-vs-epf
+category: comparisons
 excerpt: Compare gratuity and Employee Provident Fund as exit-time benefits — payout style, what drives the amount, and how to estimate each with free calculators on Mytulify.
 publishedDate: 2026-09-06
 updatedDate: 2026-09-06
-featuredImage: /og-share.png
+featuredImage: /blog/covers/gratuity-vs-epf.svg
 author: Mytulify Team
 metaDescription: Gratuity vs EPF explained — lump-sum exit formula vs salary-linked provident fund balance. Estimate each with free gratuity and EPF calculators on Mytulify.
 relatedToolSlugs:

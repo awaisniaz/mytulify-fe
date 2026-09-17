@@ -1,10 +1,11 @@
 ---
 title: ROI Calculator Guide — Measure Return on Investment Clearly
 slug: roi-calculator-guide
+category: personal-finance
 excerpt: Learn how an ROI calculator turns cost and gain (or final value) into ROI %, return multiple, and annualized return — then run the numbers free in your browser.
 publishedDate: 2026-09-07
 updatedDate: 2026-09-07
-featuredImage: /og-share.png
+featuredImage: /blog/covers/roi-calculator-guide.svg
 author: Mytulify Team
 metaDescription: How an ROI calculator works — cost, net gain, final value, ROI %, and annualized return. Use Mytulify’s free return on investment calculator privately.
 relatedToolSlugs:

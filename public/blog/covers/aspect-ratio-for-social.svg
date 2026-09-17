@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Aspect Ratios for YouTube, Reels &amp; Instagram (Quick Guide)">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6d28d9"/>
+      <stop offset="55%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#4c1d95"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="443" cy="106" r="163" fill="#d8b4fe" opacity="0.12"/>
+  <circle cx="957" cy="430" r="133" fill="#000" opacity="0.18"/>
+  
+      <g opacity="0.35">
+        <rect x="820" y="190" width="220" height="160" rx="16" fill="none" stroke="#d8b4fe" stroke-width="12"/>
+        <rect x="900" y="270" width="220" height="160" rx="16" fill="#d8b4fe" opacity="0.25"/>
+        <circle cx="880" cy="250" r="18" fill="#d8b4fe"/>
+        <polygon points="860,330 910,280 970,340 1020,300 1080,360 860,360" fill="#d8b4fe" opacity="0.5"/>
+      </g>
+  <rect x="72" y="72" width="8" height="48" rx="4" fill="#d8b4fe"/>
+  <text x="92" y="106" fill="#d8b4fe" font-size="22" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="700" letter-spacing="2">PHOTOS &amp; DESIGN</text>
+  <text x="72" y="194" fill="#fff" font-size="46" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">Aspect Ratios for YouTube,</text>
+<text x="72" y="252" fill="#fff" font-size="46" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">Reels &amp; Instagram (Quick</text>
+<text x="72" y="310" fill="#fff" font-size="46" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">Guide)</text>
+  <text x="72" y="560" fill="#fff" opacity="0.7" font-size="22" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="600">Mytulify Blog</text>
+</svg>

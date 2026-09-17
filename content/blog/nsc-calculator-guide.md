@@ -1,10 +1,11 @@
 ---
 title: NSC Calculator Guide — Estimate National Savings Certificate Maturity
 slug: nsc-calculator-guide
+category: personal-finance
 excerpt: Learn how an NSC calculator projects National Savings Certificate maturity, interest earned, and year-by-year compounding — then run the numbers free in your browser.
 publishedDate: 2026-09-06
 updatedDate: 2026-09-06
-featuredImage: /og-share.png
+featuredImage: /blog/covers/nsc-calculator-guide.svg
 author: Mytulify Team
 metaDescription: How an NSC calculator works — lump-sum purchase, notified rate, annual compounding, and maturity value. Use Mytulify’s free National Savings Certificate calculator privately.
 relatedToolSlugs:

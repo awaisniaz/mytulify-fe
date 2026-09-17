@@ -1,10 +1,11 @@
 ---
 title: Gratuity Calculator Explained — Estimate Your Exit Payout
 slug: gratuity-calculator-guide
+category: personal-finance
 excerpt: Learn how a gratuity calculator estimates payout from last drawn salary and years of service using the Payment of Gratuity Act (÷26) or private (÷30) formula — then run the numbers free in your browser.
 publishedDate: 2026-09-06
 updatedDate: 2026-09-06
-featuredImage: /og-share.png
+featuredImage: /blog/covers/gratuity-calculator-guide.svg
 author: Mytulify Team
 metaDescription: How a gratuity calculator works — basic + DA, service years, ÷26 vs ÷30 formulas, and half-year rounding. Use Mytulify’s free gratuity calculator privately.
 relatedToolSlugs:

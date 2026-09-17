@@ -1,10 +1,11 @@
 ---
 title: CAGR Explained — How to Calculate Compound Annual Growth Rate
 slug: cagr-calculator-explained
+category: personal-finance
 excerpt: Understand the CAGR formula, when to use it for funds and businesses, and how to calculate compound annual growth rate instantly with a free online tool.
 publishedDate: 2026-09-05
 updatedDate: 2026-09-05
-featuredImage: /og-share.png
+featuredImage: /blog/covers/cagr-calculator-explained.svg
 author: Mytulify Team
 metaDescription: Learn what CAGR means, the compound annual growth rate formula, and how to use Mytulify’s free CAGR calculator to compare investments fairly.
 relatedToolSlugs:

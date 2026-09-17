@@ -1,10 +1,11 @@
 ---
 title: PPF Calculator Guide — Estimate Public Provident Fund Maturity
 slug: ppf-calculator-guide
+category: personal-finance
 excerpt: Learn how a PPF calculator works, what yearly contribution and tenure mean for maturity, and how to project invested amount and interest with a free browser tool.
 publishedDate: 2026-09-05
 updatedDate: 2026-09-05
-featuredImage: /og-share.png
+featuredImage: /blog/covers/ppf-calculator-guide.svg
 author: Mytulify Team
 metaDescription: Free PPF calculator guide — how Public Provident Fund maturity is estimated from yearly deposits, interest rate, and tenure. Plan contributions online with no signup.
 relatedToolSlugs:

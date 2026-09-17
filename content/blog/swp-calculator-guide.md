@@ -1,10 +1,11 @@
 ---
 title: SWP Calculator Guide — Plan Monthly Mutual Fund Withdrawals
 slug: swp-calculator-guide
+category: personal-finance
 excerpt: Learn how a Systematic Withdrawal Plan (SWP) works, what corpus, withdrawal amount, and expected return really change, and how to estimate remaining balance with a free browser calculator.
 publishedDate: 2026-09-05
 updatedDate: 2026-09-05
-featuredImage: /og-share.png
+featuredImage: /blog/covers/swp-calculator-guide.svg
 author: Mytulify Team
 metaDescription: Free SWP calculator guide — how Systematic Withdrawal Plans work, the monthly growth-then-withdraw model, and how to estimate total withdrawn and remaining corpus.
 relatedToolSlugs:

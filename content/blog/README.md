@@ -18,7 +18,8 @@ slug: your-post-slug
 excerpt: 1–3 sentence summary for the blog index card.
 publishedDate: 2026-07-16
 updatedDate: 2026-07-16
-featuredImage: /og-share.png
+featuredImage: /blog/covers/your-post-slug.svg
+category: personal-finance
 author: Mytulify Team
 metaDescription: Unique meta description for search results (≈150–160 chars).
 relatedToolSlugs:
@@ -28,6 +29,7 @@ relatedToolSlugs:
 ```
 
 - `slug` should match the filename (without `.md`)
+- `category` is one of: `personal-finance`, `comparisons`, `seo`, `photos-design`, `career`
 - `relatedToolSlugs` use `category/slug` keys from the catalog
-- `featuredImage` is a path under `public/` (default `/og-share.png`)
+- `featuredImage` is a path under `public/` (unique cover at `/blog/covers/{slug}.svg`)
 - Sitemap `lastmod` uses `updatedDate`, then git history / file mtime of this `.md` file

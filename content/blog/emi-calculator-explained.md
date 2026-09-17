@@ -1,10 +1,11 @@
 ---
 title: EMI Explained — Calculate Loan Payments Before You Borrow
 slug: emi-calculator-explained
+category: personal-finance
 excerpt: Understand how EMI works, what interest really costs over the loan term, and how to compare tenures with a free EMI calculator in your browser.
 publishedDate: 2026-07-08
 updatedDate: 2026-07-12
-featuredImage: /og-share.png
+featuredImage: /blog/covers/emi-calculator-explained.svg
 author: Mytulify Team
 metaDescription: Learn how EMI is calculated and use Mytulify’s free EMI calculator to compare monthly payments, interest, and total cost before taking a loan.
 relatedToolSlugs:

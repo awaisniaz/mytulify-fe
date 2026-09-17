@@ -1,10 +1,11 @@
 ---
 title: SSY Calculator Guide — Estimate Sukanya Samriddhi Yojana Maturity
 slug: ssy-calculator-guide
+category: personal-finance
 excerpt: Learn how an SSY calculator projects Sukanya Samriddhi Yojana maturity from yearly deposits, interest rate, deposit years, and the longer account tenure — then run the numbers free in your browser.
 publishedDate: 2026-09-06
 updatedDate: 2026-09-06
-featuredImage: /og-share.png
+featuredImage: /blog/covers/ssy-calculator-guide.svg
 author: Mytulify Team
 metaDescription: How an SSY calculator works — yearly deposits, notified rate, 15-year deposit window, and 21-year maturity modeling. Use Mytulify’s free Sukanya Samriddhi Yojana calculator privately.
 relatedToolSlugs:

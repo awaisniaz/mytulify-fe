@@ -1,10 +1,11 @@
 ---
 title: XIRR vs CAGR — Which Return Rate Fits Your Cash Flows
 slug: xirr-vs-cagr
+category: comparisons
 excerpt: Compare XIRR and CAGR — what each measures, when irregular dates matter, and how to calculate both with free tools on Mytulify.
 publishedDate: 2026-09-07
 updatedDate: 2026-09-07
-featuredImage: /og-share.png
+featuredImage: /blog/covers/xirr-vs-cagr.svg
 author: Mytulify Team
 metaDescription: XIRR vs CAGR explained — irregular cash flows vs start-to-end growth, when each metric fits, and how to calculate both free on Mytulify.
 relatedToolSlugs:

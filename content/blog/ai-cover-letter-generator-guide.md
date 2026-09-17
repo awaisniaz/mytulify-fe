@@ -1,10 +1,11 @@
 ---
 title: How to Write a Cover Letter That Gets Interviews (With Free AI)
 slug: ai-cover-letter-generator-guide
+category: career
 excerpt: Learn what hiring managers actually read in a cover letter, how to tailor one to a job posting, and how to generate a polished draft in seconds with AI.
 publishedDate: 2026-07-30
 updatedDate: 2026-07-30
-featuredImage: /og-share.png
+featuredImage: /blog/covers/ai-cover-letter-generator-guide.svg
 author: Mytulify Team
 metaDescription: Free guide to writing cover letters that match job postings — structure, ATS tips, tone choices, and how to use Mytulify's AI Cover Letter Generator.
 relatedToolSlugs:

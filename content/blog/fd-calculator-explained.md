@@ -1,10 +1,11 @@
 ---
 title: FD Calculator Explained — How to Calculate Fixed Deposit Maturity
 slug: fd-calculator-explained
+category: personal-finance
 excerpt: Learn the fixed deposit formula, why compounding frequency changes your payout, and how to estimate FD maturity and interest with a free online calculator.
 publishedDate: 2026-09-05
 updatedDate: 2026-09-05
-featuredImage: /og-share.png
+featuredImage: /blog/covers/fd-calculator-explained.svg
 author: Mytulify Team
 metaDescription: Understand how an FD calculator works — compound vs simple interest, quarterly compounding, and how to estimate fixed deposit maturity amount online for free.
 relatedToolSlugs:

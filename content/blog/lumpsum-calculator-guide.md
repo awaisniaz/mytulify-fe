@@ -1,10 +1,11 @@
 ---
 title: Lumpsum Calculator Guide — Estimate One-Time Mutual Fund Growth
 slug: lumpsum-calculator-guide
+category: personal-finance
 excerpt: Learn how a mutual fund lumpsum calculator works, the compound-growth formula behind maturity estimates, and how to project returns from a one-time investment online.
 publishedDate: 2026-09-05
 updatedDate: 2026-09-05
-featuredImage: /og-share.png
+featuredImage: /blog/covers/lumpsum-calculator-guide.svg
 author: Mytulify Team
 metaDescription: Free lumpsum calculator guide — mutual fund one-time investment formula, yearly vs monthly compounding, and how to estimate maturity value and returns online.
 relatedToolSlugs:

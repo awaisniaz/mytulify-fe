@@ -1,10 +1,11 @@
 ---
 title: NPS Calculator Explained — Estimate Your National Pension Corpus
 slug: nps-calculator-guide
+category: personal-finance
 excerpt: Learn how an NPS calculator estimates National Pension System corpus at retirement from monthly contributions, expected return, and tenure — then run the numbers free in your browser.
 publishedDate: 2026-09-06
 updatedDate: 2026-09-06
-featuredImage: /og-share.png
+featuredImage: /blog/covers/nps-calculator-guide.svg
 author: Mytulify Team
 metaDescription: How an NPS calculator works — monthly contributions, expected return, ages, and lump-sum vs annuity split. Use Mytulify’s free NPS calculator privately.
 relatedToolSlugs:

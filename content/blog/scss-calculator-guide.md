@@ -1,10 +1,11 @@
 ---
 title: SCSS Calculator Guide — Estimate Senior Citizen Savings Scheme Interest
 slug: scss-calculator-guide
+category: personal-finance
 excerpt: Learn how an SCSS calculator projects Senior Citizen Savings Scheme quarterly interest, total interest over tenure, and principal returned at maturity — then run the numbers free in your browser.
 publishedDate: 2026-09-06
 updatedDate: 2026-09-06
-featuredImage: /og-share.png
+featuredImage: /blog/covers/scss-calculator-guide.svg
 author: Mytulify Team
 metaDescription: How an SCSS calculator works — lump-sum deposit, notified rate, quarterly payouts, and maturity principal. Use Mytulify’s free Senior Citizen Savings Scheme calculator privately.
 relatedToolSlugs:

@@ -1,10 +1,11 @@
 ---
 title: EPF vs PPF — Which Provident Fund Fits Your Savings Plan?
 slug: epf-vs-ppf
+category: comparisons
 excerpt: Compare Employee Provident Fund and Public Provident Fund by who can join, how you contribute, and how to estimate maturity — then use free EPF and PPF calculators on Mytulify.
 publishedDate: 2026-09-05
 updatedDate: 2026-09-05
-featuredImage: /og-share.png
+featuredImage: /blog/covers/epf-vs-ppf.svg
 author: Mytulify Team
 metaDescription: EPF vs PPF explained — eligibility, contribution style, and planning differences. Estimate both with free EPF and PPF calculators on Mytulify.
 relatedToolSlugs:

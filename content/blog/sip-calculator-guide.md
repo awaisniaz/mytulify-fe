@@ -1,10 +1,11 @@
 ---
 title: SIP Calculator Guide — Estimate Mutual Fund Returns Before You Invest
 slug: sip-calculator-guide
+category: personal-finance
 excerpt: Learn how a SIP calculator works, what expected return and tenure really mean, and how annual step-up SIPs can grow your corpus faster — with a free browser tool.
 publishedDate: 2026-09-05
 updatedDate: 2026-09-05
-featuredImage: /og-share.png
+featuredImage: /blog/covers/sip-calculator-guide.svg
 author: Mytulify Team
 metaDescription: Free SIP calculator guide for mutual funds — formula, step-up SIP tips, and how to estimate maturity value, invested amount, and returns online.
 relatedToolSlugs:
