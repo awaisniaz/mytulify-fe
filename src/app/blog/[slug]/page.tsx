@@ -146,6 +146,13 @@ export default async function BlogPostPage({
         <BlogCover post={post} className="rounded-2xl" priority />
       </div>
 
+      {post.affiliateDisclosure && (
+        <p className="mt-6 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm leading-relaxed text-muted">
+          <strong className="font-semibold text-foreground">Affiliate disclosure.</strong> Some links below go to product sites.
+          If you buy through them, Mytulify may earn a commission at no extra cost to you. We still recommend tools based on fit, not payout.
+        </p>
+      )}
+
       <div
         className="prose-blog mt-10"
         dangerouslySetInnerHTML={{ __html: post.html }}

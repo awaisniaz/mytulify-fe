@@ -40,6 +40,12 @@ export const BLOG_CATEGORIES: readonly BlogCategory[] = [
     description: "Cover letters, freelance emails, and job-search tools.",
     icon: "Briefcase",
   },
+  {
+    slug: "ai-tech",
+    name: "AI & Tech",
+    description: "Comparisons of AI assistants, coding tools, image generators, and related software.",
+    icon: "Sparkles",
+  },
 ] as const;
 
 export const BLOG_CATEGORY_SLUGS = BLOG_CATEGORIES.map((c) => c.slug);
@@ -50,6 +56,9 @@ export function getBlogCategory(slug: string | undefined): BlogCategory | undefi
 }
 
 export function inferBlogCategory(slug: string): string {
+  if (/(chatgpt|claude|gemini|copilot|cursor|midjourney|dalle|grammarly|elevenlabs|quillbot)/.test(slug)) {
+    return "ai-tech";
+  }
   if (slug.includes("-vs-")) return "comparisons";
   if (slug.includes("utm")) return "seo";
   if (slug.includes("photo") || slug.includes("aspect-ratio")) return "photos-design";
@@ -68,6 +77,7 @@ export type BlogPostMeta = {
   relatedToolSlugs: string[];
   metaDescription: string;
   author: string;
+  affiliateDisclosure: boolean;
 };
 
 export type BlogPost = BlogPostMeta & {
@@ -127,6 +137,7 @@ function toMeta(data: Record<string, unknown>, fallbackSlug: string): BlogPostMe
     relatedToolSlugs: Array.isArray(related) ? related.map(String) : [],
     metaDescription: String(data.metaDescription ?? data.excerpt ?? ""),
     author: String(data.author ?? "Mytulify Team"),
+    affiliateDisclosure: String(data.affiliateDisclosure ?? "").toLowerCase() === "true",
   };
 }
 
