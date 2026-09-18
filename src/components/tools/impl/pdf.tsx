@@ -3,7 +3,7 @@
 import * as React from "react";
 import { PDFDocument, degrees, rgb, StandardFonts } from "pdf-lib";
 import { Input, Select, Button } from "@/components/ui/primitives";
-import { FileDrop, Field, Notice, Stat } from "@/components/tools/shared";
+import { FileDrop, Field, Notice, Stat, CopyResult } from "@/components/tools/shared";
 import { download } from "@/lib/utils";
 
 function useFiles(accept = "application/pdf", multiple = false) {
@@ -148,9 +148,14 @@ export function PdfPageCounter() {
   }, [files]);
   if (!files[0]) return <FileDrop accept="application/pdf" onFiles={onFiles} label="Drop a PDF to count pages" />;
   return (
-    <div className="grid grid-cols-2 gap-3">
-      <Stat label="Pages" value={info?.pages ?? "…"} />
-      <Stat label="File size" value={info ? `${Math.round(info.size / 1024)} KB` : "…"} />
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <Stat label="Pages" value={info?.pages ?? "…"} />
+        <Stat label="File size" value={info ? `${Math.round(info.size / 1024)} KB` : "…"} />
+        <Stat label="Avg / page" value={info?.pages ? `${Math.round(info.size / info.pages / 1024)} KB` : "…"} />
+        <Stat label="Name" value={files[0].name.replace(/\.pdf$/i, "").slice(0, 18)} />
+      </div>
+      <CopyResult filename="pdf-info.txt" rows={[["File", files[0].name], ["Pages", info?.pages ?? "…"], ["Bytes", info?.size ?? "…"]]} />
     </div>
   );
 }
@@ -221,11 +226,30 @@ export const ReversePdfPages = () => (
 export const AddPageNumbers = () => (
   <SinglePdf
     label="Add page numbers & download"
-    action={async (doc) => {
+    controls={(o, set) => (
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Field label="Position">
+          <Select value={o.pos ?? "bottom"} onChange={(e) => set("pos", e.target.value)}>
+            <option value="bottom">Bottom center</option>
+            <option value="top">Top center</option>
+            <option value="br">Bottom right</option>
+          </Select>
+        </Field>
+        <Field label="Start at"><Input type="number" value={o.start ?? "1"} onChange={(e) => set("start", e.target.value)} /></Field>
+        <Field label="Prefix"><Input value={o.prefix ?? ""} onChange={(e) => set("prefix", e.target.value)} placeholder="Page " /></Field>
+      </div>
+    )}
+    action={async (doc, o) => {
       const font = await doc.embedFont(StandardFonts.Helvetica);
+      const start = parseInt(o.start ?? "1", 10) || 1;
+      const prefix = o.prefix ?? "";
       doc.getPages().forEach((p, i) => {
-        const { width } = p.getSize();
-        p.drawText(`${i + 1}`, { x: width / 2 - 6, y: 18, size: 11, font, color: rgb(0.3, 0.3, 0.3) });
+        const { width, height } = p.getSize();
+        const text = `${prefix}${start + i}`;
+        const pos = o.pos ?? "bottom";
+        const x = pos === "br" ? width - 48 : width / 2 - 12;
+        const y = pos === "top" ? height - 28 : 18;
+        p.drawText(text, { x, y, size: 11, font, color: rgb(0.3, 0.3, 0.3) });
       });
     }}
   />
@@ -235,18 +259,24 @@ export const WatermarkPdf = () => (
   <SinglePdf
     label="Add watermark & download"
     controls={(o, set) => (
-      <Field label="Watermark text">
-        <Input value={o.text ?? ""} onChange={(e) => set("text", e.target.value)} placeholder="CONFIDENTIAL" />
-      </Field>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Field label="Watermark text">
+          <Input value={o.text ?? ""} onChange={(e) => set("text", e.target.value)} placeholder="CONFIDENTIAL" />
+        </Field>
+        <Field label="Opacity (0–100)">
+          <Input type="number" value={o.op ?? "25"} onChange={(e) => set("op", e.target.value)} />
+        </Field>
+      </div>
     )}
     action={async (doc, o) => {
       const font = await doc.embedFont(StandardFonts.HelveticaBold);
       const text = o.text || "WATERMARK";
+      const op = Math.max(0.05, Math.min(1, (parseInt(o.op ?? "25", 10) || 25) / 100));
       doc.getPages().forEach((p) => {
         const { width, height } = p.getSize();
         p.drawText(text, {
           x: width / 2 - text.length * 9, y: height / 2,
-          size: 48, font, color: rgb(0.6, 0.6, 0.6), opacity: 0.25, rotate: degrees(45),
+          size: 48, font, color: rgb(0.6, 0.6, 0.6), opacity: op, rotate: degrees(45),
         });
       });
     }}

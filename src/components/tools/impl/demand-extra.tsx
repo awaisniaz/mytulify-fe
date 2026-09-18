@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Input, Select, Textarea, Button } from "@/components/ui/primitives";
-import { Field, Stat, Output, CopyButton, Notice } from "@/components/tools/shared";
+import { Field, Stat, Output, CopyButton, Notice, CopyResult } from "@/components/tools/shared";
 
 const n = (v: string) => parseFloat(v);
 const fmt = (x: number, d = 2) =>
@@ -102,6 +102,14 @@ export function CurrencyConverter() {
         <Stat label="Rate" value={rate != null ? `1 ${from} = ${fmt(rate, 6)} ${to}` : "—"} />
         <Stat label="As of" value={asOf || "—"} />
       </div>
+      <CopyResult
+        filename="currency.txt"
+        rows={[
+          ["Amount", `${amount} ${from}`],
+          ["Result", `${fmt(converted)} ${to}`],
+          ["Rate", rate != null ? `1 ${from} = ${fmt(rate, 6)} ${to}` : "—"],
+        ]}
+      />
     </div>
   );
 }

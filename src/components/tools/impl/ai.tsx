@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Button, Select, Input, Textarea } from "@/components/ui/primitives";
-import { CopyButton, Field, Notice, FileDrop } from "@/components/tools/shared";
+import { CopyButton, Field, Notice, FileDrop, DownloadButton, TextStatBar } from "@/components/tools/shared";
 import { AiUsageBanner, notifyUsageUpdated } from "@/components/billing/AiUsageBanner";
 import { proHeaders } from "@/lib/billing/client";
 import { Icon } from "@/components/ui/Icon";
@@ -147,8 +147,10 @@ function ResultPanel({
         )}
       </div>
       {!loading && value && (
-        <div className="mt-2">
+        <div className="mt-2 flex flex-wrap items-center gap-2">
           <CopyButton value={value} />
+          <DownloadButton value={value} filename="ai-output.txt" mime="text/plain" />
+          <TextStatBar input={value} />
         </div>
       )}
     </Field>
@@ -265,6 +267,20 @@ export function AiTool({ slug }: { slug: string }) {
               <Icon name="Sparkles" className="h-4 w-4" /> {tool.cta}
             </>
           )}
+        </Button>
+        <Button
+          type="button"
+          variant="secondary"
+          disabled={loading}
+          onClick={() => {
+            setOutput("");
+            setOcrOriginal("");
+            setOcrTranslation("");
+            setError("");
+            setValues(initial);
+          }}
+        >
+          Clear
         </Button>
         <span className="text-xs text-muted">
           or press <kbd className="rounded bg-surface-2 px-1.5 py-0.5 font-mono">⌘/Ctrl</kbd> +{" "}

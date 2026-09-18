@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Input, Select } from "@/components/ui/primitives";
-import { CopyButton, Field, Notice } from "@/components/tools/shared";
+import { Input, Select, Button } from "@/components/ui/primitives";
+import { CopyButton, Field, Notice, CopyResult } from "@/components/tools/shared";
 
 /* ============================ Factor-based engine =========================== */
 type Units = Record<string, number>; // unit label -> factor relative to base
@@ -30,10 +30,13 @@ export function FactorConverter({
   const [value, setValue] = React.useState(String(defaultValue));
   const [u1, setU1] = React.useState(from);
   const [u2, setU2] = React.useState(to);
+  const [q, setQ] = React.useState("");
 
   const num = parseFloat(value);
   const base = num * units[u1];
   const result = base / units[u2];
+  const shown = keys.filter((k) => !q || k.toLowerCase().includes(q.toLowerCase()));
+  const table = keys.map((k) => `${round(num)} ${u1} = ${isNaN(num) ? "—" : round(base / units[k])} ${k}`).join("\n");
 
   return (
     <div className="space-y-5">
@@ -47,6 +50,7 @@ export function FactorConverter({
           </Select>
         </Field>
         <button
+          type="button"
           onClick={() => {
             setU1(u2);
             setU2(u1);
@@ -65,17 +69,39 @@ export function FactorConverter({
           </Select>
         </Field>
       </div>
+      <button
+        type="button"
+        onClick={() => {
+          setU1(u2);
+          setU2(u1);
+        }}
+        className="h-11 w-full rounded-xl border border-border bg-surface-2 hover:bg-border sm:hidden"
+      >
+        Swap units ⇄
+      </button>
       {!isNaN(num) && (
         <Notice tone="info">
           {round(num)} {u1} = <strong>{round(result)} {u2}</strong>
         </Notice>
       )}
+      <div className="flex flex-wrap items-center gap-2">
+        <CopyButton value={isNaN(num) ? "" : `${round(num)} ${u1} = ${round(result)} ${u2}`} label="Copy result" />
+        <CopyButton value={table} label="Copy all" />
+        {keys.length > 6 && (
+          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filter units…" className="max-w-48" />
+        )}
+      </div>
       <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {keys.map((k) => (
-          <div key={k} className="flex items-center justify-between rounded-xl border border-border bg-surface-2 px-3 py-2 text-sm">
+        {shown.map((k) => (
+          <button
+            type="button"
+            key={k}
+            onClick={() => setU2(k)}
+            className="flex items-center justify-between rounded-xl border border-border bg-surface-2 px-3 py-2 text-left text-sm hover:border-brand"
+          >
             <span className="text-muted">{k}</span>
             <span className="font-mono">{isNaN(num) ? "—" : round(base / units[k])}</span>
-          </div>
+          </button>
         ))}
       </div>
     </div>
@@ -143,7 +169,7 @@ export function TemperatureConverter() {
   const n = parseFloat(val);
   let c = NaN;
   if (!isNaN(n)) c = unit === "C" ? n : unit === "F" ? (n - 32) * (5 / 9) : n - 273.15;
-  const out = { Celsius: c, Fahrenheit: c * (9 / 5) + 32, Kelvin: c + 273.15 };
+  const out = { Celsius: c, Fahrenheit: c * (9 / 5) + 32, Kelvin: c + 273.15, Rankine: (c + 273.15) * (9 / 5) };
   return (
     <div className="space-y-5">
       <div className="grid gap-3 sm:grid-cols-2">
@@ -158,7 +184,8 @@ export function TemperatureConverter() {
           </Select>
         </Field>
       </div>
-      <div className="grid gap-3 sm:grid-cols-3">
+      <CopyResult rows={Object.entries(out).map(([k, v]) => [k, isNaN(v) ? "—" : round(v)])} />
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {Object.entries(out).map(([k, v]) => (
           <div key={k} className="rounded-xl border border-border bg-surface-2 p-4 text-center">
             <div className="text-2xl font-bold text-brand">{isNaN(v) ? "—" : round(v)}</div>
@@ -212,6 +239,7 @@ export function FuelConverter() {
           </div>
         ))}
       </div>
+      <CopyResult filename="fuel.txt" rows={Object.entries(out).map(([k, v]) => [k, isNaN(v) ? "—" : round(v)])} />
     </div>
   );
 }
@@ -302,38 +330,58 @@ export function numberToWords(n: number): string {
 }
 export function NumberToWords() {
   const [val, setVal] = React.useState("12345");
+  const [style, setStyle] = React.useState<"words" | "upper" | "currency">("words");
   const n = parseInt(val.replace(/[^0-9-]/g, ""), 10);
   const words = isNaN(n) ? "" : numberToWords(n);
   const cap = words ? words[0].toUpperCase() + words.slice(1) : "";
+  const shown = style === "upper" ? cap.toUpperCase() : style === "currency" ? `${cap} only` : cap;
   return (
     <div className="space-y-4">
       <Field label="Number">
         <Input value={val} onChange={(e) => setVal(e.target.value)} />
       </Field>
+      <Select value={style} onChange={(e) => setStyle(e.target.value as "words")}>
+        <option value="words">Sentence case</option>
+        <option value="upper">UPPERCASE</option>
+        <option value="currency">Cheque / currency (“only”)</option>
+      </Select>
       <div className="rounded-xl border border-border bg-surface-2 p-4">
-        <p className="text-lg capitalize">{cap || <span className="text-muted">…</span>}</p>
+        <p className="text-lg">{shown || <span className="text-muted">…</span>}</p>
       </div>
-      <CopyButton value={cap} />
+      <CopyButton value={shown} />
     </div>
   );
 }
 
 /* ----------------------------- Base converter ------------------------------ */
 export function BaseConverter() {
-  const [dec, setDec] = React.useState("42");
-  const n = parseInt(dec, 10);
+  const [raw, setRaw] = React.useState("42");
+  const [from, setFrom] = React.useState("10");
+  const n = parseInt(raw.replace(/\s/g, ""), parseInt(from, 10));
   const ok = !isNaN(n);
   const rows: [string, string][] = [
     ["Binary", ok ? (n >>> 0).toString(2) : ""],
     ["Octal", ok ? n.toString(8) : ""],
     ["Decimal", ok ? n.toString(10) : ""],
     ["Hexadecimal", ok ? n.toString(16).toUpperCase() : ""],
+    ["Base32", ok ? n.toString(32).toUpperCase() : ""],
   ];
   return (
     <div className="space-y-4">
-      <Field label="Decimal number" hint="Or paste binary/hex and read the rest">
-        <Input value={dec} onChange={(e) => setDec(e.target.value)} />
-      </Field>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Field label="Value">
+          <Input value={raw} onChange={(e) => setRaw(e.target.value)} className="font-mono" />
+        </Field>
+        <Field label="From base">
+          <Select value={from} onChange={(e) => setFrom(e.target.value)}>
+            <option value="2">Binary</option>
+            <option value="8">Octal</option>
+            <option value="10">Decimal</option>
+            <option value="16">Hex</option>
+          </Select>
+        </Field>
+      </div>
+      <CopyResult rows={rows} />
       <div className="grid gap-2.5 sm:grid-cols-2">
         {rows.map(([k, v]) => (
           <div key={k} className="flex items-center gap-2 rounded-xl border border-border bg-surface-2 p-3">
@@ -359,9 +407,9 @@ export function TimeZoneConverter() {
   const [time, setTime] = React.useState("12:00");
   const [date, setDate] = React.useState("2026-06-07");
   const [from, setFrom] = React.useState("Asia/Karachi");
+  const [q, setQ] = React.useState("");
   const base = React.useMemo(() => {
     try {
-      // interpret the entered wall-clock time as being in `from` zone
       const naive = new Date(`${date}T${time}:00`);
       const asUTC = new Date(naive.toLocaleString("en-US", { timeZone: "UTC" }));
       const asZone = new Date(naive.toLocaleString("en-US", { timeZone: from }));
@@ -371,6 +419,13 @@ export function TimeZoneConverter() {
       return null;
     }
   }, [time, date, from]);
+  const shown = ZONES.filter((z) => !q || z.toLowerCase().includes(q.toLowerCase()));
+  const rows = shown.map((z) => [
+    z.replace(/_/g, " "),
+    base
+      ? base.toLocaleString("en-US", { timeZone: z, dateStyle: "medium", timeStyle: "short" })
+      : "—",
+  ] as [string, string]);
   return (
     <div className="space-y-5">
       <div className="grid gap-3 sm:grid-cols-3">
@@ -388,8 +443,24 @@ export function TimeZoneConverter() {
           </Select>
         </Field>
       </div>
+      <div className="flex flex-wrap gap-2">
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          onClick={() => {
+            const now = new Date();
+            setDate(now.toISOString().slice(0, 10));
+            setTime(now.toTimeString().slice(0, 5));
+          }}
+        >
+          Use now
+        </Button>
+        <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filter cities…" className="max-w-xs" />
+      </div>
+      <CopyResult filename="time-zones.txt" rows={rows} />
       <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {ZONES.map((z) => (
+        {shown.map((z) => (
           <div key={z} className="rounded-xl border border-border bg-surface-2 px-3 py-2.5 text-sm">
             <div className="text-xs text-muted">{z.replace(/_/g, " ")}</div>
             <div className="font-mono">
@@ -410,67 +481,71 @@ export function TimeZoneConverter() {
 
 /* --------------------------- Generic size chart ---------------------------- */
 export function SizeChart({ headers, rows }: { headers: string[]; rows: (string | number)[][] }) {
+  const [q, setQ] = React.useState("");
+  const shown = rows.filter((r) => !q || r.some((c) => String(c).toLowerCase().includes(q.toLowerCase())));
   return (
-    <div className="overflow-x-auto rounded-xl border border-border">
-      <table className="w-full text-sm">
-        <thead className="bg-surface-2 text-muted">
-          <tr>{headers.map((h) => <th key={h} className="px-4 py-2.5 text-left font-medium">{h}</th>)}</tr>
-        </thead>
-        <tbody>
-          {rows.map((r, i) => (
-            <tr key={i} className="border-t border-border">{r.map((c, j) => <td key={j} className="px-4 py-2 font-mono">{c}</td>)}</tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="space-y-3">
+      <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Look up a size…" />
+      <div className="overflow-x-auto rounded-xl border border-border">
+        <table className="w-full text-sm">
+          <thead className="bg-surface-2 text-muted">
+            <tr>{headers.map((h) => <th key={h} className="px-4 py-2.5 text-left font-medium">{h}</th>)}</tr>
+          </thead>
+          <tbody>
+            {shown.map((r, i) => (
+              <tr key={i} className="border-t border-border">{r.map((c, j) => <td key={j} className="px-4 py-2 font-mono">{c}</td>)}</tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <CopyResult filename="size-chart.txt" rows={shown.map((r) => [String(r[0]), r.slice(1).join(" · ")])} />
     </div>
   );
 }
 export const RingSizeConverter = () => (
   <SizeChart headers={["US", "UK", "EU", "Diameter (mm)"]} rows={[
-    [5, "J½", 49, 15.7], [6, "L½", 52, 16.5], [7, "N½", 54, 17.3], [8, "P½", 57, 18.1],
-    [9, "R½", 59, 18.9], [10, "T½", 62, 19.8], [11, "V½", 64, 20.6], [12, "X½", 67, 21.4],
+    [4, "H½", 47, 14.9], [4.5, "I½", 48, 15.3], [5, "J½", 49, 15.7], [5.5, "K½", 50.5, 16.1],
+    [6, "L½", 52, 16.5], [6.5, "M½", 53, 16.9], [7, "N½", 54, 17.3], [7.5, "O½", 55.5, 17.7],
+    [8, "P½", 57, 18.1], [8.5, "Q½", 58, 18.5], [9, "R½", 59, 18.9], [9.5, "S½", 60.5, 19.4],
+    [10, "T½", 62, 19.8], [10.5, "U½", 63, 20.2], [11, "V½", 64, 20.6], [12, "X½", 67, 21.4],
   ]} />
 );
 export const BraSizeConverter = () => (
   <SizeChart headers={["US", "UK", "EU", "FR"]} rows={[
-    ["32A", "32A", "70A", "85A"], ["34B", "34B", "75B", "90B"], ["36C", "36C", "80C", "95C"],
-    ["38D", "38D", "85D", "100D"], ["40DD", "40DD", "90E", "105E"],
+    ["30A", "30A", "65A", "80A"], ["32A", "32A", "70A", "85A"], ["32B", "32B", "70B", "85B"],
+    ["34B", "34B", "75B", "90B"], ["34C", "34C", "75C", "90C"], ["36C", "36C", "80C", "95C"],
+    ["36D", "36D", "80D", "95D"], ["38D", "38D", "85D", "100D"], ["38DD", "38DD", "85E", "100E"],
+    ["40DD", "40DD", "90E", "105E"], ["42E", "42E", "95F", "110F"],
   ]} />
 );
 export const ClothingSizeConverter = () => (
   <SizeChart headers={["US", "UK", "EU", "Intl"]} rows={[
-    [4, 8, 36, "XS"], [6, 10, 38, "S"], [8, 12, 40, "M"], [10, 14, 42, "L"], [12, 16, 44, "XL"], [14, 18, 46, "XXL"],
+    [0, 4, 32, "XXS"], [2, 6, 34, "XS"], [4, 8, 36, "XS"], [6, 10, 38, "S"], [8, 12, 40, "M"],
+    [10, 14, 42, "L"], [12, 16, 44, "XL"], [14, 18, 46, "XXL"], [16, 20, 48, "3XL"],
   ]} />
 );
 
 /* --------------------------- Shoe size chart ------------------------------- */
 export function ShoeSizeConverter() {
-  // Men's approximate chart
-  const rows = [
-    [6, 5.5, 39, 24], [6.5, 6, 39, 24.5], [7, 6.5, 40, 25], [7.5, 7, 40.5, 25.5],
+  const [who, setWho] = React.useState<"men" | "women">("men");
+  const men = [
+    [6, 5.5, 39, 24], [6.5, 6, 39, 24.5],
+    [7, 6.5, 40, 25], [7.5, 7, 40.5, 25.5],
     [8, 7.5, 41, 26], [8.5, 8, 42, 26.5], [9, 8.5, 42.5, 27], [9.5, 9, 43, 27.5],
     [10, 9.5, 44, 28], [10.5, 10, 44.5, 28.5], [11, 10.5, 45, 29], [12, 11.5, 46, 30],
   ];
+  const women = [
+    [5, 3, 35, 22], [5.5, 3.5, 36, 22.5], [6, 4, 36.5, 23], [6.5, 4.5, 37, 23.5],
+    [7, 5, 37.5, 24], [7.5, 5.5, 38, 24.5], [8, 6, 38.5, 25], [8.5, 6.5, 39, 25.5],
+    [9, 7, 40, 26], [9.5, 7.5, 40.5, 26.5], [10, 8, 41, 27], [11, 9, 42, 28],
+  ];
   return (
-    <div className="overflow-x-auto rounded-xl border border-border">
-      <table className="w-full text-sm">
-        <thead className="bg-surface-2 text-muted">
-          <tr>
-            {["US", "UK", "EU", "CM"].map((h) => (
-              <th key={h} className="px-4 py-2.5 text-left font-medium">{h}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((r, i) => (
-            <tr key={i} className="border-t border-border">
-              {r.map((c, j) => (
-                <td key={j} className="px-4 py-2 font-mono">{c}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="space-y-3">
+      <Select value={who} onChange={(e) => setWho(e.target.value as "men")} className="max-w-48">
+        <option value="men">Men</option>
+        <option value="women">Women</option>
+      </Select>
+      <SizeChart headers={["US", "UK", "EU", "CM"]} rows={who === "men" ? men : women} />
     </div>
   );
 }

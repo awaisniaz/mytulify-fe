@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { Input, Select, Textarea, Button } from "@/components/ui/primitives";
-import { Field, Stat, Notice, Output } from "@/components/tools/shared";
+import { Field, Stat, Notice, Output, CopyResult } from "@/components/tools/shared";
 import { exportBrandedPdf } from "@/lib/pdf-doc";
 import { download } from "@/lib/utils";
 import {
@@ -325,8 +325,10 @@ export function RateCalculator() {
       <Field label="Profit / buffer margin (%)">
         <Input type="number" value={margin} onChange={(e) => setMargin(e.target.value)} />
       </Field>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Stat label="Recommended hourly rate" value={`$${fmt(hourly, 0)}`} />
+        <Stat label="Daily (8h)" value={`$${fmt(hourly * 8, 0)}`} />
+        <Stat label="Weekly" value={`$${fmt(hourly * n(hoursWeek), 0)}`} />
         <Stat label="Billable hours / year" value={fmt(billableHours, 0)} />
       </div>
       <Output
@@ -383,6 +385,15 @@ export function QuoteCalculator() {
         <Stat label="Margin" value={`$${fmt(marginAmt)}`} />
         <Stat label="Total quote" value={`$${fmt(total)}`} />
       </div>
+      <CopyResult
+        filename="quote.txt"
+        rows={[
+          ["Labor", fmt(labor)],
+          ["Expenses", fmt(n(expenses))],
+          ["Margin", fmt(marginAmt)],
+          ["Total", fmt(total)],
+        ]}
+      />
     </div>
   );
 }
@@ -431,6 +442,7 @@ export function LateFeeCalculator() {
         <Stat label="Late fee" value={`$${fmt(fee)}`} />
         <Stat label="New total due" value={`$${fmt(total)}`} />
       </div>
+      <CopyResult filename="late-fee.txt" rows={[["Days overdue", days], ["Fee", fmt(fee)], ["Total", fmt(total)]]} />
     </div>
   );
 }
@@ -472,6 +484,15 @@ export function BreakEvenCalculator() {
         />
         <Stat label="Exact" value={fmt(units, 2)} />
       </div>
+      {Number.isFinite(units) && (
+        <CopyResult
+          filename="break-even.txt"
+          rows={[
+            ["Contribution", fmt(contribution)],
+            ["Units", fmt(units, 2)],
+          ]}
+        />
+      )}
       {!Number.isFinite(units) && (
         <Notice tone="error">Price must be greater than variable cost.</Notice>
       )}

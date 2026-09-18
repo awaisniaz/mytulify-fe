@@ -6,7 +6,7 @@ import JSZip from "jszip";
 import { parseGIF, decompressFrames } from "gifuct-js";
 import { GIFEncoder, quantize, applyPalette } from "gifenc";
 import { Input, Select, Button } from "@/components/ui/primitives";
-import { FileDrop, Field, Notice, Output, Stat } from "@/components/tools/shared";
+import { FileDrop, Field, Notice, Output, Stat, CopyResult } from "@/components/tools/shared";
 import { download, formatBytes } from "@/lib/utils";
 import { extractPdfText, renderPdfPageToCanvas } from "@/lib/pdfjs";
 
@@ -69,13 +69,17 @@ async function decodeGifFile(file: File): Promise<{ width: number; height: numbe
   return { width, height, frames };
 }
 
-function encodeGifFrames(frames: GifFrame[]) {
+function encodeGifFrames(frames: GifFrame[], repeat = 0) {
   const enc = GIFEncoder();
-  for (const f of frames) {
+  frames.forEach((f, i) => {
     const palette = quantize(f.rgba, 256);
     const index = applyPalette(f.rgba, palette);
-    enc.writeFrame(index, f.width, f.height, { palette, delay: Math.max(1, Math.round(f.delay)) });
-  }
+    enc.writeFrame(index, f.width, f.height, {
+      palette,
+      delay: Math.max(1, Math.round(f.delay)),
+      ...(i === 0 ? { repeat } : {}),
+    });
+  });
   enc.finish();
   return new Blob([new Uint8Array(enc.bytes())], { type: "image/gif" });
 }
@@ -436,6 +440,9 @@ function useGifFile() {
 export function GifMaker() {
   const [files, setFiles] = React.useState<File[]>([]);
   const [delay, setDelay] = React.useState(80);
+  const [bg, setBg] = React.useState("#ffffff");
+  const [maxW, setMaxW] = React.useState(0);
+  const [repeat, setRepeat] = React.useState(0);
   const [busy, setBusy] = React.useState(false);
   const make = async () => {
     if (!files.length) return;
@@ -444,23 +451,32 @@ export function GifMaker() {
       const frames: GifFrame[] = [];
       let w = 0;
       let h = 0;
+      const imgs = [];
       for (const f of files) {
         const img = await fileToImage(f);
+        imgs.push(img);
         w = Math.max(w, img.naturalWidth);
         h = Math.max(h, img.naturalHeight);
       }
-      for (const f of files) {
-        const img = await fileToImage(f);
+      if (maxW > 0 && w > maxW) {
+        const r = maxW / w;
+        w = maxW;
+        h = Math.max(1, Math.round(h * r));
+      }
+      for (const img of imgs) {
         const c = document.createElement("canvas");
         c.width = w;
         c.height = h;
         const ctx = c.getContext("2d")!;
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = bg;
         ctx.fillRect(0, 0, w, h);
-        ctx.drawImage(img, (w - img.naturalWidth) / 2, (h - img.naturalHeight) / 2);
+        const scale = Math.min(w / img.naturalWidth, h / img.naturalHeight);
+        const dw = img.naturalWidth * scale;
+        const dh = img.naturalHeight * scale;
+        ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
         frames.push({ rgba: new Uint8ClampedArray(ctx.getImageData(0, 0, w, h).data), width: w, height: h, delay });
       }
-      download(encodeGifFrames(frames), "animation.gif");
+      download(encodeGifFrames(frames, repeat), "animation.gif");
     } finally {
       setBusy(false);
     }
@@ -468,7 +484,12 @@ export function GifMaker() {
   return (
     <div className="space-y-4">
       <FileDrop accept="image/*" multiple onFiles={setFiles} label="Drop images in animation order" />
-      <Field label="Frame delay (cs)"><Input type="number" value={delay} onChange={(e) => setDelay(+e.target.value)} /></Field>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <Field label="Frame delay (cs)"><Input type="number" value={delay} onChange={(e) => setDelay(+e.target.value)} /></Field>
+        <Field label="Max width (0 = native)"><Input type="number" value={maxW} onChange={(e) => setMaxW(+e.target.value)} /></Field>
+        <Field label="Loop (0 = forever)"><Input type="number" min={0} value={repeat} onChange={(e) => setRepeat(+e.target.value)} /></Field>
+        <Field label="Background"><input type="color" value={bg} onChange={(e) => setBg(e.target.value)} className="h-11 w-full rounded-xl border border-border" /></Field>
+      </div>
       {files.length > 0 && <Notice tone="info">{files.length} image(s) selected</Notice>}
       <Button onClick={make} disabled={!files.length || busy}>{busy ? "Building…" : "Create GIF"}</Button>
     </div>
@@ -478,17 +499,23 @@ export function GifMaker() {
 export function GifResizer() {
   const { file, meta, busy, load } = useGifFile();
   const [w, setW] = React.useState(320);
+  const [lock, setLock] = React.useState(true);
+  const [h, setH] = React.useState(0);
+  const [speed, setSpeed] = React.useState(100);
+  React.useEffect(() => {
+    if (meta) setH(Math.round(meta.height * (320 / meta.width)));
+  }, [meta]);
   const resize = async () => {
     if (!meta || !file) return;
-    const ratio = w / meta.width;
-    const nh = Math.round(meta.height * ratio);
+    const nw = Math.max(1, w);
+    const nh = lock ? Math.round(meta.height * (nw / meta.width)) : Math.max(1, h || meta.height);
     const frames = meta.frames.map((f) => {
       const src = frameToCanvas(f);
       const c = document.createElement("canvas");
-      c.width = w;
+      c.width = nw;
       c.height = nh;
-      c.getContext("2d")!.drawImage(src, 0, 0, w, nh);
-      return { rgba: new Uint8ClampedArray(c.getContext("2d")!.getImageData(0, 0, w, nh).data), width: w, height: nh, delay: f.delay };
+      c.getContext("2d")!.drawImage(src, 0, 0, nw, nh);
+      return { rgba: new Uint8ClampedArray(c.getContext("2d")!.getImageData(0, 0, nw, nh).data), width: nw, height: nh, delay: Math.max(1, Math.round(f.delay * (100 / speed))) };
     });
     download(encodeGifFrames(frames), file.name.replace(/\.gif$/i, "-resized.gif"));
   };
@@ -499,7 +526,12 @@ export function GifResizer() {
       {meta && (
         <>
           <Notice tone="info">{file.name} · {meta.frames.length} frames · {meta.width}×{meta.height}</Notice>
-          <Field label="New width (px)"><Input type="number" value={w} onChange={(e) => setW(+e.target.value)} /></Field>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Field label="New width (px)"><Input type="number" value={w} onChange={(e) => { setW(+e.target.value); if (lock) setH(Math.round(meta.height * (+e.target.value / meta.width))); }} /></Field>
+            <Field label="New height (px)"><Input type="number" value={h || Math.round(meta.height * (w / meta.width))} onChange={(e) => setH(+e.target.value)} disabled={lock} /></Field>
+            <Field label={`Speed ${speed}%`}><input type="range" min={25} max={400} value={speed} onChange={(e) => setSpeed(+e.target.value)} className="w-full accent-[var(--brand)]" /></Field>
+          </div>
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={lock} onChange={(e) => setLock(e.target.checked)} /> Keep aspect ratio</label>
           <Button onClick={resize}>Download resized GIF</Button>
         </>
       )}
@@ -648,12 +680,13 @@ export function GifToPng() {
 
 export function GifToJpg() {
   const { file, meta, busy, load } = useGifFile();
+  const [quality, setQuality] = React.useState(92);
   const run = async () => {
     if (!meta || !file) return;
     const blobs = await Promise.all(
       meta.frames.map(async (f, i) => ({
         name: `frame-${String(i + 1).padStart(3, "0")}.jpg`,
-        blob: await canvasToBlob(frameToCanvas(f), "image/jpeg", 0.92),
+        blob: await canvasToBlob(frameToCanvas(f), "image/jpeg", quality / 100),
       })),
     );
     await zipBlobs(blobs, file.name.replace(/\.gif$/i, "-frames.zip"));
@@ -661,7 +694,12 @@ export function GifToJpg() {
   if (!file) return <FileDrop accept="image/gif,.gif" onFiles={load} label="Drop a GIF" />;
   return (
     <div className="space-y-4">
-      {meta && <Button onClick={run}>Download {meta.frames.length} JPG frames (ZIP)</Button>}
+      {meta && (
+        <>
+          <Field label={`JPEG quality ${quality}%`}><input type="range" min={40} max={100} value={quality} onChange={(e) => setQuality(+e.target.value)} className="w-full accent-[var(--brand)]" /></Field>
+          <Button onClick={run}>Download {meta.frames.length} JPG frames (ZIP)</Button>
+        </>
+      )}
       {busy && <Notice tone="info">Loading…</Notice>}
     </div>
   );
@@ -794,6 +832,7 @@ export function AfghanDateConverter() {
         <Field label="Day"><Input value={d} onChange={(e) => setD(e.target.value)} /></Field>
       </div>
       <Stat label="Converted date" value={result} />
+      <CopyResult filename="afghan-date.txt" rows={[["Mode", mode], ["Input", `${y}/${m}/${d}`], ["Result", result]]} />
     </div>
   );
 }
@@ -825,6 +864,14 @@ export function ZakatCalculator() {
         <Stat label="Nisab threshold" value={nisab.toFixed(2)} />
         <Stat label="Zakat due (2.5%)" value={due.toFixed(2)} />
       </div>
+      <CopyResult
+        filename="zakat.txt"
+        rows={[
+          ["Total wealth", total.toFixed(2)],
+          ["Nisab", nisab.toFixed(2)],
+          ["Zakat due", due.toFixed(2)],
+        ]}
+      />
       <Notice tone="info">Uses common nisab references (87.48g gold / 612.36g silver). Consult a scholar for your situation.</Notice>
     </div>
   );
@@ -833,13 +880,30 @@ export function ZakatCalculator() {
 export function TasbihCounter() {
   const [count, setCount] = React.useState(0);
   const [target, setTarget] = React.useState(33);
+  const [rounds, setRounds] = React.useState(0);
   return (
     <div className="space-y-4 text-center">
+      <div className="flex flex-wrap justify-center gap-2">
+        {[33, 99, 100, 1000].map((t) => (
+          <Button key={t} size="sm" variant={target === t ? "primary" : "secondary"} onClick={() => setTarget(t)}>{t}</Button>
+        ))}
+      </div>
       <Field label="Target count"><Input type="number" className="mx-auto max-w-xs" value={target} onChange={(e) => setTarget(+e.target.value)} /></Field>
       <p className="text-5xl font-bold tabular-nums">{count}</p>
+      <p className="text-sm text-muted">Rounds completed: {rounds}</p>
       <div className="flex flex-wrap justify-center gap-2">
-        <Button onClick={() => setCount((c) => c + 1)}>+1</Button>
-        <Button variant="outline" onClick={() => setCount(0)}>Reset</Button>
+        <Button onClick={() => {
+          setCount((c) => {
+            const next = c + 1;
+            if (target > 0 && next >= target) {
+              setRounds((r) => r + 1);
+              return 0;
+            }
+            return next;
+          });
+        }}>+1</Button>
+        <Button variant="secondary" onClick={() => setCount((c) => Math.max(0, c - 1))}>−1</Button>
+        <Button variant="outline" onClick={() => { setCount(0); setRounds(0); }}>Reset</Button>
       </div>
       {count >= target && target > 0 && <Notice tone="info">Target reached — Alhamdulillah</Notice>}
     </div>
@@ -858,11 +922,13 @@ export function SalaryTaxCalculator() {
         <Field label="Annual gross salary"><Input type="number" value={salary} onChange={(e) => setSalary(e.target.value)} /></Field>
         <Field label="Effective tax rate (%)"><Input type="number" value={rate} onChange={(e) => setRate(e.target.value)} /></Field>
       </div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat label="Gross" value={gross.toFixed(2)} />
         <Stat label="Estimated tax" value={tax.toFixed(2)} />
         <Stat label="Net (approx.)" value={net.toFixed(2)} />
+        <Stat label="Monthly net" value={(net / 12).toFixed(2)} />
       </div>
+      <CopyResult filename="salary-tax.txt" rows={[["Gross", gross.toFixed(2)], ["Tax", tax.toFixed(2)], ["Net", net.toFixed(2)]]} />
       <Notice tone="info">Simple flat-rate estimate. Enter your local effective rate for a closer approximation.</Notice>
     </div>
   );
