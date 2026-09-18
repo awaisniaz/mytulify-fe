@@ -58,17 +58,30 @@ function toAsciiArt(text: string): string {
 
 export function TextToAsciiArt() {
   const [text, setText] = React.useState("HELLO");
-  const out = toAsciiArt(text);
+  const [fill, setFill] = React.useState("#");
+  const [empty, setEmpty] = React.useState(" ");
+  const [fig, setFig] = React.useState(false);
+  const out = toAsciiArt(text).replace(/#/g, fill.slice(0, 1) || "#").replace(/ /g, empty || " ");
+  const boxed = fig ? out.split("\n").map((l) => `| ${l} |`).join("\n") : out;
   return (
     <div className="space-y-4">
       <Field label="Text"><Input value={text} onChange={(e) => setText(e.target.value)} placeholder="Type a word or phrase" /></Field>
-      <Output value={out} rows={6} filename="ascii-art.txt" />
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Field label="Fill character"><Input value={fill} onChange={(e) => setFill(e.target.value.slice(0, 1))} maxLength={1} /></Field>
+        <Field label="Empty character"><Input value={empty} onChange={(e) => setEmpty(e.target.value.slice(0, 1))} maxLength={1} /></Field>
+        <label className="flex items-end gap-2 pb-2 text-sm"><input type="checkbox" checked={fig} onChange={(e) => setFig(e.target.checked)} /> Box border</label>
+      </div>
+      <Output value={boxed} rows={7} filename="ascii-art.txt" />
     </div>
   );
 }
 
 export function TextToHandwriting() {
   const [text, setText] = React.useState("Dear friend,\n\nThis note was written with the handwriting tool.");
+  const [ink, setInk] = React.useState("#1a365d");
+  const [paper, setPaper] = React.useState("#fffef8");
+  const [size, setSize] = React.useState(28);
+  const [lined, setLined] = React.useState(true);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const urlRef = React.useRef("");
 
@@ -77,14 +90,23 @@ export function TextToHandwriting() {
     if (!c) return;
     const ctx = c.getContext("2d")!;
     const pad = 40;
-    const lineHeight = 36;
+    const lineHeight = size + 8;
     const lines = text.split("\n");
     c.width = 720;
     c.height = Math.max(320, pad * 2 + lines.length * lineHeight);
-    ctx.fillStyle = "#fffef8";
+    ctx.fillStyle = paper;
     ctx.fillRect(0, 0, c.width, c.height);
-    ctx.fillStyle = "#1a365d";
-    ctx.font = '28px "Segoe Script", "Brush Script MT", cursive';
+    if (lined) {
+      ctx.strokeStyle = "rgba(90,140,200,0.25)";
+      for (let y = pad + lineHeight - 6; y < c.height - 20; y += lineHeight) {
+        ctx.beginPath();
+        ctx.moveTo(pad, y);
+        ctx.lineTo(c.width - pad, y);
+        ctx.stroke();
+      }
+    }
+    ctx.fillStyle = ink;
+    ctx.font = `${size}px "Segoe Script", "Brush Script MT", cursive`;
     ctx.textBaseline = "top";
     lines.forEach((line, i) => ctx.fillText(line, pad, pad + i * lineHeight));
     c.toBlob((b) => {
@@ -92,11 +114,17 @@ export function TextToHandwriting() {
       if (urlRef.current) URL.revokeObjectURL(urlRef.current);
       urlRef.current = URL.createObjectURL(b);
     }, "image/png");
-  }, [text]);
+  }, [text, ink, paper, size, lined]);
 
   return (
     <div className="space-y-4">
       <Field label="Your text"><Textarea value={text} onChange={(e) => setText(e.target.value)} rows={5} /></Field>
+      <div className="grid gap-3 sm:grid-cols-4">
+        <Field label="Ink"><input type="color" value={ink} onChange={(e) => setInk(e.target.value)} className="h-11 w-full rounded-xl border border-border" /></Field>
+        <Field label="Paper"><input type="color" value={paper} onChange={(e) => setPaper(e.target.value)} className="h-11 w-full rounded-xl border border-border" /></Field>
+        <Field label={`Size ${size}`}><input type="range" min={16} max={48} value={size} onChange={(e) => setSize(+e.target.value)} className="w-full accent-[var(--brand)]" /></Field>
+        <label className="flex items-end gap-2 pb-2 text-sm"><input type="checkbox" checked={lined} onChange={(e) => setLined(e.target.checked)} /> Lined paper</label>
+      </div>
       <div className="overflow-auto rounded-xl border border-border bg-surface-2 p-4">
         <canvas ref={canvasRef} className="mx-auto max-w-full shadow-sm" />
       </div>

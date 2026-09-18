@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Textarea } from "@/components/ui/primitives";
+import { Textarea, Button } from "@/components/ui/primitives";
 import { CopyButton, Field } from "@/components/tools/shared";
 
 /* ------------------------ Unicode styling primitives ----------------------- */
@@ -106,6 +106,7 @@ export function MultiStyler({
 }) {
   const [text, setText] = React.useState(defaultText);
   const names = styleNames ?? Object.keys(STYLES);
+  const allOut = names.map((name) => `${name}\n${STYLES[name]?.(text) ?? text}`).join("\n\n");
   return (
     <div className="space-y-5">
       <Field label="Your text">
@@ -122,6 +123,10 @@ export function MultiStyler({
           {platformLabel ? `${platformLabel}: ` : ""}{text.length}/{charLimit} characters
         </p>
       )}
+      <div className="flex flex-wrap gap-2">
+        <CopyButton value={allOut} label="Copy all styles" />
+        <Button type="button" variant="secondary" size="sm" onClick={() => setText("")}>Clear</Button>
+      </div>
       <div className="space-y-2.5">
         {names.map((name) => {
           const out = STYLES[name]?.(text) ?? text;

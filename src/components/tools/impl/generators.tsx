@@ -105,7 +105,13 @@ async function buildQrImage(
 
 /* ------------------------------ QR generator ------------------------------- */
 export function QrGenerator({ wifi }: { wifi?: boolean }) {
+  const [kind, setKind] = React.useState<"text" | "url" | "email" | "sms" | "tel" | "geo">("url");
   const [text, setText] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [subject, setSubject] = React.useState("");
+  const [sms, setSms] = React.useState("");
+  const [lat, setLat] = React.useState("");
+  const [lng, setLng] = React.useState("");
   const [ssid, setSsid] = React.useState("");
   const [pass, setPass] = React.useState("");
   const [enc, setEnc] = React.useState("WPA");
@@ -123,7 +129,17 @@ export function QrGenerator({ wifi }: { wifi?: boolean }) {
     return { logoDataUrl, footerTitle, footerSubtitle, logoScale };
   }, [customize, logoDataUrl, footerTitle, footerSubtitle, logoScale]);
 
-  const payload = wifi ? `WIFI:T:${enc};S:${ssid};P:${pass};;` : text;
+  const payload = wifi
+    ? `WIFI:T:${enc};S:${ssid};P:${pass};;`
+    : kind === "email"
+      ? `mailto:${email}${subject || text ? `?${[subject && `subject=${encodeURIComponent(subject)}`, text && `body=${encodeURIComponent(text)}`].filter(Boolean).join("&")}` : ""}`
+      : kind === "sms"
+        ? `SMSTO:${sms}:${text}`
+        : kind === "tel"
+          ? `tel:${sms}`
+          : kind === "geo"
+            ? `geo:${lat},${lng}`
+            : text;
 
   React.useEffect(() => {
     if (!payload || (wifi && !ssid)) {
@@ -171,7 +187,37 @@ export function QrGenerator({ wifi }: { wifi?: boolean }) {
             </Field>
           </>
         ) : (
-          <Field label="Text or URL"><Input value={text} onChange={(e) => setText(e.target.value)} placeholder="https://your-site.com" /></Field>
+          <>
+            <Field label="QR type">
+              <Select value={kind} onChange={(e) => setKind(e.target.value as "url")}>
+                <option value="url">URL / text</option>
+                <option value="email">Email</option>
+                <option value="sms">SMS</option>
+                <option value="tel">Phone</option>
+                <option value="geo">Geo location</option>
+              </Select>
+            </Field>
+            {kind === "email" && (
+              <>
+                <Field label="Email"><Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" /></Field>
+                <Field label="Subject"><Input value={subject} onChange={(e) => setSubject(e.target.value)} /></Field>
+                <Field label="Body"><Input value={text} onChange={(e) => setText(e.target.value)} /></Field>
+              </>
+            )}
+            {(kind === "sms" || kind === "tel") && (
+              <Field label="Phone"><Input value={sms} onChange={(e) => setSms(e.target.value)} placeholder="+1234567890" /></Field>
+            )}
+            {kind === "sms" && <Field label="Message"><Input value={text} onChange={(e) => setText(e.target.value)} /></Field>}
+            {kind === "geo" && (
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Latitude"><Input value={lat} onChange={(e) => setLat(e.target.value)} /></Field>
+                <Field label="Longitude"><Input value={lng} onChange={(e) => setLng(e.target.value)} /></Field>
+              </div>
+            )}
+            {(kind === "url" || kind === "text") && (
+              <Field label="Text or URL"><Input value={text} onChange={(e) => setText(e.target.value)} placeholder="https://your-site.com" /></Field>
+            )}
+          </>
         )}
         <div className="grid grid-cols-2 gap-3">
           <Field label="Foreground"><input type="color" value={fg} onChange={(e) => setFg(e.target.value)} className="h-11 w-full rounded-xl border border-border" /></Field>

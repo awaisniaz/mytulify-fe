@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { Input, Select, Textarea, Button } from "@/components/ui/primitives";
-import { Field, Notice, Output, CopyButton } from "@/components/tools/shared";
-import { validateIban, formatIban } from "@/lib/iban";
+import { Field, Notice, Output, CopyButton, CopyResult } from "@/components/tools/shared";
+import { validateIban, formatIban, generateIban, IBAN_COUNTRIES } from "@/lib/iban";
 import { exportInvoicePdf } from "@/lib/pdf-doc";
 import { download } from "@/lib/utils";
 import {
@@ -177,27 +177,57 @@ function mockProducts(n: number) {
   }));
 }
 
+function mockCompanies(n: number) {
+  return Array.from({ length: n }, (_, i) => ({
+    id: `CO-${200 + i}`,
+    name: ["Acme Ltd", "Globex", "Initech", "Umbrella", "Stark Labs"][i % 5] + ` ${i + 1}`,
+    country: ["PK", "US", "GB", "DE", "AE"][i % 5],
+    employees: 5 + (i * 17) % 500,
+    website: `https://example${i + 1}.com`,
+  }));
+}
+function mockOrders(n: number) {
+  return Array.from({ length: n }, (_, i) => ({
+    id: `ORD-${9000 + i}`,
+    userId: 1 + (i % 20),
+    total: Math.round((19.99 + i * 7.25) * 100) / 100,
+    status: ["pending", "paid", "shipped", "cancelled"][i % 4],
+    createdAt: new Date(Date.now() - i * 86400000).toISOString().slice(0, 10),
+  }));
+}
+
 export function MockDataGenerator() {
   const [type, setType] = React.useState("users");
   const [count, setCount] = React.useState(10);
   const [format, setFormat] = React.useState("json");
+  const [seed, setSeed] = React.useState("demo");
 
-  const data = type === "users" ? mockUsers(count) : mockProducts(count);
-  const json = JSON.stringify(data, null, 2);
-  const csv =
-    type === "users"
-      ? ["id,name,email,age,active", ...mockUsers(count).map((r) => `${r.id},${r.name},${r.email},${r.age},${r.active}`)].join("\n")
-      : ["id,name,price,stock,category", ...mockProducts(count).map((r) => `${r.id},${r.name},${r.price},${r.stock},${r.category}`)].join("\n");
-
+  const n = Math.min(200, Math.max(1, count));
+  const data =
+    type === "users" ? mockUsers(n) :
+    type === "products" ? mockProducts(n) :
+    type === "companies" ? mockCompanies(n) :
+    mockOrders(n);
+  const json = JSON.stringify({ seed, generatedAt: new Date().toISOString(), data }, null, 2);
+  const keys = Object.keys(data[0] ?? {});
+  const csv = [keys.join(","), ...data.map((r) => keys.map((k) => String((r as Record<string, unknown>)[k] ?? "")).join(","))].join("\n");
   const out = format === "json" ? json : csv;
 
   return (
     <div className="space-y-4">
-      <Notice tone="info">High-demand dev tool — fake users & products for API testing. Runs locally.</Notice>
-      <div className="grid gap-3 sm:grid-cols-3">
-        <Field label="Dataset"><Select value={type} onChange={(e) => setType(e.target.value)}><option value="users">Users</option><option value="products">Products</option></Select></Field>
-        <Field label="Rows"><Input type="number" min={1} max={100} value={count} onChange={(e) => setCount(Math.min(100, Math.max(1, Number(e.target.value) || 1)))} /></Field>
+      <Notice tone="info">High-demand dev tool — fake users, products, companies & orders for API testing. Runs locally.</Notice>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <Field label="Dataset">
+          <Select value={type} onChange={(e) => setType(e.target.value)}>
+            <option value="users">Users</option>
+            <option value="products">Products</option>
+            <option value="companies">Companies</option>
+            <option value="orders">Orders</option>
+          </Select>
+        </Field>
+        <Field label="Rows"><Input type="number" min={1} max={200} value={count} onChange={(e) => setCount(Math.min(200, Math.max(1, Number(e.target.value) || 1)))} /></Field>
         <Field label="Format"><Select value={format} onChange={(e) => setFormat(e.target.value)}><option value="json">JSON</option><option value="csv">CSV</option></Select></Field>
+        <Field label="Seed label"><Input value={seed} onChange={(e) => setSeed(e.target.value)} /></Field>
       </div>
       <div className="flex gap-2">
         <CopyButton value={out} />
@@ -211,20 +241,34 @@ export function MockDataGenerator() {
 /* ------------------------------ IBAN Validator ----------------------------- */
 export function IbanValidator() {
   const [raw, setRaw] = React.useState("");
+  const [country, setCountry] = React.useState("PK");
   const result = raw.trim() ? validateIban(raw) : null;
+  const sample = generateIban(country);
 
   return (
     <div className="space-y-4">
-      <Field label="IBAN" hint="Pakistan, EU, UK & 80+ countries"><Input value={raw} onChange={(e) => setRaw(e.target.value)} className="font-mono" placeholder="PK36 SCBL 0000 0011 2345 6702" /></Field>
+      <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+        <Field label="IBAN" hint="Pakistan, EU, UK & 80+ countries"><Input value={raw} onChange={(e) => setRaw(e.target.value)} className="font-mono" placeholder="PK36 SCBL 0000 0011 2345 6702" /></Field>
+        <Field label="Generate country">
+          <Select value={country} onChange={(e) => setCountry(e.target.value)}>
+            {IBAN_COUNTRIES.map((c) => <option key={c} value={c}>{c}</option>)}
+          </Select>
+        </Field>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Button type="button" variant="secondary" size="sm" onClick={() => setRaw(generateIban(country))}>Generate sample IBAN</Button>
+        <CopyButton value={formatIban(sample)} label="Copy sample" />
+      </div>
       {result && (
         <Notice tone={result.valid ? "success" : "error"}>
           {result.valid ? (
-            <>Valid IBAN — {result.country} · {formatIban(result.iban)}</>
+            <>Valid IBAN — {result.country} · {formatIban(result.iban)} · {result.iban.length} chars</>
           ) : (
             <>{result.error}</>
           )}
         </Notice>
       )}
+      {result?.valid && result.iban && <CopyResult filename="iban.txt" rows={[["IBAN", formatIban(result.iban)], ["Compact", result.iban], ["Country", result.country ?? ""]]} />}
     </div>
   );
 }
@@ -233,38 +277,50 @@ export function IbanValidator() {
 export function PwaManifestGenerator() {
   const [name, setName] = React.useState("My App");
   const [short, setShort] = React.useState("App");
+  const [desc, setDesc] = React.useState("A progressive web app");
   const [start, setStart] = React.useState("/");
+  const [scope, setScope] = React.useState("/");
   const [theme, setTheme] = React.useState("#6366f1");
   const [bg, setBg] = React.useState("#ffffff");
   const [display, setDisplay] = React.useState("standalone");
+  const [orientation, setOrientation] = React.useState("any");
+  const [lang, setLang] = React.useState("en");
 
   const manifest = JSON.stringify({
     name,
     short_name: short,
+    description: desc,
     start_url: start,
+    scope,
     display,
+    orientation,
+    lang,
     background_color: bg,
     theme_color: theme,
     icons: [
-      { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
-      { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
+      { src: "/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any maskable" },
+      { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
     ],
   }, null, 2);
 
-  const html = `<link rel="manifest" href="/manifest.json" />\n<meta name="theme-color" content="${theme}" />`;
+  const html = `<link rel="manifest" href="/manifest.json" />\n<meta name="theme-color" content="${theme}" />\n<meta name="apple-mobile-web-app-capable" content="yes" />\n<link rel="apple-touch-icon" href="/icon-192.png" />`;
 
   return (
     <div className="space-y-4">
       <div className="grid gap-3 sm:grid-cols-2">
         <Field label="App name"><Input value={name} onChange={(e) => setName(e.target.value)} /></Field>
         <Field label="Short name"><Input value={short} onChange={(e) => setShort(e.target.value)} maxLength={12} /></Field>
+        <Field label="Description"><Input value={desc} onChange={(e) => setDesc(e.target.value)} /></Field>
+        <Field label="Language"><Input value={lang} onChange={(e) => setLang(e.target.value)} /></Field>
         <Field label="Start URL"><Input value={start} onChange={(e) => setStart(e.target.value)} /></Field>
+        <Field label="Scope"><Input value={scope} onChange={(e) => setScope(e.target.value)} /></Field>
         <Field label="Display mode"><Select value={display} onChange={(e) => setDisplay(e.target.value)}><option>standalone</option><option>fullscreen</option><option>minimal-ui</option><option>browser</option></Select></Field>
+        <Field label="Orientation"><Select value={orientation} onChange={(e) => setOrientation(e.target.value)}><option>any</option><option>portrait</option><option>landscape</option></Select></Field>
         <Field label="Theme color"><input type="color" value={theme} onChange={(e) => setTheme(e.target.value)} className="h-11 w-full rounded-xl border border-border" /></Field>
         <Field label="Background"><input type="color" value={bg} onChange={(e) => setBg(e.target.value)} className="h-11 w-full rounded-xl border border-border" /></Field>
       </div>
-      <Field label="manifest.json"><Output value={manifest} rows={12} filename="manifest.json" mime="application/json" /></Field>
-      <Field label="HTML tags"><Output value={html} rows={3} filename="pwa-tags.html" /></Field>
+      <Field label="manifest.json"><Output value={manifest} rows={14} filename="manifest.json" mime="application/json" /></Field>
+      <Field label="HTML tags"><Output value={html} rows={4} filename="pwa-tags.html" /></Field>
     </div>
   );
 }

@@ -57,3 +57,35 @@ export function validateIban(raw: string): {
 export function formatIban(iban: string): string {
   return normalizeIban(iban).replace(/(.{4})/g, "$1 ").trim();
 }
+
+function mod97(numeric: string): number {
+  let remainder = 0;
+  for (let i = 0; i < numeric.length; i += 7) {
+    remainder = Number(String(remainder) + numeric.slice(i, i + 7)) % 97;
+  }
+  return remainder;
+}
+
+function toIbanNumeric(s: string): string {
+  let numeric = "";
+  for (const ch of s) {
+    const code = ch.charCodeAt(0);
+    if (code >= 48 && code <= 57) numeric += ch;
+    else numeric += String(code - 55);
+  }
+  return numeric;
+}
+
+/** Random structurally valid IBAN for a country (not a real account). */
+export function generateIban(country = "PK"): string {
+  const cc = country.toUpperCase();
+  const len = COUNTRY_LENGTHS[cc] ?? 24;
+  const bbanLen = Math.max(1, len - 4);
+  let bban = "";
+  for (let i = 0; i < bbanLen; i++) bban += String(Math.floor(Math.random() * 10));
+  const remainder = mod97(toIbanNumeric(bban + cc + "00"));
+  const check = String(98 - remainder).padStart(2, "0");
+  return cc + check + bban;
+}
+
+export const IBAN_COUNTRIES = Object.keys(COUNTRY_LENGTHS).sort();

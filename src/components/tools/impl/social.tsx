@@ -248,6 +248,10 @@ export function SocialImageSizes() {
           </div>
         ))}
       </div>
+      <div className="flex flex-wrap gap-2">
+        <CopyButton value={rows.map((s) => `${s.platform}\t${s.name}\t${s.w}×${s.h}`).join("\n")} label="Copy list" />
+        <Button variant="secondary" size="sm" onClick={() => download(["platform,name,width,height,ratio", ...rows.map((s) => `${s.platform},${s.name},${s.w},${s.h},${s.ratio ?? ""}`)].join("\n"), "social-image-sizes.csv", "text/csv")}>Download CSV</Button>
+      </div>
     </div>
   );
 }

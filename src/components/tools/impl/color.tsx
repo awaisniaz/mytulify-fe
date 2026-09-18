@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Input, Button } from "@/components/ui/primitives";
-import { CopyButton, Field, Notice } from "@/components/tools/shared";
+import { CopyButton, Field, Notice, CopyResult } from "@/components/tools/shared";
 
 /* ============================== Color math ================================= */
 export type RGB = { r: number; g: number; b: number };
@@ -85,15 +85,33 @@ function Row({ label, value }: { label: string; value: string }) {
 /* ===================== All-formats converter (universal) =================== */
 export function ColorConverter({ initial = "#6366f1" }: { initial?: string }) {
   const [hex, setHex] = React.useState(initial);
+  const [alpha, setAlpha] = React.useState(1);
   const rgb = hexToRgb(hex) ?? { r: 99, g: 102, b: 241 };
   const hsl = rgbToHsl(rgb);
   const cmyk = rgbToCmyk(rgb);
+  const hexU = rgbToHex(rgb).toUpperCase();
+  const a = Math.max(0, Math.min(1, alpha));
+  const rows = [
+    ["HEX", hexU],
+    ["RGB", `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`],
+    ["RGBA", `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${a})`],
+    ["HSL", `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`],
+    ["HSLA", `hsla(${hsl.h}, ${hsl.s}%, ${hsl.l}%, ${a})`],
+    ["HSV", hsvString(rgb)],
+    ["CMYK", `cmyk(${cmyk.c}%, ${cmyk.m}%, ${cmyk.y}%, ${cmyk.k}%)`],
+    ["CSS var", `--color: ${hexU};`],
+    ["Tailwind", `bg-[${hexU}]`],
+  ];
+  const setRgb = (part: "r" | "g" | "b", n: number) => {
+    const next = { ...rgb, [part]: Math.max(0, Math.min(255, n || 0)) };
+    setHex(rgbToHex(next));
+  };
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-center gap-4">
         <input
           type="color"
-          value={hexToRgb(hex) ? hex : "#6366f1"}
+          value={hexToRgb(hex) ? rgbToHex(rgb) : "#6366f1"}
           onChange={(e) => setHex(e.target.value)}
           className="h-16 w-24 cursor-pointer rounded-xl border border-border bg-surface-2"
         />
@@ -102,15 +120,23 @@ export function ColorConverter({ initial = "#6366f1" }: { initial?: string }) {
             <Input value={hex} onChange={(e) => setHex(e.target.value)} className="font-mono" />
           </Field>
         </div>
-        <Swatch hex={hex} big />
+        <Swatch hex={hexToRgb(hex) ? rgbToHex(rgb) : "#6366f1"} big />
       </div>
+      <div className="grid gap-3 sm:grid-cols-3">
+        {(["r", "g", "b"] as const).map((k) => (
+          <Field key={k} label={k.toUpperCase()}>
+            <Input type="number" min={0} max={255} value={rgb[k]} onChange={(e) => setRgb(k, +e.target.value)} />
+          </Field>
+        ))}
+      </div>
+      <Field label={`Alpha: ${a}`}>
+        <input type="range" min={0} max={1} step={0.01} value={a} onChange={(e) => setAlpha(+e.target.value)} className="w-full accent-[var(--brand)]" />
+      </Field>
+      <CopyButton value={rows.map(([l, v]) => `${l}: ${v}`).join("\n")} label="Copy all formats" />
       <div className="grid gap-2.5 sm:grid-cols-2">
-        <Row label="HEX" value={rgbToHex(rgb).toUpperCase()} />
-        <Row label="RGB" value={`rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`} />
-        <Row label="RGBA" value={`rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 1)`} />
-        <Row label="HSL" value={`hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`} />
-        <Row label="HSV" value={hsvString(rgb)} />
-        <Row label="CMYK" value={`cmyk(${cmyk.c}%, ${cmyk.m}%, ${cmyk.y}%, ${cmyk.k}%)`} />
+        {rows.map(([label, value]) => (
+          <Row key={label} label={label} value={value} />
+        ))}
       </div>
     </div>
   );
@@ -169,6 +195,15 @@ export function PaletteGenerator() {
           </div>
         </div>
       ))}
+      <CopyResult
+        filename="palette.css"
+        rows={Object.entries(schemes).flatMap(([name, offsets]) =>
+          offsets.map((o, i) => {
+            const h = (hsl.h + o + 360) % 360;
+            return [`${name} ${i + 1}`, rgbToHex(hslToRgb(h, hsl.s, hsl.l)).toUpperCase()] as [string, string];
+          }),
+        )}
+      />
     </div>
   );
 }
@@ -209,6 +244,10 @@ export function ShadesTints({ mode }: { mode: "shades" | "tints" | "both" }) {
         </div>
       ))}
       <Notice tone="info">Tip: click any swatch to copy its hex.</Notice>
+      <CopyResult
+        filename="shades-tints.txt"
+        rows={groups.flatMap(([title, cols]) => cols.map((c, i) => [`${title} ${i + 1}`, c] as [string, string]))}
+      />
     </div>
   );
 }
@@ -244,7 +283,7 @@ export function ContrastChecker() {
           <div className="text-2xl font-bold text-brand">{ratio.toFixed(2)}:1</div>
           <div className="text-xs text-muted">Contrast</div>
         </div>
-        {[["AA Normal", 4.5], ["AA Large", 3], ["AAA Normal", 7]].map(([l, m]) => (
+        {[["AA Normal", 4.5], ["AA Large", 3], ["AAA Normal", 7], ["AAA Large", 4.5]].map(([l, m]) => (
           <div key={l as string} className="rounded-xl border border-border bg-surface-2 p-4 text-center">
             <div className={`text-lg font-bold ${ratio >= (m as number) ? "text-emerald-500" : "text-rose-500"}`}>
               {grade(m as number)}
@@ -252,6 +291,10 @@ export function ContrastChecker() {
             <div className="text-xs text-muted">{l}</div>
           </div>
         ))}
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Button type="button" variant="secondary" size="sm" onClick={() => { const t = fg; setFg(bg); setBg(t); }}>Swap colors</Button>
+        <CopyResult filename="contrast.txt" rows={[["Foreground", fg], ["Background", bg], ["Ratio", `${ratio.toFixed(2)}:1`]]} />
       </div>
     </div>
   );
@@ -261,12 +304,14 @@ export function ContrastChecker() {
 export function GradientGenerator() {
   const [c1, setC1] = React.useState("#6366f1");
   const [c2, setC2] = React.useState("#d946ef");
+  const [c3, setC3] = React.useState("");
   const [angle, setAngle] = React.useState(135);
   const [type, setType] = React.useState<"linear" | "radial">("linear");
+  const stops = [c1, c2, c3.trim()].filter(Boolean).join(", ");
   const css =
     type === "linear"
-      ? `linear-gradient(${angle}deg, ${c1}, ${c2})`
-      : `radial-gradient(circle, ${c1}, ${c2})`;
+      ? `linear-gradient(${angle}deg, ${stops})`
+      : `radial-gradient(circle, ${stops})`;
   return (
     <div className="space-y-5">
       <div className="h-44 rounded-2xl border border-border" style={{ background: css }} />
@@ -276,6 +321,12 @@ export function GradientGenerator() {
         </Field>
         <Field label="Color 2">
           <input type="color" value={c2} onChange={(e) => setC2(e.target.value)} className="h-11 w-full rounded-xl border border-border" />
+        </Field>
+        <Field label="Color 3 (optional)">
+          <div className="flex gap-2">
+            <input type="color" value={c3 || "#22d3ee"} onChange={(e) => setC3(e.target.value)} className="h-11 w-16 rounded-xl border border-border" />
+            <Button type="button" size="sm" variant="ghost" onClick={() => setC3(c3 ? "" : "#22d3ee")}>{c3 ? "Remove" : "Add"}</Button>
+          </div>
         </Field>
         <Field label="Type">
           <select value={type} onChange={(e) => setType(e.target.value as "linear")} className="h-11 w-full rounded-xl border border-border bg-surface-2 px-3">
@@ -291,6 +342,7 @@ export function GradientGenerator() {
         <code className="min-w-0 flex-1 break-all text-sm">background: {css};</code>
         <CopyButton value={`background: ${css};`} />
       </div>
+      <CopyResult filename="gradient.css" rows={[["CSS", `background: ${css};`]]} />
     </div>
   );
 }
@@ -371,6 +423,7 @@ export function RandomColor() {
           </div>
         ))}
       </div>
+      {colors.length > 0 && <CopyResult filename="random-colors.txt" rows={colors.map((c, i) => [`Swatch ${i + 1}`, c])} />}
     </div>
   );
 }
@@ -423,6 +476,7 @@ export function Harmony({ offsets, title }: { offsets: number[]; title: string }
           </div>
         ))}
       </div>
+      <CopyResult filename="harmony.txt" rows={cols.map((c, i) => [`Color ${i + 1}`, c])} />
     </div>
   );
 }
@@ -461,6 +515,7 @@ export function ColorNameFinder() {
           <p className="font-mono text-sm text-muted">{best[1]} · nearest named color</p>
         </div>
       </div>
+      <CopyResult filename="color-name.txt" rows={[["Input", hex.toUpperCase()], ["Nearest name", best[0]], ["Nearest hex", best[1]]]} />
     </div>
   );
 }
@@ -503,6 +558,7 @@ export function ColorBlindnessSim() {
     protanopia: [0.567, 0.433, 0, 0.558, 0.442, 0, 0, 0.242, 0.758],
     deuteranopia: [0.625, 0.375, 0, 0.7, 0.3, 0, 0, 0.3, 0.7],
     tritanopia: [0.95, 0.05, 0, 0, 0.433, 0.567, 0, 0.475, 0.525],
+    achromatopsia: [0.299, 0.587, 0.114, 0.299, 0.587, 0.114, 0.299, 0.587, 0.114],
   };
   React.useEffect(() => {
     if (!src || !canvasRef.current) return;
@@ -532,9 +588,19 @@ export function ColorBlindnessSim() {
   }
   return (
     <div className="space-y-4">
-      <Field label="Vision type"><select value={type} onChange={(e) => setType(e.target.value)} className="h-11 rounded-xl border border-border bg-surface-2 px-3"><option value="protanopia">Protanopia (red-blind)</option><option value="deuteranopia">Deuteranopia (green-blind)</option><option value="tritanopia">Tritanopia (blue-blind)</option></select></Field>
+      <Field label="Vision type"><select value={type} onChange={(e) => setType(e.target.value)} className="h-11 rounded-xl border border-border bg-surface-2 px-3"><option value="protanopia">Protanopia (red-blind)</option><option value="deuteranopia">Deuteranopia (green-blind)</option><option value="tritanopia">Tritanopia (blue-blind)</option><option value="achromatopsia">Achromatopsia (no color)</option></select></Field>
       <div className="overflow-auto rounded-xl border border-border bg-surface-2 p-4 text-center"><canvas ref={canvasRef} className="mx-auto max-w-full" style={{ maxHeight: 360 }} /></div>
-      <Button variant="outline" onClick={() => setSrc("")}>Upload another</Button>
+      <div className="flex flex-wrap gap-2">
+        <Button variant="secondary" onClick={() => {
+          const c = canvasRef.current;
+          if (!c) return;
+          const a = document.createElement("a");
+          a.href = c.toDataURL("image/png");
+          a.download = `colorblind-${type}.png`;
+          a.click();
+        }}>Download PNG</Button>
+        <Button variant="outline" onClick={() => setSrc("")}>Upload another</Button>
+      </div>
     </div>
   );
 }
@@ -636,6 +702,7 @@ export function LightenDarken() {
           </div>
         </div>
       </div>
+      <CopyResult filename="lighten-darken.txt" rows={[["Original", base.toUpperCase()], ["Adjusted", out]]} />
     </div>
   );
 }

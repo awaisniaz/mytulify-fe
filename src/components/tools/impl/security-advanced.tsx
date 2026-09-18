@@ -4,10 +4,11 @@ import * as React from "react";
 import bcrypt from "bcryptjs";
 import md4 from "js-md4";
 import { Input, Select, Button } from "@/components/ui/primitives";
-import { Field, Output, CopyButton, Notice } from "@/components/tools/shared";
+import { Field, Output, CopyButton, Notice, CopyResult } from "@/components/tools/shared";
 
 export function BcryptGenerator() {
   const [text, setText] = React.useState("");
+  const [show, setShow] = React.useState(false);
   const [rounds, setRounds] = React.useState(10);
   const [hash, setHash] = React.useState("");
   const [verify, setVerify] = React.useState("");
@@ -26,7 +27,8 @@ export function BcryptGenerator() {
 
   return (
     <div className="space-y-4">
-      <Field label="Password"><Input type="password" value={text} onChange={(e) => setText(e.target.value)} /></Field>
+      <Field label="Password"><Input type={show ? "text" : "password"} value={text} onChange={(e) => setText(e.target.value)} /></Field>
+      <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={show} onChange={(e) => setShow(e.target.checked)} /> Show password</label>
       <Field label={`Cost rounds: ${rounds}`}>
         <input type="range" min={4} max={14} value={rounds} onChange={(e) => setRounds(+e.target.value)} className="w-full accent-[var(--brand)]" />
       </Field>
@@ -39,7 +41,7 @@ export function BcryptGenerator() {
       )}
       {hash && (
         <>
-          <Field label="Verify a password against the hash"><Input type="password" value={verify} onChange={(e) => setVerify(e.target.value)} /></Field>
+          <Field label="Verify a password against the hash"><Input type={show ? "text" : "password"} value={verify} onChange={(e) => setVerify(e.target.value)} /></Field>
           <Button variant="secondary" onClick={check}>Verify</Button>
           {match !== null && <Notice tone={match ? "success" : "error"}>{match ? "Password matches." : "Password does not match."}</Notice>}
         </>
@@ -60,14 +62,18 @@ function ntlmHash(text: string): string {
 
 export function NtlmHashGenerator() {
   const [text, setText] = React.useState("");
-  const out = text ? ntlmHash(text) : "";
+  const [upper, setUpper] = React.useState(true);
+  const raw = text ? ntlmHash(text) : "";
+  const out = upper ? raw : raw.toLowerCase();
   return (
     <div className="space-y-4">
       <Field label="Password / text"><Input value={text} onChange={(e) => setText(e.target.value)} /></Field>
+      <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={upper} onChange={(e) => setUpper(e.target.checked)} /> Uppercase hex</label>
       <div className="flex items-center gap-2 rounded-xl border border-border bg-surface-2 p-3">
         <code className="min-w-0 flex-1 break-all font-mono text-sm">{out || "NTLM hash…"}</code>
         <CopyButton value={out} />
       </div>
+      {out && <CopyResult filename="ntlm.txt" rows={[["NTLM", out], ["Length", String(out.length)]]} />}
     </div>
   );
 }
@@ -107,6 +113,8 @@ async function totp(secret: string, period: number, digits: number): Promise<str
 
 export function TotpGenerator() {
   const [secret, setSecret] = React.useState("JBSWY3DPEHPK3PXP");
+  const [issuer, setIssuer] = React.useState("Mytulify");
+  const [account, setAccount] = React.useState("user@example.com");
   const [period, setPeriod] = React.useState(30);
   const [digits, setDigits] = React.useState(6);
   const [code, setCode] = React.useState("");
@@ -131,10 +139,14 @@ export function TotpGenerator() {
     return () => { alive = false; clearInterval(id); };
   }, [secret, period, digits]);
 
+  const otpauth = `otpauth://totp/${encodeURIComponent(issuer)}:${encodeURIComponent(account)}?secret=${secret.replace(/\s/g, "")}&issuer=${encodeURIComponent(issuer)}&period=${period}&digits=${digits}`;
+
   return (
     <div className="space-y-4">
       <Field label="Base32 secret"><Input value={secret} onChange={(e) => setSecret(e.target.value)} className="font-mono" placeholder="JBSWY3DPEHPK3PXP" /></Field>
       <div className="grid gap-3 sm:grid-cols-2">
+        <Field label="Issuer"><Input value={issuer} onChange={(e) => setIssuer(e.target.value)} /></Field>
+        <Field label="Account"><Input value={account} onChange={(e) => setAccount(e.target.value)} /></Field>
         <Field label="Period (seconds)"><Input type="number" value={period} onChange={(e) => setPeriod(+e.target.value)} /></Field>
         <Field label="Digits"><Select value={String(digits)} onChange={(e) => setDigits(+e.target.value)}><option value="6">6</option><option value="8">8</option></Select></Field>
       </div>
@@ -143,12 +155,16 @@ export function TotpGenerator() {
         <p className="mt-2 text-sm text-muted">Refreshes in {remaining}s</p>
       </div>
       <CopyButton value={code} label="Copy code" />
+      <Field label="otpauth URL"><Output value={otpauth} rows={2} filename="otpauth.txt" /></Field>
     </div>
   );
 }
 
 export function Argon2HashGenerator() {
   const [text, setText] = React.useState("");
+  const [show, setShow] = React.useState(false);
+  const [iter, setIter] = React.useState(3);
+  const [mem, setMem] = React.useState(64);
   const [hash, setHash] = React.useState("");
   const [busy, setBusy] = React.useState(false);
 
@@ -163,12 +179,12 @@ export function Argon2HashGenerator() {
         password: text,
         salt,
         parallelism: 1,
-        iterations: 3,
-        memorySize: 65536,
+        iterations: iter,
+        memorySize: mem * 1024,
         hashLength: 32,
         outputType: "encoded",
       });
-      setHash(h || `$argon2id$v=19$m=65536,t=3,p=1$${saltHex}$…`);
+      setHash(h || `$argon2id$v=19$m=${mem * 1024},t=${iter},p=1$${saltHex}$…`);
     } finally {
       setBusy(false);
     }
@@ -176,7 +192,10 @@ export function Argon2HashGenerator() {
 
   return (
     <div className="space-y-4">
-      <Field label="Password"><Input type="password" value={text} onChange={(e) => setText(e.target.value)} /></Field>
+      <Field label="Password"><Input type={show ? "text" : "password"} value={text} onChange={(e) => setText(e.target.value)} /></Field>
+      <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={show} onChange={(e) => setShow(e.target.checked)} /> Show password</label>
+      <Field label={`Iterations ${iter}`}><input type="range" min={1} max={8} value={iter} onChange={(e) => setIter(+e.target.value)} className="w-full accent-[var(--brand)]" /></Field>
+      <Field label={`Memory ${mem} MB`}><input type="range" min={16} max={256} step={16} value={mem} onChange={(e) => setMem(+e.target.value)} className="w-full accent-[var(--brand)]" /></Field>
       <Button onClick={generate} disabled={busy}>{busy ? "Hashing…" : "Generate Argon2id hash"}</Button>
       {hash && (
         <div className="flex items-center gap-2 rounded-xl border border-border bg-surface-2 p-3">
@@ -196,7 +215,8 @@ export function HtpasswdGenerator() {
 
   const generate = () => {
     if (!user || !pass) return;
-    setOut(`${user}:${bcrypt.hashSync(pass, rounds)}`);
+    const line = `${user}:${bcrypt.hashSync(pass, rounds)}`;
+    setOut((prev) => (prev ? `${prev}\n${line}` : line));
   };
 
   return (
@@ -206,9 +226,12 @@ export function HtpasswdGenerator() {
       <Field label={`bcrypt rounds: ${rounds}`}>
         <input type="range" min={4} max={14} value={rounds} onChange={(e) => setRounds(+e.target.value)} className="w-full accent-[var(--brand)]" />
       </Field>
-      <Button onClick={generate}>Generate htpasswd line</Button>
-      {out && <Output value={out} rows={2} filename="htpasswd.txt" />}
-      <Notice tone="info">Generates bcrypt htpasswd entries compatible with Apache and Nginx.</Notice>
+      <div className="flex flex-wrap gap-2">
+        <Button onClick={generate}>Add htpasswd line</Button>
+        <Button variant="secondary" onClick={() => setOut("")}>Clear list</Button>
+      </div>
+      {out && <Output value={out} rows={6} filename="htpasswd.txt" />}
+      <Notice tone="info">Generates bcrypt htpasswd entries compatible with Apache and Nginx. Add multiple users, then download.</Notice>
     </div>
   );
 }

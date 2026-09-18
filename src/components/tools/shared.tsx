@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/primitives";
-import { cn, copyText, download as triggerDownload, readAsDataURL } from "@/lib/utils";
+import { cn, copyText, download as triggerDownload, readAsDataURL, readAsText } from "@/lib/utils";
 
 /* -------------------------------- CopyButton ------------------------------- */
 export function CopyButton({
@@ -219,5 +219,126 @@ export function Notice({
   };
   return (
     <div className={cn("glass flex items-start gap-2 rounded-xl px-3.5 py-2.5 text-sm", tones[tone])}>{children}</div>
+  );
+}
+
+export function textStats(s: string) {
+  const chars = s.length;
+  const words = (s.trim().match(/\S+/g) || []).length;
+  const lines = s ? s.split(/\n/).length : 0;
+  return { chars, words, lines };
+}
+
+export function TextStatBar({ input, output }: { input: string; output?: string }) {
+  const a = textStats(input);
+  const b = output != null ? textStats(output) : null;
+  const delta = b ? b.chars - a.chars : 0;
+  return (
+    <p className="text-xs text-muted">
+      In: {a.chars.toLocaleString()} chars · {a.words.toLocaleString()} words · {a.lines.toLocaleString()} lines
+      {b && (
+        <>
+          {" → "}Out: {b.chars.toLocaleString()} chars · {b.words.toLocaleString()} words · {b.lines.toLocaleString()} lines
+          {delta !== 0 && ` (${delta > 0 ? "+" : ""}${delta})`}
+        </>
+      )}
+    </p>
+  );
+}
+
+/** Sample / clear / undo-action / load file — shared by most text tools. */
+export function ToolBar({
+  onSample,
+  onClear,
+  onUndo,
+  canUndo,
+  onFileText,
+  extra,
+  accept = ".txt,.md,.csv,.json,.html,.xml,.svg,.log,.yml,.yaml,text/plain",
+}: {
+  onSample?: () => void;
+  onClear?: () => void;
+  onUndo?: () => void;
+  canUndo?: boolean;
+  onFileText?: (text: string, name: string) => void;
+  extra?: React.ReactNode;
+  accept?: string;
+}) {
+  const ref = React.useRef<HTMLInputElement>(null);
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {onSample && (
+        <Button type="button" variant="secondary" size="sm" onClick={onSample}>
+          Sample
+        </Button>
+      )}
+      {onClear && (
+        <Button type="button" variant="ghost" size="sm" onClick={onClear}>
+          Clear
+        </Button>
+      )}
+      {onUndo && (
+        <Button type="button" variant="ghost" size="sm" disabled={!canUndo} onClick={onUndo}>
+          Undo
+        </Button>
+      )}
+      {onFileText && (
+        <>
+          <Button type="button" variant="secondary" size="sm" onClick={() => ref.current?.click()}>
+            <Icon name="Upload" className="h-4 w-4" /> Load file
+          </Button>
+          <input
+            ref={ref}
+            type="file"
+            accept={accept}
+            className="hidden"
+            onChange={async (e) => {
+              const f = e.target.files?.[0];
+              e.target.value = "";
+              if (!f) return;
+              onFileText(await readAsText(f), f.name);
+            }}
+          />
+        </>
+      )}
+      {extra}
+    </div>
+  );
+}
+
+export function useToolText(initial = "") {
+  const [text, setText] = React.useState(initial);
+  const [hist, setHist] = React.useState<string[]>([]);
+  const snapshot = React.useCallback(
+    (next: string) => {
+      setHist((h) => [...h.slice(-19), text]);
+      setText(next);
+    },
+    [text],
+  );
+  const undo = React.useCallback(() => {
+    setHist((h) => {
+      const prev = h[h.length - 1];
+      if (prev === undefined) return h;
+      setText(prev);
+      return h.slice(0, -1);
+    });
+  }, []);
+  return { text, setText, snapshot, undo, canUndo: hist.length > 0 };
+}
+
+export function CopyResult({
+  rows,
+  filename = "results.txt",
+}: {
+  rows: Array<[string, string | number]>;
+  filename?: string;
+}) {
+  const value = rows.map(([k, v]) => `${k}: ${v}`).join("\n");
+  return (
+    <div className="flex flex-wrap gap-2">
+      <CopyButton value={value} label="Copy results" />
+      <DownloadButton value={value} filename={filename} mime="text/plain" />
+    </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Input, Select, Button } from "@/components/ui/primitives";
-import { FileDrop, Field, Notice, CopyButton } from "@/components/tools/shared";
+import { FileDrop, Field, Notice, CopyButton, Output } from "@/components/tools/shared";
 import { brand } from "@/lib/brand";
 import { formatBytes } from "@/lib/utils";
 
@@ -63,11 +63,13 @@ function Processor(props: ProcessorProps) {
   return (
     <div className="space-y-4">
       {controls?.(img)}
+      <p className="text-xs text-muted">{img.naturalWidth}×{img.naturalHeight}px{name ? ` · ${name}` : ""}</p>
       <div className="overflow-auto rounded-xl border border-border bg-surface-2 p-4 text-center">
         <canvas ref={canvasRef} className="mx-auto max-w-full" style={{ maxHeight: 400 }} />
       </div>
       <div className="flex flex-wrap items-center gap-3">
         <Button onClick={() => urlRef.current && downloadUrl(urlRef.current, `${name}.${outExt}`)}>Download {outExt.toUpperCase()}</Button>
+        <CopyButton value={urlRef.current} label="Copy data URL" />
         <Button variant="outline" onClick={reset}>Upload another</Button>
         {outSize > 0 && (
           <span className="text-sm text-muted">
@@ -87,7 +89,22 @@ const drawBase = (c: HTMLCanvasElement, img: HTMLImageElement) => {
 
 /* ------------------------------ Convert ------------------------------------ */
 export function ImageConvert({ to }: { to: "png" | "jpeg" | "webp" }) {
-  return <Processor draw={drawBase} outType={`image/${to}`} outExt={to === "jpeg" ? "jpg" : to} quality={to === "png" ? undefined : 0.92} />;
+  const [q, setQ] = React.useState(92);
+  const lossy = to !== "png";
+  return (
+    <Processor
+      draw={drawBase}
+      outType={`image/${to}`}
+      outExt={to === "jpeg" ? "jpg" : to}
+      quality={lossy ? q / 100 : undefined}
+      deps={[q]}
+      controls={lossy ? () => (
+        <Field label={`Quality: ${q}%`}>
+          <input type="range" min={10} max={100} value={q} onChange={(e) => setQ(+e.target.value)} className="w-full accent-[var(--brand)]" />
+        </Field>
+      ) : undefined}
+    />
+  );
 }
 
 /* ------------------------------ Resize ------------------------------------- */
@@ -158,32 +175,40 @@ export function RotateImage() {
   );
 }
 export function FlipImage() {
-  const [dir, setDir] = React.useState<"h" | "v">("h");
+  const [dir, setDir] = React.useState<"h" | "v" | "both">("h");
   return (
     <Processor
       deps={[dir]}
       draw={(c, img) => {
         c.width = img.naturalWidth; c.height = img.naturalHeight;
         const ctx = c.getContext("2d")!;
-        ctx.translate(dir === "h" ? c.width : 0, dir === "v" ? c.height : 0);
-        ctx.scale(dir === "h" ? -1 : 1, dir === "v" ? -1 : 1);
+        const sx = dir === "v" ? 1 : -1;
+        const sy = dir === "h" ? 1 : -1;
+        ctx.translate(sx === -1 ? c.width : 0, sy === -1 ? c.height : 0);
+        ctx.scale(sx, sy);
         ctx.drawImage(img, 0, 0);
       }}
-      controls={() => <Select value={dir} onChange={(e) => setDir(e.target.value as "h")} className="max-w-48"><option value="h">Horizontal</option><option value="v">Vertical</option></Select>}
+      controls={() => (
+        <Select value={dir} onChange={(e) => setDir(e.target.value as "h")} className="max-w-48">
+          <option value="h">Horizontal</option>
+          <option value="v">Vertical</option>
+          <option value="both">Both</option>
+        </Select>
+      )}
     />
   );
 }
 
 /* ------------------------------ Filters ------------------------------------ */
 export function FilterImage({ kind }: { kind: "grayscale" | "blur" | "pixelate" }) {
-  const [amt, setAmt] = React.useState(kind === "blur" ? 5 : 10);
+  const [amt, setAmt] = React.useState(kind === "blur" ? 5 : kind === "grayscale" ? 100 : 10);
   return (
     <Processor
       deps={[amt]}
       draw={(c, img) => {
         c.width = img.naturalWidth; c.height = img.naturalHeight;
         const ctx = c.getContext("2d")!;
-        if (kind === "grayscale") { ctx.filter = "grayscale(1)"; ctx.drawImage(img, 0, 0); ctx.filter = "none"; }
+        if (kind === "grayscale") { ctx.filter = `grayscale(${amt}%)`; ctx.drawImage(img, 0, 0); ctx.filter = "none"; }
         else if (kind === "blur") { ctx.filter = `blur(${amt}px)`; ctx.drawImage(img, 0, 0); ctx.filter = "none"; }
         else {
           const s = Math.max(1, amt);
@@ -192,8 +217,10 @@ export function FilterImage({ kind }: { kind: "grayscale" | "blur" | "pixelate" 
           ctx.drawImage(c, 0, 0, c.width / s, c.height / s, 0, 0, c.width, c.height);
         }
       }}
-      controls={() => kind === "grayscale" ? null : (
-        <Field label={`${kind === "blur" ? "Blur" : "Pixel size"}: ${amt}`}><input type="range" min={1} max={kind === "blur" ? 40 : 40} value={amt} onChange={(e) => setAmt(+e.target.value)} className="w-full accent-[var(--brand)]" /></Field>
+      controls={() => (
+        <Field label={`${kind === "blur" ? "Blur" : kind === "grayscale" ? "Amount" : "Pixel size"}: ${amt}${kind === "grayscale" ? "%" : ""}`}>
+          <input type="range" min={1} max={kind === "grayscale" ? 100 : 40} value={amt} onChange={(e) => setAmt(+e.target.value)} className="w-full accent-[var(--brand)]" />
+        </Field>
       )}
     />
   );
@@ -201,16 +228,29 @@ export function FilterImage({ kind }: { kind: "grayscale" | "blur" | "pixelate" 
 
 /* ------------------------------ Circle crop -------------------------------- */
 export function CircleCrop() {
+  const [pad, setPad] = React.useState(0);
+  const [bg, setBg] = React.useState("#ffffff");
   return (
     <Processor
+      deps={[pad, bg]}
       outType="image/png" outExt="png"
       draw={(c, img) => {
         const s = Math.min(img.naturalWidth, img.naturalHeight);
-        c.width = s; c.height = s;
+        const extra = Math.round(s * (pad / 100));
+        const size = s + extra * 2;
+        c.width = size; c.height = size;
         const ctx = c.getContext("2d")!;
-        ctx.beginPath(); ctx.arc(s / 2, s / 2, s / 2, 0, Math.PI * 2); ctx.clip();
-        ctx.drawImage(img, (img.naturalWidth - s) / 2, (img.naturalHeight - s) / 2, s, s, 0, 0, s, s);
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, size, size);
+        ctx.beginPath(); ctx.arc(size / 2, size / 2, s / 2, 0, Math.PI * 2); ctx.clip();
+        ctx.drawImage(img, (img.naturalWidth - s) / 2, (img.naturalHeight - s) / 2, s, s, extra, extra, s, s);
       }}
+      controls={() => (
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Field label={`Padding ${pad}%`}><input type="range" min={0} max={40} value={pad} onChange={(e) => setPad(+e.target.value)} className="w-full accent-[var(--brand)]" /></Field>
+          <Field label="Background"><input type="color" value={bg} onChange={(e) => setBg(e.target.value)} className="h-11 w-full rounded-xl border border-border" /></Field>
+        </div>
+      )}
     />
   );
 }
@@ -220,9 +260,10 @@ export function WatermarkImage() {
   const [text, setText] = React.useState(`© ${brand.name}`);
   const [opacity, setOpacity] = React.useState(50);
   const [sizePct, setSize] = React.useState(5);
+  const [pos, setPos] = React.useState("br");
   return (
     <Processor
-      deps={[text, opacity, sizePct]}
+      deps={[text, opacity, sizePct, pos]}
       draw={(c, img) => {
         c.width = img.naturalWidth; c.height = img.naturalHeight;
         const ctx = c.getContext("2d")!;
@@ -231,15 +272,30 @@ export function WatermarkImage() {
         ctx.font = `bold ${fs}px sans-serif`;
         ctx.fillStyle = `rgba(255,255,255,${opacity / 100})`;
         ctx.strokeStyle = `rgba(0,0,0,${opacity / 200})`;
-        ctx.textAlign = "right"; ctx.textBaseline = "bottom";
-        ctx.fillText(text, c.width - fs * 0.5, c.height - fs * 0.5);
-        ctx.strokeText(text, c.width - fs * 0.5, c.height - fs * 0.5);
+        const pad = fs * 0.5;
+        const align = pos === "bl" || pos === "tl" ? "left" : pos === "c" ? "center" : "right";
+        const base = pos === "t" || pos === "tl" || pos === "tr" ? "top" : pos === "c" ? "middle" : "bottom";
+        ctx.textAlign = align;
+        ctx.textBaseline = base;
+        const x = pos === "bl" || pos === "tl" ? pad : pos === "c" || pos === "t" || pos === "b" ? c.width / 2 : c.width - pad;
+        const y = pos === "tl" || pos === "tr" || pos === "t" ? pad : pos === "c" ? c.height / 2 : c.height - pad;
+        ctx.fillText(text, x, y);
+        ctx.strokeText(text, x, y);
       }}
       controls={() => (
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Field label="Watermark text"><Input value={text} onChange={(e) => setText(e.target.value)} /></Field>
           <Field label={`Opacity ${opacity}%`}><input type="range" min={10} max={100} value={opacity} onChange={(e) => setOpacity(+e.target.value)} className="w-full accent-[var(--brand)]" /></Field>
           <Field label={`Size ${sizePct}%`}><input type="range" min={2} max={15} value={sizePct} onChange={(e) => setSize(+e.target.value)} className="w-full accent-[var(--brand)]" /></Field>
+          <Field label="Position">
+            <Select value={pos} onChange={(e) => setPos(e.target.value)}>
+              <option value="br">Bottom right</option>
+              <option value="bl">Bottom left</option>
+              <option value="tr">Top right</option>
+              <option value="tl">Top left</option>
+              <option value="c">Center</option>
+            </Select>
+          </Field>
         </div>
       )}
     />
@@ -250,25 +306,35 @@ export function WatermarkImage() {
 export function MemeGenerator() {
   const [top, setTop] = React.useState("TOP TEXT");
   const [bottom, setBottom] = React.useState("BOTTOM TEXT");
+  const [size, setSize] = React.useState(12);
+  const [color, setColor] = React.useState("#ffffff");
+  const [stroke, setStroke] = React.useState("#000000");
+  const [caps, setCaps] = React.useState(true);
   return (
     <Processor
-      deps={[top, bottom]}
+      deps={[top, bottom, size, color, stroke, caps]}
       draw={(c, img) => {
         c.width = img.naturalWidth; c.height = img.naturalHeight;
         const ctx = c.getContext("2d")!;
         ctx.drawImage(img, 0, 0);
-        const fs = c.width / 12;
+        const fs = c.width / Math.max(6, size);
+        const t = caps ? top.toUpperCase() : top;
+        const b = caps ? bottom.toUpperCase() : bottom;
         ctx.font = `bold ${fs}px Impact, sans-serif`;
-        ctx.textAlign = "center"; ctx.fillStyle = "white"; ctx.strokeStyle = "black"; ctx.lineWidth = fs / 18;
+        ctx.textAlign = "center"; ctx.fillStyle = color; ctx.strokeStyle = stroke; ctx.lineWidth = fs / 18;
         ctx.textBaseline = "top";
-        ctx.fillText(top.toUpperCase(), c.width / 2, 10); ctx.strokeText(top.toUpperCase(), c.width / 2, 10);
+        ctx.strokeText(t, c.width / 2, 10); ctx.fillText(t, c.width / 2, 10);
         ctx.textBaseline = "bottom";
-        ctx.fillText(bottom.toUpperCase(), c.width / 2, c.height - 10); ctx.strokeText(bottom.toUpperCase(), c.width / 2, c.height - 10);
+        ctx.strokeText(b, c.width / 2, c.height - 10); ctx.fillText(b, c.width / 2, c.height - 10);
       }}
       controls={() => (
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <Field label="Top text"><Input value={top} onChange={(e) => setTop(e.target.value)} /></Field>
           <Field label="Bottom text"><Input value={bottom} onChange={(e) => setBottom(e.target.value)} /></Field>
+          <Field label={`Size (1/${size} of width)`}><input type="range" min={6} max={20} value={size} onChange={(e) => setSize(+e.target.value)} className="w-full accent-[var(--brand)]" /></Field>
+          <Field label="Fill"><input type="color" value={color} onChange={(e) => setColor(e.target.value)} className="h-11 w-full rounded-xl border border-border" /></Field>
+          <Field label="Outline"><input type="color" value={stroke} onChange={(e) => setStroke(e.target.value)} className="h-11 w-full rounded-xl border border-border" /></Field>
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={caps} onChange={(e) => setCaps(e.target.checked)} /> ALL CAPS</label>
         </div>
       )}
     />
@@ -278,15 +344,25 @@ export function MemeGenerator() {
 /* ------------------------------ Image → Base64 ----------------------------- */
 export function ImageToBase64() {
   const [out, setOut] = React.useState("");
+  const [name, setName] = React.useState("image");
   const onFiles = (files: File[]) => {
     const f = files[0]; if (!f) return;
+    setName(f.name.replace(/\.[^.]+$/, "") || "image");
     const r = new FileReader(); r.onload = () => setOut(r.result as string); r.readAsDataURL(f);
   };
+  const css = out ? `background-image: url("${out}");` : "";
+  const imgTag = out ? `<img src="${out}" alt="${name}" />` : "";
   if (!out) return <FileDrop accept="image/*" onFiles={onFiles} label="Drop an image to encode" />;
   return (
     <div className="space-y-3">
-      <textarea readOnly value={out} rows={8} className="w-full rounded-xl border border-border bg-surface-2 p-3 font-mono text-xs" />
-      <div className="flex gap-2"><CopyButton value={out} /><Button variant="outline" onClick={() => setOut("")}>Reset</Button></div>
+      <textarea readOnly value={out} rows={6} className="w-full rounded-xl border border-border bg-surface-2 p-3 font-mono text-xs" />
+      <div className="flex flex-wrap gap-2">
+        <CopyButton value={out} label="Copy data URL" />
+        <CopyButton value={css} label="Copy CSS" />
+        <CopyButton value={imgTag} label="Copy <img>" />
+        <Button variant="outline" onClick={() => setOut("")}>Reset</Button>
+      </div>
+      <Output value={`${css}\n\n${imgTag}`} rows={4} filename={`${name}-base64.txt`} />
     </div>
   );
 }
@@ -346,20 +422,24 @@ export function PassportPhoto() {
     "EU 35×45 mm (413×531)": [413, 531],
   };
   const [preset, setPreset] = React.useState(Object.keys(presets)[0]);
+  const [bg, setBg] = React.useState("#ffffff");
   const [tw, th] = presets[preset];
   return (
     <Processor
-      deps={[preset]} outType="image/jpeg" outExt="jpg" quality={0.95}
+      deps={[preset, bg]} outType="image/jpeg" outExt="jpg" quality={0.95}
       draw={(c, img) => {
         c.width = tw; c.height = th;
         const ctx = c.getContext("2d")!;
-        ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, tw, th);
+        ctx.fillStyle = bg; ctx.fillRect(0, 0, tw, th);
         const scale = Math.max(tw / img.naturalWidth, th / img.naturalHeight);
         const dw = img.naturalWidth * scale, dh = img.naturalHeight * scale;
         ctx.drawImage(img, (tw - dw) / 2, (th - dh) / 2, dw, dh);
       }}
       controls={() => (
-        <Field label="Photo size"><Select value={preset} onChange={(e) => setPreset(e.target.value)}>{Object.keys(presets).map((k) => <option key={k}>{k}</option>)}</Select></Field>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Field label="Photo size"><Select value={preset} onChange={(e) => setPreset(e.target.value)}>{Object.keys(presets).map((k) => <option key={k}>{k}</option>)}</Select></Field>
+          <Field label="Background"><input type="color" value={bg} onChange={(e) => setBg(e.target.value)} className="h-11 w-full rounded-xl border border-border" /></Field>
+        </div>
       )}
     />
   );
@@ -369,6 +449,8 @@ export function PassportPhoto() {
 export function CombineImages() {
   const [imgs, setImgs] = React.useState<HTMLImageElement[]>([]);
   const [dir, setDir] = React.useState<"h" | "v">("v");
+  const [gap, setGap] = React.useState(0);
+  const [bg, setBg] = React.useState("#ffffff");
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const urlRef = React.useRef("");
   const add = (files: File[]) => {
@@ -381,28 +463,33 @@ export function CombineImages() {
   React.useEffect(() => {
     if (!imgs.length || !canvasRef.current) return;
     const c = canvasRef.current;
+    const g = Math.max(0, gap);
     if (dir === "v") {
       c.width = Math.max(...imgs.map((i) => i.naturalWidth));
-      c.height = imgs.reduce((s, i) => s + i.naturalHeight, 0);
+      c.height = imgs.reduce((s, i) => s + i.naturalHeight, 0) + g * Math.max(0, imgs.length - 1);
     } else {
       c.height = Math.max(...imgs.map((i) => i.naturalHeight));
-      c.width = imgs.reduce((s, i) => s + i.naturalWidth, 0);
+      c.width = imgs.reduce((s, i) => s + i.naturalWidth, 0) + g * Math.max(0, imgs.length - 1);
     }
     const ctx = c.getContext("2d")!;
-    ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, c.width, c.height);
     let off = 0;
     for (const i of imgs) {
-      if (dir === "v") { ctx.drawImage(i, 0, off); off += i.naturalHeight; }
-      else { ctx.drawImage(i, off, 0); off += i.naturalWidth; }
+      if (dir === "v") { ctx.drawImage(i, (c.width - i.naturalWidth) / 2, off); off += i.naturalHeight + g; }
+      else { ctx.drawImage(i, off, (c.height - i.naturalHeight) / 2); off += i.naturalWidth + g; }
     }
     c.toBlob((b) => { if (b) { if (urlRef.current) URL.revokeObjectURL(urlRef.current); urlRef.current = URL.createObjectURL(b); } });
-  }, [imgs, dir]);
+  }, [imgs, dir, gap, bg]);
   return (
     <div className="space-y-4">
       <FileDrop accept="image/*" multiple onFiles={add} label="Add images to combine" />
       {imgs.length > 0 && (
         <>
-          <Select value={dir} onChange={(e) => setDir(e.target.value as "h")} className="max-w-48"><option value="v">Stack vertically</option><option value="h">Stack horizontally</option></Select>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Select value={dir} onChange={(e) => setDir(e.target.value as "h")} className="max-w-48"><option value="v">Stack vertically</option><option value="h">Stack horizontally</option></Select>
+            <Field label={`Gap ${gap}px`}><input type="range" min={0} max={80} value={gap} onChange={(e) => setGap(+e.target.value)} className="w-full accent-[var(--brand)]" /></Field>
+            <Field label="Background"><input type="color" value={bg} onChange={(e) => setBg(e.target.value)} className="h-11 w-full rounded-xl border border-border" /></Field>
+          </div>
           <div className="overflow-auto rounded-xl border border-border bg-surface-2 p-3 text-center"><canvas ref={canvasRef} className="mx-auto max-w-full" style={{ maxHeight: 360 }} /></div>
           <div className="flex gap-2">
             <Button onClick={() => urlRef.current && downloadUrl(urlRef.current, "combined.png")}>Download PNG</Button>
@@ -424,18 +511,23 @@ export function FaviconGenerator() {
     c.getContext("2d")!.drawImage(img, 0, 0, s, s);
     return c.toDataURL("image/png");
   };
+  const html = `<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />\n<link rel="apple-touch-icon" sizes="180x180" href="/favicon-180x180.png" />`;
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-4 gap-3 sm:grid-cols-8">
         {sizes.map((s) => (
-          <button key={s} onClick={() => downloadUrl(make(s), `favicon-${s}x${s}.png`)} className="flex flex-col items-center gap-1 rounded-xl border border-border bg-surface-2 p-2 hover:bg-border">
+          <button key={s} type="button" onClick={() => downloadUrl(make(s), `favicon-${s}x${s}.png`)} className="flex flex-col items-center gap-1 rounded-xl border border-border bg-surface-2 p-2 hover:bg-border">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={make(s)} alt={`${s}`} width={Math.min(s, 48)} height={Math.min(s, 48)} />
             <span className="text-xs text-muted">{s}px</span>
           </button>
         ))}
       </div>
-      <Notice tone="info">Click any size to download that favicon PNG.</Notice>
+      <div className="flex flex-wrap gap-2">
+        <Button variant="secondary" onClick={() => sizes.forEach((s) => downloadUrl(make(s), `favicon-${s}x${s}.png`))}>Download all sizes</Button>
+        <CopyButton value={html} label="Copy HTML tags" />
+      </div>
+      <Notice tone="info">Click any size to download that favicon PNG. 180px is the Apple touch icon.</Notice>
     </div>
   );
 }

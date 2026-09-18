@@ -172,6 +172,8 @@ export function FakeInstagram() {
   const [caption, setCaption] = React.useState("living my best life ✨ #travel #photography");
   const [likes, setLikes] = React.useState("12,403");
   const [comments, setComments] = React.useState("248");
+  const [saved, setSaved] = React.useState("1,102");
+  const [aspect, setAspect] = React.useState<"square" | "portrait">("square");
   const [location, setLocation] = React.useState("");
   const [verified, setVerified] = React.useState(false);
   const [dark, setDark] = React.useState(false);
@@ -188,6 +190,13 @@ export function FakeInstagram() {
         <div className="grid grid-cols-2 gap-3">
           <Field label="Likes"><Input value={likes} onChange={(e) => setLikes(e.target.value)} /></Field>
           <Field label="Comments"><Input value={comments} onChange={(e) => setComments(e.target.value)} /></Field>
+          <Field label="Saved"><Input value={saved} onChange={(e) => setSaved(e.target.value)} /></Field>
+          <Field label="Aspect">
+            <Select value={aspect} onChange={(e) => setAspect(e.target.value as "square")}>
+              <option value="square">Square 1:1</option>
+              <option value="portrait">Portrait 4:5</option>
+            </Select>
+          </Field>
         </div>
         <Field label="Location"><Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Paris, France" /></Field>
         <Field label="Timestamp"><Input value={timestamp} onChange={(e) => setTimestamp(e.target.value)} /></Field>
@@ -207,16 +216,16 @@ export function FakeInstagram() {
           </div>
           {photo.src ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={photo.src} alt="" className="aspect-square w-full object-cover" />
+            <img src={photo.src} alt="" className={`${aspect === "portrait" ? "aspect-[4/5]" : "aspect-square"} w-full object-cover`} />
           ) : (
-            <div className="grid aspect-square w-full place-items-center bg-gradient-to-br from-indigo-300 to-pink-300 text-white">Upload a photo</div>
+            <div className={`grid ${aspect === "portrait" ? "aspect-[4/5]" : "aspect-square"} w-full place-items-center bg-gradient-to-br from-indigo-300 to-pink-300 text-white`}>Upload a photo</div>
           )}
           <div className="p-3 text-sm">
             <div className="mb-2 flex gap-4 text-xl"><span>❤️</span><span>💬</span><span>✈️</span><span className="ml-auto">🔖</span></div>
             <div className="font-semibold">{likes} likes</div>
             <div className="mt-1"><span className="font-semibold">{name}</span> {caption}</div>
             <button type="button" className="mt-1 text-xs opacity-50">View all {comments} comments</button>
-            <p className="mt-1 text-[10px] uppercase tracking-wide opacity-40">{timestamp}</p>
+            <p className="mt-1 text-[10px] uppercase tracking-wide opacity-40">{timestamp} · {saved} saved</p>
           </div>
         </div>
       </ExportCard>

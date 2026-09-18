@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Input, Select } from "@/components/ui/primitives";
-import { Field, Stat, Notice } from "@/components/tools/shared";
+import { Field, Stat, Notice, CopyResult } from "@/components/tools/shared";
 import { Icon } from "@/components/ui/Icon";
 
 /* --------------------------------- helpers --------------------------------- */
@@ -89,6 +89,7 @@ export function WaterIntake() {
         <Stat label="Cups (240 ml)" value={Math.round(ml / 240)} />
         <Stat label="Bottles (500 ml)" value={r1(ml / 500)} />
       </div>
+      <CopyResult rows={[["Litres", r1(ml / 1000)], ["Cups", Math.round(ml / 240)], ["Bottles", r1(ml / 500)]]} />
       <Disclaimer>Needs vary with health, pregnancy and medication — this is a general guide, not medical advice.</Disclaimer>
     </div>
   );
@@ -167,6 +168,10 @@ export function MacroCalculator() {
           </tbody>
         </table>
       </div>
+      <CopyResult
+        filename="macros.txt"
+        rows={Object.entries(rows).map(([k, v]) => [k, `${v.grams} g/day (${v.pct}%) · ${v.perMeal} g/meal`])}
+      />
       <Disclaimer />
     </div>
   );
@@ -226,6 +231,14 @@ export function HeartRateZones() {
           </div>
         ))}
       </div>
+      <CopyResult
+        filename="heart-rate-zones.txt"
+        rows={[
+          ["Max HR (220−age)", `${maxHR} bpm`],
+          ["Max HR (Tanaka)", `${tanaka} bpm`],
+          ...zones.map((z) => [z.name, `${z.lo}–${z.hi} bpm`] as [string, string]),
+        ]}
+      />
       <Disclaimer>
         {useKarvonen
           ? "Using the Karvonen (heart-rate-reserve) method with your resting HR."
@@ -289,6 +302,15 @@ export function CaloriesBurned() {
         <Stat label="Calories burned" value={`${kcal} kcal`} />
         <Stat label="Rate" value={`${perHour} kcal/hr`} />
       </div>
+      <CopyResult
+        filename="calories-burned.txt"
+        rows={[
+          ["Activity", activity],
+          ["Calories", `${kcal} kcal`],
+          ["Rate", `${perHour} kcal/hr`],
+          ["Duration", `${minutes} min`],
+        ]}
+      />
       <Disclaimer>Based on MET values; actual burn varies with intensity, fitness and body composition.</Disclaimer>
     </div>
   );
@@ -351,6 +373,14 @@ export function OneRepMax() {
           </table>
         </div>
       </Field>
+      <CopyResult
+        filename="one-rep-max.txt"
+        rows={[
+          ["Estimated 1RM", `${oneRM} ${unit}`],
+          ["Epley", `${epley} ${unit}`],
+          ["Brzycki", `${brzycki} ${unit}`],
+        ]}
+      />
       <Disclaimer>Estimates only — warm up properly and use a spotter for near-maximal lifts.</Disclaimer>
     </div>
   );
@@ -443,6 +473,15 @@ export function PaceCalculator() {
               ))}
             </div>
           </Field>
+          <CopyResult
+            filename="pace.txt"
+            rows={[
+              ["Pace / km", res.paceKm],
+              ["Pace / mile", res.paceMi],
+              ["Speed km/h", String(res.speedKmh)],
+              ...res.projections.map(([name, t]) => [name, t] as [string, string]),
+            ]}
+          />
         </>
       )}
     </div>
@@ -502,6 +541,14 @@ export function BacCalculator() {
         <Stat label="Time to sober (0.00%)" value={sober > 0 ? `~${r1(sober)} hr` : "—"} />
       </div>
       <Notice tone={tone}>{status}</Notice>
+      <CopyResult
+        filename="bac.txt"
+        rows={[
+          ["Estimated BAC", `${bac.toFixed(3)}%`],
+          ["Time to 0.00%", sober > 0 ? `~${r1(sober)} hr` : "—"],
+          ["Status", status],
+        ]}
+      />
       <Disclaimer>
         A rough Widmark estimate only. Many factors affect real BAC. Never use this to decide whether to drive — if you
         have been drinking, do not drive.
@@ -543,7 +590,12 @@ export function ProteinIntake() {
           </Select>
         </Field>
       </div>
-      <Stat label="Recommended protein" value={`${lo}–${hi} g / day`} />
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Stat label="Recommended protein" value={`${lo}–${hi} g / day`} />
+        <Stat label="Per meal (3×)" value={`${Math.round(lo / 3)}–${Math.round(hi / 3)} g`} />
+        <Stat label="Per meal (4×)" value={`${Math.round(lo / 4)}–${Math.round(hi / 4)} g`} />
+      </div>
+      <CopyResult filename="protein.txt" rows={[["Low", `${lo} g`], ["High", `${hi} g`], ["Goal", PROTEIN_GOALS[goal].label]]} />
       <Disclaimer />
     </div>
   );
@@ -591,6 +643,7 @@ export function WaistToHip() {
       </div>
       <Stat label="Waist-to-hip ratio" value={ratio ? ratio.toFixed(2) : "—"} />
       <Notice tone={tone}>{category}</Notice>
+      <CopyResult filename="whr.txt" rows={[["WHR", ratio ? ratio.toFixed(2) : "—"], ["Category", category]]} />
       <Disclaimer />
     </div>
   );
@@ -630,6 +683,12 @@ export function BodySurfaceArea() {
             <Stat key={k} label={`${k} (m²)`} value={v.toFixed(2)} />
           ))}
         </div>
+      )}
+      {rows && (
+        <CopyResult
+          filename="bsa.txt"
+          rows={Object.entries(rows).map(([k, v]) => [k, `${v.toFixed(2)} m²`])}
+        />
       )}
       <Disclaimer />
     </div>
