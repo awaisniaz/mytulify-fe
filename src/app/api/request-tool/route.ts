@@ -96,7 +96,7 @@ export async function POST(request: Request) {
       );
     }
     console.error(
-      "[request-tool] SMTP_USER / SMTP_PASS are not set — request saved locally but email was not sent to mytulif@gmail.com",
+      "[request-tool] SMTP_USER / SMTP_PASS are not set — request saved locally but email was not sent to mytulify@gmail.com",
     );
     return NextResponse.json({ ok: true, emailed: false });
   }

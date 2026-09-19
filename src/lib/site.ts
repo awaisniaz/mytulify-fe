@@ -9,8 +9,8 @@ export const site = {
   locale: "en_US",
   twitter: "@mytulify",
   supportEmail: "support@mytulify.com",
-  /** Inbox for /request-tool submissions. */
-  requestNotifyEmail: "mytulif@gmail.com",
+  /** Inbox for /request-tool submissions (Next.js API → SMTP). */
+  requestNotifyEmail: "mytulify@gmail.com",
   keywords: [
     "online tools",
     "free online tools",
