@@ -4246,29 +4246,34 @@
     },
     "text-tools/speech-to-text": {
       "name": "Speech to Text",
-      "description": "Dictate speech into editable text in your browser with live transcript and multi-language support.",
-      "metaTitle": "Speech to Text – Free Voice Dictation Online | Mytulify",
-      "metaDescription": "Free speech-to-text dictation in your browser. Live transcript, multi-language support, copy or download — pairs with text-to-speech.",
+      "description": "Free voice dictation — speak into your mic and get editable text instantly. Urdu, English, Hindi and more. Copy or download.",
+      "metaTitle": "Voice Dictation & Speech to Text Online – Free | Mytulify",
+      "metaDescription": "Free voice to text dictation in your browser. Speak and get editable transcript — Urdu, English, Hindi. Copy or download. No signup.",
       "about": [
-        "Speech-to-text turns your microphone into a draft pad — useful for notes, outlines, and accessibility. This tool uses the Web Speech API so transcription stays on-device in supporting browsers.",
-        "Start listening, speak clearly, then edit the transcript and copy or download it. Works best in Chrome or Edge."
+        "Voice dictation turns your microphone into a writing pad. Speak clearly and this speech-to-text tool builds an editable transcript you can copy or download — useful for notes, drafts, WhatsApp messages, and accessibility.",
+        "It uses the browser Web Speech API (best in Chrome or Edge). Choose Urdu, English, Hindi, Arabic, and more. Continuous listening keeps going until you tap stop. Nothing is uploaded to Mytulify servers."
       ],
       "howTo": {
-        "title": "How to dictate text",
+        "title": "How to use voice dictation",
         "steps": [
-          "Allow microphone access when prompted.",
-          "Pick a language and click Start listening.",
-          "Stop when finished, edit the transcript, then copy or download."
+          "Open the tool in Chrome or Edge and allow microphone access.",
+          "Pick your language (Urdu, English, etc.).",
+          "Tap the mic button and speak. Tap again to stop.",
+          "Edit the transcript if needed, then copy or download as .txt."
         ]
       },
       "faq": [
         {
-          "q": "Why doesn’t it work in my browser?",
-          "a": "Not every browser exposes speech recognition. Chrome and Edge are the most reliable. Safari support varies by version."
+          "q": "Does voice dictation work offline?",
+          "a": "The browser may need network access for its speech engine. Chrome/Edge are the most reliable. Safari support varies."
         },
         {
-          "q": "Is audio uploaded to Mytulify?",
-          "a": "Recognition is handled by the browser’s speech engine — we don’t run a separate upload API for this tool."
+          "q": "Can I dictate in Urdu?",
+          "a": "Yes. Select Urdu (Pakistan) in the language list. Use Chrome/Edge for best results."
+        },
+        {
+          "q": "Is my audio uploaded to Mytulify?",
+          "a": "No separate upload API. Recognition is handled by your browser’s speech service."
         }
       ],
       "related": [

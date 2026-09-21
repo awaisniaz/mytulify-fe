@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Input, Select, Textarea, Button } from "@/components/ui/primitives";
 import { CopyButton, Field, Output, Notice, Stat } from "@/components/tools/shared";
+import { download } from "@/lib/utils";
 
 /* ===================== Decision Wheel ===================== */
 const WHEEL_COLORS = [
@@ -300,137 +301,322 @@ export function PomodoroTimer() {
   );
 }
 
-/* ===================== Speech to Text ===================== */
+/* ===================== Speech to Text (Voice Dictation) ===================== */
+type SpeechRecResult = { 0: { transcript: string; confidence?: number }; isFinal: boolean; length: number };
+type SpeechRecEvent = { resultIndex: number; results: ArrayLike<SpeechRecResult> & { length: number } };
 type SpeechRec = {
   continuous: boolean;
   interimResults: boolean;
   lang: string;
+  maxAlternatives?: number;
   start: () => void;
   stop: () => void;
-  onresult: ((ev: { results: ArrayLike<{ 0: { transcript: string }; isFinal: boolean }> }) => void) | null;
+  abort?: () => void;
+  onresult: ((ev: SpeechRecEvent) => void) | null;
   onerror: ((ev: { error: string }) => void) | null;
   onend: (() => void) | null;
+  onstart?: (() => void) | null;
 };
+
+const STT_LANGS = [
+  { value: "en-US", label: "English (US)" },
+  { value: "en-GB", label: "English (UK)" },
+  { value: "en-IN", label: "English (India)" },
+  { value: "ur-PK", label: "Urdu (Pakistan)" },
+  { value: "hi-IN", label: "Hindi" },
+  { value: "ar-SA", label: "Arabic" },
+  { value: "fr-FR", label: "French" },
+  { value: "de-DE", label: "German" },
+  { value: "es-ES", label: "Spanish" },
+  { value: "pt-BR", label: "Portuguese (Brazil)" },
+  { value: "tr-TR", label: "Turkish" },
+  { value: "zh-CN", label: "Chinese (Simplified)" },
+] as const;
+
+function getSpeechRecognitionCtor(): (new () => SpeechRec) | null {
+  if (typeof window === "undefined") return null;
+  const w = window as unknown as {
+    SpeechRecognition?: new () => SpeechRec;
+    webkitSpeechRecognition?: new () => SpeechRec;
+  };
+  return w.SpeechRecognition || w.webkitSpeechRecognition || null;
+}
 
 export function SpeechToText() {
   const [text, setText] = React.useState("");
   const [interim, setInterim] = React.useState("");
   const [listening, setListening] = React.useState(false);
   const [lang, setLang] = React.useState("en-US");
+  const [autoRestart, setAutoRestart] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
+  const [startedAt, setStartedAt] = React.useState<number | null>(null);
+  const [elapsed, setElapsed] = React.useState(0);
+
   const recRef = React.useRef<SpeechRec | null>(null);
+  const wantListenRef = React.useRef(false);
+  const langRef = React.useRef(lang);
+  langRef.current = lang;
 
-  const supported =
-    typeof window !== "undefined" &&
-    ("SpeechRecognition" in window || "webkitSpeechRecognition" in window);
+  const Ctor = React.useMemo(() => getSpeechRecognitionCtor(), []);
+  const supported = Boolean(Ctor);
 
-  const stop = () => {
-    recRef.current?.stop();
-    setListening(false);
-  };
+  React.useEffect(() => {
+    if (!listening || startedAt == null) return;
+    const id = window.setInterval(() => setElapsed(Math.floor((Date.now() - startedAt) / 1000)), 500);
+    return () => window.clearInterval(id);
+  }, [listening, startedAt]);
 
-  const start = () => {
-    setError(null);
-    if (!supported) {
-      setError("Speech recognition isn’t supported in this browser. Try Chrome or Edge.");
+  React.useEffect(() => {
+    return () => {
+      wantListenRef.current = false;
+      try {
+        recRef.current?.abort?.();
+        recRef.current?.stop();
+      } catch {
+        /* ignore */
+      }
+    };
+  }, []);
+
+  const appendFinal = React.useCallback((chunk: string) => {
+    const piece = chunk.trim();
+    if (!piece) return;
+    setText((prev) => {
+      if (!prev.trim()) return piece;
+      const needsSpace = !/[\s\n]$/.test(prev) && !/^[,.;:!?]/.test(piece);
+      return needsSpace ? `${prev} ${piece}` : `${prev}${piece}`;
+    });
+  }, []);
+
+  const startRecognition = React.useCallback(() => {
+    if (!Ctor) {
+      setError("Speech recognition isn’t supported here. Use Chrome or Edge on desktop/Android.");
       return;
     }
-    const Ctor =
-      (window as unknown as { SpeechRecognition?: new () => SpeechRec }).SpeechRecognition ||
-      (window as unknown as { webkitSpeechRecognition?: new () => SpeechRec }).webkitSpeechRecognition;
-    if (!Ctor) return;
+    setError(null);
+    try {
+      recRef.current?.abort?.();
+    } catch {
+      /* ignore */
+    }
+
     const rec = new Ctor();
     rec.continuous = true;
     rec.interimResults = true;
-    rec.lang = lang;
+    rec.maxAlternatives = 1;
+    rec.lang = langRef.current;
+
+    rec.onstart = () => {
+      setListening(true);
+      setStartedAt((t) => t ?? Date.now());
+    };
+
     rec.onresult = (ev) => {
       let finals = "";
       let inter = "";
-      for (let i = 0; i < ev.results.length; i++) {
+      for (let i = ev.resultIndex; i < ev.results.length; i++) {
         const r = ev.results[i]!;
-        if (r.isFinal) finals += r[0].transcript + " ";
-        else inter += r[0].transcript;
+        const t = r[0]?.transcript ?? "";
+        if (r.isFinal) finals += t;
+        else inter += t;
       }
-      if (finals) setText((t) => (t ? `${t.trim()} ${finals.trim()}` : finals.trim()));
+      if (finals) appendFinal(finals);
       setInterim(inter);
     };
+
     rec.onerror = (ev) => {
-      setError(ev.error === "not-allowed" ? "Microphone permission denied." : `Error: ${ev.error}`);
+      const code = ev.error;
+      if (code === "aborted" || code === "no-speech") return;
+      const msg =
+        code === "not-allowed"
+          ? "Microphone permission denied. Allow mic access and try again."
+          : code === "audio-capture"
+            ? "No microphone found. Plug in a mic and retry."
+            : code === "network"
+              ? "Network error from the browser speech service. Check your connection."
+              : `Speech error: ${code}`;
+      setError(msg);
+      wantListenRef.current = false;
+      setListening(false);
+      setInterim("");
+    };
+
+    rec.onend = () => {
+      setInterim("");
+      if (wantListenRef.current && autoRestart) {
+        window.setTimeout(() => {
+          if (!wantListenRef.current) return;
+          try {
+            startRecognition();
+          } catch {
+            setListening(false);
+            wantListenRef.current = false;
+          }
+        }, 250);
+        return;
+      }
       setListening(false);
     };
-    rec.onend = () => setListening(false);
+
     recRef.current = rec;
-    rec.start();
-    setListening(true);
+    try {
+      rec.start();
+      setListening(true);
+    } catch {
+      setError("Could not start the microphone. Click Start again.");
+      wantListenRef.current = false;
+      setListening(false);
+    }
+  }, [Ctor, appendFinal, autoRestart]);
+
+  const start = () => {
+    wantListenRef.current = true;
+    setStartedAt(Date.now());
+    setElapsed(0);
+    startRecognition();
   };
 
+  const stop = () => {
+    wantListenRef.current = false;
+    setInterim("");
+    try {
+      recRef.current?.stop();
+    } catch {
+      /* ignore */
+    }
+    setListening(false);
+  };
+
+  const insertAtEnd = (s: string) => {
+    setText((prev) => (prev ? `${prev}${s}` : s.trimStart()));
+    setInterim("");
+  };
+
+  const display = text + (interim ? (text && !/[\s\n]$/.test(text) ? " " : "") + interim : "");
   const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  const chars = text.length;
+  const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
+  const ss = String(elapsed % 60).padStart(2, "0");
 
   return (
     <div className="space-y-4">
       <Notice tone="info">
-        Dictate notes, drafts, or meeting snippets — transcription stays in your browser (Web Speech API). Chrome/Edge
-        work best.
+        Voice dictation: speak into your mic and get editable text instantly. Runs in your browser (Web Speech API) —
+        best in <strong>Chrome</strong> or <strong>Edge</strong>. Pick Urdu or English below.
       </Notice>
-      {!supported && <Notice tone="error">This browser doesn’t expose speech recognition.</Notice>}
+      {!supported && (
+        <Notice tone="error">
+          This browser doesn’t support speech recognition. Open this page in Chrome or Edge (desktop / Android).
+        </Notice>
+      )}
       {error && <Notice tone="error">{error}</Notice>}
+
+      <div className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-surface-2/40 p-6">
+        <button
+          type="button"
+          disabled={!supported}
+          onClick={() => (listening ? stop() : start())}
+          className={`flex h-24 w-24 items-center justify-center rounded-full text-3xl shadow-md transition focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 ${
+            listening
+              ? "bg-rose-500 text-white animate-pulse"
+              : "bg-brand text-white hover:opacity-90"
+          }`}
+          aria-label={listening ? "Stop dictation" : "Start dictation"}
+        >
+          {listening ? "■" : "🎤"}
+        </button>
+        <p className="text-sm font-medium">
+          {listening ? (
+            <span className="flex items-center gap-2 text-rose-600 dark:text-rose-400">
+              <span className="inline-block h-2 w-2 rounded-full bg-rose-500" />
+              Listening… {mm}:{ss}
+            </span>
+          ) : (
+            <span className="text-muted">Tap the mic, allow permission, then speak</span>
+          )}
+        </p>
+      </div>
+
       <div className="grid gap-3 sm:grid-cols-2">
-        <Field label="Language">
-          <Select value={lang} onChange={(e) => setLang(e.target.value)}>
-            <option value="en-US">English (US)</option>
-            <option value="en-GB">English (UK)</option>
-            <option value="ur-PK">Urdu</option>
-            <option value="fr-FR">French</option>
-            <option value="de-DE">German</option>
-            <option value="es-ES">Spanish</option>
-            <option value="hi-IN">Hindi</option>
-            <option value="ar-SA">Arabic</option>
+        <Field label="Dictation language">
+          <Select
+            value={lang}
+            disabled={listening}
+            onChange={(e) => setLang(e.target.value)}
+          >
+            {STT_LANGS.map((l) => (
+              <option key={l.value} value={l.value}>
+                {l.label}
+              </option>
+            ))}
           </Select>
         </Field>
-        <div className="flex items-end gap-2">
-          {!listening ? (
-            <Button onClick={start} disabled={!supported}>
-              ● Start listening
-            </Button>
-          ) : (
-            <Button variant="secondary" onClick={stop}>
-              ■ Stop
-            </Button>
-          )}
-          <Button
-            variant="secondary"
-            onClick={() => {
-              setText("");
-              setInterim("");
-            }}
+        <Field label="Continuous listening">
+          <Select
+            value={autoRestart ? "on" : "off"}
+            disabled={listening}
+            onChange={(e) => setAutoRestart(e.target.value === "on")}
           >
-            Clear
-          </Button>
-        </div>
+            <option value="on">On — keep listening until you stop</option>
+            <option value="off">Off — stop when the browser pauses</option>
+          </Select>
+        </Field>
       </div>
-      {listening && (
-        <p className="flex items-center gap-2 text-sm text-brand">
-          <span className="inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-rose-500" />
-          Listening… speak clearly toward your mic
-        </p>
-      )}
-      <Field label="Transcript">
+
+      <div className="flex flex-wrap gap-2">
+        {(
+          [
+            [". ", "Period"],
+            [", ", "Comma"],
+            ["? ", "?"],
+            ["! ", "!"],
+            ["\n\n", "New para"],
+          ] as const
+        ).map(([v, label]) => (
+          <Button key={label} type="button" variant="secondary" size="sm" onClick={() => insertAtEnd(v)}>
+            {label}
+          </Button>
+        ))}
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          onClick={() => {
+            setText("");
+            setInterim("");
+          }}
+        >
+          Clear all
+        </Button>
+      </div>
+
+      <Field label="Transcript" hint={interim ? "Gray text = still listening (not final yet)" : undefined}>
         <Textarea
-          value={text + (interim ? (text ? " " : "") + interim : "")}
+          value={display}
           onChange={(e) => {
             setText(e.target.value);
             setInterim("");
           }}
-          rows={10}
-          className="font-sans"
-          placeholder="Your words will appear here…"
+          rows={12}
+          className="font-sans text-base leading-relaxed"
+          placeholder="Your spoken words will appear here as text…"
+          dir={lang.startsWith("ur") || lang.startsWith("ar") ? "rtl" : "ltr"}
         />
       </Field>
-      <div className="flex flex-wrap items-center gap-3">
+
+      <div className="grid gap-3 sm:grid-cols-3">
         <Stat label="Words" value={words} />
-        <CopyButton value={text} />
+        <Stat label="Characters" value={chars} />
+        <Stat label="Session" value={listening || elapsed ? `${mm}:${ss}` : "—"} />
       </div>
-      <Output value={text} rows={4} filename="transcript.txt" mono={false} />
+
+      <div className="flex flex-wrap gap-2">
+        <CopyButton value={text} label="Copy text" />
+        <Button type="button" variant="secondary" size="sm" disabled={!text} onClick={() => download(text, "dictation.txt")}>
+          Download .txt
+        </Button>
+      </div>
+      <Output value={text} rows={4} filename="dictation.txt" mono={false} empty="Final text ready to copy or download…" />
     </div>
   );
 }
