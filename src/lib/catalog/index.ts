@@ -25,8 +25,8 @@ export type { Category, Tool, Level, Complexity } from "./types";
 
 /** Per-category presentation metadata (icon + gradient + tagline). */
 const META: Record<string, CategoryMeta> = {
-  "ai-tools": { icon: "Sparkles", gradient: "from-indigo-500 to-fuchsia-600", tagline: "AI assistants for developers" },
-  "handwriting-ocr": { icon: "ScanText", gradient: "from-violet-500 to-indigo-600", tagline: "Handwriting to text in 30+ languages" },
+  "ai-tools": { icon: "Sparkles", gradient: "from-indigo-500 to-fuchsia-600", tagline: "AI assistants for developers & job seekers" },
+  "handwriting-ocr": { icon: "ScanText", gradient: "from-violet-500 to-indigo-600", tagline: "OCR, math LaTeX & note summaries" },
   "freelancer-tools": { icon: "Briefcase", gradient: "from-sky-500 to-teal-600", tagline: "Contracts, rates & client docs — free" },
   "devops-tools": { icon: "Server", gradient: "from-cyan-500 to-sky-600", tagline: "Configs, manifests & scripts" },
   "health-tools": { icon: "Activity", gradient: "from-rose-500 to-pink-600", tagline: "Fitness, nutrition & wellbeing" },
@@ -48,7 +48,7 @@ const handwritingOcr: CategoryData = {
   name: "Handwriting OCR",
   slug: "handwriting-ocr",
   description:
-    "AI-powered handwriting-to-text (OCR) tools for 30+ languages. Upload a photo of handwriting and get accurate, editable digital text — with optional translation into another language.",
+    "AI-powered handwriting tools — OCR in 30+ languages, handwritten math to LaTeX, and note summarizers. Upload a photo and get editable digital text, equations, or structured summaries.",
   tools: ocrCatalogTools(),
 };
 

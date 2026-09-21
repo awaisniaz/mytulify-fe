@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Turn Handwritten Notes Into Summaries and Study Flashcards">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e40af"/>
+      <stop offset="55%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="510" cy="155" r="175" fill="#93c5fd" opacity="0.12"/>
+  <circle cx="975" cy="475" r="118" fill="#000" opacity="0.18"/>
+  <g opacity="0.4" fill="#93c5fd">
+    <rect x="870" y="170" width="230" height="300" rx="14"/>
+    <rect x="900" y="220" width="170" height="10" rx="5" fill="#fff" opacity="0.35"/>
+    <rect x="900" y="250" width="140" height="10" rx="5" fill="#fff" opacity="0.25"/>
+    <rect x="900" y="280" width="160" height="10" rx="5" fill="#fff" opacity="0.2"/>
+    <rect x="900" y="310" width="120" height="10" rx="5" fill="#fff" opacity="0.2"/>
+    <rect x="900" y="360" width="170" height="10" rx="5" fill="#fff" opacity="0.3"/>
+    <rect x="900" y="390" width="150" height="10" rx="5" fill="#fff" opacity="0.2"/>
+  </g>
+  <rect x="72" y="72" width="8" height="48" rx="4" fill="#93c5fd"/>
+  <text x="92" y="106" fill="#93c5fd" font-size="22" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="700" letter-spacing="2">AI TECH</text>
+  <text x="72" y="210" fill="#fff" font-size="40" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">Turn Handwritten Notes Into</text>
+  <text x="72" y="268" fill="#fff" font-size="40" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">Summaries and Study</text>
+  <text x="72" y="326" fill="#fff" font-size="40" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">Flashcards</text>
+  <text x="72" y="560" fill="#fff" opacity="0.7" font-size="22" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="600">Mytulify Blog</text>
+</svg>

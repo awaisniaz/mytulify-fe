@@ -72,8 +72,8 @@
     },
     "handwriting-ocr": {
       "name": "Handwriting OCR",
-      "description": "AI-powered handwriting-to-text OCR for 30+ languages. Upload a photo, extract the original text, and optionally translate it.",
-      "tagline": "Handwriting to text in 30+ languages"
+      "description": "AI-powered handwriting tools — OCR in 30+ languages, handwritten math to LaTeX, and note summarizers. Upload a photo and get editable text, equations, or structured summaries.",
+      "tagline": "OCR, math LaTeX & note summaries"
     },
     "freelancer-tools": {
       "name": "Freelancer Tools",
@@ -183,10 +183,10 @@
       ],
       "related": [
         "ai-tools/ats-resume-checker",
+        "ai-tools/interview-answer-generator",
         "freelancer-tools/proposal-generator",
         "freelancer-tools/email-templates-generator",
-        "text-tools/word-counter",
-        "ai-tools/readme-generator"
+        "text-tools/word-counter"
       ]
     },
     "ai-tools/ats-resume-checker": {
@@ -233,10 +233,168 @@
       ],
       "related": [
         "ai-tools/cover-letter-generator",
+        "ai-tools/interview-answer-generator",
         "freelancer-tools/proposal-generator",
         "freelancer-tools/email-templates-generator",
+        "text-tools/word-counter"
+      ]
+    },
+    "ai-tools/pr-description-generator": {
+      "name": "AI PR Description Generator",
+      "description": "Turn a git diff or change summary into a clear pull request title and description with test plan.",
+      "metaTitle": "Free AI Pull Request Description Generator | Mytulify",
+      "metaDescription": "Paste a git diff and get a clear PR title, summary, and test-plan checkboxes. Free AI tool for GitHub and GitLab-style templates.",
+      "about": [
+        "Good pull request descriptions save review time. Reviewers need a title that signals intent, a summary of what changed, and a concrete test plan — not a dump of commit subjects.",
+        "This free AI PR Description Generator reads your git diff (or a change summary) and drafts a reviewer-friendly description with a title, structured sections, and checkbox test steps. Pick GitHub, GitLab, or concise style.",
+        "Use it before opening a PR, when wrapping up a large refactor, or when you want consistent PR hygiene across a team. Always skim the output — you remain responsible for accuracy and security-sensitive details."
+      ],
+      "howTo": {
+        "title": "How to generate a PR description",
+        "steps": [
+          "Copy your git diff (or summarize the changes in plain English).",
+          "Optionally add ticket links, why the change exists, or breaking-change notes.",
+          "Choose a template: GitHub, GitLab, or concise bullets.",
+          "Click Generate, then paste the title and body into your pull request."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Should I paste the full diff?",
+          "a": "Yes when it is not huge. For very large diffs, paste the meaningful hunks or a file-by-file summary so the model focuses on intent."
+        },
+        {
+          "q": "Does it invent features?",
+          "a": "It is instructed to stick to what the diff evidences. Still verify claims about behavior and migrations before publishing the PR."
+        },
+        {
+          "q": "GitHub vs GitLab template?",
+          "a": "GitHub uses Summary / Changes / Test plan. GitLab uses What / Why / How. Concise is for tiny PRs that only need a few bullets."
+        }
+      ],
+      "related": [
+        "ai-tools/commit-message-generator",
+        "ai-tools/code-review-assistant",
+        "ai-tools/readme-generator",
+        "developer-tools/json-formatter"
+      ]
+    },
+    "ai-tools/interview-answer-generator": {
+      "name": "AI Interview Answer Generator",
+      "description": "Get STAR-method answers to behavioral and technical interview questions tailored to your experience.",
+      "metaTitle": "Free AI Interview Answer Generator (STAR Method) | Mytulify",
+      "metaDescription": "Practice behavioral and technical interview answers with STAR structure. Paste the question and your real experience — free AI coaching with follow-up prompts.",
+      "about": [
+        "Interview answers fall flat when they are generic or invent stories you cannot defend. Strong answers use real experience, a clear structure, and language that fits the role.",
+        "This free AI Interview Answer Generator builds STAR, technical, or concise spoken answers from the question, target role, and your own experience. It also suggests likely follow-up questions so you can prepare deeper.",
+        "Use it before behavioral rounds, system-design panels, or when translating resume bullets into spoken stories. Never claim achievements you did not provide — rehearse only honest answers."
+      ],
+      "howTo": {
+        "title": "How to generate an interview answer",
+        "steps": [
+          "Paste the exact interview question.",
+          "Enter the role you are interviewing for.",
+          "Paste real projects, metrics, tools, and outcomes you can discuss out loud.",
+          "Pick STAR, technical, or concise style, then generate and rehearse aloud."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is the STAR method?",
+          "a": "Situation, Task, Action, Result — a structure interviewers expect for behavioral questions. This tool labels those sections so you can practice cleanly."
+        },
+        {
+          "q": "Will it invent jobs or metrics?",
+          "a": "No — prompts instruct the model to use only what you paste. If your notes are thin, it will say so and draft the best honest answer from available facts."
+        },
+        {
+          "q": "Can I use this for technical interviews?",
+          "a": "Yes. Choose the Technical style for architecture and trade-off focused answers, or STAR for behavioral stories."
+        }
+      ],
+      "related": [
+        "ai-tools/cover-letter-generator",
+        "ai-tools/ats-resume-checker",
+        "freelancer-tools/proposal-generator",
+        "text-tools/word-counter"
+      ]
+    },
+    "handwriting-ocr/handwritten-math-ocr": {
+      "name": "Handwritten Math to LaTeX",
+      "description": "Photograph handwritten equations and get clean LaTeX — optionally with a step-by-step solution.",
+      "metaTitle": "Free Handwritten Math to LaTeX OCR | Mytulify",
+      "metaDescription": "Upload a photo of handwritten math and convert it to LaTeX. Free AI OCR for algebra, calculus, and more — with optional step-by-step solutions.",
+      "about": [
+        "Typing complex equations by hand is slow and error-prone. Students, tutors, and engineers often need LaTeX from a notebook photo for homework, papers, or docs.",
+        "This free Handwritten Math to LaTeX tool uses vision AI to read equations from an image and output display or inline LaTeX. Choose step-by-step mode when the photo is a problem to solve.",
+        "Use clear lighting, crop to the equation, and review symbols like integrals and matrices before submitting coursework or publications."
+      ],
+      "howTo": {
+        "title": "How to convert handwritten math to LaTeX",
+        "steps": [
+          "Photograph the equation on plain paper with good light and minimal glare.",
+          "Upload the image and pick LaTeX display, inline, or steps mode.",
+          "Click Convert, then copy the LaTeX into Overleaf, Notion, or your editor."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Which math topics work?",
+          "a": "Arithmetic, algebra, calculus, sums, integrals, and many matrices. Very messy or cropped writing may need a clearer photo."
+        },
+        {
+          "q": "Does step-by-step solve the problem?",
+          "a": "When the image is clearly a problem to solve, yes — otherwise it transcribes and explains. Always verify solutions yourself for graded work."
+        },
+        {
+          "q": "Is my photo stored?",
+          "a": "Images are sent for the OCR request and are not kept as a permanent archive after the request completes. Avoid uploading sensitive documents."
+        }
+      ],
+      "related": [
+        "handwriting-ocr/handwriting-to-text",
+        "handwriting-ocr/handwritten-notes-summarizer",
+        "ai-tools/code-explainer",
+        "text-tools/word-counter"
+      ]
+    },
+    "handwriting-ocr/handwritten-notes-summarizer": {
+      "name": "Handwritten Notes Summarizer",
+      "description": "Upload a photo of handwritten notes and get a structured summary, outline, or study flashcards.",
+      "metaTitle": "Free Handwritten Notes Summarizer (AI OCR) | Mytulify",
+      "metaDescription": "Turn a photo of handwritten notes into a bullet summary, outline, or study flashcards. Free AI tool — no retyping required.",
+      "about": [
+        "Handwritten lecture and meeting notes are hard to search and share. Digitizing them usually means retyping everything by hand.",
+        "This free Handwritten Notes Summarizer reads your photo with OCR, then produces a bullet summary with action items, a structured outline, or Q&A flashcards for studying.",
+        "Best results come from one page at a time, high contrast ink, and optional focus notes (for example keep medical terms)."
+      ],
+      "howTo": {
+        "title": "How to summarize handwritten notes",
+        "steps": [
+          "Photograph one page of notes clearly.",
+          "Choose bullets, outline, or flashcards.",
+          "Optionally add focus context, then generate and copy the Markdown summary."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Can it handle multiple pages?",
+          "a": "Upload one clear page per run for best accuracy. Repeat for additional pages and merge the summaries yourself."
+        },
+        {
+          "q": "Will it invent content?",
+          "a": "It is instructed not to invent facts missing from the page. Illegible spots are marked so you can fill gaps."
+        },
+        {
+          "q": "Flashcards vs summary?",
+          "a": "Use flashcards for studying definitions and facts; use bullets for meeting notes and action items; use outline for long lecture structure."
+        }
+      ],
+      "related": [
+        "handwriting-ocr/handwriting-to-text",
+        "handwriting-ocr/handwritten-math-ocr",
         "text-tools/word-counter",
-        "pdf-tools/pdf-to-word"
+        "ai-tools/readme-generator"
       ]
     },
     "calculators/bmi-calculator": {
