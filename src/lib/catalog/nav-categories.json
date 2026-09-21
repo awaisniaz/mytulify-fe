@@ -4,14 +4,14 @@
     "name": "AI-Powered Tools",
     "icon": "Sparkles",
     "gradient": "from-indigo-500 to-fuchsia-600",
-    "toolCount": 11
+    "toolCount": 15
   },
   {
     "slug": "handwriting-ocr",
     "name": "Handwriting OCR",
     "icon": "ScanText",
     "gradient": "from-violet-500 to-indigo-600",
-    "toolCount": 31
+    "toolCount": 33
   },
   {
     "slug": "freelancer-tools",

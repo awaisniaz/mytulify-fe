@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="How to Answer Interview Questions With STAR (Without Sounding Scripted)">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#b45309"/>
+      <stop offset="55%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#78350f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="480" cy="140" r="170" fill="#fcd34d" opacity="0.12"/>
+  <circle cx="970" cy="470" r="110" fill="#000" opacity="0.18"/>
+  <g opacity="0.35" fill="#fcd34d">
+    <circle cx="980" cy="260" r="90"/>
+    <rect x="920" y="370" width="120" height="16" rx="8" fill="#fff" opacity="0.4"/>
+    <rect x="900" y="400" width="160" height="12" rx="6" fill="#fff" opacity="0.25"/>
+    <rect x="910" y="428" width="140" height="12" rx="6" fill="#fff" opacity="0.2"/>
+  </g>
+  <rect x="72" y="72" width="8" height="48" rx="4" fill="#fcd34d"/>
+  <text x="92" y="106" fill="#fcd34d" font-size="22" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="700" letter-spacing="2">CAREER</text>
+  <text x="72" y="210" fill="#fff" font-size="42" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">How to Answer Interview</text>
+  <text x="72" y="268" fill="#fff" font-size="42" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">Questions With STAR</text>
+  <text x="72" y="326" fill="#fff" font-size="42" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">(Without Sounding Scripted)</text>
+  <text x="72" y="560" fill="#fff" opacity="0.7" font-size="22" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="600">Mytulify Blog</text>
+</svg>

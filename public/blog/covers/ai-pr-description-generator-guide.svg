@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="How to Write Pull Request Descriptions Reviewers Actually Read">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="55%" stop-color="#0d9488"/>
+      <stop offset="100%" stop-color="#134e4a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="520" cy="160" r="180" fill="#99f6e4" opacity="0.12"/>
+  <circle cx="980" cy="480" r="120" fill="#000" opacity="0.18"/>
+  <g opacity="0.4" fill="#99f6e4">
+    <rect x="860" y="180" width="260" height="280" rx="16"/>
+    <rect x="890" y="220" width="200" height="14" rx="7" fill="#fff" opacity="0.4"/>
+    <rect x="890" y="255" width="160" height="12" rx="6" fill="#fff" opacity="0.25"/>
+    <rect x="890" y="288" width="180" height="12" rx="6" fill="#fff" opacity="0.2"/>
+    <rect x="890" y="321" width="140" height="12" rx="6" fill="#fff" opacity="0.2"/>
+    <rect x="890" y="360" width="24" height="24" rx="4" fill="#fff" opacity="0.35"/>
+    <rect x="926" y="366" width="120" height="12" rx="6" fill="#fff" opacity="0.25"/>
+  </g>
+  <rect x="72" y="72" width="8" height="48" rx="4" fill="#99f6e4"/>
+  <text x="92" y="106" fill="#99f6e4" font-size="22" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="700" letter-spacing="2">AI TECH</text>
+  <text x="72" y="210" fill="#fff" font-size="44" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">How to Write Pull Request</text>
+  <text x="72" y="268" fill="#fff" font-size="44" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">Descriptions Reviewers</text>
+  <text x="72" y="326" fill="#fff" font-size="44" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="800">Actually Read</text>
+  <text x="72" y="560" fill="#fff" opacity="0.7" font-size="22" font-family="ui-sans-serif,system-ui,sans-serif" font-weight="600">Mytulify Blog</text>
+</svg>
