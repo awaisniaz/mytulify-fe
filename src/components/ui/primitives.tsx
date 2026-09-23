@@ -56,7 +56,7 @@ export const Textarea = React.forwardRef<
   <textarea
     ref={ref}
     className={cn(
-      "w-full rounded-xl border border-border bg-surface-2 p-3.5 text-sm",
+      "w-full rounded-xl border border-border bg-surface-2 p-3.5 text-base sm:text-sm",
       "placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-ring focus:border-brand/40",
       "transition-shadow duration-200 focus:shadow-[0_0_0_4px_color-mix(in_srgb,var(--brand)_12%,transparent)]",
       "resize-y font-mono leading-relaxed min-h-32",
@@ -75,7 +75,7 @@ export const Input = React.forwardRef<
   <input
     ref={ref}
       className={cn(
-        "w-full rounded-xl border border-border bg-surface-2/80 px-3.5 h-11 text-sm",
+        "w-full rounded-xl border border-border bg-surface-2/80 px-3.5 h-11 text-base sm:text-sm",
         "placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-brand/40 focus:border-brand/40",
         "transition-all duration-200 focus:shadow-[0_0_0_4px_color-mix(in_srgb,var(--brand)_12%,transparent)]",
       className,
@@ -93,7 +93,7 @@ export const Select = React.forwardRef<
   <select
     ref={ref}
     className={cn(
-      "w-full rounded-xl border border-border bg-surface-2 px-3 h-11 text-sm",
+      "w-full rounded-xl border border-border bg-surface-2 px-3 h-11 text-base sm:text-sm",
       "focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer",
       className,
     )}

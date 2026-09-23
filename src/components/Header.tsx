@@ -17,8 +17,8 @@ export async function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-surface lg:bg-surface/90 lg:backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-2 px-4 sm:gap-3 sm:px-6">
-        <SiteLogo logoHeight={28} />
+      <div className="mx-auto flex h-14 max-w-7xl items-center gap-1.5 px-3 sm:gap-3 sm:px-6">
+        <SiteLogo logoHeight={26} className="min-w-0 shrink" nameClassName="truncate text-sm sm:text-lg" />
 
         <nav className="ms-2 hidden items-center gap-1 lg:flex xl:ms-4">
           <div className="group relative">

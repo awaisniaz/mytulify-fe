@@ -47,13 +47,44 @@
 }
 
 * { border-color: var(--border); }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
 body {
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   background-color: var(--background);
+  overflow-x: clip;
+  min-width: 0;
+}
+
+/* Prevent common mobile overflow from wide children */
+img, video, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Comfortable tap targets on coarse pointers (buttons / menu only) */
+@media (pointer: coarse) {
+  button:not(.pill),
+  summary,
+  [data-open-search] {
+    min-height: 2.75rem;
+  }
+  .tool-panel input[type="range"] {
+    min-height: 2.75rem;
+  }
+}
+
+/* Safe area for notched phones */
+.safe-px {
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
 }
 
 html[dir="rtl"] body {
@@ -146,6 +177,16 @@ html[dir="rtl"] h3 {
   transform: translateY(-3px);
   box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.12);
 }
+@media (hover: none) {
+  .interactive-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .tile:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
 .dark .interactive-card:hover {
   box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.45);
 }
@@ -154,9 +195,18 @@ html[dir="rtl"] h3 {
   border-radius: 1rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  padding: 1.25rem;
+  padding: 1rem;
+  min-width: 0;
+  overflow-x: auto;
 }
 @media (min-width: 640px) { .tool-panel { padding: 1.75rem; } }
+
+/* Wide previews (social mockups, tables) stay scrollable instead of blowing layout */
+.mobile-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
 .section-label {
   font-size: 0.6875rem;

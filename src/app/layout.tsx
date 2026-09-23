@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Noto_Nastaliq_Urdu } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
@@ -18,6 +18,17 @@ import { themeScript } from "@/lib/theme-script";
 import { getLocale } from "@/i18n/locale";
 import { getMessaging } from "@/i18n/messaging";
 import { localeDir } from "@/i18n/config";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f8f7f4" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c0a09" },
+  ],
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -102,16 +113,16 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-full min-w-0 flex-col overflow-x-clip">
         <AdSenseScript />
         <GoogleAnalytics />
         <AhrefsAnalytics />
         <Header />
-        <main className="flex-1">
+        <main className="min-w-0 flex-1">
           {children}
-          <InArticleAd className="mx-auto max-w-7xl px-4 py-6 sm:px-6" />
-          <InFeedAd className="mx-auto max-w-7xl px-4 pb-6 sm:px-6" />
-          <MultiplexAd className="mx-auto max-w-7xl px-4 pb-8 sm:px-6" />
+          <InArticleAd className="mx-auto max-w-7xl px-3 py-5 sm:px-6 sm:py-6" />
+          <InFeedAd className="mx-auto max-w-7xl px-3 pb-5 sm:px-6 sm:pb-6" />
+          <MultiplexAd className="mx-auto max-w-7xl px-3 pb-6 sm:px-6 sm:pb-8" />
         </main>
         <Footer />
         <LazyEnhancementsShell />

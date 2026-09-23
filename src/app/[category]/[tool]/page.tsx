@@ -147,22 +147,22 @@ export default async function ToolPage({
       ];
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-5xl px-3 py-6 sm:px-6 sm:py-10">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <nav aria-label="Breadcrumb" className="mb-6 flex flex-wrap items-center gap-1.5 text-sm text-muted">
+      <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-1 text-xs text-muted sm:mb-6 sm:gap-1.5 sm:text-sm">
         <Link href="/" className="hover:text-foreground">{s.home}</Link>
-        <Icon name="ChevronRight" className="h-4 w-4" />
-        <Link href={`/${cat.slug}`} className="hover:text-foreground">{catLabel.name}</Link>
-        <Icon name="ChevronRight" className="h-4 w-4" />
-        <span className="text-foreground">{label.name}</span>
+        <Icon name="ChevronRight" className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" />
+        <Link href={`/${cat.slug}`} className="max-w-[40vw] truncate hover:text-foreground sm:max-w-none">{catLabel.name}</Link>
+        <Icon name="ChevronRight" className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" />
+        <span className="max-w-[45vw] truncate text-foreground sm:max-w-none">{label.name}</span>
       </nav>
 
-      <div className="rounded-xl border border-border bg-surface p-6 sm:p-8">
-        <div className="flex items-start gap-4">
+      <div className="rounded-xl border border-border bg-surface p-4 sm:p-8">
+        <div className="flex items-start gap-3 sm:gap-4">
           <span
             className={cn(
-              "relative grid h-14 w-14 shrink-0 place-items-center rounded-xl ring-1",
+              "relative grid h-12 w-12 shrink-0 place-items-center rounded-xl ring-1 sm:h-14 sm:w-14",
               present.bg,
               present.ring,
             )}
@@ -170,16 +170,16 @@ export default async function ToolPage({
             role="img"
             aria-label={`${label.name} tool icon`}
           >
-            <Icon name={getToolIcon(t)} className={cn("h-6 w-6", present.fg)} />
+            <Icon name={getToolIcon(t)} className={cn("h-5 w-5 sm:h-6 sm:w-6", present.fg)} />
             <span className={cn("absolute -bottom-1 -right-1 rounded px-1 text-[9px] font-bold leading-tight text-white", TOOL_BADGE_BG[present.badge] ?? "bg-orange-500")}>
               {present.badge}
             </span>
           </span>
-          <div>
+          <div className="min-w-0">
             <p className="section-label mb-1">{catLabel.name}</p>
-            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{label.name}</h1>
-            <p className="mt-2 max-w-2xl leading-relaxed text-muted">{label.description}</p>
-            <div className="mt-4 flex flex-wrap gap-2">
+            <h1 className="text-xl font-bold tracking-tight sm:text-3xl">{label.name}</h1>
+            <p className="mt-2 text-sm leading-relaxed text-muted sm:max-w-2xl sm:text-base">{label.description}</p>
+            <div className="mt-3 flex flex-wrap gap-2 sm:mt-4">
             {t.clientSide ? (
               <>
                 <Badge tone="green"><Icon name="Lock" className="mr-1 h-3 w-3" /> {s.private}</Badge>
@@ -201,7 +201,7 @@ export default async function ToolPage({
         </div>
       </div>
 
-      <div className="tool-panel mt-8 shadow-sm">
+      <div className="tool-panel mt-5 shadow-sm sm:mt-8">
         {available ? (
           <ToolRenderer category={cat.slug} slug={t.slug} />
         ) : (

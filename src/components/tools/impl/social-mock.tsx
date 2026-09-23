@@ -85,7 +85,7 @@ export function FakeTweet() {
         {showMedia && <FileDrop accept="image/*" onFiles={media.onFiles} label="Upload tweet media" />}
       </div>
       <ExportCard name="tweet">
-        <div className={`w-[360px] rounded-2xl border p-4 text-left ${bg}`}>
+        <div className={`w-full max-w-[360px] rounded-2xl border p-4 text-left ${bg}`}>
           <div className="flex items-start gap-3">
             <Avatar src={avatar.src} name={name} size={48} />
             <div className="min-w-0 flex-1">
@@ -133,7 +133,12 @@ export function TweetToImage() {
   const [aspect, setAspect] = React.useState<"square" | "story" | "wide">("square");
   const t = TWEET_THEMES[theme];
   const dims = { square: "400×400", story: "360×640", wide: "560×315" }[aspect];
-  const sizeClass = aspect === "story" ? "w-[360px] h-[640px]" : aspect === "wide" ? "w-[560px] h-[315px]" : "w-[400px] min-h-[400px]";
+  const sizeClass =
+    aspect === "story"
+      ? "w-full max-w-[360px] aspect-[9/16] max-h-[70vh]"
+      : aspect === "wide"
+        ? "w-full max-w-[560px] aspect-video"
+        : "w-full max-w-[400px] min-h-[240px] sm:min-h-[400px]";
 
   return (
     <div className="grid gap-6 lg:grid-cols-2">
@@ -205,7 +210,7 @@ export function FakeInstagram() {
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={dark} onChange={(e) => setDark(e.target.checked)} /> Dark mode</label>
       </div>
       <ExportCard name="instagram-post">
-        <div className={`w-[360px] overflow-hidden rounded-xl border text-left ${bg}`}>
+        <div className={`w-full max-w-[360px] overflow-hidden rounded-xl border text-left ${bg}`}>
           <div className="flex items-center gap-2 p-3">
             <Avatar src={avatar.src} name={name} size={32} />
             <div className="min-w-0 flex-1">
@@ -277,7 +282,7 @@ export function FakeFacebook() {
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={dark} onChange={(e) => setDark(e.target.checked)} /> Dark mode</label>
       </div>
       <ExportCard name="facebook-post">
-        <div className={`w-[360px] rounded-lg border p-4 text-left ${bg}`}>
+        <div className={`w-full max-w-[360px] rounded-lg border p-4 text-left ${bg}`}>
           <div className="flex items-center gap-2">
             {avatar.src ? <img src={avatar.src} alt="" className="h-10 w-10 rounded-full object-cover" /> : <div className="grid h-10 w-10 place-items-center rounded-full bg-[#1877f2] font-bold text-white">{name[0]}</div>}
             <div><div className="font-semibold">{name}</div><div className="text-xs opacity-60">{time} · {audience}</div></div>
@@ -314,7 +319,7 @@ export function FakeInstagramDm() {
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={dark} onChange={(e) => setDark(e.target.checked)} /> Dark mode</label>
       </div>
       <ExportCard name="instagram-dm">
-        <div className={`w-[360px] overflow-hidden rounded-xl border text-left ${bg}`}>
+        <div className={`w-full max-w-[360px] overflow-hidden rounded-xl border text-left ${bg}`}>
           <div className="flex items-center gap-2 border-b border-gray-100 p-3 dark:border-zinc-800">
             <Avatar src={avatar.src} name={name} size={32} />
             <div><span className="text-sm font-semibold">{name}</span>{showActive && <p className="text-xs text-emerald-500">Active now</p>}</div>

@@ -34,7 +34,7 @@ export async function HomeCatalog() {
         aria-label={t.nav.categories}
         className="sticky top-14 z-40 border-b border-border bg-surface/95 backdrop-blur-md"
       >
-        <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-2.5 [scrollbar-width:none] sm:px-6 [&::-webkit-scrollbar]:hidden">
+        <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-3 py-2.5 [scrollbar-width:none] sm:px-6 [&::-webkit-scrollbar]:hidden">
           {categories.map((c) => (
             <a
               key={c.slug}
@@ -50,24 +50,24 @@ export async function HomeCatalog() {
         </div>
       </nav>
 
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-        <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
+      <section className="mx-auto max-w-7xl px-3 py-8 sm:px-6 sm:py-12">
+        <div className="mb-6 flex flex-col gap-2 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
+          <div className="min-w-0">
             <p className="section-label mb-1.5">{t.home.explore}</p>
-            <p className="text-2xl font-extrabold tracking-tight sm:text-3xl">{t.home.pickCategory}</p>
-            <p className="mt-1.5 text-muted">{t.home.pickCategorySub(TOTAL_TOOLS)}</p>
+            <p className="text-xl font-extrabold tracking-tight sm:text-3xl">{t.home.pickCategory}</p>
+            <p className="mt-1.5 text-sm text-muted sm:text-base">{t.home.pickCategorySub(TOTAL_TOOLS)}</p>
           </div>
           <Link href="/tools" className="inline-flex items-center gap-1 text-sm font-bold text-brand hover:underline">
             {t.home.seeAll} <Icon name="ArrowRight" className="h-4 w-4" />
           </Link>
         </div>
 
-        <div className="space-y-10">
+        <div className="space-y-8 sm:space-y-10">
           {categories.map((c) => (
             <section
               key={c.slug}
               id={c.slug}
-              className="relative scroll-mt-28 overflow-hidden rounded-3xl border border-border bg-surface-2/50 p-5 sm:p-6"
+              className="relative scroll-mt-28 overflow-hidden rounded-2xl border border-border bg-surface-2/50 p-4 sm:rounded-3xl sm:p-6"
             >
               <span
                 aria-hidden

@@ -16,6 +16,7 @@ import {
   EmailSignatureGenerator, VcardGenerator, IcsCalendarGenerator,
 } from "@/components/tools/impl/demand-extra";
 import { DecisionWheel, PomodoroTimer } from "@/components/tools/impl/engaging-suite";
+import { EightBallPool } from "@/components/tools/impl/eight-ball-pool";
 
 export default makeReg({
   "json-to-csv": JsonToCsv,
@@ -55,4 +56,5 @@ export default makeReg({
   "ics-calendar-generator": IcsCalendarGenerator,
   "decision-wheel": DecisionWheel,
   "pomodoro-timer": PomodoroTimer,
+  "8-ball-pool": EightBallPool,
 });

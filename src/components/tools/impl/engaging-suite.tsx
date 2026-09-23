@@ -45,7 +45,7 @@ export function DecisionWheel() {
     }, 4200);
   };
 
-  const size = 320;
+  const size = 280;
   const r = size / 2;
   const slices = options.map((label, i) => {
     const start = (i / options.length) * Math.PI * 2 - Math.PI / 2;
@@ -66,12 +66,12 @@ export function DecisionWheel() {
       <Notice tone="info">
         Add options (one per line), spin the wheel, and let fate decide — perfect for lunch, chores, or team picks.
       </Notice>
-      <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+      <div className="grid gap-6 lg:grid-cols-[1fr_minmax(0,320px)]">
         <Field label="Options" hint="2–24 options, one per line">
           <Textarea value={raw} onChange={(e) => setRaw(e.target.value)} rows={10} className="font-sans" />
         </Field>
         <div className="flex flex-col items-center gap-4">
-          <div className="relative" style={{ width: size, height: size }}>
+          <div className="relative mx-auto w-full max-w-[280px] sm:max-w-[320px]" style={{ aspectRatio: "1" }}>
             <div className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1">
               <div
                 className="h-0 w-0 border-l-[10px] border-r-[10px] border-t-[18px] border-l-transparent border-r-transparent"
@@ -79,10 +79,8 @@ export function DecisionWheel() {
               />
             </div>
             <svg
-              width={size}
-              height={size}
               viewBox={`0 0 ${size} ${size}`}
-              className="rounded-full shadow-lg ring-4 ring-border"
+              className="h-full w-full rounded-full shadow-lg ring-4 ring-border"
               style={{
                 transform: `rotate(${rotation}deg)`,
                 transition: spinning ? "transform 4.2s cubic-bezier(0.12, 0.75, 0.12, 1)" : "none",

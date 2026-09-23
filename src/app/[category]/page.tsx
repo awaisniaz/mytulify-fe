@@ -97,24 +97,24 @@ export default async function CategoryPage({
   ];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-7xl px-3 py-6 sm:px-6 sm:py-10">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-1.5 text-sm text-muted">
+      <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-1 text-xs text-muted sm:mb-6 sm:gap-1.5 sm:text-sm">
         <Link href="/" className="hover:text-foreground">{s.home}</Link>
-        <Icon name="ChevronRight" className="h-4 w-4" />
-        <span className="text-foreground">{catLabel.name}</span>
+        <Icon name="ChevronRight" className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+        <span className="truncate text-foreground">{catLabel.name}</span>
       </nav>
 
-      <div className="mb-8 rounded-xl border border-border bg-surface p-6 sm:p-8">
-        <div className="flex items-start gap-4">
-          <span className={cn("grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white sm:h-16 sm:w-16", c.gradient)}>
-            <Icon name={c.icon} className="h-6 w-6 sm:h-7 sm:w-7" />
+      <div className="mb-6 rounded-xl border border-border bg-surface p-4 sm:mb-8 sm:p-8">
+        <div className="flex items-start gap-3 sm:gap-4">
+          <span className={cn("grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white sm:h-16 sm:w-16", c.gradient)}>
+            <Icon name={c.icon} className="h-5 w-5 sm:h-7 sm:w-7" />
           </span>
-          <div>
+          <div className="min-w-0">
             <p className="section-label mb-1">{s.category}</p>
-            <h1 className="text-2xl font-bold tracking-tight sm:text-4xl">{catLabel.name}</h1>
-            <p className="mt-2 max-w-2xl text-muted">{catLabel.description}</p>
+            <h1 className="text-xl font-bold tracking-tight sm:text-4xl">{catLabel.name}</h1>
+            <p className="mt-2 text-sm text-muted sm:max-w-2xl sm:text-base">{catLabel.description}</p>
             <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-muted">
               <Icon name="Wrench" className="h-4 w-4" />
               {s.toolsCount.replace("{n}", String(c.tools.length))}
