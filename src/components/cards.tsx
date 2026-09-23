@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/config";
 import type { Messages } from "@/i18n/messages";
 import type { LocalizedTool } from "@/i18n/content";
 import { Icon } from "@/components/ui/Icon";
+import { CategoryArtFade } from "@/components/CategoryArtFade";
 import { cn } from "@/lib/utils";
 
 const BADGE_BG = TOOL_BADGE_BG;
@@ -50,9 +51,15 @@ export function ToolCard({
             present.ring,
           )}
           title={present.badge}
+          aria-hidden
         >
           <Icon name={toolIcon} className={cn("h-5 w-5", present.fg)} />
-          <span className={cn("absolute -bottom-1 -right-1 rounded px-1 text-[8px] font-bold leading-tight text-white", BADGE_BG[present.badge] ?? "bg-orange-500")}>
+          <span
+            className={cn(
+              "absolute -bottom-1 -right-1 rounded px-1 text-[8px] font-bold leading-tight text-white",
+              BADGE_BG[present.badge] ?? "bg-orange-500",
+            )}
+          >
             {present.badge}
           </span>
         </span>
@@ -88,7 +95,9 @@ export function CategoryCard({
   categoryContent?: { name: string; description: string; tagline: string };
   toolsCountLabel?: (n: number) => string;
 }) {
-  const name = categoryContent?.name ?? (messages ? categoryLabelFrom(messages, category.slug, category.name) : category.name);
+  const name =
+    categoryContent?.name ??
+    (messages ? categoryLabelFrom(messages, category.slug, category.name) : category.name);
   const tagline = categoryContent?.tagline ?? category.tagline;
   const countLabel = toolsCountLabel?.(category.tools.length) ?? `${category.tools.length} tools`;
 
@@ -97,13 +106,14 @@ export function CategoryCard({
       <Link
         href={`/${category.slug}`}
         className={cn(
-          "tile interactive-card block min-h-[160px] bg-gradient-to-br p-6 text-white sm:min-h-[180px]",
+          "tile interactive-card relative block min-h-[160px] overflow-hidden bg-gradient-to-br p-6 text-white sm:min-h-[180px]",
           category.gradient,
         )}
       >
+        <CategoryArtFade slug={category.slug} opacity={0.85} />
         <div className="relative z-10 flex h-full flex-col justify-between">
-          <Icon name={category.icon} className="h-8 w-8" />
-          <div>
+          <Icon name={category.icon} className="h-8 w-8 drop-shadow-sm" />
+          <div className="max-w-[70%]">
             <h3 className="text-xl font-bold">{name}</h3>
             <p className="mt-1 text-sm text-white/80">{tagline}</p>
             <p className="mt-2 text-xs font-semibold text-white/70">{countLabel} →</p>
@@ -116,16 +126,22 @@ export function CategoryCard({
   return (
     <Link
       href={`/${category.slug}`}
-      className="interactive-card group flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="interactive-card group relative flex items-center gap-4 overflow-hidden rounded-2xl border border-border bg-surface p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
-      <span className={cn("grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white shadow-sm", category.gradient)}>
+      <CategoryArtFade slug={category.slug} className="w-[42%]" opacity={0.7} />
+      <span
+        className={cn(
+          "relative z-10 grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white shadow-sm",
+          category.gradient,
+        )}
+      >
         <Icon name={category.icon} className="h-5 w-5" />
       </span>
-      <div className="min-w-0 flex-1">
+      <div className="relative z-10 min-w-0 flex-1">
         <h3 className="font-semibold group-hover:text-brand">{name}</h3>
         <p className="mt-0.5 truncate text-sm text-muted">{tagline}</p>
       </div>
-      <span className="shrink-0 rounded-full bg-surface-2 px-2.5 py-1 text-xs font-bold text-muted">
+      <span className="relative z-10 shrink-0 rounded-full bg-surface-2 px-2.5 py-1 text-xs font-bold text-muted">
         {category.tools.length}
       </span>
     </Link>
@@ -154,7 +170,10 @@ export function CompactToolLink({
       prefetch={false}
       className="group flex items-center gap-3 rounded-xl border border-border bg-surface px-3 py-2.5 transition-colors hover:border-brand/50 hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
-      <span className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-lg ring-1", present.bg, present.ring)}>
+      <span
+        className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-lg ring-1", present.bg, present.ring)}
+        aria-hidden
+      >
         <Icon name={toolIcon} className={cn("h-4 w-4", present.fg)} />
       </span>
       <span className="min-w-0 flex-1">

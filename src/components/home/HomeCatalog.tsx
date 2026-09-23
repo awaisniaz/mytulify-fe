@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CATEGORIES, TOTAL_TOOLS } from "@/lib/catalog";
 import { CompactToolLink } from "@/components/cards";
+import { CategoryArtFade } from "@/components/CategoryArtFade";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 import { getLocale } from "@/i18n/locale";
@@ -69,11 +70,12 @@ export async function HomeCatalog() {
               id={c.slug}
               className="relative scroll-mt-28 overflow-hidden rounded-2xl border border-border bg-surface-2/50 p-4 sm:rounded-3xl sm:p-6"
             >
+              <CategoryArtFade slug={c.slug} className="w-[40%] sm:w-[36%]" opacity={0.55} />
               <span
                 aria-hidden
-                className={cn("absolute start-0 top-6 bottom-6 w-1 rounded-full bg-gradient-to-b", c.gradient)}
+                className={cn("absolute start-0 top-6 bottom-6 z-10 w-1 rounded-full bg-gradient-to-b", c.gradient)}
               />
-              <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="relative z-10 mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex min-w-0 items-start gap-3">
                   <span
                     className={cn(
@@ -83,7 +85,7 @@ export async function HomeCatalog() {
                   >
                     <Icon name={c.icon} className="h-5 w-5" />
                   </span>
-                  <div className="min-w-0">
+                  <div className="min-w-0 max-w-[75%]">
                     <h2 className="text-xl font-extrabold tracking-tight">{c.labels.name}</h2>
                     <p className="mt-0.5 text-sm text-muted">{c.labels.tagline}</p>
                   </div>
@@ -91,14 +93,14 @@ export async function HomeCatalog() {
                 <Link
                   href={`/${c.slug}`}
                   prefetch={false}
-                  className="inline-flex shrink-0 items-center gap-1.5 self-start rounded-full bg-surface-2 px-3 py-1.5 text-xs font-bold text-muted transition-colors hover:bg-brand/10 hover:text-brand sm:self-auto"
+                  className="inline-flex shrink-0 items-center gap-1.5 self-start rounded-full bg-surface px-3 py-1.5 text-xs font-bold text-muted shadow-sm transition-colors hover:bg-brand/10 hover:text-brand sm:self-auto"
                 >
                   {t.home.toolsInCategory(c.tools.length)}
                   <Icon name="ArrowRight" className="h-3.5 w-3.5" />
                 </Link>
               </div>
 
-              <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="relative z-10 grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {c.tools.map(({ tool, label }) => (
                   <CompactToolLink
                     key={tool.slug}

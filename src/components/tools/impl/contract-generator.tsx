@@ -6,6 +6,9 @@ import { Input, Select, Textarea, Button } from "@/components/ui/primitives";
 import { Field, Notice, CopyButton } from "@/components/tools/shared";
 import { exportBrandedPdf } from "@/lib/pdf-doc";
 import { download } from "@/lib/utils";
+import { CONTRACT_TEMPLATES_50 } from "@/lib/freelancer/templates/catalog";
+import { FreelancerTemplateBrowser } from "./FreelancerTemplateBrowser";
+import { BrandedDocPreview } from "./BrandedDocPreview";
 import {
   DEFAULT_DOC_BRAND,
   DocBrandControls,
@@ -31,69 +34,10 @@ const CURRENCIES = [
   { code: "AUD", sym: "A$", label: "AUD (A$)" },
 ];
 
-const CONTRACT_TEMPLATES = {
-  web: {
-    title: "Website Design & Development Agreement",
-    scope:
-      "Design and develop a responsive marketing website including up to 5 pages, mobile optimization, basic on-page SEO setup, contact form integration, and CMS handoff.\n\nExcluded unless added in writing: copywriting, stock photography licensing, ongoing hosting, maintenance retainers, and third-party plugin subscriptions.",
-    revisions: "2",
-    amount: "4500",
-    schedule: "milestone",
-  },
-  design: {
-    title: "Graphic Design Services Agreement",
-    scope:
-      "Deliver brand-aligned graphic design assets as specified in the project brief (e.g. logo variations, social media templates, presentation deck).\n\nExcluded: print production, font licensing beyond standard web fonts, and unlimited revision rounds.",
-    revisions: "3",
-    amount: "1800",
-    schedule: "completion",
-  },
-  writing: {
-    title: "Freelance Content Writing Agreement",
-    scope:
-      "Research and write SEO-friendly content per the agreed content calendar or brief. Deliverables include drafts in Google Docs/Word, one revision round per piece, and meta descriptions where applicable.\n\nExcluded: graphic design, publishing to CMS, paid media, and keyword tracking reports unless scoped separately.",
-    revisions: "1",
-    amount: "1200",
-    schedule: "milestone",
-  },
-  consulting: {
-    title: "Independent Consulting Agreement",
-    scope:
-      "Provide professional consulting services including discovery sessions, audit/analysis deliverables, written recommendations, and up to 30 days of email follow-up support.\n\nExcluded: hands-on implementation, staff management, and software procurement unless specified in a change order.",
-    revisions: "1",
-    amount: "5000",
-    schedule: "upfront",
-  },
-  retainer: {
-    title: "Monthly Retainer Services Agreement",
-    scope:
-      "Provide ongoing freelance services on a monthly retainer basis as defined in the monthly work plan (e.g. design hours, development support, content updates).\n\nUnused hours do not roll over unless agreed in writing. Out-of-scope requests require a change order.",
-    revisions: "2",
-    amount: "2500",
-    schedule: "retainer",
-  },
-  dev: {
-    title: "Software Development Agreement",
-    scope:
-      "Design, develop, and deliver custom software/application features per the technical specification. Includes source code delivery, basic documentation, and deployment assistance.\n\nExcluded: hosting infrastructure costs, third-party API fees, post-launch warranty beyond the support period, and security audits.",
-    revisions: "2",
-    amount: "8000",
-    schedule: "custom",
-  },
-} as const;
-
-type TemplateKey = keyof typeof CONTRACT_TEMPLATES;
+const FIRST_CONTRACT = CONTRACT_TEMPLATES_50[0]!;
 
 function Row({ children }: { children: React.ReactNode }) {
   return <div className="grid gap-3 sm:grid-cols-2">{children}</div>;
-}
-
-function Preview({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="rounded-xl border border-border bg-surface-2 p-4 text-sm leading-relaxed whitespace-pre-wrap font-mono max-h-[420px] overflow-y-auto">
-      {children}
-    </div>
-  );
 }
 
 function ClauseToggle({
@@ -119,7 +63,7 @@ function ClauseToggle({
 }
 
 type ContractState = {
-  template: TemplateKey | "blank";
+  templateId: string | null;
   contractRef: string;
   projectTitle: string;
   effectiveDate: string;
@@ -277,9 +221,9 @@ function buildContractDocument(s: ContractState) {
 
 export function ContractGenerator() {
   const [s, setS] = React.useState<ContractState>({
-    template: "web",
+    templateId: FIRST_CONTRACT.id,
     contractRef: `CTR-${new Date().getFullYear()}-${String(Date.now()).slice(-4)}`,
-    projectTitle: CONTRACT_TEMPLATES.web.title,
+    projectTitle: FIRST_CONTRACT.data.projectTitle,
     effectiveDate: new Date().toISOString().slice(0, 10),
     freelancer: "Alex Freelance LLC",
     freelancerEmail: "hello@example.com",
@@ -287,17 +231,17 @@ export function ContractGenerator() {
     client: "Acme Corp",
     clientEmail: "legal@acme.com",
     clientAddress: "456 Business Ave, City, ST 10002",
-    scope: CONTRACT_TEMPLATES.web.scope,
-    amount: CONTRACT_TEMPLATES.web.amount,
+    scope: FIRST_CONTRACT.data.scope,
+    amount: FIRST_CONTRACT.data.amount,
     currency: "USD",
-    schedule: CONTRACT_TEMPLATES.web.schedule,
+    schedule: FIRST_CONTRACT.data.schedule,
     milestone1: "40% — upon signed agreement & kickoff",
     milestone2: "30% — upon design approval",
     milestone3: "30% — upon final delivery",
     depositPct: "25",
     netDays: "15",
     deadline: new Date(Date.now() + 90 * 86400000).toISOString().slice(0, 10),
-    revisions: CONTRACT_TEMPLATES.web.revisions,
+    revisions: FIRST_CONTRACT.data.revisions,
     lateFee: "1.5",
     killFee: "25",
     ip: "transfers",
@@ -316,16 +260,18 @@ export function ContractGenerator() {
 
   const patch = (p: Partial<ContractState>) => setS((prev) => ({ ...prev, ...p }));
 
-  function applyTemplate(key: TemplateKey | "blank") {
-    patch({ template: key });
-    if (key === "blank") return;
-    const t = CONTRACT_TEMPLATES[key];
+  function applyTemplate(t: (typeof CONTRACT_TEMPLATES_50)[number] | null) {
+    if (!t) {
+      patch({ templateId: null });
+      return;
+    }
     patch({
-      projectTitle: t.title,
-      scope: t.scope,
-      revisions: t.revisions,
-      amount: t.amount,
-      schedule: t.schedule,
+      templateId: t.id,
+      projectTitle: t.data.projectTitle,
+      scope: t.data.scope,
+      revisions: t.data.revisions,
+      amount: t.data.amount,
+      schedule: t.data.schedule,
     });
   }
 
@@ -364,17 +310,14 @@ export function ContractGenerator() {
         termination clauses. Preview live, copy text, or download a branded PDF — 100% private in your browser.
       </Notice>
 
-      <Field label="Contract template" hint="Pre-fills scope, pricing, and revision defaults for your industry">
-        <Select value={s.template} onChange={(e) => applyTemplate(e.target.value as TemplateKey | "blank")}>
-          <option value="web">Web design & development contract</option>
-          <option value="design">Graphic design contract</option>
-          <option value="writing">Freelance writing contract</option>
-          <option value="consulting">Consulting / independent contractor agreement</option>
-          <option value="retainer">Monthly retainer agreement</option>
-          <option value="dev">Software development contract</option>
-          <option value="blank">Blank — custom contract</option>
-        </Select>
-      </Field>
+      <FreelancerTemplateBrowser
+        label="Contract template library"
+        hint="50 industry templates — select, edit parties/scope, then download PDF"
+        templates={CONTRACT_TEMPLATES_50}
+        selectedId={s.templateId}
+        onSelect={(t) => applyTemplate(t)}
+        onBlank={() => applyTemplate(null)}
+      />
 
       <Row>
         <Field label="Contract reference #">
@@ -523,8 +466,23 @@ export function ContractGenerator() {
 
       <DocBrandControls value={brand} onChange={setBrand} />
 
-      <Field label="Live contract preview">
-        <Preview>{doc.fullText}</Preview>
+      <Field label="Live PDF preview">
+        <BrandedDocPreview
+          anchorId="live-doc-preview"
+          docType="Contract"
+          title={s.projectTitle || "Freelance Services Agreement"}
+          subtitle="Independent contractor agreement template"
+          meta={[
+            { label: "Reference", value: s.contractRef },
+            { label: "Freelancer", value: s.freelancer },
+            { label: "Client", value: s.client },
+            { label: "Effective date", value: s.effectiveDate },
+          ]}
+          sections={doc.sections}
+          signatures={doc.signatures}
+          footerLeft={`${s.freelancer || "Freelancer"} · ${s.contractRef}`}
+          brand={brand}
+        />
       </Field>
 
       <div className="flex flex-wrap gap-2">

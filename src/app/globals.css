@@ -311,6 +311,7 @@ html[dir="rtl"] h3 {
   inset: 0;
   background: linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 55%);
   pointer-events: none;
+  z-index: 1;
 }
 
 /* AdSense: prevent stacked / overflowing units */
