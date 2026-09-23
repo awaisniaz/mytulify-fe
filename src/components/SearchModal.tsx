@@ -86,7 +86,7 @@ export function SearchModal({ open, onClose, tools, strings }: Props) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-start justify-center p-4 pt-[10vh] sm:pt-[12vh]">
+    <div className="fixed inset-0 z-[100] flex items-stretch justify-center p-0 sm:items-start sm:p-4 sm:pt-[12vh]">
       <div
         className="absolute inset-0 animate-fade-in bg-black/50 backdrop-blur-sm"
         onClick={onClose}
@@ -96,7 +96,7 @@ export function SearchModal({ open, onClose, tools, strings }: Props) {
         role="dialog"
         aria-modal="true"
         aria-label={strings.ariaLabel}
-        className="glass gradient-border relative w-full max-w-xl overflow-hidden rounded-2xl shadow-2xl shadow-brand/20 animate-scale-in"
+        className="glass gradient-border relative flex h-full w-full max-w-xl flex-col overflow-hidden rounded-none shadow-2xl shadow-brand/20 animate-scale-in sm:h-auto sm:max-h-[80vh] sm:rounded-2xl"
       >
         <div className="input-glow flex items-center gap-3 border-b border-border px-4">
           <Icon name="Search" className="h-5 w-5 shrink-0 text-brand" />
@@ -127,7 +127,7 @@ export function SearchModal({ open, onClose, tools, strings }: Props) {
 
         <div className="border-b border-border px-4 py-2 text-xs text-muted">{resultsLabel}</div>
 
-        <div ref={listRef} className="max-h-[50vh] overflow-y-auto p-2">
+        <div ref={listRef} className="min-h-0 flex-1 overflow-y-auto p-2 sm:max-h-[50vh] sm:flex-none">
           {results.length === 0 && (
             <div className="grid place-items-center gap-2 p-10 text-center">
               <span className="grid h-12 w-12 place-items-center rounded-xl bg-surface-2 text-muted">

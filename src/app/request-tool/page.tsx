@@ -29,11 +29,6 @@ export default function RequestToolPage() {
       <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">
         Request a tool
       </h1>
-      <p className="mt-3 text-muted">
-        Missing something from our {TOTAL_TOOLS}+ tools? Describe the idea — every request is saved and
-        emailed from this Next.js app to <strong className="text-foreground">{site.requestNotifyEmail}</strong>{" "}
-        when SMTP is configured.
-      </p>
 
       <div className="mt-8 rounded-2xl border border-border bg-surface p-6 sm:p-8">
         <RequestToolForm categories={categories} />

@@ -47,12 +47,12 @@ export default async function ToolsPage() {
   }));
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-      <div className="mb-8 border-b border-border pb-6">
-        <h1 className="text-2xl font-bold sm:text-3xl">{s.toolsPageTitle.replace("{n}", String(TOTAL_TOOLS))}</h1>
-        <p className="mt-1 text-muted">{s.toolsPageSub.replace("{cats}", String(TOTAL_CATEGORIES))}</p>
+    <div className="mx-auto max-w-7xl px-3 py-6 sm:px-6 sm:py-10">
+      <div className="mb-6 border-b border-border pb-5 sm:mb-8 sm:pb-6">
+        <h1 className="text-xl font-bold sm:text-3xl">{s.toolsPageTitle.replace("{n}", String(TOTAL_TOOLS))}</h1>
+        <p className="mt-1 text-sm text-muted sm:text-base">{s.toolsPageSub.replace("{cats}", String(TOTAL_CATEGORIES))}</p>
       </div>
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <DisplayAd />
       </div>
       <Suspense fallback={<div className="skeleton h-64 rounded-xl" />}>

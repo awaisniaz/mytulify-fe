@@ -42,7 +42,7 @@ export default async function Home() {
       <HomeHero />
 
       <section className="border-b border-border bg-surface-2/50 py-8">
-        <div className="mx-auto grid max-w-7xl gap-3 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl gap-3 px-3 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
           {[
             ["Lock", t.home.valuePrivate, t.home.valuePrivateDesc],
             ["Zap", t.home.valueInstant, t.home.valueInstantDesc],
@@ -62,29 +62,29 @@ export default async function Home() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+      <div className="mx-auto max-w-7xl px-3 py-5 sm:px-6 sm:py-6">
         <DisplayAd />
       </div>
 
       <HomeCatalog />
 
-      <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6">
-        <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-brand via-orange-500 to-amber-500 px-8 py-14 text-center text-white sm:px-12">
-          <h2 className="text-3xl font-extrabold sm:text-4xl">{t.home.ctaTitle}</h2>
-          <p className="mx-auto mt-3 max-w-md text-white/85">
+      <section className="mx-auto max-w-7xl px-3 pb-12 sm:px-6 sm:pb-16">
+        <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-brand via-orange-500 to-amber-500 px-5 py-10 text-center text-white sm:rounded-3xl sm:px-12 sm:py-14">
+          <h2 className="text-2xl font-extrabold sm:text-4xl">{t.home.ctaTitle}</h2>
+          <p className="mx-auto mt-3 max-w-md text-sm text-white/85 sm:text-base">
             {messaging.homeCtaSubtitle}
           </p>
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-6 flex flex-col items-stretch justify-center gap-3 sm:mt-7 sm:flex-row sm:flex-wrap sm:items-center">
             <Link
               href="/tools"
-              className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-brand shadow-lg"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-brand shadow-lg"
             >
               {t.home.browseAll}
               <Icon name="ArrowRight" className="h-4 w-4" />
             </Link>
             <Link
               href="/tools"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/40 px-6 py-3 text-sm font-bold text-white"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/40 px-6 py-3 text-sm font-bold text-white"
             >
               {t.home.searchAll}
               <Icon name="Search" className="h-4 w-4" />

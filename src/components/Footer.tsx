@@ -14,7 +14,7 @@ export async function Footer() {
 
   return (
     <footer className="mt-auto border-t border-border bg-surface">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+      <div className="mx-auto max-w-7xl px-3 py-10 sm:px-6 sm:py-12">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_2fr]">
           <div>
             <SiteLogo logoHeight={24} nameClassName="font-bold text-sm sm:text-base" />

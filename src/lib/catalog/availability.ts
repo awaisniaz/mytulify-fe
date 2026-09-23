@@ -20,6 +20,7 @@ export const LIVE_SERVER_TOOLS = new Set<string>([
   "seo-web-tools/indexnow-url-submitter",
   "seo-web-tools/indexing-readiness-checker",
   "seo-web-tools/url-index-status-checker",
+  "text-tools/language-translator",
 ]);
 
 function isAiCategory(category: string): boolean {

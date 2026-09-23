@@ -47,24 +47,24 @@ export function AllToolsBrowser({ tools, categories, totalTools, searchPlacehold
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder={searchPlaceholder}
-          className="h-11 flex-1 bg-transparent text-sm outline-none placeholder:text-muted"
+          className="h-11 min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted sm:text-sm"
         />
         {q && (
           <button
             type="button"
             onClick={() => setQ("")}
-            className="mr-2 rounded-lg px-2 py-1 text-xs font-semibold text-muted hover:bg-surface-2"
+            className="mr-2 shrink-0 rounded-lg px-2 py-1 text-xs font-semibold text-muted hover:bg-surface-2"
           >
             {clearLabel}
           </button>
         )}
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="-mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible [&::-webkit-scrollbar]:hidden">
         <button
           type="button"
           onClick={() => setActive("all")}
-          className={cn("pill text-xs font-semibold", active === "all" && "ring-2 ring-brand")}
+          className={cn("pill shrink-0 text-xs font-semibold", active === "all" && "ring-2 ring-brand")}
         >
           {allLabel} ({totalTools})
         </button>
@@ -74,7 +74,7 @@ export function AllToolsBrowser({ tools, categories, totalTools, searchPlacehold
             type="button"
             onClick={() => setActive(c.slug)}
             className={cn(
-              "pill inline-flex items-center gap-1.5 text-xs font-semibold",
+              "pill inline-flex shrink-0 items-center gap-1.5 text-xs font-semibold",
               active === c.slug && "ring-2 ring-brand",
             )}
           >
