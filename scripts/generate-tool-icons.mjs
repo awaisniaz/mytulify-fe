@@ -57,7 +57,6 @@ const RULES = [
   [/rank-tracker|keyword-rank|url-page-seo|inflation/i, "TrendingUp"],
   [/decision-wheel|spin-wheel|wheel-of/i, "Shuffle"],
   [/pomodoro|focus-timer/i, "Clock"],
-  [/8-ball-pool|eight-ball|pool-game/i, "CircleDot"],
   [/speech-to-text|dictation|voice-to-text/i, "Megaphone"],
   [/language-translator|translate-text|text-translator/i, "Languages"],
   [/text-to-speech|tts|voiceover/i, "Volume2"],

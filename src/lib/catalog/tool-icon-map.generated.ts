@@ -121,7 +121,6 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "ics-calendar-generator": "Calendar",
   "decision-wheel": "Shuffle",
   "pomodoro-timer": "Clock",
-  "8-ball-pool": "CircleDot",
   "json-formatter": "Braces",
   "json-to-csv": "ArrowLeftRight",
   "csv-to-json": "ArrowLeftRight",
