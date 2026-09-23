@@ -312,3 +312,20 @@ html[dir="rtl"] h3 {
   background: linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 55%);
   pointer-events: none;
 }
+
+/* AdSense: prevent stacked / overflowing units */
+.ad-frame,
+.ad-slot,
+.ad-rail {
+  max-width: 100%;
+  overflow: hidden;
+}
+.ad-frame .adsbygoogle,
+.ad-rail .adsbygoogle {
+  max-width: 100% !important;
+}
+.ad-frame iframe,
+.ad-slot iframe,
+.ad-rail iframe {
+  max-width: 100% !important;
+}

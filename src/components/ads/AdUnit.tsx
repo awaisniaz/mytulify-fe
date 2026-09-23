@@ -13,6 +13,10 @@ declare global {
   }
 }
 
+/**
+ * One push per mounted <ins>. Parents should remount with `key={pathname}` on navigation.
+ * Skips push if the unit is already filled (prevents stacked blank slots).
+ */
 export function AdIns({
   slot,
   format,
@@ -28,41 +32,60 @@ export function AdIns({
   fullWidthResponsive?: boolean;
   textAlign?: "center";
 }) {
+  const insRef = useRef<HTMLModElement>(null);
   const pushed = useRef(false);
 
   useEffect(() => {
     if (pushed.current) return;
+    const el = insRef.current;
+    if (!el) return;
+    if (el.getAttribute("data-adsbygoogle-status")) {
+      pushed.current = true;
+      return;
+    }
+
+    let cancelled = false;
+    let interval: number | undefined;
+    let timeout: number | undefined;
 
     const pushAd = () => {
-      if (pushed.current) return;
+      if (cancelled || pushed.current) return;
+      if (el.getAttribute("data-adsbygoogle-status")) {
+        pushed.current = true;
+        return;
+      }
       pushed.current = true;
       try {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
       } catch {
-        /* blocked / already filled */
+        pushed.current = false;
       }
     };
 
     if (window.adsbygoogle) {
       pushAd();
-      return;
+    } else {
+      interval = window.setInterval(() => {
+        if (window.adsbygoogle) {
+          if (interval !== undefined) window.clearInterval(interval);
+          pushAd();
+        }
+      }, 250);
+      timeout = window.setTimeout(() => {
+        if (interval !== undefined) window.clearInterval(interval);
+      }, 10000);
     }
 
-    const interval = window.setInterval(() => {
-      if (window.adsbygoogle) {
-        window.clearInterval(interval);
-        pushAd();
-      }
-    }, 250);
-    const timeout = window.setTimeout(() => window.clearInterval(interval), 10000);
     return () => {
-      window.clearInterval(interval);
-      window.clearTimeout(timeout);
+      cancelled = true;
+      if (interval !== undefined) window.clearInterval(interval);
+      if (timeout !== undefined) window.clearTimeout(timeout);
     };
   }, []);
 
   return (
     <ins
+      ref={insRef}
       className="adsbygoogle"
       style={{ display: "block", ...(textAlign ? { textAlign } : {}) }}
       data-ad-client={ads.clientId}
@@ -89,11 +112,14 @@ export function AdFrame({ className, children }: { className?: string; children:
   if (!ads.clientId || isAdFreePath(path) || isPro) return null;
 
   return (
-    <aside className={cn("w-full", className)} aria-label="Advertisement">
+    <aside
+      className={cn("ad-frame w-full max-w-full overflow-hidden isolate", className)}
+      aria-label="Advertisement"
+    >
       <p className="mb-1 text-center text-[10px] font-medium uppercase tracking-widest text-muted">
         Ad
       </p>
-      {children}
+      <div className="ad-slot relative w-full max-w-full overflow-hidden">{children}</div>
     </aside>
   );
 }

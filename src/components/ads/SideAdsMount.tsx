@@ -47,12 +47,12 @@ export function SideAdsMount() {
   return (
     <>
       <div className="pointer-events-none fixed inset-y-0 left-0 z-30 hidden w-[calc((100vw-1280px)/2)] min-w-[160px] max-w-[200px] xl:block">
-        <div className="pointer-events-auto sticky top-[4.5rem] ml-auto w-[160px] pt-4 pr-2">
+        <div className="pointer-events-auto sticky top-[4.5rem] ml-auto w-[160px] overflow-hidden pt-4 pr-2">
           <AdRail side="left" />
         </div>
       </div>
       <div className="pointer-events-none fixed inset-y-0 right-0 z-30 hidden w-[calc((100vw-1280px)/2)] min-w-[160px] max-w-[200px] xl:block">
-        <div className="pointer-events-auto sticky top-[4.5rem] mr-auto w-[160px] pt-4 pl-2">
+        <div className="pointer-events-auto sticky top-[4.5rem] mr-auto w-[160px] overflow-hidden pt-4 pl-2">
           <AdRail side="right" />
         </div>
       </div>
