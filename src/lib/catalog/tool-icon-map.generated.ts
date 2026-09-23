@@ -240,6 +240,7 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "aspect-ratio-calculator": "Ruler",
   "duplicate-photo-finder": "Image",
   "home-color-visualizer": "Palette",
+  "screenshot-auto-anonymizer": "EyeOff",
   "merge-pdf": "FileText",
   "split-pdf": "FileText",
   "compress-pdf": "FileText",

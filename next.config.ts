@@ -40,6 +40,13 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
+  // Client-side ML libs — keep out of the Node server bundle
+  serverExternalPackages: [
+    "@tensorflow/tfjs",
+    "@tensorflow-models/coco-ssd",
+    "@vladmandic/face-api",
+    "tesseract.js",
+  ],
   async redirects() {
     return Object.entries(TOOL_REDIRECTS).map(([from, to]) => ({
       source: `/${from}`,

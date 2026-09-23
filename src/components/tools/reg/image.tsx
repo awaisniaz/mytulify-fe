@@ -16,6 +16,7 @@ import {
 import { AspectRatioCalculator } from "@/components/tools/impl/demand-extra";
 import { DuplicatePhotoFinder } from "@/components/tools/impl/duplicate-photo-finder";
 import { HomeColorVisualizer } from "@/components/tools/impl/home-color-visualizer";
+import { ScreenshotAutoAnonymizer } from "@/components/tools/impl/screenshot-auto-anonymizer";
 
 export default makeReg({
   "resize-image": ResizeImage,
@@ -66,4 +67,5 @@ export default makeReg({
   "aspect-ratio-calculator": AspectRatioCalculator,
   "duplicate-photo-finder": DuplicatePhotoFinder,
   "home-color-visualizer": HomeColorVisualizer,
+  "screenshot-auto-anonymizer": ScreenshotAutoAnonymizer,
 });
