@@ -13,6 +13,8 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "cron-explainer": "Calendar",
   "cover-letter-generator": "Sparkles",
   "ats-resume-checker": "Clipboard",
+  "pr-description-generator": "Sparkles",
+  "interview-answer-generator": "Sparkles",
   "bmi-calculator": "Activity",
   "percentage-calculator": "Calendar",
   "age-calculator": "Calendar",
@@ -451,5 +453,7 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "kg-to-lbs-converter": "Ruler",
   "liters-to-gallons-converter": "Droplet",
   "time-zone-converter": "Calendar",
-  "currency-converter": "DollarSign"
+  "currency-converter": "DollarSign",
+  "handwritten-math-ocr": "ScanText",
+  "handwritten-notes-summarizer": "ScanText"
 };

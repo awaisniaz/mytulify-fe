@@ -155,8 +155,13 @@ for (const f of readdirSync(catDir)) {
 
 const ocrText = readFileSync(join(root, "src/lib/ai/tools.ts"), "utf8");
 for (const m of ocrText.matchAll(/slug:\s*"([^"]+)"/g)) {
-  if (m[1] === "handwriting-to-text" || m[1].startsWith("handwriting-to-text-")) {
-    map[m[1]] = "ScanText";
+  const slug = m[1];
+  if (
+    slug === "handwriting-to-text" ||
+    slug.startsWith("handwriting-to-text-") ||
+    slug.startsWith("handwritten-")
+  ) {
+    map[slug] = "ScanText";
   }
 }
 

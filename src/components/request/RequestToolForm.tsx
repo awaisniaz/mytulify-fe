@@ -16,6 +16,7 @@ export function RequestToolForm({ categories }: { categories: CategoryOption[] }
   const [error, setError] = React.useState("");
   const [done, setDone] = React.useState(false);
   const [doneHadEmail, setDoneHadEmail] = React.useState(false);
+  const [doneEmailed, setDoneEmailed] = React.useState(true);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -37,12 +38,13 @@ export function RequestToolForm({ categories }: { categories: CategoryOption[] }
           email: email.trim() || null,
         }),
       });
-      const data = (await res.json()) as { ok?: boolean; error?: string };
+      const data = (await res.json()) as { ok?: boolean; error?: string; emailed?: boolean };
       if (!res.ok || !data.ok) {
         setError(data.error || "Could not submit. Please try again.");
         return;
       }
       setDoneHadEmail(Boolean(email.trim()));
+      setDoneEmailed(data.emailed === true);
       setDone(true);
       setName("");
       setDescription("");
@@ -58,8 +60,11 @@ export function RequestToolForm({ categories }: { categories: CategoryOption[] }
   if (done) {
     return (
       <Notice tone="success">
-        Thanks! Your request was sent to the Mytulify team.
-        {doneHadEmail ? " If we ship it, we may email you at the address you provided." : ""}
+        Thanks! Your request was saved
+        {doneEmailed
+          ? " and emailed to the Mytulify team (mytulify@gmail.com) via our Next.js API."
+          : " on the server. Email notify needs SMTP_USER / SMTP_PASS in .env.local."}
+        {doneHadEmail ? " If we ship it, we may reply to the address you provided." : ""}
         {" "}
         <button
           type="button"
@@ -67,6 +72,7 @@ export function RequestToolForm({ categories }: { categories: CategoryOption[] }
           onClick={() => {
             setDone(false);
             setDoneHadEmail(false);
+            setDoneEmailed(true);
           }}
         >
           Submit another idea

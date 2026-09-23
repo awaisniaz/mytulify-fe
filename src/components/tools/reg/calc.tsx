@@ -2,7 +2,7 @@
 
 import { makeReg } from "./_util";
 import {
-  BmiCalculator, PercentageCalculator, AgeCalculator, LoanCalculator, CompoundInterest,
+  BmiCalculator, PercentageCalculator, AgeCalculator, LoanCalculator,
   TipCalculator, DiscountCalculator, SalesTaxCalculator, BmrCalculator, TdeeCalculator,
   CalorieCalculator, IdealWeight, BodyFat, DueDate, GpaCalculator, GradeCalculator,
   FractionCalculator, ScientificCalculator, DateCalculator, HoursCalculator, CountdownCalculator,
@@ -13,16 +13,8 @@ import {
   AfghanDateConverter, ZakatCalculator, TasbihCounter, SalaryTaxCalculator,
 } from "@/components/tools/impl/asli-gap";
 import {
-  EmiCalculator,
   VatGstCalculator,
   ProfitMarginCalculator,
-  SipCalculator,
-  CagrCalculator,
-  FdCalculator,
-  PpfCalculator,
-  SwpCalculator,
-  RdCalculator,
-  LumpsumCalculator,
   EpfCalculator,
   NpsCalculator,
   GratuityCalculator,
@@ -33,7 +25,19 @@ import {
   RoiCalculator,
   XirrCalculator,
 } from "@/components/tools/impl/demand-extra";
-import { DebtPayoffCalculator, InflationCalculator } from "@/components/tools/impl/engaging-suite";
+import { DebtPayoffCalculator } from "@/components/tools/impl/engaging-suite";
+import {
+  EmiCalculator,
+  SipCalculator,
+  CagrCalculator,
+  CompoundInterest,
+  InflationCalculator,
+  FdCalculator,
+  PpfCalculator,
+  SwpCalculator,
+  RdCalculator,
+  LumpsumCalculator,
+} from "@/components/tools/impl/finance-calcs";
 
 export default makeReg({
   "bmi-calculator": BmiCalculator,

@@ -1,7 +1,7 @@
 {
   "name": "AI-Powered Tools",
   "slug": "ai-tools",
-      "description": "AI assistants for developers and job seekers — explain code, generate SQL, write cover letters, check résumés for ATS, debug errors, commits, docs and tests.",
+      "description": "AI assistants for developers and job seekers — explain code, generate SQL, write cover letters and interview answers, check résumés for ATS, debug errors, commits, PRs, docs and tests.",
   "tools": [
     { "name": "AI Form Builder", "slug": "ai-form-builder", "description": "60+ ready-made forms from any country, or describe a custom form in any language. Edit, brand, sign, scan from image, download PDF.", "searchVolume": "high", "competition": "low", "complexity": "hard", "clientSide": false },
     { "name": "AI Code Explainer", "slug": "code-explainer", "description": "Paste code and get a plain-English explanation, with likely bugs flagged. Beginner or expert depth.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": false },
@@ -15,6 +15,8 @@
     { "name": "AI Docker Compose Generator", "slug": "docker-compose-generator", "description": "Describe your services or pick a stack template (MERN, Laravel+MySQL+Redis, Django+Postgres) and get a valid docker-compose.yml.", "searchVolume": "medium", "competition": "low", "complexity": "hard", "clientSide": false },
     { "name": "AI Cron Expression Explainer", "slug": "cron-explainer", "description": "Convert plain English to a cron expression or explain any cron expression, with timezone-aware next run times.", "searchVolume": "medium", "competition": "low", "complexity": "hard", "clientSide": false },
     { "name": "AI Cover Letter Generator", "slug": "cover-letter-generator", "description": "Paste a job description and your background — get a tailored, ATS-friendly cover letter in seconds.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": false },
-    { "name": "ATS Resume Checker", "slug": "ats-resume-checker", "description": "Upload a CV and a job ad — see ATS parseability, keyword match, and a detailed issue list with fixes.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": false }
+    { "name": "ATS Resume Checker", "slug": "ats-resume-checker", "description": "Upload a CV and a job ad — see ATS parseability, keyword match, and a detailed issue list with fixes.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": false },
+    { "name": "AI PR Description Generator", "slug": "pr-description-generator", "description": "Turn a git diff or change summary into a clear pull request title and description with test plan.", "searchVolume": "medium", "competition": "low", "complexity": "hard", "clientSide": false },
+    { "name": "AI Interview Answer Generator", "slug": "interview-answer-generator", "description": "Get STAR-method answers to behavioral and technical interview questions tailored to your experience.", "searchVolume": "high", "competition": "medium", "complexity": "hard", "clientSide": false }
   ]
 }

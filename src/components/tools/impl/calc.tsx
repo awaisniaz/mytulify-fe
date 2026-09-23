@@ -169,68 +169,7 @@ export function LoanCalculator({ mortgage }: { mortgage?: boolean }) {
 }
 
 /* ------------------------------ Compound interest -------------------------- */
-export function CompoundInterest() {
-  const [p, setP] = React.useState("1000");
-  const [r, setR] = React.useState("7");
-  const [t, setT] = React.useState("10");
-  const [c, setC] = React.useState("12");
-  const [m, setM] = React.useState("100");
-  const rate = n(r) / 100, cmp = n(c);
-  const base = n(p) * Math.pow(1 + rate / cmp, cmp * n(t));
-  const contrib = n(m) * cmp > 0 && rate > 0
-    ? n(m) * ((Math.pow(1 + rate / cmp, cmp * n(t)) - 1) / (rate / cmp))
-    : n(m) * cmp * n(t);
-  const total = base + contrib;
-  return (
-    <div className="space-y-4">
-      <div className="grid gap-3 sm:grid-cols-3">
-        <Field label="Initial amount"><Input type="number" value={p} onChange={(e) => setP(e.target.value)} /></Field>
-        <Field label="Annual rate %"><Input type="number" value={r} onChange={(e) => setR(e.target.value)} /></Field>
-        <Field label="Years"><Input type="number" value={t} onChange={(e) => setT(e.target.value)} /></Field>
-        <Field label="Compounds/year"><Input type="number" value={c} onChange={(e) => setC(e.target.value)} /></Field>
-        <Field label="Monthly add"><Input type="number" value={m} onChange={(e) => setM(e.target.value)} /></Field>
-      </div>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat label="Future value" value={fmt(total)} />
-        <Stat label="Total interest" value={fmt(total - n(p) - n(m) * 12 * n(t))} />
-        <Stat label="Contributed" value={fmt(n(p) + n(m) * 12 * n(t))} />
-        <Stat label="Effective yield" value={`${fmt(((total / Math.max(1, n(p) + n(m) * 12 * n(t))) - 1) * 100)}%`} />
-      </div>
-      <CopyResult
-        filename="compound-interest.txt"
-        rows={[
-          ["Future value", fmt(total)],
-          ["Interest earned", fmt(total - n(p) - n(m) * 12 * n(t))],
-          ["Total contributed", fmt(n(p) + n(m) * 12 * n(t))],
-        ]}
-      />
-      <div className="overflow-x-auto rounded-xl border border-border text-sm">
-        <table className="w-full">
-          <thead className="bg-surface-2 text-muted">
-            <tr>
-              <th className="px-3 py-2 text-left">Year</th>
-              <th className="px-3 py-2 text-right">Balance</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.from({ length: Math.min(30, Math.max(1, Math.round(n(t)))) }, (_, i) => {
-              const yr = i + 1;
-              const b = n(p) * Math.pow(1 + rate / cmp, cmp * yr) + (cmp > 0 && rate > 0
-                ? n(m) * ((Math.pow(1 + rate / cmp, cmp * yr) - 1) / (rate / cmp))
-                : n(m) * cmp * yr);
-              return (
-                <tr key={yr} className="border-t border-border">
-                  <td className="px-3 py-1.5">{yr}</td>
-                  <td className="px-3 py-1.5 text-right">{fmt(b)}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
+export { CompoundInterest } from "./finance-calcs";
 
 /* ------------------------------ Tip / Discount / Tax ----------------------- */
 export function TipCalculator() {

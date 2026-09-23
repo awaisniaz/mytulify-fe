@@ -494,6 +494,141 @@ Rules:
       `Role: ${jobTitle}\nCompany: ${company}\n\n--- Job description ---\n${jobDescription}\n\n--- Candidate background ---\n${background}`,
   },
 
+  "pr-description-generator": {
+    slug: "pr-description-generator",
+    cta: "Generate PR description",
+    outputLabel: "Pull request",
+    mono: true,
+    fields: [
+      {
+        name: "diff",
+        type: "textarea",
+        label: "git diff or change summary",
+        placeholder: "Paste `git diff` output, a commit list, or describe what changed…",
+        required: true,
+        rows: 12,
+        mono: true,
+      },
+      {
+        name: "context",
+        type: "textarea",
+        label: "Extra context (optional)",
+        placeholder: "Ticket link, why this change, breaking changes, screenshots notes…",
+        rows: 4,
+      },
+      {
+        name: "style",
+        type: "select",
+        label: "Template",
+        default: "github",
+        options: [
+          { value: "github", label: "GitHub — Summary / Test plan" },
+          { value: "gitlab", label: "GitLab — What / Why / How" },
+          { value: "concise", label: "Concise — short bullets only" },
+        ],
+      },
+    ],
+    maxTokens: 1600,
+    effort: "medium",
+    system: ({ style }) => {
+      const template =
+        style === "gitlab"
+          ? `Use this Markdown structure:
+## What
+## Why
+## How
+## Test plan
+## Risks / notes`
+          : style === "concise"
+            ? `Keep it tight: a one-line title, then 3–6 bullets max covering what changed and how to test. No long prose.`
+            : `Use this Markdown structure:
+## Summary
+## Changes
+## Test plan
+## Notes`;
+      return `You are a senior engineer writing pull request descriptions. Given a diff or change summary, write a clear PR title and body for reviewers.
+
+${template}
+
+Rules:
+- Start with a PR title on its own line prefixed "Title: " (imperative, under 72 chars).
+- Then a blank line and the Markdown body.
+- Infer intent from the diff; do not invent features that are not evidenced.
+- Test plan should be concrete checkboxes (- [ ] …).
+- Call out breaking changes, migrations, or env var changes if visible.
+- Output only the title + body — no preamble.`;
+    },
+    buildUser: ({ diff, context }) =>
+      context?.trim()
+        ? `--- Changes ---\n${diff}\n\n--- Extra context ---\n${context}`
+        : diff ?? "",
+  },
+
+  "interview-answer-generator": {
+    slug: "interview-answer-generator",
+    cta: "Generate answer",
+    outputLabel: "Interview answer",
+    fields: [
+      {
+        name: "question",
+        type: "textarea",
+        label: "Interview question",
+        placeholder: "e.g. Tell me about a time you resolved a production incident under pressure.",
+        required: true,
+        rows: 4,
+      },
+      {
+        name: "role",
+        type: "text",
+        label: "Role you're interviewing for",
+        placeholder: "e.g. Senior Backend Engineer",
+        required: true,
+      },
+      {
+        name: "experience",
+        type: "textarea",
+        label: "Your relevant experience & stories",
+        placeholder:
+          "Paste real projects, metrics, tools you used, team size, outcomes — only facts you can defend in the interview…",
+        required: true,
+        rows: 8,
+      },
+      {
+        name: "style",
+        type: "select",
+        label: "Answer style",
+        default: "star",
+        options: [
+          { value: "star", label: "STAR — Situation, Task, Action, Result" },
+          { value: "technical", label: "Technical — architecture & trade-offs" },
+          { value: "concise", label: "Concise — ~90 second spoken answer" },
+        ],
+      },
+    ],
+    maxTokens: 1800,
+    effort: "high",
+    system: ({ style, role }) => {
+      const guide =
+        style === "technical"
+          ? "Structure as: brief context → approach/architecture → trade-offs → outcome. Use precise technical language suitable for a panel interview."
+          : style === "concise"
+            ? "Write a spoken-friendly answer of about 90 seconds when read aloud (~180–220 words). Short sentences, no fluff."
+            : "Use STAR structure with clear labels: **Situation**, **Task**, **Action**, **Result**. Keep Result measurable when the candidate provided numbers.";
+      return `You are an expert interview coach helping a candidate prepare for a "${role}" interview.
+
+${guide}
+
+Rules:
+- Use ONLY facts from the candidate's experience — never invent employers, metrics, titles, or tools.
+- If experience is thin for the question, say what to ask/clarify and draft the best honest answer from what is given.
+- Mirror language appropriate for the target role.
+- After the answer, add "---" then "## Follow-ups" with 3 likely interviewer follow-up questions and one-line hints for each.
+- Output Markdown. No preamble like "Sure, here's an answer".`;
+    },
+    buildUser: ({ question, role, experience }) =>
+      `Role: ${role}\n\nQuestion:\n${question}\n\n--- Candidate experience ---\n${experience}`,
+  },
+
   "ats-resume-checker": {
     slug: "ats-resume-checker",
     cta: "Check ATS score",
@@ -805,6 +940,117 @@ Output EXACTLY this format and nothing else:
 for (const lang of OCR_LANGUAGES) AI_TOOLS[ocrSlug(lang)] = makeOcrTool(lang);
 AI_TOOLS["handwriting-to-text"] = makeOcrTool(null);
 
+/* ------------------------------------- Specialized handwriting AI tools --- */
+
+AI_TOOLS["handwritten-math-ocr"] = {
+  slug: "handwritten-math-ocr",
+  cta: "Convert to LaTeX",
+  outputLabel: "Math (LaTeX)",
+  mono: true,
+  fields: [
+    {
+      name: "image",
+      type: "image",
+      label: "Upload a photo of handwritten math",
+      required: true,
+    },
+    {
+      name: "format",
+      type: "select",
+      label: "Output format",
+      default: "latex",
+      options: [
+        { value: "latex", label: "LaTeX (display math)" },
+        { value: "inline", label: "LaTeX (inline $…$)" },
+        { value: "steps", label: "LaTeX + step-by-step solution" },
+      ],
+    },
+  ],
+  maxTokens: 3000,
+  effort: "medium",
+  system: ({ format }) => {
+    const mode =
+      format === "steps"
+        ? "Output: (1) the transcribed expression/equation in a ```latex block, (2) a short \"Solution\" section with numbered steps in plain Markdown, using LaTeX for math. Solve only if the image shows a problem to solve; if it is just an expression, simplify or explain instead."
+        : format === "inline"
+          ? "Output only inline LaTeX wrapped in single $…$ delimiters (or multiple lines if several expressions). No commentary."
+          : "Output only display LaTeX in a ```latex fenced block. Use \\[ \\] style or bare LaTeX suitable for KaTeX/MathJax. No commentary.";
+    return `You are an expert at reading handwritten mathematics from images (arithmetic, algebra, calculus, matrices, integrals, sums). Transcribe symbols accurately. Mark unreadable parts as \\mathrm{[illegible]}. ${mode}`;
+  },
+  buildUser: ({ format }) =>
+    format === "steps"
+      ? "Read the handwritten math in this image. Transcribe it to LaTeX and provide a step-by-step solution if it is a problem."
+      : "Read the handwritten math in this image and convert it to LaTeX.",
+};
+
+AI_TOOLS["handwritten-notes-summarizer"] = {
+  slug: "handwritten-notes-summarizer",
+  cta: "Summarize notes",
+  outputLabel: "Notes summary",
+  fields: [
+    {
+      name: "image",
+      type: "image",
+      label: "Upload a photo of handwritten notes",
+      required: true,
+    },
+    {
+      name: "style",
+      type: "select",
+      label: "Summary style",
+      default: "bullets",
+      options: [
+        { value: "bullets", label: "Bullet summary + action items" },
+        { value: "outline", label: "Structured outline (H2/H3)" },
+        { value: "flashcards", label: "Study flashcards (Q&A)" },
+      ],
+    },
+    {
+      name: "extra",
+      type: "textarea",
+      label: "Focus or context (optional)",
+      placeholder: "e.g. Keep medical terms; this is from a lecture on databases…",
+      rows: 3,
+    },
+  ],
+  maxTokens: 3500,
+  effort: "medium",
+  system: ({ style }) => {
+    const shape =
+      style === "outline"
+        ? `## Title (inferred)
+### Section headings from the notes
+- Key points under each
+End with ## Open questions if any.`
+        : style === "flashcards"
+          ? `Produce 5–12 flashcards as:
+
+### Card N
+**Q:** …
+**A:** …
+
+Cover the main facts, definitions, and formulas from the notes.`
+          : `## Summary
+- Key bullets (preserve important names, dates, numbers)
+
+## Action items
+- [ ] Tasks or to-dos implied by the notes (or "None")
+
+## Key terms
+- Term — short definition (if present)`;
+    return `You are an expert note-taker. First read all handwriting in the image accurately, then produce a clean digital summary. Do not invent content that is not in the notes. Mark illegible spots as [illegible].
+
+Respond in Markdown using this structure:
+${shape}
+
+If the image has little or no readable text, say so briefly instead of inventing notes.`;
+  },
+  buildUser: ({ extra }) =>
+    extra?.trim()
+      ? `Summarize the handwritten notes in this image.\n\nFocus/context: ${extra}`
+      : "Summarize the handwritten notes in this image.",
+};
+
 /** Catalog rows for the Handwriting OCR category, built from the same list. */
 export function ocrCatalogTools(): {
   name: string;
@@ -815,11 +1061,11 @@ export function ocrCatalogTools(): {
   complexity: Complexity;
   clientSide: boolean;
 }[] {
-  const row = (name: string, slug: string, description: string) => ({
+  const row = (name: string, slug: string, description: string, searchVolume: Level = "medium") => ({
     name,
     slug,
     description,
-    searchVolume: "medium" as Level,
+    searchVolume,
     competition: "low" as Level,
     complexity: "hard" as Complexity,
     clientSide: false,
@@ -829,6 +1075,19 @@ export function ocrCatalogTools(): {
       "Handwriting to Text (OCR)",
       "handwriting-to-text",
       "Convert a photo of handwriting into digital text in any language, then optionally translate it.",
+      "high",
+    ),
+    row(
+      "Handwritten Math to LaTeX",
+      "handwritten-math-ocr",
+      "Photograph handwritten equations and get clean LaTeX — optionally with a step-by-step solution.",
+      "high",
+    ),
+    row(
+      "Handwritten Notes Summarizer",
+      "handwritten-notes-summarizer",
+      "Upload a photo of handwritten notes and get a structured summary, outline, or study flashcards.",
+      "high",
     ),
     ...OCR_LANGUAGES.map((l) =>
       row(
