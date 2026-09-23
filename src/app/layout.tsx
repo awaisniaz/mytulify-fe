@@ -10,9 +10,6 @@ import { LazyEnhancementsShell } from "@/components/LazyEnhancementsShell";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { AhrefsAnalytics } from "@/components/analytics/AhrefsAnalytics";
 import { AdSenseScript } from "@/components/ads/AdSenseScript";
-import { InFeedAd } from "@/components/ads/InFeedAd";
-import { InArticleAd } from "@/components/ads/InArticleAd";
-import { MultiplexAd } from "@/components/ads/MultiplexAd";
 import { ads } from "@/lib/ads";
 import { themeScript } from "@/lib/theme-script";
 import { getLocale } from "@/i18n/locale";
@@ -65,7 +62,6 @@ export async function generateMetadata(): Promise<Metadata> {
       locale,
     }),
     other: {
-      monetag: process.env.MONETAG_SITE_ID ?? "30db1df687f8615565490f41f36dce91",
       "google-adsense-account": ads.clientId,
     },
   };
@@ -118,12 +114,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <GoogleAnalytics />
         <AhrefsAnalytics />
         <Header />
-        <main className="min-w-0 flex-1">
-          {children}
-          <InArticleAd className="mx-auto max-w-7xl px-3 py-5 sm:px-6 sm:py-6" />
-          <InFeedAd className="mx-auto max-w-7xl px-3 pb-5 sm:px-6 sm:pb-6" />
-          <MultiplexAd className="mx-auto max-w-7xl px-3 pb-6 sm:px-6 sm:pb-8" />
-        </main>
+        <main className="min-w-0 flex-1">{children}</main>
         <Footer />
         <LazyEnhancementsShell />
       </body>

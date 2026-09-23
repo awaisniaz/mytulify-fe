@@ -16,14 +16,21 @@ export function AdRail({ side }: { side: AdSide }) {
 
   useEffect(() => {
     if (!slotId || pushed.current) return;
+    const el = document.querySelector(
+      `ins.adsbygoogle[data-ad-slot="${slotId}"]`,
+    ) as HTMLElement | null;
 
     const pushAd = () => {
       if (pushed.current) return;
+      if (el?.getAttribute("data-adsbygoogle-status")) {
+        pushed.current = true;
+        return;
+      }
       pushed.current = true;
       try {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
       } catch {
-        /* blocked */
+        pushed.current = false;
       }
     };
 

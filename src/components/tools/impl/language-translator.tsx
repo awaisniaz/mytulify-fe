@@ -9,15 +9,16 @@ import {
   TRANSLATE_LANGUAGES,
   TRANSLATE_TARGET_LANGUAGES,
   TRANSLATE_LIMITS,
+  languageName,
 } from "@/lib/translate/languages";
 
 type Mode = "text" | "file";
 type SheetGrid = string[][];
+type TextOutputs = { code: string; name: string; text: string }[];
 
 function looksNumeric(s: string) {
   const t = s.trim();
   if (!t) return true;
-  // skip pure numbers / dates / currency-ish
   if (/^[\d\s.,+\-/%$€£₹]+$/.test(t)) return true;
   if (/^\d{1,4}[-/]\d{1,2}[-/]\d{1,4}$/.test(t)) return true;
   return false;
@@ -121,23 +122,36 @@ function collectTranslatable(grid: SheetGrid, skipHeader = true): { texts: strin
   return { texts, coords };
 }
 
-/** Build side-by-side grid: each text column becomes Original | Translated. */
-function buildSideBySide(grid: SheetGrid, coords: { r: number; c: number }[], translations: string[]): SheetGrid {
+/**
+ * Side-by-side grid: each text column stays, then one column per target language
+ * named with that language (e.g. Urdu, Arabic). Multiple text columns use
+ * "Name (Urdu)" to avoid duplicate headers.
+ */
+function buildSideBySide(
+  grid: SheetGrid,
+  coords: { r: number; c: number }[],
+  /** translationsByLang[langCode][i] aligned with coords */
+  translationsByLang: Record<string, string[]>,
+  targetCodes: string[],
+): SheetGrid {
   const colSet = new Set(coords.map((x) => x.c));
-  // Also include columns from header that look like text headers
   const width = Math.max(0, ...grid.map((r) => r.length));
   for (let c = 0; c < width; c++) {
     const h = String(grid[0]?.[c] ?? "").trim();
     if (h && !looksNumeric(h)) colSet.add(c);
   }
-  const cols = [...colSet].sort((a, b) => a - b);
-  const colIndex = new Map(cols.map((c, i) => [c, i]));
-  void colIndex;
+  const textCols = [...colSet].sort((a, b) => a - b);
+  const multiTextCols = textCols.length > 1;
 
-  const map = new Map<string, string>();
-  coords.forEach((pos, i) => {
-    map.set(`${pos.r},${pos.c}`, translations[i] ?? "");
-  });
+  const maps = new Map<string, Map<string, string>>();
+  for (const code of targetCodes) {
+    const m = new Map<string, string>();
+    const list = translationsByLang[code] ?? [];
+    coords.forEach((pos, i) => {
+      m.set(`${pos.r},${pos.c}`, list[i] ?? "");
+    });
+    maps.set(code, m);
+  }
 
   const out: SheetGrid = [];
   for (let r = 0; r < grid.length; r++) {
@@ -146,12 +160,14 @@ function buildSideBySide(grid: SheetGrid, coords: { r: number; c: number }[], tr
     for (let c = 0; c < width; c++) {
       const original = String(src[c] ?? "");
       row.push(original);
-      if (colSet.has(c)) {
+      if (!colSet.has(c)) continue;
+      for (const code of targetCodes) {
+        const lang = languageName(code);
         if (r === 0) {
           const base = original.trim() || `Column ${c + 1}`;
-          row.push(`${base} (Translated)`);
+          row.push(multiTextCols ? `${base} (${lang})` : lang);
         } else {
-          row.push(map.get(`${r},${c}`) ?? "");
+          row.push(maps.get(code)?.get(`${r},${c}`) ?? "");
         }
       }
     }
@@ -191,9 +207,9 @@ async function translateBatch(
 export function LanguageTranslator() {
   const [mode, setMode] = React.useState<Mode>("text");
   const [from, setFrom] = React.useState("auto");
-  const [to, setTo] = React.useState("ur");
+  const [targets, setTargets] = React.useState<string[]>(["ur"]);
   const [input, setInput] = React.useState("");
-  const [output, setOutput] = React.useState("");
+  const [outputs, setOutputs] = React.useState<TextOutputs>([]);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
   const [progress, setProgress] = React.useState("");
@@ -201,6 +217,21 @@ export function LanguageTranslator() {
   const [grid, setGrid] = React.useState<SheetGrid | null>(null);
   const [preview, setPreview] = React.useState<SheetGrid | null>(null);
   const [downloadCsv, setDownloadCsv] = React.useState("");
+
+  function toggleTarget(code: string) {
+    setTargets((prev) => {
+      if (prev.includes(code)) {
+        if (prev.length === 1) return prev;
+        return prev.filter((c) => c !== code);
+      }
+      if (prev.length >= TRANSLATE_LIMITS.maxTargets) {
+        setError(`You can select up to ${TRANSLATE_LIMITS.maxTargets} languages.`);
+        return prev;
+      }
+      setError("");
+      return [...prev, code];
+    });
+  }
 
   async function onFiles(files: File[]) {
     const file = files[0];
@@ -231,20 +262,29 @@ export function LanguageTranslator() {
 
   async function runText() {
     setError("");
-    setOutput("");
+    setOutputs([]);
     const text = input.trim();
     if (!text) {
       setError("Enter some text to translate.");
       return;
     }
-    if (from !== "auto" && from === to) {
+    if (!targets.length) {
+      setError("Select at least one target language.");
+      return;
+    }
+    if (from !== "auto" && targets.includes(from) && targets.length === 1) {
       setError("Source and target language must be different.");
       return;
     }
+    const activeTargets = from === "auto" ? targets : targets.filter((t) => t !== from);
+    if (!activeTargets.length) {
+      setError("Select a target language different from the source.");
+      return;
+    }
+
     setLoading(true);
     setProgress("Translating…");
     try {
-      // Keep paragraphs: translate line-by-line for long docs, or whole if short
       const chunks = text.length > 3500 ? text.split(/\n/).map((l) => l) : [text];
       const nonEmptyIdx: number[] = [];
       const toSend: string[] = [];
@@ -254,12 +294,22 @@ export function LanguageTranslator() {
           toSend.push(c);
         }
       });
-      const translated = await translateBatch(toSend, from, to, (d, t) => setProgress(`Translating ${d}/${t}…`));
-      const rebuilt = chunks.slice();
-      nonEmptyIdx.forEach((idx, j) => {
-        rebuilt[idx] = translated[j] ?? "";
-      });
-      setOutput(rebuilt.join("\n"));
+
+      const next: TextOutputs = [];
+      for (let ti = 0; ti < activeTargets.length; ti++) {
+        const code = activeTargets[ti]!;
+        const name = languageName(code);
+        setProgress(`Translating to ${name} (${ti + 1}/${activeTargets.length})…`);
+        const translated = await translateBatch(toSend, from, code, (d, t) =>
+          setProgress(`${name}: ${d}/${t}…`),
+        );
+        const rebuilt = chunks.slice();
+        nonEmptyIdx.forEach((idx, j) => {
+          rebuilt[idx] = translated[j] ?? "";
+        });
+        next.push({ code, name, text: rebuilt.join("\n") });
+      }
+      setOutputs(next);
       setProgress("");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Translation failed");
@@ -277,8 +327,13 @@ export function LanguageTranslator() {
       setError("Upload a CSV or Excel file first.");
       return;
     }
-    if (from !== "auto" && from === to) {
-      setError("Source and target language must be different.");
+    if (!targets.length) {
+      setError("Select at least one target language.");
+      return;
+    }
+    const activeTargets = from === "auto" ? targets : targets.filter((t) => t !== from);
+    if (!activeTargets.length) {
+      setError("Select a target language different from the source.");
       return;
     }
 
@@ -293,16 +348,22 @@ export function LanguageTranslator() {
     }
 
     setLoading(true);
-    setProgress(`Preparing ${texts.length} cells…`);
+    setProgress(`Preparing ${texts.length} cells × ${activeTargets.length} languages…`);
     try {
-      const translations = await translateBatch(texts, from, to, (d, t) =>
-        setProgress(`Translating cells ${d}/${t}…`),
-      );
-      const outGrid = buildSideBySide(grid, coords, translations);
+      const translationsByLang: Record<string, string[]> = {};
+      for (let ti = 0; ti < activeTargets.length; ti++) {
+        const code = activeTargets[ti]!;
+        const name = languageName(code);
+        translationsByLang[code] = await translateBatch(texts, from, code, (d, t) =>
+          setProgress(`${name}: cells ${d}/${t} (${ti + 1}/${activeTargets.length})…`),
+        );
+      }
+      const outGrid = buildSideBySide(grid, coords, translationsByLang, activeTargets);
       setPreview(outGrid.slice(0, 12));
-      const csv = toCsv(outGrid);
-      setDownloadCsv(csv);
-      setProgress(`Done — ${texts.length} cells translated.`);
+      setDownloadCsv(toCsv(outGrid));
+      setProgress(
+        `Done — ${texts.length} cells × ${activeTargets.length} language${activeTargets.length > 1 ? "s" : ""}.`,
+      );
     } catch (e) {
       setError(e instanceof Error ? e.message : "Translation failed");
       setProgress("");
@@ -323,26 +384,20 @@ export function LanguageTranslator() {
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Translated");
     const out = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    download(new Blob([out], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }), `${base}-translated.xlsx`);
-  }
-
-  function swapLangs() {
-    if (from === "auto") return;
-    setFrom(to);
-    setTo(from);
-    if (output) {
-      setInput(output);
-      setOutput(input);
-    }
+    download(
+      new Blob([out], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }),
+      `${base}-translated.xlsx`,
+    );
   }
 
   const cellCount = grid ? collectTranslatable(grid).texts.length : 0;
+  const selectedSet = new Set(targets);
 
   return (
     <div className="space-y-4">
       <Notice tone="info">
-        Translate text between 35+ languages. Paste text, or upload a CSV / Excel file — every text cell is
-        translated and returned next to the original.
+        Translate into one or many languages. Paste text, or upload CSV / Excel — each target gets its own
+        column named after that language (e.g. Urdu, Arabic).
       </Notice>
 
       <div className="flex flex-wrap gap-2">
@@ -354,49 +409,72 @@ export function LanguageTranslator() {
         </Button>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
-        <Field label="From">
-          <Select value={from} onChange={(e) => setFrom(e.target.value)}>
-            {TRANSLATE_LANGUAGES.map((l) => (
-              <option key={l.code} value={l.code}>
+      <Field label="From">
+        <Select value={from} onChange={(e) => setFrom(e.target.value)} className="max-w-md">
+          {TRANSLATE_LANGUAGES.map((l) => (
+            <option key={l.code} value={l.code}>
+              {l.name}
+            </option>
+          ))}
+        </Select>
+      </Field>
+
+      <Field
+        label="Translate to"
+        hint={`Select up to ${TRANSLATE_LIMITS.maxTargets} — columns use these language names`}
+      >
+        <div className="flex flex-wrap gap-1.5 rounded-xl border border-border bg-surface-2/40 p-2.5 max-h-44 overflow-y-auto">
+          {TRANSLATE_TARGET_LANGUAGES.map((l) => {
+            const on = selectedSet.has(l.code);
+            const disabledByFrom = from !== "auto" && from === l.code;
+            return (
+              <button
+                key={l.code}
+                type="button"
+                disabled={disabledByFrom}
+                onClick={() => toggleTarget(l.code)}
+                className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-colors sm:text-sm ${
+                  on
+                    ? "bg-brand text-white"
+                    : "bg-surface text-foreground border border-border hover:border-brand/50"
+                } ${disabledByFrom ? "opacity-40 cursor-not-allowed" : ""}`}
+                aria-pressed={on}
+              >
                 {l.name}
-              </option>
-            ))}
-          </Select>
-        </Field>
-        <Button type="button" variant="secondary" size="sm" className="mb-0.5 hidden sm:inline-flex" onClick={swapLangs} disabled={from === "auto"}>
-          Swap
-        </Button>
-        <Field label="To">
-          <Select value={to} onChange={(e) => setTo(e.target.value)}>
-            {TRANSLATE_TARGET_LANGUAGES.map((l) => (
-              <option key={l.code} value={l.code}>
-                {l.name}
-              </option>
-            ))}
-          </Select>
-        </Field>
-      </div>
+              </button>
+            );
+          })}
+        </div>
+        {targets.length > 0 && (
+          <p className="mt-1.5 text-xs text-muted">
+            Selected: {targets.map((c) => languageName(c)).join(", ")}
+          </p>
+        )}
+      </Field>
 
       {mode === "text" ? (
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="space-y-4">
           <Field label="Original text">
             <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              rows={10}
+              rows={8}
               className="font-sans"
               placeholder="Type or paste text here…"
             />
           </Field>
-          <Field label="Translation">
-            <Textarea value={output} readOnly rows={10} className="font-sans bg-surface-2/60" placeholder="Translation appears here…" />
-            {output && (
-              <div className="mt-2">
-                <CopyButton value={output} />
-              </div>
-            )}
-          </Field>
+          {outputs.length > 0 && (
+            <div className={`grid gap-4 ${outputs.length > 1 ? "lg:grid-cols-2" : ""}`}>
+              {outputs.map((o) => (
+                <Field key={o.code} label={o.name}>
+                  <Textarea value={o.text} readOnly rows={8} className="font-sans bg-surface-2/60" />
+                  <div className="mt-2">
+                    <CopyButton value={o.text} />
+                  </div>
+                </Field>
+              ))}
+            </div>
+          )}
         </div>
       ) : (
         <div className="space-y-3">
@@ -417,8 +495,11 @@ export function LanguageTranslator() {
                 <tbody>
                   {preview.map((row, ri) => (
                     <tr key={ri} className="border-b border-border last:border-0">
-                      {row.slice(0, 8).map((cell, ci) => (
-                        <td key={ci} className={`max-w-[10rem] truncate px-2.5 py-1.5 ${ri === 0 ? "bg-surface-2 font-semibold" : ""}`}>
+                      {row.slice(0, 12).map((cell, ci) => (
+                        <td
+                          key={ci}
+                          className={`max-w-[10rem] truncate px-2.5 py-1.5 ${ri === 0 ? "bg-surface-2 font-semibold" : ""}`}
+                        >
                           {cell}
                         </td>
                       ))}
@@ -426,7 +507,9 @@ export function LanguageTranslator() {
                   ))}
                 </tbody>
               </table>
-              <p className="border-t border-border px-3 py-2 text-xs text-muted">Preview (first rows / columns)</p>
+              <p className="border-t border-border px-3 py-2 text-xs text-muted">
+                Preview — columns named by language
+              </p>
             </div>
           )}
           {downloadCsv && (
@@ -442,20 +525,20 @@ export function LanguageTranslator() {
         </div>
       )}
 
-      {error && (
-        <Notice tone="error">
-          {error}
-        </Notice>
-      )}
+      {error && <Notice tone="error">{error}</Notice>}
       {progress && !error && <p className="text-sm text-muted">{progress}</p>}
 
       <Button
         type="button"
-        disabled={loading}
+        disabled={loading || targets.length === 0}
         onClick={() => (mode === "text" ? runText() : runFile())}
         className="w-full sm:w-auto"
       >
-        {loading ? "Translating…" : "Translate"}
+        {loading
+          ? "Translating…"
+          : targets.length > 1
+            ? `Translate to ${targets.length} languages`
+            : "Translate"}
       </Button>
     </div>
   );

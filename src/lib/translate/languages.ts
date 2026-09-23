@@ -49,4 +49,10 @@ export const TRANSLATE_LIMITS = {
   maxCharsPerText: 4500,
   maxTotalChars: 80_000,
   maxFileCells: 2000,
+  /** Max simultaneous target languages in one run. */
+  maxTargets: 8,
 } as const;
+
+export function languageName(code: string): string {
+  return TRANSLATE_LANGUAGES.find((l) => l.code === code)?.name ?? code;
+}
