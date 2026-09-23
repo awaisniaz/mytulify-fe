@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { CATEGORIES, TOTAL_TOOLS, featuredTools, toolHref } from "@/lib/catalog";
+import { CATEGORIES, TOTAL_TOOLS, featuredTools, toolHref, getToolIcon, getToolIconPresentation } from "@/lib/catalog";
 import { Icon } from "@/components/ui/Icon";
+import { CategoryArtFade } from "@/components/CategoryArtFade";
 import { cn } from "@/lib/utils";
 import { getLocale } from "@/i18n/locale";
 import { getMessages } from "@/i18n/messages";
@@ -67,8 +68,18 @@ export async function HomeHero() {
           <div className="mt-5 flex flex-wrap gap-2">
             {popular.map((tool) => {
               const label = localizeTool(content, tool);
+              const icon = getToolIcon(tool);
+              const present = getToolIconPresentation(tool);
               return (
-                <Link key={toolHref(tool)} href={toolHref(tool)} prefetch={false} className="pill text-xs">
+                <Link
+                  key={toolHref(tool)}
+                  href={toolHref(tool)}
+                  prefetch={false}
+                  className="pill inline-flex items-center gap-1.5 text-xs"
+                >
+                  <span className={cn("grid h-5 w-5 place-items-center rounded-md", present.bg)}>
+                    <Icon name={icon} className={cn("h-3 w-3", present.fg)} />
+                  </span>
                   {label.name}
                 </Link>
               );
@@ -82,16 +93,20 @@ export async function HomeHero() {
               key={c.slug}
               href={`#${c.slug}`}
               className={cn(
-                "tile group bg-gradient-to-br p-3 text-white sm:p-4",
+                "tile group relative overflow-hidden bg-gradient-to-br p-3 text-white sm:p-4",
                 c.gradient,
                 i === 0 && "col-span-2 row-span-2 min-h-[120px] sm:min-h-[160px] lg:min-h-[200px]",
                 i !== 0 && "min-h-[72px] sm:min-h-[90px] lg:min-h-[96px]",
                 i > 3 && "hidden sm:block",
               )}
             >
+              <CategoryArtFade slug={c.slug} opacity={0.8} className={i === 0 ? "w-[60%]" : "w-[50%]"} />
               <div className="relative z-10 flex h-full flex-col justify-between">
-                <Icon name={c.icon} className={cn("opacity-90", i === 0 ? "h-7 w-7 sm:h-8 sm:w-8" : "h-4 w-4 sm:h-5 sm:w-5")} />
-                <div>
+                <Icon
+                  name={c.icon}
+                  className={cn("opacity-95 drop-shadow-sm", i === 0 ? "h-7 w-7 sm:h-8 sm:w-8" : "h-4 w-4 sm:h-5 sm:w-5")}
+                />
+                <div className="max-w-[72%]">
                   <p className={cn("font-bold leading-tight", i === 0 ? "text-base sm:text-lg lg:text-xl" : "text-xs sm:text-sm")}>
                     {categoryLabelFrom(t, c.slug, c.name)}
                   </p>

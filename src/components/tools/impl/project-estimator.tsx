@@ -5,6 +5,9 @@ import Link from "next/link";
 import { Input, Select, Textarea, Button } from "@/components/ui/primitives";
 import { Field, Stat, Notice, Output, CopyButton } from "@/components/tools/shared";
 import { exportBrandedPdf } from "@/lib/pdf-doc";
+import { ESTIMATOR_TEMPLATES_50 } from "@/lib/freelancer/templates/catalog";
+import { FreelancerTemplateBrowser } from "./FreelancerTemplateBrowser";
+import { BrandedDocPreview } from "./BrandedDocPreview";
 import {
   DEFAULT_DOC_BRAND,
   DocBrandControls,
@@ -140,28 +143,60 @@ function makeExpenses(template: TemplateKey): ExpenseRow[] {
 }
 
 export function ProjectEstimator() {
+  const first = ESTIMATOR_TEMPLATES_50[0]!;
+  const [libraryId, setLibraryId] = React.useState<string | null>(first.id);
   const [template, setTemplate] = React.useState<TemplateKey>("web");
-  const [projectName, setProjectName] = React.useState("Website Redesign");
+  const [projectName, setProjectName] = React.useState(first.data.projectName);
   const [clientName, setClientName] = React.useState("Acme Corp");
   const [currency, setCurrency] = React.useState("USD");
-  const [hourlyRate, setHourlyRate] = React.useState("85");
+  const [hourlyRate, setHourlyRate] = React.useState(first.data.hourlyRate);
   const [hoursPerWeek, setHoursPerWeek] = React.useState("25");
-  const [contingencyPct, setContingencyPct] = React.useState("15");
-  const [marginPct, setMarginPct] = React.useState("20");
+  const [contingencyPct, setContingencyPct] = React.useState(first.data.contingencyPct);
+  const [marginPct, setMarginPct] = React.useState(first.data.marginPct);
   const [discountPct, setDiscountPct] = React.useState("0");
   const [taxReservePct, setTaxReservePct] = React.useState("30");
   const [notes, setNotes] = React.useState(
     "Assumes client provides content and feedback within 3 business days. Two revision rounds included per deliverable.",
   );
-  const [tasks, setTasks] = React.useState<TaskRow[]>(() => makeTasks("web"));
+  const [tasks, setTasks] = React.useState<TaskRow[]>(() =>
+    first.data.tasks.map((t: { phase: string; name: string; hours: string }) => ({
+      id: uid(),
+      phase: t.phase,
+      name: t.name,
+      hours: t.hours,
+      rateOverride: "",
+    })),
+  );
   const [expenses, setExpenses] = React.useState<ExpenseRow[]>(() => makeExpenses("web"));
   const [brand, setBrand] = React.useState<DocBrandState>({ ...DEFAULT_DOC_BRAND, watermarkText: "ESTIMATE" });
   const [busy, setBusy] = React.useState(false);
 
   const sym = CURRENCIES.find((c) => c.code === currency)?.sym ?? "$";
 
+  function applyLibraryTemplate(t: (typeof ESTIMATOR_TEMPLATES_50)[number] | null) {
+    if (!t) {
+      setLibraryId(null);
+      return;
+    }
+    setLibraryId(t.id);
+    setProjectName(t.data.projectName);
+    setHourlyRate(t.data.hourlyRate);
+    setContingencyPct(t.data.contingencyPct);
+    setMarginPct(t.data.marginPct);
+    setTasks(
+      t.data.tasks.map((row: { phase: string; name: string; hours: string }) => ({
+        id: uid(),
+        phase: row.phase,
+        name: row.name,
+        hours: row.hours,
+        rateOverride: "",
+      })),
+    );
+  }
+
   function applyTemplate(key: TemplateKey) {
     setTemplate(key);
+    setLibraryId(null);
     setTasks(makeTasks(key));
     setExpenses(makeExpenses(key));
     if (key !== "custom") {
@@ -355,7 +390,15 @@ export function ProjectEstimator() {
       </Notice>
 
       <Section title="Project setup">
-        <Field label="Project template">
+        <FreelancerTemplateBrowser
+          label="Estimate template library"
+          hint="50 phased estimates by specialty — select, edit tasks, download PDF"
+          templates={ESTIMATOR_TEMPLATES_50}
+          selectedId={libraryId}
+          onSelect={(t) => applyLibraryTemplate(t)}
+          onBlank={() => applyLibraryTemplate(null)}
+        />
+        <Field label="Quick starter (classic)">
           <Select value={template} onChange={(e) => applyTemplate(e.target.value as TemplateKey)}>
             {(Object.keys(PROJECT_TEMPLATES) as TemplateKey[]).map((k) => (
               <option key={k} value={k}>
@@ -600,8 +643,69 @@ export function ProjectEstimator() {
 
       <DocBrandControls value={brand} onChange={setBrand} />
 
-      <Field label="Full estimate summary">
-        <Output value={summaryText} rows={14} filename="project-estimate.txt" />
+      <Field label="Live PDF preview">
+        <BrandedDocPreview
+          anchorId="live-doc-preview"
+          docType="Project estimate"
+          title="Freelance Project Estimate"
+          subtitle={projectName}
+          meta={[
+            { label: "Client", value: clientName },
+            { label: "Date", value: new Date().toLocaleDateString() },
+            { label: "Recommended quote", value: `${sym}${fmt(calc.fixedQuote)}` },
+          ]}
+          sections={[
+            {
+              heading: "Task breakdown",
+              body: calc.taskLines
+                .map(
+                  (t) =>
+                    `${t.phase} — ${t.name}\n  ${fmt(t.hrs, 1)} hrs × ${sym}${fmt(t.rate)}/hr = ${sym}${fmt(t.cost)}`,
+                )
+                .join("\n\n"),
+            },
+            {
+              heading: "Project expenses",
+              body:
+                expenses.length > 0
+                  ? expenses.map((e) => `• ${e.name}: ${sym}${fmt(Math.max(0, n(e.amount) || 0))}`).join("\n")
+                  : "No pass-through expenses included.",
+            },
+            {
+              heading: "Financial summary",
+              body: [
+                `Total hours: ${fmt(calc.totalHours, 1)}`,
+                `Labor: ${sym}${fmt(calc.laborCost)}`,
+                `Expenses: ${sym}${fmt(calc.expenseTotal)}`,
+                `Contingency (${contingencyPct}%): ${sym}${fmt(calc.contingency)}`,
+                `Profit margin (${marginPct}%): ${sym}${fmt(calc.margin)}`,
+                n(discountPct) > 0 ? `Discount (${discountPct}%): −${sym}${fmt(calc.discount)}` : "",
+                "",
+                `Recommended fixed quote: ${sym}${fmt(calc.fixedQuote)}`,
+                `Effective hourly rate: ${sym}${fmt(calc.effectiveRate)}/hr`,
+                `Estimated timeline: ${fmt(calc.weeks, 1)} weeks`,
+              ]
+                .filter(Boolean)
+                .join("\n"),
+            },
+            {
+              heading: "Pricing comparison",
+              body: [
+                `Fixed price: ${sym}${fmt(calc.fixedQuote)}`,
+                `Pure hourly: ${sym}${fmt(calc.hourlyOnly)}`,
+                `Retainer equivalent: ${sym}${fmt(calc.retainerMonthly)}/month`,
+              ].join("\n"),
+            },
+            { heading: "Assumptions & notes", body: notes },
+          ]}
+          signatures={["Client approval", "Freelancer"]}
+          footerLeft={`Estimate for ${clientName}`}
+          brand={brand}
+        />
+      </Field>
+
+      <Field label="Plain-text summary (copy / TXT)">
+        <Output value={summaryText} rows={10} filename="project-estimate.txt" />
       </Field>
 
       <div className="flex flex-wrap gap-2">

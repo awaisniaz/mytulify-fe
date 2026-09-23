@@ -2,8 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Input, Select, Button } from "@/components/ui/primitives";
+import { Input, Button } from "@/components/ui/primitives";
 import { Field, Notice, CopyButton } from "@/components/tools/shared";
+import { download } from "@/lib/utils";
+import { EMAIL_TEMPLATES_50 } from "@/lib/freelancer/templates/catalog";
+import { FreelancerTemplateBrowser } from "./FreelancerTemplateBrowser";
 
 type TemplateId =
   | "cold-pitch"
@@ -13,7 +16,9 @@ type TemplateId =
   | "invoice-final"
   | "retainer"
   | "thank-you"
-  | "scope-change";
+  | "scope-change"
+  | "kickoff"
+  | "availability";
 
 type Tone = "friendly" | "professional" | "firm";
 
@@ -36,6 +41,8 @@ const TEMPLATES: { id: TemplateId; label: string; needsInvoice: boolean }[] = [
   { id: "retainer", label: "Contract Renewal / Retainer Check-in", needsInvoice: false },
   { id: "thank-you", label: "Project Completion / Thank You", needsInvoice: false },
   { id: "scope-change", label: "Scope Change Notification", needsInvoice: true },
+  { id: "kickoff", label: "Project Kickoff", needsInvoice: false },
+  { id: "availability", label: "Availability / Capacity Update", needsInvoice: false },
 ];
 
 const DEFAULTS: Fields = {
@@ -89,6 +96,10 @@ function buildSubject(id: TemplateId, f: Fields, tone: Tone): string {
       return `Thank you — ${project} wrapped + a quick favor`;
     case "scope-change":
       return `Scope update for ${project} — confirmation needed`;
+    case "kickoff":
+      return `Kickoff details for ${project}`;
+    case "availability":
+      return `Availability update — ${project}`;
     default:
       return "Quick note";
   }
@@ -173,6 +184,12 @@ function buildBody(id: TemplateId, f: Fields, tone: Tone): string {
           : `I’m confirming a scope change on ${project} before I proceed.`;
       return `${g}\n\n${open}\n\nProposed addition: work beyond the agreed deliverables for ${project}.\nEstimated additional fee: ${amt}\n\nPlease reply with approval (or questions) so I can update the timeline and issue a change order / revised invoice. I won’t start the extra work until you confirm.\n\n${s}`;
     }
+    case "kickoff": {
+      return `${g}\n\nExcited to kick off ${project}. Here’s what I need from you to start on schedule:\n\n1) Access / assets (brand files, logins, content)\n2) Primary contact for feedback\n3) Preferred check-in cadence\n\nI’ll send a short kickoff agenda once I have those. Looking forward to collaborating.\n\n${s}`;
+    }
+    case "availability": {
+      return `${g}\n\nA quick update on my availability for ${project}: I have capacity to start within the next 1–2 weeks (or we can lock a later date if that works better).\n\nIf you’d like to reserve the slot, reply with a preferred start window and I’ll hold it.\n\n${s}`;
+    }
     default:
       return `${g}\n\n${s}`;
   }
@@ -186,11 +203,17 @@ function encodeMail(subject: string, body: string) {
 }
 
 export function EmailTemplatesGenerator() {
-  const [templateId, setTemplateId] = React.useState<TemplateId>("invoice-friendly");
-  const [tone, setTone] = React.useState<Tone>("professional");
-  const [fields, setFields] = React.useState<Fields>(DEFAULTS);
+  const first = EMAIL_TEMPLATES_50[0]!;
+  const [libraryId, setLibraryId] = React.useState<string | null>(first.id);
+  const [templateId, setTemplateId] = React.useState<TemplateId>(first.data.kind);
+  const [tone, setTone] = React.useState<Tone>(first.data.tone);
+  const [fields, setFields] = React.useState<Fields>({
+    ...DEFAULTS,
+    projectName: first.data.projectName,
+    invoiceAmount: first.data.invoiceAmount,
+  });
 
-  const meta = TEMPLATES.find((t) => t.id === templateId)!;
+  const meta = TEMPLATES.find((t) => t.id === templateId) ?? TEMPLATES[0]!;
   const autoSubject = buildSubject(templateId, fields, tone);
   const subject = fields.subjectOverride.trim() || autoSubject;
   const body = buildBody(templateId, fields, tone);
@@ -207,32 +230,29 @@ export function EmailTemplatesGenerator() {
   return (
     <div className="space-y-4">
       <Notice tone="info">
-        Pick a template, personalize the fields, then copy or open in Gmail/Outlook. Pair reminders with the{" "}
+        50 email templates — select, edit fields, then copy or download. Pair reminders with the{" "}
         <Link href="/converters-generators/invoice-generator" className="font-semibold text-brand underline">
           Invoice Generator
-        </Link>{" "}
-        and{" "}
-        <Link href="/freelancer-tools/late-fee-calculator" className="font-semibold text-brand underline">
-          Late Payment Fee Calculator
         </Link>
         .
       </Notice>
 
-      <Field label="Template">
-        <Select
-          value={templateId}
-          onChange={(e) => {
-            setTemplateId(e.target.value as TemplateId);
-            set("subjectOverride", "");
-          }}
-        >
-          {TEMPLATES.map((t) => (
-            <option key={t.id} value={t.id}>
-              {t.label}
-            </option>
-          ))}
-        </Select>
-      </Field>
+      <FreelancerTemplateBrowser
+        templates={EMAIL_TEMPLATES_50}
+        selectedId={libraryId}
+        onSelect={(t) => {
+          setLibraryId(t.id);
+          setTemplateId(t.data.kind);
+          setTone(t.data.tone);
+          setFields((f) => ({
+            ...f,
+            projectName: t.data.projectName,
+            invoiceAmount: t.data.invoiceAmount,
+            subjectOverride: "",
+          }));
+        }}
+        onBlank={() => setLibraryId(null)}
+      />
 
       <Field label="Tone" hint="Rewrites phrasing — not just a label">
         <div className="inline-flex rounded-xl border border-border p-1">
@@ -248,7 +268,7 @@ export function EmailTemplatesGenerator() {
               type="button"
               onClick={() => setTone(id)}
               className={`rounded-lg px-3 py-1.5 text-sm font-semibold ${
-                tone === id ? "bg-brand text-white" : "text-muted hover:text-fg"
+                tone === id ? "bg-brand text-white" : "text-muted hover:text-foreground"
               }`}
             >
               {label}
@@ -297,20 +317,27 @@ export function EmailTemplatesGenerator() {
         />
       </Field>
 
-      <div className="space-y-2">
+      <div className="space-y-2" id="live-doc-preview">
         <p className="text-xs font-bold uppercase tracking-wide text-muted">Live preview</p>
         <div className="rounded-xl border border-border bg-surface-2 p-4 text-sm leading-relaxed whitespace-pre-wrap">
-          <p className="mb-3 font-semibold text-fg">Subject: {subject}</p>
+          <p className="mb-3 font-semibold">Subject: {subject}</p>
           {body}
         </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
         <CopyButton value={full} label="Copy to clipboard" />
-        <Button size="sm" variant="secondary" onClick={() => window.open(gmailHref, "_blank")}>
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={() => download(full, "freelance-email.txt", "text/plain;charset=utf-8")}
+        >
+          Download TXT
+        </Button>
+        <Button type="button" size="sm" variant="secondary" onClick={() => window.open(gmailHref, "_blank")}>
           Open in Gmail
         </Button>
-        <Button size="sm" variant="secondary" onClick={() => window.open(outlookHref, "_blank")}>
+        <Button type="button" size="sm" variant="secondary" onClick={() => window.open(outlookHref, "_blank")}>
           Open in Outlook
         </Button>
         <a

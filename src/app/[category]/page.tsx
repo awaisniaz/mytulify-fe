@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CATEGORIES, getCategory, isToolAvailable } from "@/lib/catalog";
 import { ToolCard } from "@/components/cards";
 import { DisplayAd } from "@/components/ads/DisplayAd";
+import { CategoryArtFade } from "@/components/CategoryArtFade";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
@@ -106,15 +107,16 @@ export default async function CategoryPage({
         <span className="truncate text-foreground">{catLabel.name}</span>
       </nav>
 
-      <div className="mb-6 rounded-xl border border-border bg-surface p-4 sm:mb-8 sm:p-8">
-        <div className="flex items-start gap-3 sm:gap-4">
+      <div className="relative mb-6 overflow-hidden rounded-xl border border-border bg-surface p-4 sm:mb-8 sm:p-8">
+        <CategoryArtFade slug={c.slug} className="w-[48%] sm:w-[42%]" opacity={0.65} />
+        <div className="relative z-10 flex items-start gap-3 sm:gap-4">
           <span className={cn("grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white sm:h-16 sm:w-16", c.gradient)}>
             <Icon name={c.icon} className="h-5 w-5 sm:h-7 sm:w-7" />
           </span>
-          <div className="min-w-0">
+          <div className="min-w-0 max-w-[70%]">
             <p className="section-label mb-1">{s.category}</p>
             <h1 className="text-xl font-bold tracking-tight sm:text-4xl">{catLabel.name}</h1>
-            <p className="mt-2 text-sm text-muted sm:max-w-2xl sm:text-base">{catLabel.description}</p>
+            <p className="mt-2 text-sm text-muted sm:text-base">{catLabel.description}</p>
             <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-muted">
               <Icon name="Wrench" className="h-4 w-4" />
               {s.toolsCount.replace("{n}", String(c.tools.length))}
