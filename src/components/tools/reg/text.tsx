@@ -12,6 +12,7 @@ import { TextToAsciiArt, TextToHandwriting } from "@/components/tools/impl/text-
 import { MultiStyler, SingleStyler } from "@/components/tools/impl/text-styler";
 import { ReadingTimeCalculator } from "@/components/tools/impl/demand-extra";
 import { SpeechToText } from "@/components/tools/impl/engaging-suite";
+import { LanguageTranslator } from "@/components/tools/impl/language-translator";
 
 export default makeReg({
   "word-counter": WordCounter,
@@ -46,4 +47,5 @@ export default makeReg({
   "text-to-handwriting": TextToHandwriting,
   "reading-time-calculator": ReadingTimeCalculator,
   "speech-to-text": SpeechToText,
+  "language-translator": LanguageTranslator,
 });

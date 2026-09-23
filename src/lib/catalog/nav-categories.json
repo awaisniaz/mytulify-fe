@@ -39,7 +39,7 @@
     "name": "Text Tools",
     "icon": "Type",
     "gradient": "from-sky-500 to-blue-600",
-    "toolCount": 30
+    "toolCount": 33
   },
   {
     "slug": "developer-tools",
