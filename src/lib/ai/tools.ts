@@ -889,6 +889,42 @@ function makeOcrTool(lang: string | null): AiTool {
         options: [
           { value: "plain", label: "Plain text (preserve line breaks)" },
           { value: "markdown", label: "Keep formatting (Markdown)" },
+          { value: "paragraphs", label: "Merge into clean paragraphs" },
+          { value: "lines", label: "One line per written line" },
+        ],
+      },
+      {
+        name: "enhance",
+        type: "select",
+        label: "Reading mode",
+        default: "auto",
+        options: [
+          { value: "auto", label: "Auto (best effort)" },
+          { value: "careful", label: "Careful — prefer accuracy over speed" },
+          { value: "messy", label: "Messy / cursive / low contrast" },
+          { value: "print", label: "Printed or neat block letters" },
+        ],
+      },
+      {
+        name: "cleanup",
+        type: "select",
+        label: "Text cleanup",
+        default: "light",
+        options: [
+          { value: "raw", label: "Raw — exact characters as written" },
+          { value: "light", label: "Light — fix obvious OCR noise only" },
+          { value: "polish", label: "Polish — spelling & punctuation (keep meaning)" },
+        ],
+      },
+      {
+        name: "uncertain",
+        type: "select",
+        label: "Uncertain words",
+        default: "mark",
+        options: [
+          { value: "mark", label: "Mark with [?] when unsure" },
+          { value: "illegible", label: "Use [illegible] for unreadable parts" },
+          { value: "guess", label: "Best guess — no uncertainty markers" },
         ],
       },
       {
@@ -904,19 +940,44 @@ function makeOcrTool(lang: string | null): AiTool {
     ],
     maxTokens: 4000,
     effort: "low",
-    system: ({ format, translateTo }) => {
+    system: ({ format, translateTo, enhance, cleanup, uncertain }) => {
       const style =
         format === "markdown"
           ? "Preserve structure with Markdown (headings, lists, line breaks)."
-          : "Output plain text and preserve line breaks.";
+          : format === "paragraphs"
+            ? "Merge related lines into clean paragraphs. Keep paragraph breaks where the writer clearly started a new thought."
+            : format === "lines"
+              ? "Output exactly one text line per handwritten line on the page."
+              : "Output plain text and preserve line breaks.";
+      const modeHint =
+        enhance === "careful"
+          ? "Read slowly and carefully; double-check similar letters."
+          : enhance === "messy"
+            ? "The writing may be messy, cursive, slanted, or low-contrast — use full context to resolve hard letters."
+            : enhance === "print"
+              ? "Expect neat print or block letters; prioritize literal character accuracy."
+              : "Use the best reading strategy for the image quality.";
+      const cleanHint =
+        cleanup === "raw"
+          ? "Transcribe literally; do not fix spelling or punctuation."
+          : cleanup === "polish"
+            ? "After transcription, lightly fix clear spelling and punctuation mistakes while keeping the author's wording and meaning. Do not rewrite style."
+            : "Fix only obvious OCR artifacts (e.g. broken words); leave intentional spelling alone.";
+      const uncertainHint =
+        uncertain === "guess"
+          ? "Never output uncertainty markers; always pick the most likely reading."
+          : uncertain === "illegible"
+            ? "Mark any unreadable part as [illegible]."
+            : "Mark likely-but-uncertain words with [?] right after them. Mark fully unreadable spans as [illegible].";
       const source = lang
         ? `written in ${lang}. Transcribe exactly as written, keeping it in ${lang}`
         : "in any language. Transcribe exactly as written, keeping it in its original language";
       const target = translateTo && translateTo !== "none" ? translateTo : "";
+      const base = `You are an expert OCR engine that reads handwriting ${source}. ${style} ${modeHint} ${cleanHint} ${uncertainHint} Do not summarise or add commentary.`;
       if (!target) {
-        return `You are an expert OCR engine that reads handwriting ${source}. ${style} Do not translate, summarise or add commentary. Mark any unreadable part as [illegible]. Output only the transcription.`;
+        return `${base} Output only the transcription.`;
       }
-      return `You are an expert OCR engine that reads handwriting ${source}. ${style} Mark any unreadable part as [illegible]. Then translate the transcription into ${target}, keeping the same structure and line breaks. Do not add commentary.
+      return `${base} Then translate the transcription into ${target}, keeping the same structure and line breaks. Do not add commentary.
 
 Output EXACTLY this format and nothing else:
 <<<ORIGINAL>>>
@@ -925,14 +986,15 @@ Output EXACTLY this format and nothing else:
 {accurate translation into ${target}}
 <<<END>>>`;
     },
-    buildUser: ({ translateTo }) => {
+    buildUser: ({ translateTo, enhance }) => {
       const transcribe = lang
         ? `Transcribe the ${lang} handwriting in this image.`
         : "Transcribe the handwriting in this image in its original language.";
+      const hint = enhance === "messy" ? " The handwriting may be difficult — do your best." : "";
       if (translateTo && translateTo !== "none") {
-        return `${transcribe} Then translate the transcription into ${translateTo}.`;
+        return `${transcribe}${hint} Then translate the transcription into ${translateTo}.`;
       }
-      return transcribe;
+      return `${transcribe}${hint}`;
     },
   };
 }
@@ -944,8 +1006,8 @@ AI_TOOLS["handwriting-to-text"] = makeOcrTool(null);
 
 AI_TOOLS["handwritten-math-ocr"] = {
   slug: "handwritten-math-ocr",
-  cta: "Convert to LaTeX",
-  outputLabel: "Math (LaTeX)",
+  cta: "Convert math",
+  outputLabel: "Math output",
   mono: true,
   fields: [
     {
@@ -962,7 +1024,9 @@ AI_TOOLS["handwritten-math-ocr"] = {
       options: [
         { value: "latex", label: "LaTeX (display math)" },
         { value: "inline", label: "LaTeX (inline $…$)" },
+        { value: "ascii", label: "ASCII / plain math" },
         { value: "steps", label: "LaTeX + step-by-step solution" },
+        { value: "check", label: "LaTeX + verify / simplify" },
       ],
     },
   ],
@@ -974,13 +1038,21 @@ AI_TOOLS["handwritten-math-ocr"] = {
         ? "Output: (1) the transcribed expression/equation in a ```latex block, (2) a short \"Solution\" section with numbered steps in plain Markdown, using LaTeX for math. Solve only if the image shows a problem to solve; if it is just an expression, simplify or explain instead."
         : format === "inline"
           ? "Output only inline LaTeX wrapped in single $…$ delimiters (or multiple lines if several expressions). No commentary."
-          : "Output only display LaTeX in a ```latex fenced block. Use \\[ \\] style or bare LaTeX suitable for KaTeX/MathJax. No commentary.";
+          : format === "ascii"
+            ? "Output plain-text ASCII math (use ^ for powers, / for fractions, sqrt(), sum, int). One expression per line. No commentary."
+            : format === "check"
+              ? "Output: (1) ```latex transcription, (2) ## Check — say if the equation looks correct, simplify if possible, and note any likely transcription ambiguity."
+              : "Output only display LaTeX in a ```latex fenced block. Use \\[ \\] style or bare LaTeX suitable for KaTeX/MathJax. No commentary.";
     return `You are an expert at reading handwritten mathematics from images (arithmetic, algebra, calculus, matrices, integrals, sums). Transcribe symbols accurately. Mark unreadable parts as \\mathrm{[illegible]}. ${mode}`;
   },
   buildUser: ({ format }) =>
     format === "steps"
       ? "Read the handwritten math in this image. Transcribe it to LaTeX and provide a step-by-step solution if it is a problem."
-      : "Read the handwritten math in this image and convert it to LaTeX.",
+      : format === "ascii"
+        ? "Read the handwritten math in this image and convert it to plain ASCII math."
+        : format === "check"
+          ? "Read the handwritten math, convert to LaTeX, then verify/simplify."
+          : "Read the handwritten math in this image and convert it to LaTeX.",
 };
 
 AI_TOOLS["handwritten-notes-summarizer"] = {
@@ -1003,6 +1075,29 @@ AI_TOOLS["handwritten-notes-summarizer"] = {
         { value: "bullets", label: "Bullet summary + action items" },
         { value: "outline", label: "Structured outline (H2/H3)" },
         { value: "flashcards", label: "Study flashcards (Q&A)" },
+        { value: "meeting", label: "Meeting minutes (decisions + owners)" },
+        { value: "full", label: "Full cleaned transcript + short summary" },
+      ],
+    },
+    {
+      name: "length",
+      type: "select",
+      label: "Length",
+      default: "medium",
+      options: [
+        { value: "short", label: "Short — essentials only" },
+        { value: "medium", label: "Medium — balanced" },
+        { value: "detailed", label: "Detailed — keep more context" },
+      ],
+    },
+    {
+      name: "language",
+      type: "select",
+      label: "Output language",
+      default: "same",
+      options: [
+        { value: "same", label: "Same as the notes" },
+        ...TRANSLATE_LANGUAGES.map((l) => ({ value: l, label: l })),
       ],
     },
     {
@@ -1015,7 +1110,7 @@ AI_TOOLS["handwritten-notes-summarizer"] = {
   ],
   maxTokens: 3500,
   effort: "medium",
-  system: ({ style }) => {
+  system: ({ style, length, language }) => {
     const shape =
       style === "outline"
         ? `## Title (inferred)
@@ -1030,7 +1125,25 @@ End with ## Open questions if any.`
 **A:** …
 
 Cover the main facts, definitions, and formulas from the notes.`
-          : `## Summary
+          : style === "meeting"
+            ? `## Meeting summary
+- …
+
+## Decisions
+- …
+
+## Action items
+- [ ] Task — Owner (if named) — Due (if noted)
+
+## Open questions
+- …`
+            : style === "full"
+              ? `## Clean transcript
+(faithful cleaned transcription of the notes)
+
+## Short summary
+- 3–6 bullets`
+              : `## Summary
 - Key bullets (preserve important names, dates, numbers)
 
 ## Action items
@@ -1038,17 +1151,156 @@ Cover the main facts, definitions, and formulas from the notes.`
 
 ## Key terms
 - Term — short definition (if present)`;
-    return `You are an expert note-taker. First read all handwriting in the image accurately, then produce a clean digital summary. Do not invent content that is not in the notes. Mark illegible spots as [illegible].
+    const lenHint =
+      length === "short"
+        ? "Keep it brief — only the most important points."
+        : length === "detailed"
+          ? "Be thorough; preserve names, numbers, and nuance from the notes."
+          : "Balance brevity with completeness.";
+    const langHint =
+      language && language !== "same"
+        ? `Write the entire response in ${language}.`
+        : "Write in the same language as the handwritten notes.";
+    return `You are an expert note-taker. First read all handwriting in the image accurately, then produce a clean digital summary. Do not invent content that is not in the notes. Mark illegible spots as [illegible]. ${lenHint} ${langHint}
 
 Respond in Markdown using this structure:
 ${shape}
 
 If the image has little or no readable text, say so briefly instead of inventing notes.`;
   },
-  buildUser: ({ extra }) =>
-    extra?.trim()
-      ? `Summarize the handwritten notes in this image.\n\nFocus/context: ${extra}`
-      : "Summarize the handwritten notes in this image.",
+  buildUser: ({ extra, style }) => {
+    const base =
+      style === "meeting"
+        ? "Turn these handwritten notes into meeting minutes."
+        : style === "full"
+          ? "Transcribe and summarize the handwritten notes in this image."
+          : "Summarize the handwritten notes in this image.";
+    return extra?.trim() ? `${base}\n\nFocus/context: ${extra}` : base;
+  },
+};
+
+AI_TOOLS["handwritten-form-extractor"] = {
+  slug: "handwritten-form-extractor",
+  cta: "Extract fields",
+  outputLabel: "Form fields",
+  mono: true,
+  fields: [
+    {
+      name: "image",
+      type: "image",
+      label: "Upload a photo of a filled handwritten form",
+      required: true,
+    },
+    {
+      name: "format",
+      type: "select",
+      label: "Output format",
+      default: "json",
+      options: [
+        { value: "json", label: "JSON key–value pairs" },
+        { value: "markdown", label: "Markdown table" },
+        { value: "csv", label: "CSV (field,value)" },
+      ],
+    },
+    {
+      name: "hints",
+      type: "textarea",
+      label: "Expected fields (optional)",
+      placeholder: "e.g. Name, DOB, Address, Phone, Signature present?",
+      rows: 3,
+    },
+  ],
+  maxTokens: 3000,
+  effort: "medium",
+  system: ({ format }) => {
+    const out =
+      format === "csv"
+        ? 'Output CSV with header "field,value" and one row per field. Escape commas in values with quotes.'
+        : format === "markdown"
+          ? "Output a Markdown table with columns Field | Value."
+          : "Output a single JSON object mapping field labels to string values. Use null for blank fields.";
+    return `You extract filled fields from handwritten or mixed print+handwritten forms. Read printed labels and the handwritten answers next to them. ${out} Mark unreadable values as "[illegible]". Do not invent fields that are not on the form. No commentary outside the requested format.`;
+  },
+  buildUser: ({ hints }) =>
+    hints?.trim()
+      ? `Extract all filled fields from this form image. Prefer these field names when they match: ${hints}`
+      : "Extract all filled fields from this form image.",
+};
+
+AI_TOOLS["handwritten-table-ocr"] = {
+  slug: "handwritten-table-ocr",
+  cta: "Extract table",
+  outputLabel: "Table",
+  mono: true,
+  fields: [
+    {
+      name: "image",
+      type: "image",
+      label: "Upload a photo of a handwritten table or grid",
+      required: true,
+    },
+    {
+      name: "format",
+      type: "select",
+      label: "Output format",
+      default: "markdown",
+      options: [
+        { value: "markdown", label: "Markdown table" },
+        { value: "csv", label: "CSV" },
+        { value: "json", label: "JSON array of row objects" },
+      ],
+    },
+  ],
+  maxTokens: 4000,
+  effort: "medium",
+  system: ({ format }) => {
+    const out =
+      format === "csv"
+        ? "Output CSV only (first row = headers). Escape fields that contain commas."
+        : format === "json"
+          ? "Output a JSON array of objects, one per data row, using header cells as keys."
+          : "Output a GitHub-flavored Markdown table only.";
+    return `You read handwritten or mixed tables from images. Infer columns from ruled lines or aligned columns. Align cells carefully; use empty string for blank cells and [illegible] when unreadable. ${out} No commentary.`;
+  },
+  buildUser: () => "Extract the table from this image into the requested format.",
+};
+
+AI_TOOLS["handwriting-to-markdown"] = {
+  slug: "handwriting-to-markdown",
+  cta: "Convert to Markdown",
+  outputLabel: "Markdown",
+  mono: true,
+  fields: [
+    {
+      name: "image",
+      type: "image",
+      label: "Upload handwritten notes or a page",
+      required: true,
+    },
+    {
+      name: "structure",
+      type: "select",
+      label: "Structure preference",
+      default: "smart",
+      options: [
+        { value: "smart", label: "Smart — detect headings, lists, quotes" },
+        { value: "lists", label: "Prefer bullet lists" },
+        { value: "flat", label: "Flat paragraphs only" },
+      ],
+    },
+  ],
+  maxTokens: 4000,
+  effort: "low",
+  system: ({ structure }) => {
+    const hint =
+      structure === "lists"
+        ? "Prefer bullet and numbered lists when the page has list-like lines."
+        : structure === "flat"
+          ? "Use plain paragraphs only — no headings unless clearly titled."
+          : "Detect headings (underlines, ALL CAPS, larger text), bullets, numbered lists, and block quotes.";
+    return `You convert handwriting photos into clean Markdown. ${hint} Preserve the author's wording. Mark illegible spans as [illegible]. Output Markdown only — no preamble.`;
+  },
+  buildUser: () => "Convert the handwriting in this image to well-structured Markdown.",
 };
 
 /** Catalog rows for the Handwriting OCR category, built from the same list. */
@@ -1080,14 +1332,32 @@ export function ocrCatalogTools(): {
     row(
       "Handwritten Math to LaTeX",
       "handwritten-math-ocr",
-      "Photograph handwritten equations and get clean LaTeX — optionally with a step-by-step solution.",
+      "Photograph handwritten equations and get clean LaTeX, ASCII math, or a step-by-step solution.",
       "high",
     ),
     row(
       "Handwritten Notes Summarizer",
       "handwritten-notes-summarizer",
-      "Upload a photo of handwritten notes and get a structured summary, outline, or study flashcards.",
+      "Upload handwritten notes and get a summary, outline, meeting minutes, or study flashcards.",
       "high",
+    ),
+    row(
+      "Handwritten Form Extractor",
+      "handwritten-form-extractor",
+      "Pull filled fields from a handwritten form into JSON, CSV, or a Markdown table.",
+      "medium",
+    ),
+    row(
+      "Handwritten Table OCR",
+      "handwritten-table-ocr",
+      "Turn a photo of a handwritten table or grid into Markdown, CSV, or JSON rows.",
+      "medium",
+    ),
+    row(
+      "Handwriting to Markdown",
+      "handwriting-to-markdown",
+      "Convert a handwritten page into clean Markdown with headings and lists.",
+      "medium",
     ),
     ...OCR_LANGUAGES.map((l) =>
       row(

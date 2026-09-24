@@ -32,6 +32,45 @@ async function fileToScaledDataUrl(file: File, maxDim = 1600): Promise<string> {
   });
 }
 
+/** Apply a canvas transform to a data URL and return a new JPEG data URL. */
+function transformDataUrl(
+  dataUrl: string,
+  op: "rotate90" | "rotate270" | "flipH" | "flipV" | "contrast",
+): Promise<string> {
+  return new Promise((resolve) => {
+    const img = new window.Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return resolve(dataUrl);
+      const w = img.width;
+      const h = img.height;
+      if (op === "rotate90" || op === "rotate270") {
+        canvas.width = h;
+        canvas.height = w;
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate(op === "rotate90" ? Math.PI / 2 : -Math.PI / 2);
+        ctx.drawImage(img, -w / 2, -h / 2);
+      } else if (op === "flipH" || op === "flipV") {
+        canvas.width = w;
+        canvas.height = h;
+        ctx.translate(op === "flipH" ? w : 0, op === "flipV" ? h : 0);
+        ctx.scale(op === "flipH" ? -1 : 1, op === "flipV" ? -1 : 1);
+        ctx.drawImage(img, 0, 0);
+      } else {
+        canvas.width = w;
+        canvas.height = h;
+        ctx.filter = "contrast(1.35) brightness(1.05) saturate(0.92)";
+        ctx.drawImage(img, 0, 0);
+        ctx.filter = "none";
+      }
+      resolve(canvas.toDataURL("image/jpeg", 0.92));
+    };
+    img.onerror = () => resolve(dataUrl);
+    img.src = dataUrl;
+  });
+}
+
 function ImageField({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   if (value) {
     return (
@@ -40,13 +79,47 @@ function ImageField({ value, onChange }: { value: string; onChange: (v: string) 
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={value} alt="Uploaded handwriting" className="max-h-72 w-full object-contain" />
         </div>
-        <button
-          type="button"
-          onClick={() => onChange("")}
-          className="text-xs text-muted underline-offset-2 hover:text-foreground hover:underline"
-        >
-          Remove image
-        </button>
+        <div className="flex flex-wrap gap-1.5">
+          <Button
+            type="button"
+            size="sm"
+            variant="secondary"
+            onClick={() => void transformDataUrl(value, "rotate270").then(onChange)}
+          >
+            ⟲ Rotate
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant="secondary"
+            onClick={() => void transformDataUrl(value, "rotate90").then(onChange)}
+          >
+            ⟳ Rotate
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant="secondary"
+            onClick={() => void transformDataUrl(value, "flipH").then(onChange)}
+          >
+            Flip H
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant="secondary"
+            onClick={() => void transformDataUrl(value, "contrast").then(onChange)}
+          >
+            Enhance
+          </Button>
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            className="self-center px-2 text-xs text-muted underline-offset-2 hover:text-foreground hover:underline"
+          >
+            Remove
+          </button>
+        </div>
       </div>
     );
   }

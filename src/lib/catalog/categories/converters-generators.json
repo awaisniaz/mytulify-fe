@@ -182,15 +182,6 @@
       "competition": "medium",
       "complexity": "easy",
       "clientSide": true
-    },
-    {
-      "name": "8 Ball Pool",
-      "slug": "8-ball-pool",
-      "description": "Play classic 8-ball pool vs AI — aim, set power, clear solids or stripes, then sink the 8-ball.",
-      "searchVolume": "high",
-      "competition": "medium",
-      "complexity": "hard",
-      "clientSide": true
     }
   ]
 }
