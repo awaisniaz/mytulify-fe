@@ -100,6 +100,7 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "color-from-image": "Palette",
   "hex-to-rgba": "Palette",
   "lighten-darken-color": "Palette",
+  "online-video-editor": "Film",
   "text-to-speech": "Volume2",
   "xml-to-json": "ArrowLeftRight",
   "barcode-generator": "Barcode",
@@ -455,5 +456,7 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "time-zone-converter": "Calendar",
   "currency-converter": "DollarSign",
   "handwritten-math-ocr": "ScanText",
-  "handwritten-notes-summarizer": "ScanText"
+  "handwritten-notes-summarizer": "ScanText",
+  "handwritten-form-extractor": "ScanText",
+  "handwritten-table-ocr": "ScanText"
 };

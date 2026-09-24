@@ -41,7 +41,7 @@ const META: Record<string, CategoryMeta> = {
   "seo-web-tools": { icon: "Search", gradient: "from-lime-500 to-green-600", tagline: "Research, audits, schema & AI SEO" },
   "social-media-tools": { icon: "Share2", gradient: "from-pink-500 to-rose-600", tagline: "Captions, fonts & mockups" },
   "converters-generators": { icon: "Repeat", gradient: "from-amber-500 to-orange-600", tagline: "Data converters & generators" },
-  "content-creator-tools": { icon: "Mic", gradient: "from-violet-500 to-fuchsia-600", tagline: "Voiceovers, captions & creator scripts" },
+  "content-creator-tools": { icon: "Mic", gradient: "from-violet-500 to-fuchsia-600", tagline: "Video editor, voiceovers & creator scripts" },
 };
 
 const handwritingOcr: CategoryData = {

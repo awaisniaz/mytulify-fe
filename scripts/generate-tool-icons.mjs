@@ -60,6 +60,7 @@ const RULES = [
   [/speech-to-text|dictation|voice-to-text/i, "Megaphone"],
   [/language-translator|translate-text|text-translator/i, "Languages"],
   [/text-to-speech|tts|voiceover/i, "Volume2"],
+  [/online-video-editor|video-editor|video-edit/i, "Film"],
   [/debt-payoff|loan-payoff/i, "DollarSign"],
   [/seo-audit|seo-content-score|heading-structure|nap-consistency|search-intent|keyword-difficulty|related-keywords|content-brief|ai-seo|ai-meta|meta-tags-analyzer/i, "Search"],
   [/robots\.txt|robots-meta|sitemap|canonical|hreflang|redirect|htaccess|utm|serp|meta-tag|meta-tags|keyword|readability|email-extract|html-tag|code-to-text|url-slug|indexnow|indexing|index-status/i, "Search"],

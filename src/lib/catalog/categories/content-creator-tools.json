@@ -1,8 +1,17 @@
 {
   "name": "Content Creator Tools",
   "slug": "content-creator-tools",
-  "description": "Free browser tools for YouTubers, podcasters & social creators — voiceovers, captions, scripts & more. No signup, runs privately on your device.",
+  "description": "Free browser tools for YouTubers, podcasters & social creators — video editing, voiceovers, captions, scripts & more. No signup, runs privately on your device.",
   "tools": [
+    {
+      "name": "Online Video Editor",
+      "slug": "online-video-editor",
+      "description": "Edit videos in the browser — multi-clip timeline, trim/split/reverse, transitions, filters, FX, captions + SRT, logos, aspect ratios, speed & WebM export. Private on-device.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "hard",
+      "clientSide": true
+    },
     {
       "name": "Text to Speech",
       "slug": "text-to-speech",
