@@ -63,37 +63,33 @@ export async function HomeCatalog() {
           </Link>
         </div>
 
-        <div className="space-y-8 sm:space-y-10">
+        <div className="space-y-6 sm:space-y-8">
           {categories.map((c) => (
             <section
               key={c.slug}
               id={c.slug}
-              className="relative scroll-mt-28 overflow-hidden rounded-2xl border border-border bg-surface-2/50 p-4 sm:rounded-3xl sm:p-6"
+              className="relative scroll-mt-28 overflow-hidden rounded-2xl border border-border bg-surface p-4 shadow-sm sm:rounded-3xl sm:p-6"
             >
-              <CategoryArtFade slug={c.slug} className="w-[40%] sm:w-[36%]" opacity={0.55} />
-              <span
-                aria-hidden
-                className={cn("absolute start-0 top-6 bottom-6 z-10 w-1 rounded-full bg-gradient-to-b", c.gradient)}
-              />
-              <div className="relative z-10 mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex min-w-0 items-start gap-3">
+              <CategoryArtFade slug={c.slug} variant="banner" />
+              <div className="relative z-10 mb-4 flex flex-col gap-3 border-b border-border/70 pb-4 sm:mb-5 sm:flex-row sm:items-center sm:justify-between sm:pb-5">
+                <div className="flex min-w-0 items-center gap-3">
                   <span
                     className={cn(
-                      "grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br text-white shadow-sm",
+                      "grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white shadow-sm sm:h-12 sm:w-12 sm:rounded-2xl",
                       c.gradient,
                     )}
                   >
                     <Icon name={c.icon} className="h-5 w-5" />
                   </span>
-                  <div className="min-w-0 max-w-[75%]">
-                    <h2 className="text-xl font-extrabold tracking-tight">{c.labels.name}</h2>
-                    <p className="mt-0.5 text-sm text-muted">{c.labels.tagline}</p>
+                  <div className="min-w-0 max-w-[72%]">
+                    <h2 className="truncate text-lg font-extrabold tracking-tight sm:text-xl">{c.labels.name}</h2>
+                    <p className="mt-0.5 truncate text-sm text-muted">{c.labels.tagline}</p>
                   </div>
                 </div>
                 <Link
                   href={`/${c.slug}`}
                   prefetch={false}
-                  className="inline-flex shrink-0 items-center gap-1.5 self-start rounded-full bg-surface px-3 py-1.5 text-xs font-bold text-muted shadow-sm transition-colors hover:bg-brand/10 hover:text-brand sm:self-auto"
+                  className="inline-flex shrink-0 items-center gap-1.5 self-start rounded-full border border-border bg-surface-2/90 px-3 py-1.5 text-xs font-bold text-muted backdrop-blur-sm transition-colors hover:border-brand/40 hover:bg-brand/10 hover:text-brand sm:self-auto"
                 >
                   {t.home.toolsInCategory(c.tools.length)}
                   <Icon name="ArrowRight" className="h-3.5 w-3.5" />

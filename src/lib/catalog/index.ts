@@ -26,7 +26,7 @@ export type { Category, Tool, Level, Complexity } from "./types";
 /** Per-category presentation metadata (icon + gradient + tagline). */
 const META: Record<string, CategoryMeta> = {
   "ai-tools": { icon: "Sparkles", gradient: "from-indigo-500 to-fuchsia-600", tagline: "AI assistants for developers & job seekers" },
-  "handwriting-ocr": { icon: "ScanText", gradient: "from-violet-500 to-indigo-600", tagline: "OCR, math LaTeX & note summaries" },
+  "handwriting-ocr": { icon: "ScanText", gradient: "from-violet-500 to-indigo-600", tagline: "OCR, forms, tables, math & notes" },
   "freelancer-tools": { icon: "Briefcase", gradient: "from-sky-500 to-teal-600", tagline: "Contracts, rates & client docs — free" },
   "devops-tools": { icon: "Server", gradient: "from-cyan-500 to-sky-600", tagline: "Configs, manifests & scripts" },
   "health-tools": { icon: "Activity", gradient: "from-rose-500 to-pink-600", tagline: "Fitness, nutrition & wellbeing" },
@@ -48,7 +48,7 @@ const handwritingOcr: CategoryData = {
   name: "Handwriting OCR",
   slug: "handwriting-ocr",
   description:
-    "AI-powered handwriting tools — OCR in 30+ languages, handwritten math to LaTeX, and note summarizers. Upload a photo and get editable digital text, equations, or structured summaries.",
+    "AI-powered handwriting tools — OCR in 30+ languages, form & table extractors, math to LaTeX, Markdown conversion, and note summarizers. Upload a photo and get editable digital text.",
   tools: ocrCatalogTools(),
 };
 

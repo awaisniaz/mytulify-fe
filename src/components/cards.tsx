@@ -106,18 +106,26 @@ export function CategoryCard({
       <Link
         href={`/${category.slug}`}
         className={cn(
-          "tile interactive-card relative block min-h-[160px] overflow-hidden bg-gradient-to-br p-6 text-white sm:min-h-[180px]",
+          "group relative flex min-h-[168px] flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br p-5 text-white shadow-sm transition-transform sm:min-h-[188px] sm:p-6",
+          "hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
           category.gradient,
         )}
       >
-        <CategoryArtFade slug={category.slug} opacity={0.85} />
-        <div className="relative z-10 flex h-full flex-col justify-between">
-          <Icon name={category.icon} className="h-8 w-8 drop-shadow-sm" />
-          <div className="max-w-[70%]">
-            <h3 className="text-xl font-bold">{name}</h3>
-            <p className="mt-1 text-sm text-white/80">{tagline}</p>
-            <p className="mt-2 text-xs font-semibold text-white/70">{countLabel} →</p>
-          </div>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -end-6 -top-8 h-28 w-28 rounded-full bg-white/15 blur-2xl transition-opacity group-hover:opacity-90"
+        />
+        <CategoryArtFade slug={category.slug} variant="hero" />
+        <span className="relative z-10 grid h-11 w-11 place-items-center rounded-xl bg-white/15 ring-1 ring-white/25 backdrop-blur-sm">
+          <Icon name={category.icon} className="h-5 w-5" />
+        </span>
+        <div className="relative z-10 max-w-[68%] sm:max-w-[70%]">
+          <h3 className="text-lg font-bold leading-snug sm:text-xl">{name}</h3>
+          <p className="mt-1 line-clamp-2 text-sm text-white/80">{tagline}</p>
+          <p className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-white/85">
+            {countLabel}
+            <Icon name="ArrowRight" className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+          </p>
         </div>
       </Link>
     );
@@ -126,23 +134,27 @@ export function CategoryCard({
   return (
     <Link
       href={`/${category.slug}`}
-      className="interactive-card group relative flex items-center gap-4 overflow-hidden rounded-2xl border border-border bg-surface p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className={cn(
+        "group relative flex items-center gap-3.5 overflow-hidden rounded-2xl border border-border bg-surface p-3.5 sm:gap-4 sm:p-4",
+        "transition-colors hover:border-brand/40 hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+      )}
     >
-      <CategoryArtFade slug={category.slug} className="w-[42%]" opacity={0.7} />
+      <CategoryArtFade slug={category.slug} variant="row" />
       <span
         className={cn(
-          "relative z-10 grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white shadow-sm",
+          "relative z-10 grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white shadow-sm sm:h-12 sm:w-12",
           category.gradient,
         )}
       >
         <Icon name={category.icon} className="h-5 w-5" />
       </span>
-      <div className="relative z-10 min-w-0 flex-1">
-        <h3 className="font-semibold group-hover:text-brand">{name}</h3>
+      <div className="relative z-10 min-w-0 flex-1 pr-1">
+        <h3 className="truncate font-semibold leading-snug group-hover:text-brand">{name}</h3>
         <p className="mt-0.5 truncate text-sm text-muted">{tagline}</p>
       </div>
-      <span className="relative z-10 shrink-0 rounded-full bg-surface-2 px-2.5 py-1 text-xs font-bold text-muted">
+      <span className="relative z-10 inline-flex shrink-0 items-center gap-1 rounded-full bg-surface-2 px-2.5 py-1 text-xs font-bold text-muted transition-colors group-hover:bg-brand/10 group-hover:text-brand">
         {category.tools.length}
+        <Icon name="ArrowRight" className="h-3 w-3 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100" />
       </span>
     </Link>
   );

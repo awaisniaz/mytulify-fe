@@ -87,36 +87,59 @@ export async function HomeHero() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-2.5 lg:gap-3">
-          {HERO_CATS.map((c, i) => (
-            <a
-              key={c.slug}
-              href={`#${c.slug}`}
-              className={cn(
-                "tile group relative overflow-hidden bg-gradient-to-br p-3 text-white sm:p-4",
-                c.gradient,
-                i === 0 && "col-span-2 row-span-2 min-h-[120px] sm:min-h-[160px] lg:min-h-[200px]",
-                i !== 0 && "min-h-[72px] sm:min-h-[90px] lg:min-h-[96px]",
-                i > 3 && "hidden sm:block",
-              )}
-            >
-              <CategoryArtFade slug={c.slug} opacity={0.8} className={i === 0 ? "w-[60%]" : "w-[50%]"} />
-              <div className="relative z-10 flex h-full flex-col justify-between">
-                <Icon
-                  name={c.icon}
-                  className={cn("opacity-95 drop-shadow-sm", i === 0 ? "h-7 w-7 sm:h-8 sm:w-8" : "h-4 w-4 sm:h-5 sm:w-5")}
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
+          {HERO_CATS.map((c, i) => {
+            const featured = i === 0;
+            return (
+              <a
+                key={c.slug}
+                href={`#${c.slug}`}
+                className={cn(
+                  "group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br text-white shadow-sm",
+                  "transition-transform hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  c.gradient,
+                  featured && "col-span-2 row-span-2 min-h-[140px] p-4 sm:min-h-[176px] sm:p-5 lg:min-h-[208px] lg:p-6",
+                  !featured && "min-h-[96px] p-3 sm:min-h-[108px] sm:p-3.5",
+                  i > 3 && "hidden sm:flex",
+                )}
+              >
+                <CategoryArtFade slug={c.slug} variant={featured ? "hero" : "tile"} />
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-black/35 via-black/10 to-transparent"
                 />
-                <div className="max-w-[72%]">
-                  <p className={cn("font-bold leading-tight", i === 0 ? "text-base sm:text-lg lg:text-xl" : "text-xs sm:text-sm")}>
+                <span
+                  className={cn(
+                    "relative z-10 grid place-items-center rounded-xl bg-white/15 ring-1 ring-white/25 backdrop-blur-[2px]",
+                    featured ? "h-10 w-10 sm:h-11 sm:w-11" : "h-8 w-8",
+                  )}
+                >
+                  <Icon
+                    name={c.icon}
+                    className={cn(featured ? "h-5 w-5" : "h-3.5 w-3.5 sm:h-4 sm:w-4")}
+                  />
+                </span>
+                <div className={cn("relative z-10", featured ? "max-w-[62%] sm:max-w-[65%]" : "max-w-[58%] sm:max-w-[60%]")}>
+                  <p
+                    className={cn(
+                      "font-bold leading-snug drop-shadow-sm",
+                      featured ? "text-base sm:text-lg lg:text-xl" : "text-xs sm:text-sm",
+                    )}
+                  >
                     {categoryLabelFrom(t, c.slug, c.name)}
                   </p>
-                  <p className={cn("text-white/75", i === 0 ? "mt-1 text-xs sm:text-sm" : "mt-0.5 text-[10px] sm:text-[11px]")}>
+                  <p
+                    className={cn(
+                      "text-white/85",
+                      featured ? "mt-1 text-xs sm:text-sm" : "mt-0.5 text-[10px] sm:text-[11px]",
+                    )}
+                  >
                     {t.home.toolsInCategory(c.tools.length)}
                   </p>
                 </div>
-              </div>
-            </a>
-          ))}
+              </a>
+            );
+          })}
         </div>
       </div>
     </section>

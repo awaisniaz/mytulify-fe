@@ -107,18 +107,23 @@ export default async function CategoryPage({
         <span className="truncate text-foreground">{catLabel.name}</span>
       </nav>
 
-      <div className="relative mb-6 overflow-hidden rounded-xl border border-border bg-surface p-4 sm:mb-8 sm:p-8">
-        <CategoryArtFade slug={c.slug} className="w-[48%] sm:w-[42%]" opacity={0.65} />
+      <div className="relative mb-6 overflow-hidden rounded-2xl border border-border bg-surface p-5 shadow-sm sm:mb-8 sm:p-8">
+        <CategoryArtFade slug={c.slug} variant="banner" />
         <div className="relative z-10 flex items-start gap-3 sm:gap-4">
-          <span className={cn("grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white sm:h-16 sm:w-16", c.gradient)}>
-            <Icon name={c.icon} className="h-5 w-5 sm:h-7 sm:w-7" />
+          <span
+            className={cn(
+              "grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white shadow-sm sm:h-14 sm:w-14 sm:rounded-2xl",
+              c.gradient,
+            )}
+          >
+            <Icon name={c.icon} className="h-5 w-5 sm:h-6 sm:w-6" />
           </span>
-          <div className="min-w-0 max-w-[70%]">
+          <div className="min-w-0 max-w-[68%] sm:max-w-[72%]">
             <p className="section-label mb-1">{s.category}</p>
-            <h1 className="text-xl font-bold tracking-tight sm:text-4xl">{catLabel.name}</h1>
-            <p className="mt-2 text-sm text-muted sm:text-base">{catLabel.description}</p>
-            <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-muted">
-              <Icon name="Wrench" className="h-4 w-4" />
+            <h1 className="text-xl font-bold tracking-tight sm:text-3xl lg:text-4xl">{catLabel.name}</h1>
+            <p className="mt-2 text-sm leading-relaxed text-muted sm:text-base">{catLabel.description}</p>
+            <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-surface-2 px-2.5 py-1 text-xs font-semibold text-muted sm:text-sm">
+              <Icon name="Wrench" className="h-3.5 w-3.5" />
               {s.toolsCount.replace("{n}", String(c.tools.length))}
             </span>
           </div>
