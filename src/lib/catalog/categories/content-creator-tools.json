@@ -1,7 +1,7 @@
 {
   "name": "Content Creator Tools",
   "slug": "content-creator-tools",
-  "description": "Free browser tools for YouTubers, podcasters & social creators — video editing, voiceovers, captions, scripts & more. No signup, runs privately on your device.",
+  "description": "Free browser tools for YouTubers, podcasters & social creators — video editing, script extraction, voiceovers, captions & more. No signup for browser tools; AI script studio uses daily free runs.",
   "tools": [
     {
       "name": "Online Video Editor",
@@ -11,6 +11,15 @@
       "competition": "medium",
       "complexity": "hard",
       "clientSide": true
+    },
+    {
+      "name": "Video Script Studio",
+      "slug": "video-script-studio",
+      "description": "Upload any video → extract script, scene-by-scene remake plan, free stock B-roll links, and matching voiceover. Works for short or long videos.",
+      "searchVolume": "high",
+      "competition": "medium",
+      "complexity": "hard",
+      "clientSide": false
     },
     {
       "name": "Text to Speech",

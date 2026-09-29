@@ -40,7 +40,9 @@ export function pageAlternates(path: string, locale: Locale = "en"): Pick<Metada
 
 /**
  * Single canonical URL with no hreflang — for pages whose body is not translated.
- * Avoids GSC "Google chose different canonical" when ?lang= URLs duplicate English content.
+ * ?lang= on these paths is 301'd to this URL in middleware. noindex here is only a
+ * fallback if that query is still rendered; pairing it with a cross-page canonical
+ * is what made Google reject the declared canonical.
  */
 export function pageAlternatesSingle(path: string): Pick<Metadata, "alternates"> {
   return {

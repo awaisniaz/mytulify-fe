@@ -101,6 +101,7 @@ export const TOOL_ICON_MAP: Record<string, string> = {
   "hex-to-rgba": "Palette",
   "lighten-darken-color": "Palette",
   "online-video-editor": "Film",
+  "video-script-studio": "Clapperboard",
   "text-to-speech": "Volume2",
   "xml-to-json": "ArrowLeftRight",
   "barcode-generator": "Barcode",
