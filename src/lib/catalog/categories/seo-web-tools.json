@@ -211,9 +211,9 @@
       "clientSide": true
     },
     {
-      "name": "Redirect Generator",
+      "name": "Redirect Checker",
       "slug": "redirect-checker",
-      "description": "Build and explain 301/302 redirect rules for common server configs.",
+      "description": "Follow a live URL and list every redirect hop, status code, and final destination.",
       "searchVolume": "medium",
       "competition": "low",
       "complexity": "easy",

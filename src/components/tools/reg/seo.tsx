@@ -6,7 +6,7 @@ import {
   SitemapGenerator, SchemaGenerator, UtmBuilder, SerpPreview, MetaDescriptionLengthChecker,
   MetaTitleLengthChecker, CanonicalTag, RobotsMetaTag, HreflangTag,
   HtmlTagStripper, EmailExtractor, CodeTextRatio, KeywordCombiner, ReadabilityChecker, HtaccessGenerator,
-  MetaTagsAnalyzer, RobotsValidator,
+  MetaTagsAnalyzer, RobotsValidator, RedirectChecker,
 } from "@/components/tools/impl/seo";
 import {
   RelatedKeywordsGenerator,
@@ -66,7 +66,7 @@ export default makeReg({
   "text-diff-checker": DiffChecker,
   "faq-schema-generator": () => <SchemaGenerator kind="faq" />,
   "breadcrumb-schema-generator": () => <SchemaGenerator kind="breadcrumb" />,
-  "redirect-checker": HtaccessGenerator,
+  "redirect-checker": RedirectChecker,
   "email-extractor": EmailExtractor,
   "readability-checker": ReadabilityChecker,
   "meta-tags-analyzer": MetaTagsAnalyzer,

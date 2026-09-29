@@ -144,53 +144,62 @@ export function RelatedKeywordsGenerator() {
   );
 }
 
+function scoreKeyword(keyword: string, notes: string): { keyword: string; score: number; band: string; words: number } {
+  const kw = keyword.trim().toLowerCase();
+  const words = kw.split(/\s+/).filter(Boolean).length;
+  let score = 32;
+  if (words <= 1) score += 30;
+  else if (words === 2) score += 18;
+  else if (words === 3) score += 8;
+  else score -= 8;
+  if (/\b(best|top|vs|review|pricing|buy|cheap|software|tool|app)\b/.test(kw)) score += 10;
+  if (/^(how|what|why|when|where|who)\b/.test(kw)) score -= 8;
+  if (/\b(near me|for beginners|template|checklist|examples)\b/.test(kw)) score -= 6;
+  if (/\b(google|amazon|youtube|facebook|wikipedia|microsoft|apple)\b/.test(kw)) score += 14;
+  const n = notes.toLowerCase();
+  if (/amazon|wikipedia|youtube|reddit|forbes|hubspot|moz|ahrefs|semrush|\.gov|\.edu/.test(n)) score += 8;
+  score = Math.max(1, Math.min(100, Math.round(score)));
+  const band = score >= 70 ? "Hard" : score >= 45 ? "Medium" : "Easier";
+  return { keyword: keyword.trim(), score, band, words };
+}
+
 export function KeywordDifficultyEstimator() {
   const [keyword, setKeyword] = React.useState("");
   const [serpNotes, setSerpNotes] = React.useState("");
   const [hasBrand, setHasBrand] = React.useState(false);
   const [hasGovEdu, setHasGovEdu] = React.useState(false);
   const [avgWords, setAvgWords] = React.useState("1200");
-  const [drGuess, setDrGuess] = React.useState("40");
+  const [drGuess, setDrGuess] = React.useState("");
 
-  const result = React.useMemo(() => {
-    const kw = keyword.trim().toLowerCase();
-    if (!kw) return null;
-    const words = kw.split(/\s+/).length;
-    let score = 35;
-    // shorter = harder usually
-    if (words === 1) score += 28;
-    else if (words === 2) score += 18;
-    else if (words === 3) score += 8;
-    else score -= 6;
-    if (hasBrand) score += 12;
-    if (hasGovEdu) score += 15;
-    const dr = Number(drGuess) || 0;
-    score += Math.min(25, dr / 4);
-    const len = Number(avgWords) || 0;
-    if (len > 2500) score += 8;
-    else if (len < 600) score -= 5;
-    const notes = serpNotes.toLowerCase();
-    if (/amazon|wikipedia|youtube|reddit|forbes|hubspot|moz|ahrefs|semrush/.test(notes)) score += 10;
-    if (/forum|quora|pinterest/.test(notes)) score -= 4;
-    score = Math.max(1, Math.min(100, Math.round(score)));
-    const band = score >= 70 ? "Hard" : score >= 45 ? "Medium" : "Easy / opportunistic";
-    const advice =
-      score >= 70
-        ? "Target long-tail variants first, build topical authority, and aim for supporting content before the head term."
-        : score >= 45
-          ? "Compete with a differentiated angle, strong on-page SEO, and a few quality referring domains."
-          : "Good candidate for a focused page or supporting blog post — ship content quickly and internal-link to it.";
-    return { score, band, advice, words };
+  const rows = React.useMemo(() => {
+    const lines = parseLines(keyword);
+    if (!lines.length) return [];
+    return lines.map((line) => {
+      const base = scoreKeyword(line, serpNotes);
+      let score = base.score;
+      if (hasBrand) score += 12;
+      if (hasGovEdu) score += 12;
+      const dr = Number(drGuess);
+      if (Number.isFinite(dr) && drGuess.trim()) score += Math.min(20, dr / 5);
+      const len = Number(avgWords) || 0;
+      if (len > 2500) score += 6;
+      else if (len > 0 && len < 600) score -= 4;
+      score = Math.max(1, Math.min(100, Math.round(score)));
+      const band = score >= 70 ? "Hard" : score >= 45 ? "Medium" : "Easier";
+      return { ...base, score, band };
+    });
   }, [keyword, serpNotes, hasBrand, hasGovEdu, avgWords, drGuess]);
+  const csv = rows.length
+    ? "keyword,words,score,band\n" + rows.map((r) => `"${r.keyword.replace(/"/g, '""')}",${r.words},${r.score},${r.band}`).join("\n")
+    : "";
 
   return (
     <div className="space-y-4">
       <Notice tone="info">
-        Heuristic difficulty score (not a live Ahrefs/Moz metric). Use SERP observations — brand SERPs, .gov/.edu,
-        and average content length — to estimate competitiveness.
+        Scores each keyword from its wording (head term vs long-tail, commercial modifiers, brand names). Optional SERP notes adjust the score. This is not a live Ahrefs or Moz metric.
       </Notice>
-      <Field label="Keyword">
-        <Input value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="best project management software" />
+      <Field label="Keywords" hint="One per line">
+        <Textarea value={keyword} onChange={(e) => setKeyword(e.target.value)} rows={5} className="font-sans" placeholder={"crm\nbest crm for startups\nhow to choose a crm"} />
       </Field>
       <div className="grid gap-3 sm:grid-cols-2">
         <Field label="Avg top-10 word count (estimate)">
@@ -217,15 +226,32 @@ export function KeywordDifficultyEstimator() {
           placeholder="wikipedia, forbes, hubspot, niche blogs…"
         />
       </Field>
-      {result && (
-        <div className="grid gap-3 sm:grid-cols-3">
-          <Stat label="Difficulty (0–100)" value={result.score} />
-          <Stat label="Band" value={result.band} />
-          <Stat label="Word count in KW" value={result.words} />
-          <p className="sm:col-span-3 rounded-xl border border-border bg-surface-2/50 p-3 text-sm text-muted">
-            {result.advice}
-          </p>
-        </div>
+      {rows.length > 0 && (
+        <>
+          <div className="overflow-x-auto rounded-xl border border-border">
+            <table className="w-full text-sm">
+              <thead className="bg-surface-2 text-muted">
+                <tr>
+                  <th className="px-3 py-2 text-left">Keyword</th>
+                  <th className="px-3 py-2 text-right">Words</th>
+                  <th className="px-3 py-2 text-right">Score</th>
+                  <th className="px-3 py-2 text-left">Band</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r.keyword} className="border-t border-border">
+                    <td className="px-3 py-1.5">{r.keyword}</td>
+                    <td className="px-3 py-1.5 text-right">{r.words}</td>
+                    <td className="px-3 py-1.5 text-right font-semibold">{r.score}</td>
+                    <td className="px-3 py-1.5">{r.band}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Output value={csv} rows={6} filename="keyword-difficulty.csv" mime="text/csv" />
+        </>
       )}
     </div>
   );
@@ -1362,6 +1388,24 @@ export function UrlPageSeoAnalyzer() {
     if (missingAlt) issues.push(`${missingAlt} image(s) missing alt`);
     if (!jsonLd.length) issues.push("No JSON-LD structured data found");
     if (words < 300) issues.push(`Thin content (~${words} words)`);
+    const viewport = doc.querySelector('meta[name="viewport"]')?.getAttribute("content") ?? "";
+    if (!viewport) issues.push("Missing viewport meta");
+    const hreflang = doc.querySelectorAll('link[rel="alternate"][hreflang]');
+    if (hreflang.length > 0) {
+      const self = [...hreflang].some((el) => (el.getAttribute("href") ?? "") === (finalUrl || meta.canonical));
+      if (!self && meta.canonical) issues.push("Hreflang alternates do not include the canonical URL");
+    }
+    if (finalUrl && meta.canonical) {
+      try {
+        const canon = new URL(meta.canonical, finalUrl);
+        const page = new URL(finalUrl);
+        if (canon.hostname.replace(/^www\./, "") !== page.hostname.replace(/^www\./, "") || canon.pathname !== page.pathname) {
+          issues.push(`Canonical points to ${canon.toString()}`);
+        }
+      } catch {
+        issues.push("Canonical URL could not be parsed");
+      }
+    }
 
     const kw = keyword.trim().toLowerCase();
     if (kw) {

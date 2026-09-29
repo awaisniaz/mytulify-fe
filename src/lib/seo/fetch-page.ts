@@ -220,3 +220,74 @@ export async function fetchPublicPageHtml(rawUrl: string): Promise<FetchedPage> 
 
   throw new Error("Too many redirects.");
 }
+
+export type RedirectHop = {
+  url: string;
+  status: number;
+  location: string | null;
+};
+
+export type RedirectTrace = {
+  hops: RedirectHop[];
+  finalUrl: string;
+  finalStatus: number;
+  loop: boolean;
+};
+
+/** Follow public redirects hop-by-hop and record status + Location. Does not download the body. */
+export async function tracePublicRedirects(rawUrl: string, maxHops = 10): Promise<RedirectTrace> {
+  let current = normalizePageUrl(rawUrl);
+  await assertPublicHostname(current.hostname);
+  const hops: RedirectHop[] = [];
+  const seen = new Set<string>();
+
+  for (let i = 0; i <= maxHops; i++) {
+    const key = current.toString();
+    if (seen.has(key)) {
+      return { hops, finalUrl: key, finalStatus: hops.at(-1)?.status ?? 0, loop: true };
+    }
+    seen.add(key);
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+    let res: Response;
+    try {
+      res = await fetch(key, {
+        method: "GET",
+        redirect: "manual",
+        signal: controller.signal,
+        headers: {
+          Accept: "text/html,application/xhtml+xml,*/*;q=0.8",
+          "User-Agent": USER_AGENT,
+          "Accept-Language": "en-US,en;q=0.9",
+        },
+      });
+    } catch (e) {
+      if ((e as Error).name === "AbortError") throw new Error("Request timed out.");
+      throw new Error("Failed to fetch the URL.");
+    } finally {
+      clearTimeout(timer);
+    }
+    try {
+      await res.body?.cancel();
+    } catch {
+      /* ignore */
+    }
+
+    const loc = res.headers.get("location");
+    hops.push({ url: key, status: res.status, location: loc });
+
+    if (![301, 302, 303, 307, 308].includes(res.status)) {
+      return { hops, finalUrl: key, finalStatus: res.status, loop: false };
+    }
+    if (!loc) throw new Error("Redirect without Location header.");
+    const next = new URL(loc, current);
+    if (next.protocol !== "http:" && next.protocol !== "https:") {
+      throw new Error("Redirect used a non-http scheme.");
+    }
+    await assertPublicHostname(next.hostname);
+    current = next;
+  }
+
+  throw new Error(`More than ${maxHops} redirects.`);
+}

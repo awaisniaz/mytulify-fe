@@ -3,7 +3,8 @@
 import * as React from "react";
 import { Input, Select, Textarea, Button } from "@/components/ui/primitives";
 import { CopyButton, Field, Output, Notice, Stat, ToolBar, TextStatBar } from "@/components/tools/shared";
-import { FetchFromUrl, extractMeta } from "@/components/tools/fetch-from-url";
+import { FetchFromUrl, extractMeta, parsePageDoc } from "@/components/tools/fetch-from-url";
+import { testRobotsUrl } from "@/lib/seo/robots-match";
 
 /* ------------------------------ Meta tag gen ------------------------------- */
 export function MetaTagGenerator() {
@@ -83,6 +84,14 @@ export function OpenGraphGenerator() {
         <Field label="Site name"><Input value={d.site} onChange={(e) => setD({ ...d, site: e.target.value })} /></Field>
       </div>
       <Field label="Description"><Textarea value={d.description} onChange={(e) => setD({ ...d, description: e.target.value })} rows={2} className="font-sans" /></Field>
+      <div className="max-w-md overflow-hidden rounded-xl border border-border bg-white">
+        {d.image ? <img src={d.image} alt="" className="h-40 w-full object-cover bg-surface-2" /> : <div className="flex h-40 items-center justify-center bg-surface-2 text-sm text-muted">Image preview</div>}
+        <div className="space-y-1 p-3">
+          <p className="text-xs uppercase text-muted">{d.site || d.url || "example.com"}</p>
+          <p className="font-semibold text-[#1a0dab]">{d.title || "Open Graph title"}</p>
+          <p className="line-clamp-2 text-sm text-muted">{d.description || "Description preview"}</p>
+        </div>
+      </div>
       <Output value={out} rows={6} filename="og-tags.html" />
     </div>
   );
@@ -105,6 +114,14 @@ export function TwitterCardGenerator() {
         <Field label="Image URL"><Input value={d.image} onChange={(e) => setD({ ...d, image: e.target.value })} /></Field>
       </div>
       <Field label="Description"><Textarea value={d.description} onChange={(e) => setD({ ...d, description: e.target.value })} rows={2} className="font-sans" /></Field>
+      <div className={`max-w-md overflow-hidden rounded-2xl border border-border bg-white ${d.card === "summary" ? "flex" : ""}`}>
+        {d.image ? <img src={d.image} alt="" className={d.card === "summary" ? "h-24 w-24 object-cover" : "h-44 w-full object-cover bg-surface-2"} /> : <div className="flex h-24 items-center justify-center bg-surface-2 text-sm text-muted">Image</div>}
+        <div className="space-y-1 p-3">
+          <p className="text-xs text-muted">{d.site || "twitter card"}</p>
+          <p className="font-semibold">{d.title || "Card title"}</p>
+          <p className="line-clamp-2 text-sm text-muted">{d.description || "Description"}</p>
+        </div>
+      </div>
       <Output value={out} rows={5} filename="twitter-card.html" />
     </div>
   );
@@ -115,9 +132,13 @@ export function KeywordDensity() {
   const [text, setText] = React.useState("");
   const [ngram, setNgram] = React.useState("1");
   const [stop, setStop] = React.useState(true);
+  const [stripHtml, setStripHtml] = React.useState(false);
   const [target, setTarget] = React.useState("");
   const STOP = new Set("a an the and or but is are was were to of in on for with at by from it this that as be".split(" "));
-  const tokens = (text.toLowerCase().match(/\b[\w']+\b/g) || []).filter((w) => !(stop && STOP.has(w)));
+  const source = stripHtml
+    ? text.replace(/<script[\s\S]*?<\/script>/gi, " ").replace(/<style[\s\S]*?<\/style>/gi, " ").replace(/<[^>]+>/g, " ")
+    : text;
+  const tokens = (source.toLowerCase().match(/\b[\w']+\b/g) || []).filter((w) => !(stop && STOP.has(w)));
   const n = Math.max(1, parseInt(ngram, 10) || 1);
   const map = new Map<string, number>();
   for (let i = 0; i <= tokens.length - n; i++) {
@@ -146,7 +167,11 @@ export function KeywordDensity() {
         </Field>
         <Field label="Target keyword"><Input value={target} onChange={(e) => setTarget(e.target.value)} placeholder="optional" /></Field>
         <label className="flex items-end gap-2 pb-2 text-sm"><input type="checkbox" checked={stop} onChange={(e) => setStop(e.target.checked)} /> Ignore stop words</label>
+        <label className="flex items-end gap-2 pb-2 text-sm"><input type="checkbox" checked={stripHtml} onChange={(e) => setStripHtml(e.target.checked)} /> Strip HTML first</label>
       </div>
+      {target.trim() && total > 0 && (tCount / total) * 100 > 3 && (
+        <Notice tone="error">Target density is above 3% — that usually reads as keyword stuffing.</Notice>
+      )}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat label="Total words" value={total} />
         <Stat label="Unique" value={map.size} />
@@ -168,12 +193,13 @@ export function KeywordDensity() {
 
 /* ------------------------------ Robots.txt --------------------------------- */
 export function RobotsTxtGenerator() {
-  const [d, setD] = React.useState({ agent: "*", disallow: "/admin\n/private", allow: "", sitemap: "https://example.com/sitemap.xml", delay: "", extra: "" });
+  const [d, setD] = React.useState({ agent: "*", disallow: "/admin\n/private", allow: "", sitemap: "https://example.com/sitemap.xml", delay: "", extra: "", blockAi: false });
   const out = [
     `User-agent: ${d.agent}`,
     ...d.disallow.split("\n").filter(Boolean).map((p) => `Disallow: ${p}`),
     ...d.allow.split("\n").filter(Boolean).map((p) => `Allow: ${p}`),
     d.delay && `Crawl-delay: ${d.delay}`,
+    d.blockAi && "\nUser-agent: GPTBot\nDisallow: /\n\nUser-agent: ClaudeBot\nDisallow: /\n\nUser-agent: Google-Extended\nDisallow: /",
     d.sitemap && `\nSitemap: ${d.sitemap}`,
     d.extra && `\n${d.extra}`,
   ].filter(Boolean).join("\n");
@@ -192,68 +218,262 @@ export function RobotsTxtGenerator() {
         <Field label="Crawl-delay (optional)"><Input type="number" value={d.delay} onChange={(e) => setD({ ...d, delay: e.target.value })} /></Field>
         <Field label="Extra rules"><Textarea value={d.extra} onChange={(e) => setD({ ...d, extra: e.target.value })} rows={3} placeholder="User-agent: GPTBot&#10;Disallow: /" /></Field>
       </div>
+      <label className="flex items-center gap-2 text-sm">
+        <input type="checkbox" checked={d.blockAi} onChange={(e) => setD({ ...d, blockAi: e.target.checked })} />
+        Block common AI crawlers (GPTBot, ClaudeBot, Google-Extended)
+      </label>
       <Output value={out} rows={8} filename="robots.txt" />
     </div>
   );
 }
 
 /* ------------------------------ Sitemap ------------------------------------ */
+function xmlEscape(value: string): string {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
 export function SitemapGenerator() {
   const [urls, setUrls] = React.useState("https://example.com/\nhttps://example.com/about");
   const [freq, setFreq] = React.useState("weekly");
   const [prio, setPrio] = React.useState("0.8");
   const [lastmod, setLastmod] = React.useState(true);
   const today = new Date().toISOString().slice(0, 10);
-  const list = urls.split("\n").map((u) => u.trim()).filter(Boolean);
+  const rows = urls.split("\n").map((line) => line.trim()).filter(Boolean).map((line) => {
+    const [loc, linePrio, lineFreq] = line.split(/[,\t]/).map((p) => p.trim());
+    return { loc: loc || "", priority: linePrio || prio, changefreq: lineFreq || freq };
+  }).filter((r) => r.loc);
+  const bad = rows.filter((r) => !/^https?:\/\//i.test(r.loc));
   const out = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-    list.map((u) => `  <url>\n    <loc>${u}</loc>\n${lastmod ? `    <lastmod>${today}</lastmod>\n` : ""}    <changefreq>${freq}</changefreq>\n    <priority>${prio}</priority>\n  </url>`).join("\n") +
+    rows.map((r) => `  <url>\n    <loc>${xmlEscape(r.loc)}</loc>\n${lastmod ? `    <lastmod>${today}</lastmod>\n` : ""}    <changefreq>${xmlEscape(r.changefreq)}</changefreq>\n    <priority>${xmlEscape(r.priority)}</priority>\n  </url>`).join("\n") +
     "\n</urlset>";
   return (
     <div className="space-y-4">
-      <ToolBar onSample={() => setUrls("https://example.com/\nhttps://example.com/about\nhttps://example.com/blog")} onClear={() => setUrls("")} onFileText={(t) => setUrls(t)} />
-      <Field label="URLs (one per line)"><Textarea value={urls} onChange={(e) => setUrls(e.target.value)} rows={6} /></Field>
+      <ToolBar onSample={() => setUrls("https://example.com/,1.0,daily\nhttps://example.com/about,0.6,monthly\nhttps://example.com/blog")} onClear={() => setUrls("")} onFileText={(t) => setUrls(t)} />
+      <Field label="URLs (one per line)" hint="Optional: url,priority,changefreq"><Textarea value={urls} onChange={(e) => setUrls(e.target.value)} rows={6} /></Field>
       <div className="grid gap-3 sm:grid-cols-3">
         <Field label="Change frequency"><Select value={freq} onChange={(e) => setFreq(e.target.value)}>{["always", "hourly", "daily", "weekly", "monthly", "yearly", "never"].map((f) => <option key={f}>{f}</option>)}</Select></Field>
         <Field label="Priority"><Select value={prio} onChange={(e) => setPrio(e.target.value)}>{["1.0", "0.8", "0.6", "0.5", "0.3"].map((p) => <option key={p}>{p}</option>)}</Select></Field>
         <label className="flex items-end gap-2 pb-2 text-sm"><input type="checkbox" checked={lastmod} onChange={(e) => setLastmod(e.target.checked)} /> Include lastmod ({today})</label>
       </div>
-      <Notice tone="info">{list.length} URL{list.length !== 1 ? "s" : ""}</Notice>
+      <Notice tone={rows.length > 50000 || bad.length ? "error" : "info"}>
+        {rows.length.toLocaleString()} URL{rows.length !== 1 ? "s" : ""}
+        {rows.length > 50000 ? " — split into a sitemap index (max 50,000 URLs per file)." : ""}
+        {bad.length ? ` ${bad.length} line(s) are missing http(s)://.` : ""}
+      </Notice>
       <Output value={out} rows={10} filename="sitemap.xml" />
     </div>
   );
 }
 
 /* ------------------------------ Schema markup ------------------------------ */
+const SCHEMA_TYPES = ["Article", "BlogPosting", "Product", "Organization", "Person", "Event", "Recipe", "VideoObject", "WebSite", "SoftwareApplication", "JobPosting", "FAQPage", "BreadcrumbList"] as const;
+
+function omitEmpty<T extends Record<string, unknown>>(obj: T): T {
+  const out = { ...obj };
+  for (const key of Object.keys(out)) {
+    const v = out[key];
+    if (v === "" || v === undefined || v === null) delete out[key];
+  }
+  return out;
+}
+
 export function SchemaGenerator({ kind }: { kind: "auto" | "faq" | "breadcrumb" }) {
-  const [type, setType] = React.useState(kind === "auto" ? "Article" : kind);
-  const [json, setJson] = React.useState("");
-  React.useEffect(() => {
-    const samples: Record<string, object> = {
-      Article: { "@context": "https://schema.org", "@type": "Article", headline: "Your headline", author: { "@type": "Person", name: "Author" }, datePublished: "2026-01-01" },
-      Product: { "@context": "https://schema.org", "@type": "Product", name: "Product name", offers: { "@type": "Offer", price: "9.99", priceCurrency: "USD", availability: "https://schema.org/InStock" } },
-      Organization: { "@context": "https://schema.org", "@type": "Organization", name: "Company", url: "https://example.com", logo: "https://example.com/logo.png" },
-      Person: { "@context": "https://schema.org", "@type": "Person", name: "Jane Doe", jobTitle: "Engineer", url: "https://example.com" },
-      Event: { "@context": "https://schema.org", "@type": "Event", name: "Event name", startDate: "2026-06-01T09:00", location: { "@type": "Place", name: "Venue", address: "City" } },
-      Recipe: { "@context": "https://schema.org", "@type": "Recipe", name: "Recipe name", recipeIngredient: ["1 cup flour"], recipeInstructions: "Mix and bake." },
-      VideoObject: { "@context": "https://schema.org", "@type": "VideoObject", name: "Video title", thumbnailUrl: "https://example.com/thumb.jpg", uploadDate: "2026-01-01" },
-      faq: { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [{ "@type": "Question", name: "Question?", acceptedAnswer: { "@type": "Answer", text: "Answer." } }] },
-      breadcrumb: { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://example.com" }] },
-    };
-    setJson(JSON.stringify(samples[type] ?? samples.Article, null, 2));
-  }, [type]);
-  let valid = false, err = "";
-  try { if (json.trim()) { JSON.parse(json); valid = true; } } catch (e) { err = (e as Error).message; }
+  const locked = kind === "faq" ? "FAQPage" : kind === "breadcrumb" ? "BreadcrumbList" : "";
+  const [type, setType] = React.useState(locked || "Article");
+  const [f, setF] = React.useState({
+    name: "", headline: "", description: "", url: "", image: "", author: "", date: "",
+    price: "", currency: "USD", brand: "", sku: "", logo: "", jobTitle: "",
+    start: "", location: "", address: "", ingredients: "", instructions: "",
+    publisher: "", salary: "",
+  });
+  const [faqs, setFaqs] = React.useState([{ q: "", a: "" }]);
+  const [crumbs, setCrumbs] = React.useState([{ name: "Home", url: "https://example.com/" }]);
+  const set = (k: keyof typeof f, v: string) => setF((prev) => ({ ...prev, [k]: v }));
+  const active = locked || type;
+
+  const data = React.useMemo(() => {
+    const ctx = "https://schema.org";
+    if (active === "FAQPage") {
+      return {
+        "@context": ctx,
+        "@type": "FAQPage",
+        mainEntity: faqs.filter((row) => row.q.trim() && row.a.trim()).map((row) => ({
+          "@type": "Question",
+          name: row.q.trim(),
+          acceptedAnswer: { "@type": "Answer", text: row.a.trim() },
+        })),
+      };
+    }
+    if (active === "BreadcrumbList") {
+      return {
+        "@context": ctx,
+        "@type": "BreadcrumbList",
+        itemListElement: crumbs.filter((c) => c.name.trim()).map((c, i) => omitEmpty({
+          "@type": "ListItem",
+          position: i + 1,
+          name: c.name.trim(),
+          item: c.url.trim(),
+        })),
+      };
+    }
+    if (active === "Product") {
+      return omitEmpty({
+        "@context": ctx,
+        "@type": "Product",
+        name: f.name,
+        description: f.description,
+        image: f.image,
+        sku: f.sku,
+        brand: f.brand ? { "@type": "Brand", name: f.brand } : "",
+        offers: f.price ? { "@type": "Offer", price: f.price, priceCurrency: f.currency || "USD", availability: "https://schema.org/InStock", url: f.url } : "",
+      });
+    }
+    if (active === "Organization" || active === "WebSite") {
+      return omitEmpty({ "@context": ctx, "@type": active, name: f.name, url: f.url, logo: f.logo, description: f.description });
+    }
+    if (active === "Person") {
+      return omitEmpty({ "@context": ctx, "@type": "Person", name: f.name, jobTitle: f.jobTitle, url: f.url, image: f.image });
+    }
+    if (active === "Event") {
+      return omitEmpty({
+        "@context": ctx, "@type": "Event", name: f.name, startDate: f.start, description: f.description, image: f.image,
+        location: f.location ? { "@type": "Place", name: f.location, address: f.address } : "",
+      });
+    }
+    if (active === "Recipe") {
+      return omitEmpty({
+        "@context": ctx, "@type": "Recipe", name: f.name, description: f.description, image: f.image,
+        recipeIngredient: f.ingredients.split("\n").map((x) => x.trim()).filter(Boolean),
+        recipeInstructions: f.instructions.split("\n").map((x) => x.trim()).filter(Boolean).map((text) => ({ "@type": "HowToStep", text })),
+      });
+    }
+    if (active === "VideoObject") {
+      return omitEmpty({ "@context": ctx, "@type": "VideoObject", name: f.name, description: f.description, thumbnailUrl: f.image, uploadDate: f.date, contentUrl: f.url });
+    }
+    if (active === "SoftwareApplication") {
+      return omitEmpty({
+        "@context": ctx, "@type": "SoftwareApplication", name: f.name, description: f.description, url: f.url, applicationCategory: "UtilitiesApplication",
+        offers: f.price ? { "@type": "Offer", price: f.price, priceCurrency: f.currency || "USD" } : "",
+      });
+    }
+    if (active === "JobPosting") {
+      return omitEmpty({
+        "@context": ctx, "@type": "JobPosting", title: f.name, description: f.description, datePosted: f.date,
+        hiringOrganization: f.publisher ? { "@type": "Organization", name: f.publisher } : "",
+        jobLocation: f.address ? { "@type": "Place", address: f.address } : "",
+        baseSalary: f.salary ? { "@type": "MonetaryAmount", currency: f.currency || "USD", value: { "@type": "QuantitativeValue", value: f.salary, unitText: "YEAR" } } : "",
+      });
+    }
+    return omitEmpty({
+      "@context": ctx,
+      "@type": active,
+      headline: f.headline || f.name,
+      description: f.description,
+      image: f.image,
+      datePublished: f.date,
+      author: f.author ? { "@type": "Person", name: f.author } : "",
+      publisher: f.publisher ? { "@type": "Organization", name: f.publisher, logo: f.logo ? { "@type": "ImageObject", url: f.logo } : undefined } : "",
+      mainEntityOfPage: f.url,
+    });
+  }, [active, f, faqs, crumbs]);
+
+  const json = JSON.stringify(data, null, 2);
+  const script = `<script type="application/ld+json">\n${json}\n</script>`;
+  const faqCount = faqs.filter((row) => row.q.trim() && row.a.trim()).length;
+
   return (
     <div className="space-y-4">
-      {kind === "auto" && (
-        <Field label="Schema type"><Select value={type} onChange={(e) => setType(e.target.value)}>
-          {["Article", "Product", "Organization", "Person", "Event", "Recipe", "VideoObject"].map((t) => <option key={t}>{t}</option>)}
-        </Select></Field>
+      {!locked && (
+        <Field label="Schema type">
+          <Select value={type} onChange={(e) => setType(e.target.value)}>
+            {SCHEMA_TYPES.filter((t) => t !== "FAQPage" && t !== "BreadcrumbList").map((t) => <option key={t}>{t}</option>)}
+          </Select>
+        </Field>
       )}
-      <Notice tone="info">Edit the JSON-LD, then paste it inside a &lt;script type=&quot;application/ld+json&quot;&gt; tag.</Notice>
-      {json.trim() && <Notice tone={valid ? "success" : "error"}>{valid ? "Valid JSON" : err}</Notice>}
-      <Textarea value={json} onChange={(e) => setJson(e.target.value)} rows={12} />
-      <div className="flex gap-2"><CopyButton value={`<script type="application/ld+json">\n${json}\n</script>`} label="Copy with script tag" /></div>
+      {active === "FAQPage" && (
+        <div className="space-y-3">
+          {faqs.map((row, i) => (
+            <div key={i} className="grid gap-2 rounded-xl border border-border p-3">
+              <Field label={`Question ${i + 1}`}><Input value={row.q} onChange={(e) => setFaqs((rows) => rows.map((r, j) => j === i ? { ...r, q: e.target.value } : r))} /></Field>
+              <Field label="Answer"><Textarea value={row.a} onChange={(e) => setFaqs((rows) => rows.map((r, j) => j === i ? { ...r, a: e.target.value } : r))} rows={2} className="font-sans" /></Field>
+              <Button type="button" variant="ghost" size="sm" disabled={faqs.length < 2} onClick={() => setFaqs((rows) => rows.filter((_, j) => j !== i))}>Remove</Button>
+            </div>
+          ))}
+          <Button type="button" variant="secondary" size="sm" onClick={() => setFaqs((rows) => [...rows, { q: "", a: "" }])}>Add question</Button>
+          {faqCount === 0 && <Notice tone="info">Add at least one question and answer. Empty rows are left out of the JSON-LD.</Notice>}
+        </div>
+      )}
+      {active === "BreadcrumbList" && (
+        <div className="space-y-3">
+          {crumbs.map((row, i) => (
+            <div key={i} className="grid gap-2 sm:grid-cols-[1fr_2fr_auto]">
+              <Field label={i === 0 ? "Name" : undefined}><Input value={row.name} onChange={(e) => setCrumbs((rows) => rows.map((r, j) => j === i ? { ...r, name: e.target.value } : r))} /></Field>
+              <Field label={i === 0 ? "URL" : undefined}><Input value={row.url} onChange={(e) => setCrumbs((rows) => rows.map((r, j) => j === i ? { ...r, url: e.target.value } : r))} /></Field>
+              <Button type="button" variant="ghost" size="sm" className="self-end" disabled={crumbs.length < 2} onClick={() => setCrumbs((rows) => rows.filter((_, j) => j !== i))}>Remove</Button>
+            </div>
+          ))}
+          <Button type="button" variant="secondary" size="sm" onClick={() => setCrumbs((rows) => [...rows, { name: "", url: "" }])}>Add crumb</Button>
+        </div>
+      )}
+      {active !== "FAQPage" && active !== "BreadcrumbList" && (
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Field label={active === "Article" || active === "BlogPosting" ? "Headline" : "Name / title"}>
+            <Input value={active === "Article" || active === "BlogPosting" ? f.headline : f.name} onChange={(e) => set(active === "Article" || active === "BlogPosting" ? "headline" : "name", e.target.value)} />
+          </Field>
+          <Field label="URL"><Input value={f.url} onChange={(e) => set("url", e.target.value)} placeholder="https://" /></Field>
+          <Field label="Description"><Input value={f.description} onChange={(e) => set("description", e.target.value)} /></Field>
+          <Field label="Image URL"><Input value={f.image} onChange={(e) => set("image", e.target.value)} /></Field>
+          {(active === "Article" || active === "BlogPosting") && (
+            <>
+              <Field label="Author"><Input value={f.author} onChange={(e) => set("author", e.target.value)} /></Field>
+              <Field label="Date published"><Input type="date" value={f.date} onChange={(e) => set("date", e.target.value)} /></Field>
+              <Field label="Publisher"><Input value={f.publisher} onChange={(e) => set("publisher", e.target.value)} /></Field>
+              <Field label="Publisher logo URL"><Input value={f.logo} onChange={(e) => set("logo", e.target.value)} /></Field>
+            </>
+          )}
+          {active === "Product" && (
+            <>
+              <Field label="Price"><Input value={f.price} onChange={(e) => set("price", e.target.value)} placeholder="19.00" /></Field>
+              <Field label="Currency"><Input value={f.currency} onChange={(e) => set("currency", e.target.value)} /></Field>
+              <Field label="Brand"><Input value={f.brand} onChange={(e) => set("brand", e.target.value)} /></Field>
+              <Field label="SKU"><Input value={f.sku} onChange={(e) => set("sku", e.target.value)} /></Field>
+            </>
+          )}
+          {(active === "Organization" || active === "WebSite") && (
+            <Field label="Logo URL"><Input value={f.logo} onChange={(e) => set("logo", e.target.value)} /></Field>
+          )}
+          {active === "Person" && <Field label="Job title"><Input value={f.jobTitle} onChange={(e) => set("jobTitle", e.target.value)} /></Field>}
+          {active === "Event" && (
+            <>
+              <Field label="Start"><Input type="datetime-local" value={f.start} onChange={(e) => set("start", e.target.value)} /></Field>
+              <Field label="Venue"><Input value={f.location} onChange={(e) => set("location", e.target.value)} /></Field>
+              <Field label="Address"><Input value={f.address} onChange={(e) => set("address", e.target.value)} /></Field>
+            </>
+          )}
+          {active === "Recipe" && (
+            <>
+              <Field label="Ingredients (one per line)"><Textarea value={f.ingredients} onChange={(e) => set("ingredients", e.target.value)} rows={4} /></Field>
+              <Field label="Steps (one per line)"><Textarea value={f.instructions} onChange={(e) => set("instructions", e.target.value)} rows={4} /></Field>
+            </>
+          )}
+          {active === "VideoObject" && <Field label="Upload date"><Input type="date" value={f.date} onChange={(e) => set("date", e.target.value)} /></Field>}
+          {active === "SoftwareApplication" && (
+            <>
+              <Field label="Price (blank = omit offer)"><Input value={f.price} onChange={(e) => set("price", e.target.value)} placeholder="0" /></Field>
+              <Field label="Currency"><Input value={f.currency} onChange={(e) => set("currency", e.target.value)} /></Field>
+            </>
+          )}
+          {active === "JobPosting" && (
+            <>
+              <Field label="Date posted"><Input type="date" value={f.date} onChange={(e) => set("date", e.target.value)} /></Field>
+              <Field label="Company"><Input value={f.publisher} onChange={(e) => set("publisher", e.target.value)} /></Field>
+              <Field label="Location"><Input value={f.address} onChange={(e) => set("address", e.target.value)} /></Field>
+              <Field label="Yearly salary"><Input value={f.salary} onChange={(e) => set("salary", e.target.value)} /></Field>
+            </>
+          )}
+        </div>
+      )}
+      <Output value={script} rows={14} filename="schema.html" />
     </div>
   );
 }
@@ -308,6 +528,15 @@ function lengthLabel(len: number, idealMin: number, idealMax: number, unit: stri
   return "Too long — will truncate";
 }
 
+function textPx(text: string, font: string): number {
+  if (typeof document === "undefined" || !text) return 0;
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return 0;
+  ctx.font = font;
+  return ctx.measureText(text).width;
+}
+
 export function SerpPreview({ focus = "both" }: { focus?: LengthFocus }) {
   const [d, setD] = React.useState({
     title: "Your page title goes here — Brand",
@@ -316,6 +545,16 @@ export function SerpPreview({ focus = "both" }: { focus?: LengthFocus }) {
   });
   const showTitle = focus !== "description";
   const showDesc = focus !== "title";
+  const titlePx = textPx(d.title, "20px Arial");
+  const descPx = textPx(d.desc, "14px Arial");
+  const titleCut = titlePx > 600 ? "Title is wider than ~600px and will truncate on desktop." : "";
+  const descCut = descPx > 920 ? "Description is wider than ~920px and will truncate on desktop." : "";
+  let host = d.url;
+  try {
+    host = new URL(d.url).hostname.replace(/^www\./, "");
+  } catch {
+    /* keep raw */
+  }
 
   return (
     <div className="space-y-4">
@@ -331,24 +570,24 @@ export function SerpPreview({ focus = "both" }: { focus?: LengthFocus }) {
         </Field>
       )}
       <div className="rounded-xl border border-border bg-white p-4">
-        <p className="text-sm text-[#202124]">{d.url}</p>
-        <p className="truncate text-xl text-[#1a0dab]">{d.title || "Page title preview"}</p>
-        <p className="text-sm text-[#4d5156]">
-          {(d.desc || "Meta description preview").slice(0, 160)}
-          {d.desc.length > 160 && "…"}
+        <p className="text-sm text-[#202124]">{host}</p>
+        <p className="max-w-[600px] truncate text-xl text-[#1a0dab]" style={{ fontFamily: "Arial, sans-serif" }}>{d.title || "Page title preview"}</p>
+        <p className="max-w-[920px] text-sm text-[#4d5156]" style={{ fontFamily: "Arial, sans-serif" }}>
+          {descPx > 920 ? `${d.desc.slice(0, 150)}…` : (d.desc || "Meta description preview")}
         </p>
       </div>
+      {(titleCut || descCut) && <Notice tone="error">{[titleCut, descCut].filter(Boolean).join(" ")}</Notice>}
       <div className={`grid gap-3 ${showTitle && showDesc ? "grid-cols-2" : "grid-cols-1"}`}>
         {showTitle && (
           <Stat
             label={`Title · ${lengthLabel(d.title.length, 50, 60, "title")}`}
-            value={`${d.title.length}/60`}
+            value={`${d.title.length}/60 · ${Math.round(titlePx)}px`}
           />
         )}
         {showDesc && (
           <Stat
             label={`Description · ${lengthLabel(d.desc.length, 150, 160, "description")}`}
-            value={`${d.desc.length}/160`}
+            value={`${d.desc.length}/160 · ${Math.round(descPx)}px`}
           />
         )}
       </div>
@@ -555,12 +794,19 @@ export function KeywordCombiner() {
   const [b, setB] = React.useState("shoes\nbags");
   const [c, setC] = React.useState("");
   const [sep, setSep] = React.useState(" ");
+  const [match, setMatch] = React.useState<"broad" | "phrase" | "exact" | "modified">("broad");
   const listA = a.split("\n").map((s) => s.trim()).filter(Boolean);
   const listB = b.split("\n").map((s) => s.trim()).filter(Boolean);
   const listC = c.split("\n").map((s) => s.trim()).filter(Boolean);
-  const combos = listC.length
-    ? listA.flatMap((x) => listB.flatMap((y) => listC.map((z) => [x, y, z].join(sep))))
-    : listA.flatMap((x) => listB.map((y) => [x, y].join(sep)));
+  const raw = listC.length
+    ? listA.flatMap((x) => listB.flatMap((y) => listC.map((z) => [x, y, z].filter(Boolean).join(sep))))
+    : listA.flatMap((x) => listB.map((y) => [x, y].filter(Boolean).join(sep)));
+  const combos = raw.map((phrase) => {
+    if (match === "phrase") return `"${phrase}"`;
+    if (match === "exact") return `[${phrase}]`;
+    if (match === "modified") return phrase.split(/\s+/).map((w) => `+${w}`).join(" ");
+    return phrase;
+  });
   return (
     <div className="space-y-4">
       <div className="grid gap-3 sm:grid-cols-3">
@@ -568,7 +814,17 @@ export function KeywordCombiner() {
         <Field label="List 2"><Textarea value={b} onChange={(e) => setB(e.target.value)} rows={5} /></Field>
         <Field label="List 3 (optional)"><Textarea value={c} onChange={(e) => setC(e.target.value)} rows={5} /></Field>
       </div>
-      <Field label="Separator"><Input value={sep} onChange={(e) => setSep(e.target.value)} className="max-w-40" /></Field>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Field label="Separator"><Input value={sep} onChange={(e) => setSep(e.target.value)} /></Field>
+        <Field label="Match type">
+          <Select value={match} onChange={(e) => setMatch(e.target.value as typeof match)}>
+            <option value="broad">Broad</option>
+            <option value="phrase">Phrase ("keyword")</option>
+            <option value="exact">Exact [keyword]</option>
+            <option value="modified">Modified broad (+keyword)</option>
+          </Select>
+        </Field>
+      </div>
       <Notice tone="info">{combos.length} combination{combos.length !== 1 ? "s" : ""}</Notice>
       <Output value={combos.join("\n")} rows={Math.min(10, Math.max(4, combos.length))} filename="keywords.txt" mono={false} />
     </div>
@@ -583,7 +839,9 @@ export function ReadabilityChecker() {
   const flesch = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
   const grade = 0.39 * (words / sentences) + 11.8 * (syllables / words) - 15.59;
   const level = flesch > 90 ? "Very easy" : flesch > 70 ? "Easy" : flesch > 50 ? "Fairly hard" : flesch > 30 ? "Difficult" : "Very confusing";
-  const gunning = 0.4 * ((words / sentences) + 100 * ((text.match(/\b\w{7,}\b/g) || []).length / words));
+  const complex = (text.match(/\b\w{7,}\b/g) || []).length;
+  const gunning = 0.4 * ((words / sentences) + 100 * (complex / words));
+  const minutes = Math.max(1, Math.round(words / 200));
   return (
     <div className="space-y-4">
       <ToolBar
@@ -597,7 +855,14 @@ export function ReadabilityChecker() {
         <Stat label="Grade level" value={text.trim() ? Math.max(0, Math.round(grade)) : "—"} />
         <Stat label="Gunning fog" value={text.trim() ? gunning.toFixed(1) : "—"} />
         <Stat label="Verdict" value={text.trim() ? level : "—"} />
+        <Stat label="Words" value={text.trim() ? words : "—"} />
+        <Stat label="Sentences" value={text.trim() ? sentences : "—"} />
+        <Stat label="Avg words / sentence" value={text.trim() ? (words / sentences).toFixed(1) : "—"} />
+        <Stat label="Reading time" value={text.trim() ? `${minutes} min` : "—"} />
       </div>
+      {text.trim() && words / sentences > 25 && (
+        <Notice tone="info">Average sentence is over 25 words. Shorter sentences are easier to scan in search snippets.</Notice>
+      )}
     </div>
   );
 }
@@ -605,18 +870,43 @@ export function ReadabilityChecker() {
 export function MetaTagsAnalyzer() {
   const [html, setHtml] = React.useState("");
   const rows: [string, string][] = [];
+  const issues: string[] = [];
   if (html.trim() && typeof window !== "undefined") {
     const meta = extractMeta(html);
+    const doc = parsePageDoc(html);
+    const viewport = doc.querySelector('meta[name="viewport"]')?.getAttribute("content") ?? "";
+    const twitter = doc.querySelector('meta[name="twitter:card"]')?.getAttribute("content") ?? "";
+    const hreflang = doc.querySelectorAll('link[rel="alternate"][hreflang]').length;
+    const images = doc.querySelectorAll("img");
+    let missingAlt = 0;
+    images.forEach((img) => {
+      if (!(img.getAttribute("alt") ?? "").trim()) missingAlt++;
+    });
     rows.push(["Title", meta.title || "— missing —"]);
     rows.push(["Description", meta.description || "— missing —"]);
-    const doc = new DOMParser().parseFromString(html, "text/html");
     rows.push(["Keywords", doc.querySelector('meta[name="keywords"]')?.getAttribute("content") ?? "—"]);
-    rows.push(["Canonical", meta.canonical || "—"]);
+    rows.push(["Canonical", meta.canonical || "— missing —"]);
     rows.push(["Robots", meta.robots || "—"]);
-    rows.push(["OG title", meta.ogTitle || "—"]);
-    rows.push(["OG image", meta.ogImage || "—"]);
-    rows.push(["Viewport", doc.querySelector('meta[name="viewport"]')?.getAttribute("content") ?? "— missing —"]);
-    rows.push(["H1 count", String(meta.h1.length)]);
+    rows.push(["OG title", meta.ogTitle || "— missing —"]);
+    rows.push(["OG description", meta.ogDescription || "—"]);
+    rows.push(["OG image", meta.ogImage || "— missing —"]);
+    rows.push(["Twitter card", twitter || "— missing —"]);
+    rows.push(["Viewport", viewport || "— missing —"]);
+    rows.push(["HTML lang", doc.documentElement.getAttribute("lang") || "— missing —"]);
+    rows.push(["H1", meta.h1.join(" | ") || "— missing —"]);
+    rows.push(["Hreflang", String(hreflang)]);
+    rows.push(["Images missing alt", `${missingAlt} / ${images.length}`]);
+    if (!meta.title) issues.push("Missing title.");
+    else if (meta.title.length < 30 || meta.title.length > 60) issues.push(`Title is ${meta.title.length} characters (aim 50–60).`);
+    if (!meta.description) issues.push("Missing meta description.");
+    else if (meta.description.length < 120 || meta.description.length > 160) issues.push(`Description is ${meta.description.length} characters (aim 150–160).`);
+    if (!meta.canonical) issues.push("Missing canonical.");
+    if (!viewport) issues.push("Missing viewport meta.");
+    if (!meta.ogTitle || !meta.ogImage) issues.push("Open Graph title or image is incomplete.");
+    if (!twitter) issues.push("Missing Twitter card.");
+    if (meta.h1.length !== 1) issues.push(meta.h1.length === 0 ? "No H1." : `${meta.h1.length} H1 tags.`);
+    if (/noindex/i.test(meta.robots)) issues.push(`Page is noindex (${meta.robots}).`);
+    if (missingAlt) issues.push(`${missingAlt} image(s) have an empty alt attribute.`);
   }
   return (
     <div className="space-y-4">
@@ -634,12 +924,19 @@ export function MetaTagsAnalyzer() {
           </table>
         </div>
       )}
+      {html.trim() && (
+        issues.length
+          ? <div className="space-y-1">{issues.map((x) => <Notice key={x} tone="error">{x}</Notice>)}</div>
+          : <Notice tone="success">Core meta tags look complete.</Notice>
+      )}
     </div>
   );
 }
 
 export function RobotsValidator() {
-  const [txt, setTxt] = React.useState("User-agent: *\nDisallow: /admin\nSitemap: https://example.com/sitemap.xml");
+  const [txt, setTxt] = React.useState("User-agent: *\nDisallow: /admin\nAllow: /admin/public\nSitemap: https://example.com/sitemap.xml");
+  const [testUrl, setTestUrl] = React.useState("https://example.com/admin/settings");
+  const [agent, setAgent] = React.useState("Googlebot");
   const issues: string[] = [];
   const lines = txt.split("\n");
   if (!/user-agent:/i.test(txt)) issues.push("Missing a User-agent directive.");
@@ -648,6 +945,7 @@ export function RobotsValidator() {
     if (t && !t.startsWith("#") && !/^(user-agent|disallow|allow|sitemap|crawl-delay|host)\s*:/i.test(t))
       issues.push(`Line ${i + 1}: unrecognised directive "${t.slice(0, 30)}"`);
   });
+  const test = testUrl.trim() ? testRobotsUrl(txt, testUrl, agent || "Googlebot") : null;
   return (
     <div className="space-y-4">
       <FetchFromUrl
@@ -658,9 +956,102 @@ export function RobotsValidator() {
         onFetched={(p) => setTxt(p.html)}
       />
       <Textarea value={txt} onChange={(e) => setTxt(e.target.value)} rows={8} />
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Field label="Test URL"><Input value={testUrl} onChange={(e) => setTestUrl(e.target.value)} placeholder="https://example.com/page" /></Field>
+        <Field label="Crawler">
+          <Select value={agent} onChange={(e) => setAgent(e.target.value)}>
+            {["Googlebot", "Bingbot", "GPTBot", "*"].map((a) => <option key={a}>{a}</option>)}
+          </Select>
+        </Field>
+      </div>
+      {test && (
+        <Notice tone={test.allowed ? "success" : "error"}>
+          {test.allowed ? "Allowed" : "Blocked"} for {agent} on {test.path}
+          {test.matchedRule ? ` — matched ${test.matchedRule}` : " — no matching rule, so the URL is allowed"}
+          {` (group: ${test.agentGroup})`}.
+        </Notice>
+      )}
       {issues.length === 0
-        ? <Notice tone="success">✓ robots.txt looks valid.</Notice>
+        ? <Notice tone="success">robots.txt syntax looks valid.</Notice>
         : <div className="space-y-1">{issues.map((x, i) => <Notice key={i} tone="error">{x}</Notice>)}</div>}
+    </div>
+  );
+}
+
+type RedirectHop = { url: string; status: number; location: string | null };
+
+export function RedirectChecker() {
+  const [url, setUrl] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [trace, setTrace] = React.useState<{ hops: RedirectHop[]; finalUrl: string; finalStatus: number; loop: boolean } | null>(null);
+
+  const run = async () => {
+    setError(null);
+    setTrace(null);
+    if (!url.trim()) {
+      setError("Enter a URL first.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch("/api/seo/redirect-check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: url.trim() }),
+      });
+      const data = (await res.json()) as { error?: string; hops: RedirectHop[]; finalUrl: string; finalStatus: number; loop: boolean };
+      if (!res.ok) throw new Error(data.error || "Redirect check failed.");
+      setTrace(data);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const chain = trace?.hops.map((h) => `${h.status}  ${h.url}${h.location ? `  →  ${h.location}` : ""}`).join("\n") ?? "";
+
+  return (
+    <div className="space-y-4">
+      <Notice tone="info">Follows live HTTP redirects and lists every hop, status code, and Location header.</Notice>
+      <Field label="URL">
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <Input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://example.com/old-page" className="flex-1" onKeyDown={(e) => { if (e.key === "Enter") void run(); }} />
+          <Button type="button" onClick={() => void run()} disabled={loading}>{loading ? "Checking…" : "Check redirects"}</Button>
+        </div>
+      </Field>
+      {error && <Notice tone="error">{error}</Notice>}
+      {trace && (
+        <>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <Stat label="Hops" value={trace.hops.length} />
+            <Stat label="Final status" value={trace.finalStatus} />
+            <Stat label="Loop" value={trace.loop ? "Yes" : "No"} />
+          </div>
+          {trace.loop && <Notice tone="error">Redirect loop detected.</Notice>}
+          {trace.hops.length === 1 && trace.finalStatus < 300 && <Notice tone="success">No redirect. The URL responds directly.</Notice>}
+          {trace.hops.some((h) => h.status === 302 || h.status === 307) && (
+            <Notice tone="info">A temporary redirect (302/307) is in the chain. Permanent moves should be 301 or 308.</Notice>
+          )}
+          <p className="break-all text-sm text-muted">Final URL: {trace.finalUrl}</p>
+          <div className="overflow-hidden rounded-xl border border-border">
+            <table className="w-full text-sm">
+              <thead className="bg-surface-2 text-muted"><tr><th className="px-3 py-2 text-left">#</th><th className="px-3 py-2 text-left">Status</th><th className="px-3 py-2 text-left">URL</th></tr></thead>
+              <tbody>
+                {trace.hops.map((h, i) => (
+                  <tr key={`${h.url}-${i}`} className="border-t border-border">
+                    <td className="px-3 py-1.5">{i + 1}</td>
+                    <td className="px-3 py-1.5 font-semibold">{h.status}</td>
+                    <td className="px-3 py-1.5 break-all">{h.url}{h.location ? <span className="block text-muted">→ {h.location}</span> : null}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Output value={chain} rows={6} filename="redirects.txt" />
+        </>
+      )}
     </div>
   );
 }
