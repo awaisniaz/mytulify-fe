@@ -1,7 +1,14 @@
 import { DEFAULT_LOCALE, type Locale } from "./config";
 
 /** Routes with English-only body — no per-locale hreflang; ?lang= is UI chrome only. */
-export const ENGLISH_ONLY_PREFIXES = ["/blog", "/pricing", "/privacy", "/request-tool"] as const;
+export const ENGLISH_ONLY_PREFIXES = [
+  "/blog",
+  "/pricing",
+  "/privacy",
+  "/request-tool",
+  "/press",
+  "/link-to-us",
+] as const;
 
 export function isEnglishOnlyPath(pathname: string): boolean {
   const p = pathname.split("?")[0].replace(/\/$/, "") || "/";

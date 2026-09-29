@@ -136,4 +136,44 @@ export async function createChatCompletion(
   throw lastError instanceof Error ? lastError : new Error("AI request failed.");
 }
 
+/**
+ * Speech-to-text via Groq Whisper (default) or OpenAI Whisper.
+ * `file` should be a File/Blob with a filename (needed by the API).
+ */
+export async function createAudioTranscription(file: File, language?: string): Promise<string> {
+  const keys = parseApiKeys();
+  if (!keys.length) throw new AiNotConfiguredError();
+
+  const provider = getAiProvider();
+  const model =
+    provider === "openai"
+      ? process.env.OPENAI_WHISPER_MODEL?.trim() || "whisper-1"
+      : process.env.GROQ_WHISPER_MODEL?.trim() || "whisper-large-v3-turbo";
+
+  const start = keyCursor % keys.length;
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt < keys.length; attempt++) {
+    const index = (start + attempt) % keys.length;
+    const apiKey = keys[index]!;
+    const client = makeClient(apiKey);
+    try {
+      const result = await client.audio.transcriptions.create({
+        file,
+        model,
+        ...(language && language !== "auto" ? { language } : {}),
+        response_format: "text",
+      });
+      keyCursor = index + 1;
+      return typeof result === "string" ? result.trim() : String(result).trim();
+    } catch (err) {
+      lastError = err;
+      if (isRateLimited(err) && attempt < keys.length - 1) continue;
+      throw err;
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error("Transcription failed.");
+}
+
 export { OpenAI };
