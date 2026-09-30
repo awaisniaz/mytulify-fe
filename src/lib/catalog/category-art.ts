@@ -25,4 +25,5 @@ const CATEGORY_ART_SLUGS = new Set([
   "social-media-tools",
   "content-creator-tools",
   "converters-generators",
+  "home-trade-calculators",
 ]);

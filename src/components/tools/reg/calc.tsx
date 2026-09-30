@@ -38,13 +38,25 @@ import {
   RdCalculator,
   LumpsumCalculator,
 } from "@/components/tools/impl/finance-calcs";
+import {
+  AprCalculator,
+  ConcreteCalculator,
+  CreditCardPayoffCalculator,
+  DebtToIncomeCalculator,
+  FuelCostCalculator,
+  GravelCalculator,
+  HomeAffordabilityCalculator,
+  MortgageCalculator,
+  PaintCalculator,
+  SquareFootageCalculator,
+} from "@/components/tools/impl/everyday-calcs";
 
 export default makeReg({
   "bmi-calculator": BmiCalculator,
   "percentage-calculator": PercentageCalculator,
   "age-calculator": AgeCalculator,
   "loan-calculator": () => <LoanCalculator />,
-  "mortgage-calculator": () => <LoanCalculator mortgage />,
+  "mortgage-calculator": MortgageCalculator,
   "compound-interest-calculator": CompoundInterest,
   "tip-calculator": TipCalculator,
   "discount-calculator": DiscountCalculator,
@@ -95,4 +107,13 @@ export default makeReg({
   "nsc-calculator": NscCalculator,
   "roi-calculator": RoiCalculator,
   "xirr-calculator": XirrCalculator,
+  "concrete-calculator": ConcreteCalculator,
+  "paint-calculator": PaintCalculator,
+  "gravel-calculator": GravelCalculator,
+  "square-footage-calculator": SquareFootageCalculator,
+  "fuel-cost-calculator": FuelCostCalculator,
+  "credit-card-payoff-calculator": CreditCardPayoffCalculator,
+  "debt-to-income-calculator": DebtToIncomeCalculator,
+  "home-affordability-calculator": HomeAffordabilityCalculator,
+  "apr-calculator": AprCalculator,
 });

@@ -415,7 +415,7 @@
     },
     "calculators/mortgage-calculator": {
       "name": "Mortgage Calculator",
-      "description": "Calculate home loan payments including principal, interest, taxes, and insurance."
+      "description": "Estimate full monthly PITI — principal, interest, taxes, insurance, HOA, and PMI — and compare 15-year vs 30-year cost."
     },
     "calculators/compound-interest-calculator": {
       "name": "Compound Interest Calculator",

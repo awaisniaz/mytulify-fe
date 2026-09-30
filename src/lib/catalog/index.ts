@@ -20,6 +20,7 @@ import socialTools from "./categories/social-media-tools.json";
 import convertersGenerators from "./categories/converters-generators.json";
 import freelancerTools from "./categories/freelancer-tools.json";
 import contentCreatorTools from "./categories/content-creator-tools.json";
+import homeTradeCalculators from "./categories/home-trade-calculators.json";
 
 export type { Category, Tool, Level, Complexity } from "./types";
 
@@ -42,6 +43,7 @@ const META: Record<string, CategoryMeta> = {
   "social-media-tools": { icon: "Share2", gradient: "from-pink-500 to-rose-600", tagline: "Captions, fonts & mockups" },
   "converters-generators": { icon: "Repeat", gradient: "from-amber-500 to-orange-600", tagline: "Data converters & generators" },
   "content-creator-tools": { icon: "Mic", gradient: "from-violet-500 to-fuchsia-600", tagline: "Video editor, script studio & voiceovers" },
+  "home-trade-calculators": { icon: "Wrench", gradient: "from-orange-500 to-amber-600", tagline: "Home, workshop, electrical & property" },
 };
 
 const handwritingOcr: CategoryData = {
@@ -70,6 +72,7 @@ const RAW: CategoryData[] = [
   socialTools,
   contentCreatorTools,
   convertersGenerators,
+  homeTradeCalculators,
 ] as CategoryData[];
 
 /** Fully-resolved categories with metadata and category-stamped tools. */

@@ -27,6 +27,7 @@ const CATEGORY_FILE: Record<string, string> = {
   "seo-web-tools": "src/lib/catalog/categories/seo-web-tools.json",
   "social-media-tools": "src/lib/catalog/categories/social-media-tools.json",
   "converters-generators": "src/lib/catalog/categories/converters-generators.json",
+  "home-trade-calculators": "src/lib/catalog/categories/home-trade-calculators.json",
 };
 
 const CONTENT_FILE = "src/i18n/content/locales/en.json";

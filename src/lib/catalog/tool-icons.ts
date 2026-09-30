@@ -14,6 +14,7 @@ const CATEGORY_FALLBACK: Record<string, string> = {
   "image-tools": "Image",
   "color-tools": "Palette",
   "calculators": "Calculator",
+  "home-trade-calculators": "Wrench",
   "unit-converters": "Ruler",
   "seo-web-tools": "Search",
   "social-media-tools": "Share2",
