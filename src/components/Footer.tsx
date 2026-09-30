@@ -45,7 +45,10 @@ export async function Footer() {
             <Link href={pathWithLocale("/about", locale)} className="hover:text-foreground">{t.footer.about}</Link>
             <Link href="/press" className="hover:text-foreground">{t.footer.press}</Link>
             <Link href="/link-to-us" className="hover:text-foreground">{t.footer.linkToUs}</Link>
+            <Link href="/contact" className="hover:text-foreground">{t.footer.contact}</Link>
             <Link href="/privacy" className="hover:text-foreground">{t.footer.privacy}</Link>
+            <Link href="/terms" className="hover:text-foreground">{t.footer.terms}</Link>
+            <Link href="/disclaimer" className="hover:text-foreground">{t.footer.disclaimer}</Link>
           </div>
         </div>
       </div>

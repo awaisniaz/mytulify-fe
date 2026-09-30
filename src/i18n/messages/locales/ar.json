@@ -47,6 +47,9 @@
     "press": "Press",
     "linkToUs": "Link to us",
     "privacy": "الخصوصية",
+    "terms": "الشروط",
+    "disclaimer": "إخلاء المسؤولية",
+    "contact": "اتصل بنا",
     "copyright": "© {year} {name}"
   },
   "notFound": {

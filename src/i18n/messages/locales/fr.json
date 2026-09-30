@@ -47,6 +47,9 @@
     "press": "Press",
     "linkToUs": "Link to us",
     "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "disclaimer": "Avertissement",
+    "contact": "Contact",
     "copyright": "© {year} {name}"
   },
   "notFound": {

@@ -54,6 +54,9 @@ export function slotFor(placement: AdPlacement): string | null {
 
 export const AD_FREE_PATHS = new Set([
   "/privacy",
+  "/terms",
+  "/disclaimer",
+  "/contact",
   "/about",
   "/press",
   "/link-to-us",
