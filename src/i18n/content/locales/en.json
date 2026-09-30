@@ -1199,7 +1199,7 @@
     },
     "image-tools/duplicate-photo-finder": {
       "name": "Duplicate Photo Finder",
-      "description": "Find duplicate and similar photos locally with perceptual hashing — no upload, 100% private."
+      "description": "Find exact and similar photos in your browser — difference hash, keep the highest-resolution copy, folder scan, no upload."
     },
     "pdf-tools/merge-pdf": {
       "name": "Merge PDF",
@@ -3313,20 +3313,20 @@
     },
     "image-tools/duplicate-photo-finder": {
       "name": "Duplicate Photo Finder",
-      "description": "Find duplicate and similar photos locally with perceptual hashing — no upload, 100% private.",
+      "description": "Find exact and similar photos in your browser — difference hash, keep the highest-resolution copy, folder scan, no upload.",
       "metaTitle": "Duplicate Photo Finder Online Free – No Upload | Mytulify",
-      "metaDescription": "Find duplicate photos and similar images free in your browser. Perceptual hash detects resized & re-saved copies. No upload, no signup — 100% private.",
+      "metaDescription": "Find duplicate and similar photos online in your browser. Keep the highest-resolution copy, scan a folder, and export a delete list. No upload.",
       "about": [
-        "Duplicate Photo Finder is a free online tool that finds duplicate photos and visually similar images without uploading anything to a server. It runs entirely in your browser using perceptual hashing (average hash), so your camera roll, WhatsApp saves, and screenshot folders stay on your device.",
-        "Unlike simple filename or size checks, perceptual hashing compares how a photo actually looks. That means it can group the same shot saved twice, a compressed copy, or a slightly resized version — common clutter on phones and laptops. Switch to exact mode when you only want byte-identical files.",
-        "Use the similarity slider to tune detection: low values catch near-identical duplicates; higher values group burst shots or lightly edited variants. Export a delete list when you are ready to clean up storage manually on your computer or phone."
+        "Duplicate Photo Finder is a free online tool that groups identical files and visually similar photos without uploading them. It runs in your browser with difference hash, average hash, or both, plus an MD5 check for byte-identical copies.",
+        "WhatsApp forwards, iPhone bursts, HEIC plus JPG exports, and screenshot repeats often look the same but are not the same file. Visual hashing groups those copies. Keep the highest-resolution or largest file automatically, or pin the shot you want to save.",
+        "Limit matches to one folder, ignore tiny thumbnails, filter by filename, and export the delete list as text, CSV, or JSON. The browser cannot erase files on disk — you remove the listed copies in your file manager."
       ],
       "howTo": {
         "title": "How to find duplicate photos online (without uploading)",
         "steps": [
-          "Drop photos or select a folder — JPG, PNG, WebP, HEIC, and GIF are supported.",
-          "Choose Similar photos (perceptual hash) or Exact duplicates (byte hash). Adjust the similarity threshold if needed.",
-          "Review grouped thumbnails, note which file to keep in each set, and export the delete list as text or JSON."
+          "Drop photos or select a folder — JPG, PNG, WebP, HEIC, and GIF stay on your device.",
+          "Use Similar photos with difference hash, or Exact duplicates for identical bytes. Set the threshold and choose which copy to keep.",
+          "Pin any photo you want to force-keep, then export the delete list as text, CSV, or JSON."
         ]
       },
       "faq": [
@@ -3336,7 +3336,7 @@
         },
         {
           "q": "How is perceptual hashing different from exact duplicate detection?",
-          "a": "Exact detection compares file hashes — only byte-identical copies match. Perceptual hashing (aHash) fingerprints how an image looks, so resized WhatsApp forwards or re-exported JPGs can still group with the original."
+          "a": "Exact detection compares MD5 hashes — only byte-identical copies match. Difference hash and average hash fingerprint how a photo looks, so a resized WhatsApp save, a recompressed JPG, or a HEIC export can still group with the original."
         },
         {
           "q": "Are my photos uploaded to Mytulify?",
@@ -3344,7 +3344,7 @@
         },
         {
           "q": "What similarity threshold should I use?",
-          "a": "Start at 5 for a balanced scan. Use 0–3 for near-identical duplicates only; 8–12 if you also want resized or recompressed copies; go higher only if you accept broader visual matches (e.g. similar burst frames)."
+          "a": "Start at 5 with difference hash. Use 0–3 for near-identical copies, 8–12 for resized or recompressed saves, and higher only when you also want burst frames. Choose Both must agree if unrelated photos start grouping."
         },
         {
           "q": "Does this delete files automatically?",
