@@ -35,11 +35,11 @@ export const offpage = {
 
 export const directoryTargets = [
   { name: "Product Hunt", url: "https://www.producthunt.com/posts/new", note: "Launch when you have 3–5 flagship tools ready" },
-  { name: "AlternativeTo", url: "https://alternativeto.net/manage/new/", note: "List vs SmallPDF, iLovePDF, TinyPNG" },
+  { name: "AlternativeTo", url: "https://alternativeto.net/manage-item/", note: "Sign in, then suggest the app vs SmallPDF, iLovePDF, TinyPNG" },
   { name: "SaaS Hub", url: "https://www.saashub.com/submit", note: "Free tools category" },
   { name: "Toolify.ai", url: "https://www.toolify.ai/submit", note: "AI + utility tools directory" },
-  { name: "Futurepedia", url: "https://www.futurepedia.io/submit-tool", note: "AI tools only" },
-  { name: "Indie Hackers", url: "https://www.indiehackers.com/post/new", note: "Build-in-public launch post" },
+  { name: "Futurepedia", url: "https://www.futurepedia.io/contact", note: "AI tools only — public submit form was removed; request a listing here" },
+  { name: "Indie Hackers", url: "https://www.indiehackers.com/new-post", note: "Build-in-public launch post (sign in required)" },
   { name: "Reddit r/SideProject", url: "https://www.reddit.com/r/SideProject/submit", note: "Value-first demo, not spam" },
   { name: "Reddit r/webdev", url: "https://www.reddit.com/r/webdev/submit", note: "Highlight open dev tools / SEO suite" },
   { name: "Google Search Console", url: "https://search.google.com/search-console", note: "Verify domain + submit sitemap" },
