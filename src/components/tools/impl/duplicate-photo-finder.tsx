@@ -15,18 +15,22 @@ import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 
 type CompareMode = "similar" | "exact";
-type KeepStrategy = "newest" | "oldest" | "shortest-path" | "longest-path" | "alphabetical";
+type HashMethod = "dhash" | "ahash" | "both";
+type KeepStrategy = "highest-res" | "largest" | "smallest" | "newest" | "oldest" | "shortest-path" | "longest-path" | "alphabetical";
+type GroupSort = "waste" | "count" | "similarity";
 
 type PhotoInfo = {
   id: string;
   path: string;
   name: string;
+  folder: string;
   size: number;
   modified: number;
   width: number;
   height: number;
   thumbUrl: string;
-  pHash: bigint;
+  aHash: bigint;
+  dHash: bigint;
   exactHash: string;
 };
 
@@ -60,24 +64,50 @@ function hamming(a: bigint, b: bigint) {
   return n;
 }
 
-function sortGroup(g: PhotoInfo[], strategy: KeepStrategy) {
-  const sorted = [...g];
-  switch (strategy) {
-    case "oldest":
-      return sorted.sort((a, b) => a.modified - b.modified || a.path.localeCompare(b.path));
-    case "shortest-path":
-      return sorted.sort((a, b) => a.path.length - b.path.length || a.path.localeCompare(b.path));
-    case "longest-path":
-      return sorted.sort((a, b) => b.path.length - a.path.length || a.path.localeCompare(b.path));
-    case "alphabetical":
-      return sorted.sort((a, b) => a.path.localeCompare(b.path));
-    default:
-      return sorted.sort((a, b) => b.modified - a.modified || a.path.localeCompare(b.path));
-  }
+function folderOf(path: string) {
+  const i = path.lastIndexOf("/");
+  return i === -1 ? "" : path.slice(0, i);
 }
 
-function keepLabel(strategy: KeepStrategy) {
+function pixels(p: PhotoInfo) {
+  return p.width * p.height;
+}
+
+function sortGroup(g: PhotoInfo[], strategy: KeepStrategy, pinned: Set<string>) {
+  const rank = (a: PhotoInfo, b: PhotoInfo) => {
+    const pin = Number(pinned.has(b.id)) - Number(pinned.has(a.id));
+    if (pin) return pin;
+    switch (strategy) {
+      case "largest":
+        return b.size - a.size || b.modified - a.modified;
+      case "smallest":
+        return a.size - b.size || b.modified - a.modified;
+      case "highest-res":
+        return pixels(b) - pixels(a) || b.size - a.size;
+      case "oldest":
+        return a.modified - b.modified || a.path.localeCompare(b.path);
+      case "shortest-path":
+        return a.path.length - b.path.length || a.path.localeCompare(b.path);
+      case "longest-path":
+        return b.path.length - a.path.length || a.path.localeCompare(b.path);
+      case "alphabetical":
+        return a.path.localeCompare(b.path);
+      default:
+        return b.modified - a.modified || a.path.localeCompare(b.path);
+    }
+  };
+  return [...g].sort(rank);
+}
+
+function keepLabel(strategy: KeepStrategy, pinned: boolean) {
+  if (pinned) return "Keep (you pinned this)";
   switch (strategy) {
+    case "largest":
+      return "Keep (largest file)";
+    case "smallest":
+      return "Keep (smallest file)";
+    case "highest-res":
+      return "Keep (highest resolution)";
     case "oldest":
       return "Keep (oldest)";
     case "shortest-path":
@@ -91,6 +121,10 @@ function keepLabel(strategy: KeepStrategy) {
   }
 }
 
+function similarityPercent(distance: number) {
+  return Math.max(0, Math.round((1 - distance / 64) * 100));
+}
+
 async function fileToBitmap(file: File): Promise<{ bitmap: ImageBitmap; width: number; height: number }> {
   if (/\.heic$|\.heif$/i.test(file.name) || /heic|heif/i.test(file.type)) {
     const { default: heic2any } = await import("heic2any");
@@ -101,6 +135,30 @@ async function fileToBitmap(file: File): Promise<{ bitmap: ImageBitmap; width: n
   }
   const bitmap = await createImageBitmap(file);
   return { bitmap, width: bitmap.width, height: bitmap.height };
+}
+
+function differenceHash(bitmap: ImageBitmap): bigint {
+  const width = HASH_SIZE + 1;
+  const height = HASH_SIZE;
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
+  ctx.drawImage(bitmap, 0, 0, width, height);
+  const { data } = ctx.getImageData(0, 0, width, height);
+  const gray = (x: number, y: number) => {
+    const o = (y * width + x) * 4;
+    return data[o] * 0.299 + data[o + 1] * 0.587 + data[o + 2] * 0.114;
+  };
+  let hash = 0n;
+  let bit = 63;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < HASH_SIZE; x++) {
+      if (gray(x, y) > gray(x + 1, y)) hash |= 1n << BigInt(bit);
+      bit -= 1;
+    }
+  }
+  return hash;
 }
 
 function perceptualHash(bitmap: ImageBitmap): bigint {
@@ -137,7 +195,21 @@ async function exactHash(file: File, cancelled: () => boolean) {
   return hasher.digest("hex");
 }
 
-function clusterPhotos(items: PhotoInfo[], mode: CompareMode, threshold: number) {
+function visualDistance(a: PhotoInfo, b: PhotoInfo, method: HashMethod) {
+  const da = hamming(a.aHash, b.aHash);
+  const dd = hamming(a.dHash, b.dHash);
+  if (method === "ahash") return da;
+  if (method === "dhash") return dd;
+  return Math.max(da, dd);
+}
+
+function clusterPhotos(
+  items: PhotoInfo[],
+  mode: CompareMode,
+  method: HashMethod,
+  threshold: number,
+  sameFolder: boolean,
+) {
   const n = items.length;
   const parent = Array.from({ length: n }, (_, i) => i);
   const find = (i: number): number => (parent[i] === i ? i : (parent[i] = find(parent[i])));
@@ -149,10 +221,11 @@ function clusterPhotos(items: PhotoInfo[], mode: CompareMode, threshold: number)
 
   for (let i = 0; i < n; i++) {
     for (let j = i + 1; j < n; j++) {
+      if (sameFolder && items[i].folder !== items[j].folder) continue;
       const match =
         mode === "exact"
           ? items[i].exactHash === items[j].exactHash
-          : hamming(items[i].pHash, items[j].pHash) <= threshold;
+          : visualDistance(items[i], items[j], method) <= threshold;
       if (match) unite(i, j);
     }
   }
@@ -199,10 +272,16 @@ export function DuplicatePhotoFinder() {
   const [busy, setBusy] = React.useState(false);
   const [progress, setProgress] = React.useState<ScanProgress | null>(null);
   const [compareMode, setCompareMode] = React.useState<CompareMode>("similar");
+  const [hashMethod, setHashMethod] = React.useState<HashMethod>("dhash");
   const [sensitivity, setSensitivity] = React.useState("5");
-  const [keepStrategy, setKeepStrategy] = React.useState<KeepStrategy>("newest");
+  const [keepStrategy, setKeepStrategy] = React.useState<KeepStrategy>("highest-res");
+  const [sameFolder, setSameFolder] = React.useState(false);
+  const [minKb, setMinKb] = React.useState("0");
+  const [groupSort, setGroupSort] = React.useState<GroupSort>("waste");
+  const [query, setQuery] = React.useState("");
+  const [pinned, setPinned] = React.useState<Set<string>>(new Set());
   const [workers, setWorkers] = React.useState("3");
-  const [exportFmt, setExportFmt] = React.useState<"txt" | "json">("txt");
+  const [exportFmt, setExportFmt] = React.useState<"txt" | "json" | "csv">("txt");
   const [collapsed, setCollapsed] = React.useState<Set<number>>(new Set());
   const cancelRef = React.useRef(false);
   const folderRef = React.useRef<HTMLInputElement>(null);
@@ -239,7 +318,8 @@ export function DuplicatePhotoFinder() {
           setProgress((p) => (p ? { ...p, current: path } : p));
           const thumbUrl = trackUrl(URL.createObjectURL(file));
           const { bitmap, width, height } = await fileToBitmap(file);
-          const pHash = perceptualHash(bitmap);
+          const aHash = perceptualHash(bitmap);
+          const dHash = differenceHash(bitmap);
           bitmap.close();
           const hash = await exactHash(file, () => cancelRef.current);
           done += 1;
@@ -248,12 +328,14 @@ export function DuplicatePhotoFinder() {
             id: `${path}-${file.size}-${file.lastModified}`,
             path,
             name: file.name,
+            folder: folderOf(path),
             size: file.size,
             modified: file.lastModified,
             width,
             height,
             thumbUrl,
-            pHash,
+            aHash,
+            dHash,
             exactHash: hash,
           } satisfies PhotoInfo;
         },
@@ -276,23 +358,42 @@ export function DuplicatePhotoFinder() {
     for (const u of urlsRef.current) URL.revokeObjectURL(u);
     urlsRef.current = [];
     setPhotos([]);
+    setPinned(new Set());
     setCollapsed(new Set());
+    setQuery("");
   };
 
   const threshold = Math.min(20, Math.max(0, Number(sensitivity) || 5));
+  const minBytes = Math.max(0, Number(minKb) || 0) * 1024;
 
-  const { groups, deleteList, wasted, uniqueCount } = React.useMemo(() => {
-    const raw = clusterPhotos(photos, compareMode, threshold);
+  const { groups, deleteList, wasted, uniqueCount, skippedSmall } = React.useMemo(() => {
+    const pool = photos.filter((p) => p.size >= minBytes);
+    const raw = clusterPhotos(pool, compareMode, hashMethod, threshold, sameFolder);
+    const q = query.trim().toLowerCase();
     const groups = raw
-      .map((g) => sortGroup(g, keepStrategy))
-      .sort(
-        (a, b) =>
-          b.slice(1).reduce((s, f) => s + f.size, 0) - a.slice(1).reduce((s, f) => s + f.size, 0),
-      );
+      .map((g) => sortGroup(g, keepStrategy, pinned))
+      .filter((g) => !q || g.some((f) => f.path.toLowerCase().includes(q) || f.name.toLowerCase().includes(q)))
+      .sort((a, b) => {
+        if (groupSort === "count") return b.length - a.length;
+        if (groupSort === "similarity") {
+          const sim = (g: PhotoInfo[]) =>
+            compareMode === "exact"
+              ? 100
+              : Math.min(...g.slice(1).map((f) => similarityPercent(visualDistance(g[0], f, hashMethod))));
+          return sim(b) - sim(a);
+        }
+        return b.slice(1).reduce((s, f) => s + f.size, 0) - a.slice(1).reduce((s, f) => s + f.size, 0);
+      });
     const deleteList = groups.flatMap((g) => g.slice(1));
     const wasted = deleteList.reduce((s, f) => s + f.size, 0);
-    return { groups, deleteList, wasted, uniqueCount: photos.length - deleteList.length };
-  }, [photos, compareMode, threshold, keepStrategy]);
+    return {
+      groups,
+      deleteList,
+      wasted,
+      uniqueCount: pool.length - deleteList.length,
+      skippedSmall: photos.length - pool.length,
+    };
+  }, [photos, compareMode, hashMethod, threshold, keepStrategy, sameFolder, minBytes, groupSort, query, pinned]);
 
   const exportPayload = React.useMemo(() => {
     if (!deleteList.length) return "";
@@ -301,17 +402,32 @@ export function DuplicatePhotoFinder() {
         deleteList.map((f) => ({
           path: f.path,
           size: f.size,
-          modified: f.modified,
+          modified: new Date(f.modified).toISOString(),
           dimensions: `${f.width}×${f.height}`,
+          megapixels: Number((pixels(f) / 1_000_000).toFixed(2)),
         })),
         null,
         2,
       );
     }
+    if (exportFmt === "csv") {
+      const lines = ["path,bytes,width,height,modified"];
+      for (const f of deleteList) {
+        lines.push(`"${f.path.replace(/"/g, '""')}",${f.size},${f.width},${f.height},${new Date(f.modified).toISOString()}`);
+      }
+      return lines.join("\n");
+    }
     return deleteList.map((f) => f.path).join("\n");
   }, [deleteList, exportFmt]);
 
-  const keepTag = keepLabel(keepStrategy);
+  const togglePin = (id: string) => {
+    setPinned((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   return (
     <div className="space-y-5">
@@ -349,33 +465,52 @@ export function DuplicatePhotoFinder() {
       <div className="grid gap-4 rounded-xl border border-border p-4 sm:grid-cols-2 lg:grid-cols-3">
         <Field label="Detection mode">
           <Select value={compareMode} onChange={(e) => setCompareMode(e.target.value as CompareMode)}>
-            <option value="similar">Similar photos (perceptual hash)</option>
-            <option value="exact">Exact duplicates (byte hash)</option>
+            <option value="similar">Similar photos (visual hash)</option>
+            <option value="exact">Exact duplicates (MD5 byte hash)</option>
           </Select>
         </Field>
         {compareMode === "similar" && (
-          <Field label={`Similarity threshold (0–20) — ${threshold}`}>
-            <Input
-              type="range"
-              min={0}
-              max={20}
-              value={sensitivity}
-              onChange={(e) => setSensitivity(e.target.value)}
-            />
-            <p className="mt-1 text-xs text-muted">
-              Lower = stricter (near-identical). Higher = catches resized or re-saved copies.
-            </p>
-          </Field>
+          <>
+            <Field label="Visual hash">
+              <Select value={hashMethod} onChange={(e) => setHashMethod(e.target.value as HashMethod)}>
+                <option value="dhash">Difference hash — crops, brightness, WhatsApp saves</option>
+                <option value="ahash">Average hash — resized copies</option>
+                <option value="both">Both must agree — fewer false matches</option>
+              </Select>
+            </Field>
+            <Field label={`Similarity threshold (0–20) — ${threshold}`}>
+              <Input
+                type="range"
+                min={0}
+                max={20}
+                value={sensitivity}
+                onChange={(e) => setSensitivity(e.target.value)}
+              />
+              <p className="mt-1 text-xs text-muted">
+                0–3 near copies. 5 balanced. 8–12 resized or recompressed. Higher also groups burst frames.
+              </p>
+            </Field>
+          </>
         )}
         <Field label="Photo to keep in each group">
           <Select value={keepStrategy} onChange={(e) => setKeepStrategy(e.target.value as KeepStrategy)}>
+            <option value="highest-res">Highest resolution</option>
+            <option value="largest">Largest file</option>
             <option value="newest">Newest modified</option>
             <option value="oldest">Oldest modified</option>
+            <option value="smallest">Smallest file</option>
             <option value="shortest-path">Shortest path</option>
             <option value="longest-path">Longest path</option>
             <option value="alphabetical">First alphabetically</option>
           </Select>
         </Field>
+        <Field label="Ignore files smaller than (KB)">
+          <Input type="number" min={0} value={minKb} onChange={(e) => setMinKb(e.target.value)} />
+        </Field>
+        <label className="flex items-end gap-2 pb-2 text-sm">
+          <input type="checkbox" checked={sameFolder} onChange={(e) => setSameFolder(e.target.checked)} />
+          Only match photos in the same folder
+        </label>
         <Field label="Parallel workers">
           <Select value={workers} onChange={(e) => setWorkers(e.target.value)}>
             {[1, 2, 3, 4, 6].map((n) => (
@@ -410,9 +545,28 @@ export function DuplicatePhotoFinder() {
       {photos.length > 0 && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <Stat label="Photos scanned" value={photos.length} />
-          <Stat label="Unique photos" value={uniqueCount} />
+          <Stat label="Unique in view" value={uniqueCount} />
           <Stat label="Duplicate groups" value={groups.length} />
           <Stat label="Space to reclaim" value={fmtBytes(wasted)} />
+        </div>
+      )}
+
+      {skippedSmall > 0 && (
+        <Notice tone="info">{skippedSmall} photo{skippedSmall === 1 ? "" : "s"} under {minKb || 0} KB are ignored.</Notice>
+      )}
+
+      {photos.length > 0 && (
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Field label="Filter groups by filename">
+            <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="vacation, IMG_, screenshot…" />
+          </Field>
+          <Field label="Sort groups">
+            <Select value={groupSort} onChange={(e) => setGroupSort(e.target.value as GroupSort)}>
+              <option value="waste">Most space first</option>
+              <option value="count">Largest groups first</option>
+              <option value="similarity">Closest matches first</option>
+            </Select>
+          </Field>
         </div>
       )}
 
@@ -425,6 +579,7 @@ export function DuplicatePhotoFinder() {
           <Field label="Export delete list" className="min-w-[10rem] flex-1">
             <Select value={exportFmt} onChange={(e) => setExportFmt(e.target.value as typeof exportFmt)}>
               <option value="txt">Plain text (paths)</option>
+              <option value="csv">CSV (size and dimensions)</option>
               <option value="json">JSON (metadata)</option>
             </Select>
           </Field>
@@ -432,14 +587,25 @@ export function DuplicatePhotoFinder() {
           <DownloadButton
             value={exportPayload}
             filename={`duplicate-photos-to-delete.${exportFmt}`}
-            mime={exportFmt === "json" ? "application/json" : "text/plain"}
+            mime={exportFmt === "json" ? "application/json" : exportFmt === "csv" ? "text/csv" : "text/plain"}
           />
+        </div>
+      )}
+
+      {groups.length > 1 && (
+        <div className="flex gap-2">
+          <Button type="button" variant="ghost" size="sm" onClick={() => setCollapsed(new Set())}>Expand all</Button>
+          <Button type="button" variant="ghost" size="sm" onClick={() => setCollapsed(new Set(groups.map((_, i) => i)))}>Collapse all</Button>
         </div>
       )}
 
       {groups.map((g, i) => {
         const groupWaste = g.slice(1).reduce((s, f) => s + f.size, 0);
         const isCollapsed = collapsed.has(i);
+        const closest =
+          compareMode === "exact"
+            ? 100
+            : Math.min(...g.slice(1).map((f) => similarityPercent(visualDistance(g[0], f, hashMethod))));
         return (
           <div key={`${g[0].id}-${i}`} className="space-y-3 rounded-xl border border-border p-3">
             <button
@@ -455,8 +621,8 @@ export function DuplicatePhotoFinder() {
               className="flex w-full items-center justify-between gap-3 text-left"
             >
               <p className="text-xs font-medium text-muted">
-                {g.length} {compareMode === "exact" ? "identical" : "similar"} photos · waste{" "}
-                {fmtBytes(groupWaste)}
+                {g.length} {compareMode === "exact" ? "identical" : "similar"} photos
+                {compareMode === "similar" ? ` · ${closest}% match` : ""} · waste {fmtBytes(groupWaste)}
               </p>
               <Icon
                 name="ChevronDown"
@@ -465,7 +631,12 @@ export function DuplicatePhotoFinder() {
             </button>
             {!isCollapsed && (
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {g.map((f, j) => (
+                {g.map((f, j) => {
+                  const match =
+                    j === 0 || compareMode === "exact"
+                      ? null
+                      : similarityPercent(visualDistance(g[0], f, hashMethod));
+                  return (
                   <div
                     key={f.id}
                     className="overflow-hidden rounded-lg border border-border bg-surface-2"
@@ -475,20 +646,26 @@ export function DuplicatePhotoFinder() {
                     <div className="space-y-1 p-2.5">
                       <p className="truncate font-mono text-xs">{f.path}</p>
                       <p className="text-xs text-muted">
-                        {fmtBytes(f.size)} · {f.width}×{f.height} · {fmtDate(f.modified)}
+                        {fmtBytes(f.size)} · {f.width}×{f.height} · {(pixels(f) / 1_000_000).toFixed(1)} MP · {fmtDate(f.modified)}
                       </p>
-                      {j === 0 ? (
-                        <span className="inline-block rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-500">
-                          {keepTag}
-                        </span>
-                      ) : (
-                        <span className="inline-block rounded-full bg-rose-500/10 px-2 py-0.5 text-xs font-medium text-rose-500">
-                          Safe to delete
-                        </span>
-                      )}
+                      <div className="flex flex-wrap items-center gap-2">
+                        {j === 0 ? (
+                          <span className="inline-block rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-500">
+                            {keepLabel(keepStrategy, pinned.has(f.id))}
+                          </span>
+                        ) : (
+                          <span className="inline-block rounded-full bg-rose-500/10 px-2 py-0.5 text-xs font-medium text-rose-500">
+                            Safe to delete{match != null ? ` · ${match}% similar` : ""}
+                          </span>
+                        )}
+                        <button type="button" className="text-xs font-medium text-brand hover:underline" onClick={() => togglePin(f.id)}>
+                          {pinned.has(f.id) ? "Unpin" : "Pin as keep"}
+                        </button>
+                      </div>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
@@ -504,14 +681,14 @@ export function DuplicatePhotoFinder() {
       <p className={cn("flex items-start gap-2 text-xs text-muted")}>
         <Icon name="Lock" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
         <span>
-          Photos are analyzed locally with perceptual hashing (aHash) and optional MD5 byte matching.
-          Nothing is uploaded.           Pair with our{" "}
+          Photos stay on this device. Similar mode uses difference hash, average hash, or both, plus an MD5 check for exact copies.
+          Pin a photo to force-keep it. Pair with the{" "}
           <Link href="/developer-tools/duplicate-file-finder" className="text-brand hover:underline">
             Duplicate File Finder
           </Link>{" "}
-          for non-image duplicates, or read the{" "}
-          <Link href="/blog/find-duplicate-photos-without-uploading" className="text-brand hover:underline">
-            duplicate photo cleanup guide
+          for other file types, or read{" "}
+          <Link href="/blog/duplicate-photo-finder-online-free-storage" className="text-brand hover:underline">
+            how to free storage from similar photos
           </Link>
           .
         </span>
