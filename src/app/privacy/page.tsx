@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { TOTAL_SERVER_SIDE_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
+import { LegalPage } from "@/components/legal/LegalPage";
 import { site } from "@/lib/site";
 import { englishOnlyPageMeta } from "@/lib/seo";
 import { getMetadataLocale } from "@/i18n/locale";
-import { Icon } from "@/components/ui/Icon";
 
 export async function generateMetadata({
   searchParams,
@@ -11,7 +11,7 @@ export async function generateMetadata({
   searchParams: Promise<{ lang?: string | string[] }>;
 }): Promise<Metadata> {
   const locale = await getMetadataLocale(searchParams);
-  const privacyDescription = `${site.name} privacy policy — how we handle your data across ${TOTAL_TOOLS}+ browser-based and AI-powered tools.`;
+  const privacyDescription = `${site.name} privacy policy — browser tools stay on your device, what AI tools send, accounts, ads, and how to contact us.`;
   return englishOnlyPageMeta("/privacy", locale, {
     title: "Privacy Policy",
     description: privacyDescription,
@@ -19,67 +19,50 @@ export async function generateMetadata({
   });
 }
 
-const SECTIONS = [
-  {
-    icon: "Shield",
-    title: "Our promise",
-    body: `${site.name} is built privacy-first. Most tools process your input locally in your browser. We do not upload, store, or transmit the files or text you use with those client-side tools.`,
-  },
-  {
-    icon: "Lock",
-    title: "Client-side tools",
-    body: "The majority of our tools run entirely on your device. Your files, text, and data stay in your browser and are discarded when you close or refresh the page. Nothing is sent to our servers.",
-  },
-  {
-    icon: "Sparkles",
-    title: "AI-powered tools",
-    body: `${TOTAL_SERVER_SIDE_TOOLS} tools — including AI assistants and handwriting OCR — send your input to our server so we can call an AI model and return a result. We do not store your inputs after the request completes. Avoid pasting passwords, API keys, or other sensitive data.`,
-  },
-  {
-    icon: "EyeOff",
-    title: "What we don't collect",
-    body: "We never sell the content you paste, type, or upload into any tool. For client-side tools, that data never leaves your device. For AI tools, we process input only to generate your result.",
-  },
-  {
-    icon: "BarChart3",
-    title: "Analytics",
-    body: "We may use privacy-respecting, aggregate analytics to understand which tools are popular. This never includes the content you process.",
-  },
-  {
-    icon: "Globe",
-    title: "Advertising",
-    body: "Some pages show Google AdSense ads. Ads are not placed inside the tool workspace. Ad partners may use cookies — see Google's advertising policies for details. Some blog posts include affiliate links to related AI and technology products; we may earn a commission if you buy through those links.",
-  },
-] as const;
-
 export default function PrivacyPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
-      <div className="glass gradient-border rounded-3xl p-6 sm:p-10">
-        <p className="section-label mb-2">Legal</p>
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl">Privacy Policy</h1>
-        <p className="mt-4 text-muted">
-          How {site.name} handles your data across {TOTAL_TOOLS}+ tools.
-        </p>
-      </div>
-
-      <div className="mt-8 space-y-4">
-        {SECTIONS.map(({ icon, title, body }) => (
-          <div key={title} className="glass rounded-2xl p-5">
-            <div className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-500/10 text-emerald-500">
-                <Icon name={icon} className="h-5 w-5" />
-              </span>
-              <h2 className="text-lg font-bold">{title}</h2>
-            </div>
-            <p className="mt-3 text-sm leading-relaxed text-muted">{body}</p>
-          </div>
-        ))}
-      </div>
-
-      <p className="mt-8 text-center text-sm text-muted">
-        Last updated: {new Date().getFullYear()}.
-      </p>
-    </div>
+    <LegalPage
+      label="Legal"
+      title="Privacy Policy"
+      intro={`How ${site.name} handles data across ${TOTAL_TOOLS}+ tools.`}
+      updated="September 30, 2026"
+      sections={[
+        {
+          icon: "Shield",
+          title: "Who we are",
+          body: `${site.name} (${site.url}) runs a free online tools site. The contact address for privacy questions is ${site.supportEmail}.`,
+        },
+        {
+          icon: "Lock",
+          title: "Browser tools",
+          body: "Most tools process your files and text in your browser. That input is not uploaded for those tools and is discarded when you close or refresh the page. We do not sell the content you type or upload.",
+        },
+        {
+          icon: "Sparkles",
+          title: "AI and server tools",
+          body: `${TOTAL_SERVER_SIDE_TOOLS} tools — including AI assistants and handwriting OCR — send the input you submit to our server so we can return a result. We use that input to complete the request. Do not paste passwords, payment card numbers, or government ID numbers into an AI tool.`,
+        },
+        {
+          icon: "Mail",
+          title: "Accounts and payments",
+          body: "If you create an account or buy Pro, we store the email and account details needed to sign you in and to record the plan. Card or wallet payments are handled by the checkout provider shown at purchase. We do not store your full card number on this site.",
+        },
+        {
+          icon: "Globe",
+          title: "Cookies, ads, and analytics",
+          body: "A locale cookie remembers the language you pick. Sign-in uses a session cookie. Some pages show Google AdSense. Ad partners may set their own cookies under Google's advertising policies. We may use aggregate analytics to see which tools are used. Analytics does not include the files you process in a browser tool. Some blog posts include affiliate links; if you buy through one, we may earn a commission.",
+        },
+        {
+          icon: "EyeOff",
+          title: "What we do not do",
+          body: "We do not sell your tool inputs. We do not require an account to use browser tools. We do not knowingly collect personal information from children under 13. If you believe a child sent us personal information, email us and we will delete it.",
+        },
+        {
+          icon: "RefreshCw",
+          title: "Changes and contact",
+          body: `We update this policy when the product changes. The date on this page is the latest revision. Questions or deletion requests: ${site.supportEmail}, or the form on the Contact page.`,
+        },
+      ]}
+    />
   );
 }

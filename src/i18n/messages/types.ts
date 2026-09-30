@@ -48,6 +48,9 @@ export type RawMessages = {
     press: string;
     linkToUs: string;
     privacy: string;
+    terms: string;
+    disclaimer: string;
+    contact: string;
     copyright: string;
   };
   notFound: {
@@ -120,6 +123,9 @@ export type Messages = {
     press: string;
     linkToUs: string;
     privacy: string;
+    terms: string;
+    disclaimer: string;
+    contact: string;
     copyright: (year: number, name: string) => string;
   };
   notFound: {

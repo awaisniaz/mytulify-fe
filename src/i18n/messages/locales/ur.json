@@ -47,6 +47,9 @@
     "press": "Press",
     "linkToUs": "Link to us",
     "privacy": "رازداری",
+    "terms": "شرائط",
+    "disclaimer": "دستبرداری",
+    "contact": "رابطہ",
     "copyright": "© {year} {name}"
   },
   "notFound": {

@@ -47,6 +47,9 @@
     "press": "Press",
     "linkToUs": "Link to us",
     "privacy": "Datenschutz",
+    "terms": "AGB",
+    "disclaimer": "Haftungsausschluss",
+    "contact": "Kontakt",
     "copyright": "© {year} {name}"
   },
   "notFound": {

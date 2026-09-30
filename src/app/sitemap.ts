@@ -40,6 +40,9 @@ const STATIC_PAGES: { path: string; file: string; priority: number }[] = [
   { path: "/press", file: "src/app/press/page.tsx", priority: 0.7 },
   { path: "/link-to-us", file: "src/app/link-to-us/page.tsx", priority: 0.7 },
   { path: "/privacy", file: "src/app/privacy/page.tsx", priority: 0.8 },
+  { path: "/terms", file: "src/app/terms/page.tsx", priority: 0.5 },
+  { path: "/disclaimer", file: "src/app/disclaimer/page.tsx", priority: 0.5 },
+  { path: "/contact", file: "src/app/contact/page.tsx", priority: 0.5 },
   { path: "/blog", file: "src/app/blog/page.tsx", priority: 0.8 },
   { path: "/request-tool", file: "src/app/request-tool/page.tsx", priority: 0.6 },
 ];
