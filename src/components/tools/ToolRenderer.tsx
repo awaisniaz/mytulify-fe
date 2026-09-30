@@ -26,6 +26,7 @@ const LOADERS: Record<string, ComponentType<RegProps>> = {
   "pdf-tools": dynamic(() => import("./reg/pdf"), { loading: ToolLoadingSkeleton }),
   "freelancer-tools": dynamic(() => import("./reg/freelancer"), { loading: ToolLoadingSkeleton }),
   "content-creator-tools": dynamic(() => import("./reg/content-creator"), { loading: ToolLoadingSkeleton }),
+  "home-trade-calculators": dynamic(() => import("./reg/home-trade"), { loading: ToolLoadingSkeleton }),
 };
 
 export function ToolRenderer({ category, slug }: { category: string; slug: string }) {

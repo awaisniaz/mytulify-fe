@@ -33,7 +33,7 @@ export function getToolIconPresentation(tool: Pick<Tool, "slug" | "category">): 
   if (/social|hashtag|caption|tweet|instagram|facebook|font|fancy|cursive|mockup|emoji|thread|bio/.test(s) || cat === "social-media-tools") {
     return { bg: "bg-pink-500/12", fg: "text-pink-600 dark:text-pink-400", ring: "ring-pink-500/15", badge: "SOC" };
   }
-  if (/calculator|zakat|tasbih|tax|salary|loan|mortgage|bmi|bmr|tdee|calorie|gpa|grade|fraction|scientific|percentage|tip|discount|age-|date-|countdown|paycheck|sleep|interest|tax|afghan|bank-statement/.test(s) || cat === "calculators" || cat === "health-tools") {
+  if (/calculator|zakat|tasbih|tax|salary|loan|mortgage|bmi|bmr|tdee|calorie|gpa|grade|fraction|scientific|percentage|tip|discount|age-|date-|countdown|paycheck|sleep|interest|tax|afghan|bank-statement/.test(s) || cat === "calculators" || cat === "health-tools" || cat === "home-trade-calculators") {
     return { bg: "bg-sky-500/12", fg: "text-sky-600 dark:text-sky-400", ring: "ring-sky-500/15", badge: "CALC" };
   }
   if (/convert|unit|meter|mile|kg|pound|celsius|fahrenheit|liter|gallon|timezone|time-zone|ruler|length|weight|temperature|volume|speed|pressure|energy|data-size|angle|fuel/.test(s) || cat === "unit-converters") {

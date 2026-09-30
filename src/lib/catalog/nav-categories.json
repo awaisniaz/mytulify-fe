@@ -117,5 +117,12 @@
     "icon": "Repeat",
     "gradient": "from-amber-500 to-orange-600",
     "toolCount": 18
+  },
+  {
+    "slug": "home-trade-calculators",
+    "name": "Home & Trade Calculators",
+    "icon": "Wrench",
+    "gradient": "from-orange-500 to-amber-600",
+    "toolCount": 40
   }
 ]
