@@ -30,7 +30,7 @@ This is a practical comparison, not a ranking contest. Plans and model names cha
 | Free tier | Yes (limits apply) | Yes (limits apply) | Yes (limits apply) |
 | Paid angle | Plus / Team / Pro | Pro / Team | Google AI Pro / Ultra (branding varies) |
 | Fits if you… | Want one app for many tasks | Edit long briefs, policies, or code | Live in Google Workspace |
-| Official site | <a href="https://chatgpt.com/" rel="sponsored nofollow">ChatGPT</a> | <a href="https://claude.ai/" rel="sponsored nofollow">Claude</a> | <a href="https://gemini.google.com/" rel="sponsored nofollow">Gemini</a> |
+| Official site | <a href="https://chatgpt.com/">ChatGPT</a> | <a href="https://claude.ai/">Claude</a> | <a href="https://gemini.google.com/">Gemini</a> |
 
 ## ChatGPT — the default generalist
 
@@ -38,7 +38,7 @@ Choose ChatGPT when you want **one place** for brainstorming, drafts, light codi
 
 Watch-outs: output can sound generic unless you give a tight brief. For job applications, always edit — then run a parse check in our [ATS Resume Checker](/ai-tools/ats-resume-checker) or draft a tailored letter with the [AI Cover Letter Generator](/ai-tools/cover-letter-generator).
 
-Try it: <a href="https://chatgpt.com/" rel="sponsored nofollow">Open ChatGPT</a>
+Try it: <a href="https://chatgpt.com/">Open ChatGPT</a>
 
 ## Claude — long context and careful tone
 
@@ -46,7 +46,7 @@ Claude often feels stronger on **long PDFs**, multi-file coding, and prose that 
 
 Watch-outs: fewer “one app does images + voice + plugins” extras than ChatGPT. If you only need a 3-sentence email, any of the three is fine.
 
-Try it: <a href="https://claude.ai/" rel="sponsored nofollow">Open Claude</a>
+Try it: <a href="https://claude.ai/">Open Claude</a>
 
 ## Gemini — when your files already live in Google
 
@@ -54,7 +54,7 @@ Gemini is the natural pick if you already live in **Gmail, Docs, Drive, and Sear
 
 Watch-outs: quality still varies by prompt and region. Do not paste secrets into any cloud assistant — including Gemini.
 
-Try it: <a href="https://gemini.google.com/" rel="sponsored nofollow">Open Gemini</a>
+Try it: <a href="https://gemini.google.com/">Open Gemini</a>
 
 ## Which one should you pay for?
 

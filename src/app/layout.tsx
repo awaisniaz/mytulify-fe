@@ -7,6 +7,7 @@ import { socialMeta } from "@/lib/seo";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { LazyEnhancementsShell } from "@/components/LazyEnhancementsShell";
+import { UsingTheSite } from "@/components/seo/UsingTheSite";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { WebVitals } from "@/components/analytics/WebVitals";
 import { AhrefsAnalytics } from "@/components/analytics/AhrefsAnalytics";
@@ -118,6 +119,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <AhrefsAnalytics />
         <Header />
         <main className="min-w-0 flex-1">{children}</main>
+        <UsingTheSite />
         <Footer />
         <LazyEnhancementsShell />
       </body>

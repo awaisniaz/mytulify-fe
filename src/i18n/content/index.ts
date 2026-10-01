@@ -6,7 +6,7 @@ import {
   directAnswerLead,
   ensureDirectAbout,
 } from "@/lib/aeo";
-import { clampMetaDescription } from "@/lib/seo";
+import { clampMetaDescription, clampTitle } from "@/lib/seo";
 import type { Locale } from "../config";
 import { DEFAULT_LOCALE } from "../config";
 import type { ContentBundle, LocalizedCategory, LocalizedTool, ToolFaqItem, ToolHowTo } from "./types";
@@ -176,25 +176,27 @@ export function toolAboutParagraphs(
     ? `Use the ${label.name} for everyday tasks, school or office work, and freelance projects when you need quick results without installing software. It works on phones, tablets, and shared computers — ideal when you are on the go or on restricted networks.`
     : `Use the ${label.name} for marketing copy, research drafts, brainstorming, and content repurposing. Freelancers, students, and small teams rely on it to save time while keeping a free daily quota; power users upgrade to Pro for unlimited AI runs.`;
   const benefits = `Key benefits: free to start, no download, copy-ready output, and a clean interface designed for repeat use. Explore related tools in the same category below to complete multi-step workflows without leaving Mytulify.`;
-  return [lead, second, useCases, benefits];
+  const detail = `${label.name} is built around one job: ${label.description} The form on this page is the whole product. Change a value and the result updates from that input, so you can compare a second scenario without starting over. Read the field labels before you trust a number. Units, percentages, dates, and file types are easy to mix up, and the description above is the scope of this tool.`;
+  const reading = `If your case needs a rule this page does not mention, treat the output as a starting estimate and check it against the source that actually applies to you. You can copy the result, keep the page open, and come back on a phone or a laptop. Nothing here asks you to install an app. Related tools in the same category sit under the questions when the next step is a different calculation or a different file.`;
+  return [lead, second, useCases, benefits, detail, reading];
 }
 
 export function toolMeta(
   content: ContentBundle,
   label: LocalizedTool,
   clientSide: boolean,
-  categoryName?: string,
 ) {
   const s = content.strings;
-  const catLabel = categoryName ? `${categoryName} ` : "";
-  const defaultTitle = `${label.name} – Free Online ${catLabel}Tool | Mytulify`;
+  const shortTitle = `${label.name} | Mytulify`;
+  const rawTitle = label.metaTitle ?? shortTitle;
+  const title = rawTitle.length <= 60 ? rawTitle : shortTitle.length <= 60 ? shortTitle : clampTitle(shortTitle);
   const rawDesc =
     label.metaDescription ??
     (clientSide
       ? fmt(s.toolMetaClient, { desc: label.description })
       : fmt(s.toolMetaAi, { desc: label.description, limit: FREE_AI_DAILY_LIMIT }));
   return {
-    title: label.metaTitle ?? defaultTitle,
+    title,
     absolute: true,
     description: clampMetaDescription(rawDesc),
   };

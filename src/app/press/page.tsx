@@ -72,16 +72,22 @@ export default function PressPage() {
 
       <section className="mt-10">
         <h2 className="text-xl font-bold">Brand assets</h2>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <figure className="rounded-xl border border-border bg-surface p-4">
+            {/* eslint-disable-next-line @next/next/no-img-element -- brand file shown on the page, not linked as a document */}
+            <img src="/logo.png" alt="Mytulify logo" width={120} height={132} className="h-24 w-auto" />
+            <figcaption className="mt-2 text-sm text-muted">Logo, PNG</figcaption>
+          </figure>
+          <figure className="rounded-xl border border-border bg-surface p-4">
+            {/* eslint-disable-next-line @next/next/no-img-element -- brand file shown on the page, not linked as a document */}
+            <img src="/og-share.png" alt="Mytulify share image, 1200 by 630" className="w-full rounded-lg" />
+            <figcaption className="mt-2 text-sm text-muted">Share image, 1200 by 630</figcaption>
+          </figure>
+        </div>
         <ul className="mt-4 space-y-2 text-sm">
           <li>
-            <a href="/logo.png" className="text-brand hover:underline">Logo (PNG)</a>
-          </li>
-          <li>
-            <a href="/og-share.png" className="text-brand hover:underline">Open Graph image (1200×630)</a>
-          </li>
-          <li>
             <span className="text-muted">Website: </span>
-            <a href={site.url} className="text-brand hover:underline">{site.url}</a>
+            <a href={site.url} className="text-brand hover:underline">Mytulify</a>
           </li>
           <li>
             <span className="text-muted">Contact: </span>

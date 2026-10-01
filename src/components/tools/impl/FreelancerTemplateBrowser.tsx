@@ -360,8 +360,8 @@ function TemplateThumb({ t, selected }: { t: FlTemplateMeta; selected: boolean }
             ))}
           </div>
         ) : (
-          <p className="mt-0.5 line-clamp-5 whitespace-pre-wrap text-[9px] leading-relaxed text-muted">
-            {preview.body}
+          <p className="mt-0.5 line-clamp-5 text-[9px] leading-relaxed text-muted">
+            {t.blurb}
           </p>
         )}
       </div>

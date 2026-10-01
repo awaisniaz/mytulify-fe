@@ -9,7 +9,6 @@ import { getLocale } from "@/i18n/locale";
 import { getMessages } from "@/i18n/messages";
 import { pathWithLocale } from "@/i18n/paths";
 import { categoryLabelFrom } from "@/i18n/messaging";
-import { cn } from "@/lib/utils";
 
 export async function Header() {
   const locale = await getLocale();
@@ -29,21 +28,11 @@ export async function Header() {
               {t.nav.categories}
               <Icon name="ChevronDown" className="h-4 w-4 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" />
             </button>
-            <div className="pointer-events-none absolute start-0 top-full w-[620px] -translate-y-1 pt-2 opacity-0 transition-all duration-150 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100">
-              <div className="grid grid-cols-2 gap-1 rounded-2xl border border-border bg-surface p-2 shadow-xl">
+            <div className="pointer-events-none absolute start-0 top-full w-[28rem] -translate-y-1 pt-2 opacity-0 transition-all duration-150 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100">
+              <div className="nav-cats rounded-2xl border border-border bg-surface p-3 shadow-xl">
                 {NAV_CATEGORIES.map((c) => (
-                  <Link
-                    key={c.slug}
-                    href={pathWithLocale(`/${c.slug}`, locale)}
-                    className="flex items-center gap-3 rounded-xl p-2.5 transition-colors hover:bg-surface-2"
-                  >
-                    <span className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gradient-to-br text-white", c.gradient)}>
-                      <Icon name={c.icon} className="h-4 w-4" />
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block text-sm font-semibold">{categoryLabelFrom(t, c.slug, c.name)}</span>
-                      <span className="block text-xs text-muted">{t.nav.toolsCount(c.toolCount)}</span>
-                    </span>
+                  <Link key={c.slug} href={pathWithLocale(`/${c.slug}`, locale)} className="nav-link">
+                    {categoryLabelFrom(t, c.slug, c.name)}
                   </Link>
                 ))}
               </div>
@@ -81,6 +70,7 @@ export async function Header() {
             className="grid h-9 w-9 place-items-center rounded-xl border-2 border-border sm:hidden"
           >
             <Icon name="Search" className="h-4 w-4" />
+            <span className="sr-only">{t.nav.search}</span>
           </Link>
           <ThemeToggleButton />
           <UserMenu labels={t.auth} />
@@ -109,11 +99,8 @@ export async function Header() {
                 {t.nav.requestTool}
               </Link>
               {NAV_CATEGORIES.map((c) => (
-                <Link key={c.slug} href={pathWithLocale(`/${c.slug}`, locale)} className="flex items-center gap-3 rounded-xl p-3 hover:bg-surface-2">
-                  <span className={cn("grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br text-white", c.gradient)}>
-                    <Icon name={c.icon} className="h-3.5 w-3.5" />
-                  </span>
-                  <span className="text-sm font-semibold">{categoryLabelFrom(t, c.slug, c.name)}</span>
+                <Link key={c.slug} href={pathWithLocale(`/${c.slug}`, locale)} className="nav-link">
+                  {categoryLabelFrom(t, c.slug, c.name)}
                 </Link>
               ))}
             </div>

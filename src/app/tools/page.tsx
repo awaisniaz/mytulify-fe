@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { AllToolsBrowser } from "@/components/AllToolsBrowser";
+import { ToolDirectoryFilter } from "@/components/ToolDirectoryFilter";
 import { DisplayAd } from "@/components/ads/DisplayAd";
 import { ALL_TOOLS, CATEGORIES, TOTAL_TOOLS, TOTAL_CATEGORIES } from "@/lib/catalog";
+import { toolDirectoryHtml } from "@/lib/catalog/directory-html";
 import { site } from "@/lib/site";
-import { socialMeta, pageAlternates, clampMetaDescription } from "@/lib/seo";
+import { socialMeta, pageAlternates, clampMetaDescription, publicRobots } from "@/lib/seo";
 import { getLocale, getMetadataLocale } from "@/i18n/locale";
 import { getContent, localizeTool } from "@/i18n/content";
 import { categoryLabelFrom } from "@/i18n/messaging";
@@ -23,7 +24,7 @@ export async function generateMetadata({
     title,
     description: clampMetaDescription(description),
     ...pageAlternates("/tools", locale),
-    robots: { index: true, follow: true },
+    robots: publicRobots(locale),
     ...socialMeta({ title: `${title} · ${site.name}`, description, url: "/tools", locale }),
   };
 }
@@ -34,17 +35,17 @@ export default async function ToolsPage() {
   const messages = await getMessages(locale);
   const s = content.strings;
 
-  const tools = ALL_TOOLS.map((t) => ({
-    ...t,
-    label: localizeTool(content, t),
-  }));
-
   const categories = CATEGORIES.map((c) => ({
     slug: c.slug,
     name: categoryLabelFrom(messages, c.slug, c.name),
-    icon: c.icon,
-    gradient: c.gradient,
   }));
+  const directory = toolDirectoryHtml(
+    ALL_TOOLS.map((t) => {
+      const label = localizeTool(content, t);
+      return { tool: t, name: label.name, description: label.description, soonLabel: s.comingSoon };
+    }),
+    { categoryAttr: true },
+  );
 
   return (
     <div className="mx-auto max-w-7xl px-3 py-6 sm:px-6 sm:py-10">
@@ -55,18 +56,16 @@ export default async function ToolsPage() {
       <div className="mb-6 sm:mb-8">
         <DisplayAd />
       </div>
-      <Suspense fallback={<div className="skeleton h-64 rounded-xl" />}>
-        <AllToolsBrowser
-          tools={tools}
+      <Suspense fallback={<div className="skeleton h-24 rounded-xl" />}>
+        <ToolDirectoryFilter
           categories={categories}
           totalTools={TOTAL_TOOLS}
           searchPlaceholder={s.searchAllTools.replace("{n}", String(TOTAL_TOOLS))}
           allLabel={messages.nav.allTools}
-          hotLabel={s.hot}
           clearLabel={s.searchClear ?? "Clear"}
-          comingSoonLabel={s.comingSoon}
         />
       </Suspense>
+      <div id="tool-directory" className="tool-grid mt-4" dangerouslySetInnerHTML={{ __html: directory }} />
     </div>
   );
 }

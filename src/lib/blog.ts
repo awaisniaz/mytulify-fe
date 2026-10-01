@@ -46,6 +46,42 @@ export const BLOG_CATEGORIES: readonly BlogCategory[] = [
     description: "Comparisons of AI assistants, coding tools, image generators, and related software.",
     icon: "Sparkles",
   },
+  {
+    slug: "health",
+    name: "Health",
+    description: "BMI, calories, pregnancy, and other health calculators.",
+    icon: "Activity",
+  },
+  {
+    slug: "documents",
+    name: "Documents",
+    description: "PDF merge, split, compress, and conversion guides.",
+    icon: "FileText",
+  },
+  {
+    slug: "developer",
+    name: "Developer",
+    description: "Code, DevOps, security, and data-format guides.",
+    icon: "Code2",
+  },
+  {
+    slug: "home",
+    name: "Home & Trade",
+    description: "Paint, concrete, electrical, and property calculators.",
+    icon: "Wrench",
+  },
+  {
+    slug: "writing",
+    name: "Writing",
+    description: "Word count, case, cleanup, and other text tools.",
+    icon: "Type",
+  },
+  {
+    slug: "utilities",
+    name: "Utilities",
+    description: "Unit converters, math calculators, and everyday generators.",
+    icon: "Wrench",
+  },
 ] as const;
 
 export const BLOG_CATEGORY_SLUGS = BLOG_CATEGORIES.map((c) => c.slug);
@@ -141,14 +177,14 @@ function toMeta(data: Record<string, unknown>, fallbackSlug: string): BlogPostMe
   };
 }
 
-function loadFile(fileRel: string): BlogPost | null {
+function loadFile(fileRel: string, withHtml: boolean): BlogPost | null {
   const abs = path.join(process.cwd(), fileRel);
   if (!existsSync(abs)) return null;
   const raw = readFileSync(abs, "utf8");
   const { data, body } = parseFrontmatter(raw);
   const slug = path.basename(fileRel, path.extname(fileRel));
   const meta = toMeta(data, slug);
-  const html = marked.parse(body, { async: false }) as string;
+  const html = withHtml ? (marked.parse(body, { async: false }) as string) : "";
   return {
     ...meta,
     body,
@@ -158,7 +194,7 @@ function loadFile(fileRel: string): BlogPost | null {
   };
 }
 
-/** All published posts, newest first. */
+/** All published posts, newest first. HTML is parsed on the post page, not the index. */
 export function getAllPosts(): BlogPost[] {
   if (!existsSync(BLOG_DIR)) return [];
   const files = readdirSync(BLOG_DIR)
@@ -166,14 +202,14 @@ export function getAllPosts(): BlogPost[] {
     .map((f) => path.join("content", "blog", f));
 
   return files
-    .map((f) => loadFile(f))
+    .map((f) => loadFile(f, false))
     .filter((p): p is BlogPost => p != null)
     .sort((a, b) => (a.publishedDate < b.publishedDate ? 1 : -1));
 }
 
 export function getPostBySlug(slug: string): BlogPost | null {
   const fileRel = path.join("content", "blog", `${slug}.md`);
-  return loadFile(fileRel);
+  return loadFile(fileRel, true);
 }
 
 export function getPostSlugs(): string[] {

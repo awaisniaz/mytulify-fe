@@ -5,7 +5,7 @@ import { HomeCatalog } from "@/components/home/HomeCatalog";
 import { DisplayAd } from "@/components/ads/DisplayAd";
 import { Icon } from "@/components/ui/Icon";
 import { site } from "@/lib/site";
-import { socialMeta, pageAlternates } from "@/lib/seo";
+import { socialMeta, pageAlternates, publicRobots } from "@/lib/seo";
 import { getLocale, getMetadataLocale } from "@/i18n/locale";
 import { getMessages } from "@/i18n/messages";
 import { getMessaging } from "@/i18n/messaging";
@@ -22,7 +22,7 @@ export async function generateMetadata({
     title: { absolute: title },
     description: messaging.siteDescription,
     ...pageAlternates("/", locale),
-    robots: { index: true, follow: true },
+    robots: publicRobots(locale),
     ...socialMeta({
       title,
       description: messaging.siteDescription,

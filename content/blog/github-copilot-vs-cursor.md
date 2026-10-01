@@ -30,7 +30,7 @@ If you only need a second pair of eyes on a pasted snippet, you may not need eit
 | Superpower | Fast inline complete in GitHub-centric workflows | Chat + edit across many files in one IDE |
 | Switching cost | Low (stay in VS Code / JetBrains) | Medium (new editor, even if it feels like VS Code) |
 | Best if | Your team already lives on GitHub | You want agent-style refactors in the editor |
-| Official site | <a href="https://github.com/features/copilot" rel="sponsored nofollow">GitHub Copilot</a> | <a href="https://cursor.com/" rel="sponsored nofollow">Cursor</a> |
+| Official site | <a href="https://github.com/features/copilot">GitHub Copilot</a> | <a href="https://cursor.com/">Cursor</a> |
 
 ## GitHub Copilot — stay in your current editor
 
@@ -42,7 +42,7 @@ Choose Copilot when:
 - You do not want to migrate keybindings, extensions, and remote-SSH setups
 - Teammates already have Copilot seats
 
-Try it: <a href="https://github.com/features/copilot" rel="sponsored nofollow">GitHub Copilot</a>
+Try it: <a href="https://github.com/features/copilot">GitHub Copilot</a>
 
 ## Cursor — the editor built around the agent
 
@@ -54,7 +54,7 @@ Choose Cursor when:
 - You are fine using a Cursor-branded VS Code fork daily
 - You iterate on large features, not just one-line completes
 
-Try it: <a href="https://cursor.com/" rel="sponsored nofollow">Cursor</a>
+Try it: <a href="https://cursor.com/">Cursor</a>
 
 ## What neither replaces
 

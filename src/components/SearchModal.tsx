@@ -13,10 +13,11 @@ type Props = {
   open: boolean;
   onClose: () => void;
   tools: SearchTool[];
+  loading?: boolean;
   strings: SearchStrings;
 };
 
-export function SearchModal({ open, onClose, tools, strings }: Props) {
+export function SearchModal({ open, onClose, tools, loading, strings }: Props) {
   const [q, setQ] = useState("");
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -128,7 +129,8 @@ export function SearchModal({ open, onClose, tools, strings }: Props) {
         <div className="border-b border-border px-4 py-2 text-xs text-muted">{resultsLabel}</div>
 
         <div ref={listRef} className="min-h-0 flex-1 overflow-y-auto p-2 sm:max-h-[50vh] sm:flex-none">
-          {results.length === 0 && (
+          {loading && <p className="p-6 text-center text-sm text-muted">Loading tools…</p>}
+          {!loading && results.length === 0 && (
             <div className="grid place-items-center gap-2 p-10 text-center">
               <span className="grid h-12 w-12 place-items-center rounded-xl bg-surface-2 text-muted">
                 <Icon name="Search" className="h-6 w-6" />

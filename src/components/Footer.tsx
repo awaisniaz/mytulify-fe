@@ -19,6 +19,11 @@ export async function Footer() {
           <div>
             <SiteLogo logoHeight={24} nameClassName="font-bold text-sm sm:text-base" />
             <p className="mt-2 max-w-xs text-sm text-muted">{messaging.siteDescription}</p>
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-muted">
+              Open a tool, enter the text, file, or numbers you already have, and read the result on the same page.
+              Browser tools stay on your device. The page under each tool explains the inputs, the limits, and the
+              questions people ask before they use the output.
+            </p>
             <p className="mt-3 text-sm font-medium text-muted">{messaging.footerNote}</p>
           </div>
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-3">

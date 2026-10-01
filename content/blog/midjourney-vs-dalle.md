@@ -30,7 +30,7 @@ Neither replaces basic file jobs: resize, compress, crop, background removal. Do
 | Look | Stylized, cinematic, “poster” energy | Follows the prompt more literally; varies by model |
 | Iteration | Parameters, variations, remix culture | Conversational edits (“make the logo smaller”) |
 | Best if | You care about a distinctive aesthetic | You already pay for ChatGPT and need images in-flow |
-| Official site | <a href="https://www.midjourney.com/" rel="sponsored nofollow">Midjourney</a> | <a href="https://chatgpt.com/" rel="sponsored nofollow">ChatGPT (DALL·E / Images)</a> |
+| Official site | <a href="https://www.midjourney.com/">Midjourney</a> | <a href="https://chatgpt.com/">ChatGPT (DALL·E / Images)</a> |
 
 ## Midjourney — when style is the product
 
@@ -38,7 +38,7 @@ Use Midjourney for moodboards, album-like stills, concept art, and thumbnails wh
 
 Watch-outs: Discord-first workflows feel odd if you hate chat servers. Always read the **current** license for the plan you buy — commercial rights are plan-specific.
 
-Try it: <a href="https://www.midjourney.com/" rel="sponsored nofollow">Midjourney</a>
+Try it: <a href="https://www.midjourney.com/">Midjourney</a>
 
 ## DALL·E in ChatGPT — when the prompt is a conversation
 
@@ -46,7 +46,7 @@ Use ChatGPT images when the picture is a **supporting asset**: a blog hero, a mo
 
 Watch-outs: text-in-image and logos still fail often. For social sizes, generate large, then [resize](/image-tools/resize-image) and [compress](/image-tools/compress-image) locally.
 
-Try it: <a href="https://chatgpt.com/" rel="sponsored nofollow">ChatGPT</a>
+Try it: <a href="https://chatgpt.com/">ChatGPT</a>
 
 ## After you export — free Mytulify image tools
 

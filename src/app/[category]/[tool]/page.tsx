@@ -10,14 +10,16 @@ import { Badge } from "@/components/ui/primitives";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
 import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
-import { socialMeta, pageAlternates } from "@/lib/seo";
-import { faqPageJsonLd, howToJsonLd, howToProse, softwareApplicationJsonLd, breadcrumbJsonLd, toolQuickFacts } from "@/lib/aeo";
+import { socialMeta, pageAlternates, publicRobots } from "@/lib/seo";
+import { faqPageJsonLd, howToJsonLd, howToProse, breadcrumbJsonLd, toolQuickFacts } from "@/lib/aeo";
 import { ToolShareEmbed } from "@/components/tools/ToolShareEmbed";
 import { DisplayAd } from "@/components/ads/DisplayAd";
 import { getLocale, getMetadataLocale } from "@/i18n/locale";
 import {
   buildFaq, buildHowTo, getContent, localizeCategory, localizeTool, toolAboutParagraphs, toolMeta,
 } from "@/i18n/content";
+import { semanticSections } from "@/lib/seo/semantic-tool";
+import { toolGuide } from "@/lib/blog/tool-guides";
 
 export function generateStaticParams() {
   return AVAILABLE_TOOLS.filter(
@@ -73,15 +75,13 @@ export async function generateMetadata({
     tagline: cat.tagline,
   });
   const available = isToolAvailable(t);
-  const meta = toolMeta(content, label, t.clientSide, catLabel.name);
+  const meta = toolMeta(content, label, t.clientSide);
   const path = toolHref(t);
   return {
     title: meta.absolute ? { absolute: meta.title } : meta.title,
     description: meta.description,
     ...pageAlternates(path, locale),
-    robots: available
-      ? { index: true, follow: true }
-      : { index: false, follow: true },
+    robots: publicRobots(locale, available),
     ...socialMeta({
       title: meta.absolute ? meta.title : `${label.name} · ${site.name}`,
       description: meta.description,
@@ -114,6 +114,22 @@ export default async function ToolPage({
   const howTo = buildHowTo(content, label, t.clientSide);
   const howToExtra = howToProse(label.name, label.description, t.clientSide);
   const about = toolAboutParagraphs(content, label, t.clientSide);
+  const guide = toolGuide(t.category, t.slug);
+  const semantic = label.about?.length
+    ? null
+    : semanticSections({
+        name: label.name,
+        slug: t.slug,
+        description: label.description,
+        categorySlug: cat.slug,
+        categoryName: catLabel.name,
+        tagline: catLabel.tagline,
+        clientSide: t.clientSide,
+        related: related.map((item) => ({
+          name: localizeTool(content, item).name,
+          href: toolHref(item),
+        })),
+      });
   const facts = toolQuickFacts(label.name, t.clientSide);
   const present = getToolIconPresentation(t);
   const s = content.strings;
@@ -123,13 +139,6 @@ export default async function ToolPage({
 
   const jsonLd = available
     ? [
-        softwareApplicationJsonLd({
-          name: label.name,
-          description: label.description,
-          url: pageUrl,
-          categoryName: catLabel.name.replace(/\s+/g, ""),
-          clientSide: t.clientSide,
-        }),
         breadcrumbJsonLd([
           { name: s.home, item: site.url },
           { name: catLabel.name, item: `${site.url}/${cat.slug}` },
@@ -219,11 +228,33 @@ export default async function ToolPage({
 
       <section className="mt-12 prose-tool">
         <h2 className="text-xl font-bold">{s.aboutTool.replace("{name}", label.name)}</h2>
-        <div className="mt-3 space-y-3 text-muted">
-          {about.map((paragraph) => (
-            <p key={paragraph.slice(0, 48)} className="leading-relaxed">{paragraph}</p>
-          ))}
-        </div>
+        {semantic ? (
+          <div className="mt-3 space-y-6 text-muted">
+            {semantic.map((section) => (
+              <div key={section.heading}>
+                <h3 className="text-lg font-semibold text-foreground">{section.heading}</h3>
+                <div className="mt-2 space-y-3">
+                  {section.paragraphs.map((paragraph) => (
+                    <p key={paragraph.slice(0, 48)} className="leading-relaxed">{paragraph}</p>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-3 space-y-3 text-muted">
+            {about.map((paragraph) => (
+              <p key={paragraph.slice(0, 48)} className="leading-relaxed">{paragraph}</p>
+            ))}
+          </div>
+        )}
+        {guide ? (
+          <p className="mt-4 text-sm">
+            <Link href={`/blog/${guide.slug}`} className="font-semibold text-brand hover:underline">
+              Read the {label.name} guide
+            </Link>
+          </p>
+        ) : null}
 
         <div id="how-to-use" className="mt-8">
           <h2 className="text-xl font-bold text-foreground">{howTo.title}</h2>

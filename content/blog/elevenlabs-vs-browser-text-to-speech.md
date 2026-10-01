@@ -31,7 +31,7 @@ If you are scripting YouTube, courses, or mockups, try on-device TTS first. Upgr
 | Cost | Subscription + character usage | Free, unlimited on Mytulify |
 | Privacy | Script leaves your machine | Script stays in the browser |
 | Captions | Their studio / tools | SRT/VTT export on our creator TTS |
-| Official / app | <a href="https://elevenlabs.io/" rel="sponsored nofollow">ElevenLabs</a> | [Creator Text to Speech](/content-creator-tools/text-to-speech) |
+| Official / app | <a href="https://elevenlabs.io/">ElevenLabs</a> | [Creator Text to Speech](/content-creator-tools/text-to-speech) |
 
 ## ElevenLabs — when the voice has to sound hired
 
@@ -45,7 +45,7 @@ Choose ElevenLabs when:
 
 Watch-outs: character caps, commercial-license details, and **never** clone a real person without rights.
 
-Try it: <a href="https://elevenlabs.io/" rel="sponsored nofollow">ElevenLabs</a>
+Try it: <a href="https://elevenlabs.io/">ElevenLabs</a>
 
 ## Browser TTS — when the voice is a draft
 
