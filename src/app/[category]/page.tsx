@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { CATEGORIES, getCategory, isToolAvailable } from "@/lib/catalog";
-import { ToolCard } from "@/components/cards";
+import { toolDirectoryHtml } from "@/lib/catalog/directory-html";
 import { DisplayAd } from "@/components/ads/DisplayAd";
 import { CategoryArtFade } from "@/components/CategoryArtFade";
 import { Icon } from "@/components/ui/Icon";
@@ -134,18 +134,39 @@ export default async function CategoryPage({
         <DisplayAd />
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {c.tools.map((t) => (
-          <ToolCard
-            key={t.slug}
-            tool={t}
-            accent={c.gradient}
-            label={localizeTool(content, t)}
-            hotLabel={s.hot}
-            comingSoonLabel={s.comingSoon}
-          />
-        ))}
-      </div>
+      {locale === "en" && (
+        <section className="mb-8 max-w-3xl space-y-3 text-sm leading-relaxed text-muted sm:text-base">
+          <h2 className="text-xl font-bold text-foreground">How to use these {catLabel.name}</h2>
+          <p>
+            {catLabel.name} is a set of {listedTools.length} free online tools. {catLabel.description} Each link below
+            opens a page with the form, a short explanation of the inputs, and answers to the questions people ask
+            before they rely on a result.
+          </p>
+          <p>
+            Start with the name that matches the job: {listedTools.slice(0, 14).map((t) => localizeTool(content, t).name).join(", ")}
+            {listedTools.length > 14 ? `, plus ${listedTools.length - 14} more in this same list` : ""}. Read the
+            description under the name. If it describes the number, file, or text you already have, open that tool and
+            enter those values. The result stays on the page so you can change one input and compare.
+          </p>
+          <p>
+            Browser tools run on your device and do not need an account. Where a tool sends work to a server, the page
+            says so next to the form. Treat every result as an estimate you can check: units, rates, and file settings
+            are only as accurate as what you type in.
+          </p>
+        </section>
+      )}
+
+      <div
+        className="tool-grid"
+        dangerouslySetInnerHTML={{
+          __html: toolDirectoryHtml(
+            c.tools.map((t) => {
+              const label = localizeTool(content, t);
+              return { tool: t, name: label.name, description: label.description, soonLabel: s.comingSoon };
+            }),
+          ),
+        }}
+      />
 
       <div className="mt-16">
         <h2 className="mb-4 text-lg font-semibold">{s.exploreOther}</h2>

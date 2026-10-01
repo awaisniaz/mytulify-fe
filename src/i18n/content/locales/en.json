@@ -4813,7 +4813,7 @@
     "searchClear": "Clear search",
     "browseTools": "Browse all tools",
     "faqWhatIsQ": "What is the {name}?",
-    "faqWhatIsAClient": "{name} is a free online tool on Mytulify that {descClause}. It runs in your browser with no signup required, so you get instant results without creating an account. Copy or download the output when you finish.",
+    "faqWhatIsAClient": "{name} is free on Mytulify. {desc} It runs in your browser with no signup required, so you get instant results without creating an account. Copy or download the output when you finish.",
     "faqWhatIsAAi": "{name} is a free AI-powered tool on Mytulify that {descClause}. Enter your input, generate a result in seconds, and copy or download the output. The Free plan includes {limit} AI runs per day.",
     "faqIsFreeQ": "Is the {name} free to use?",
     "faqIsFreeAClient": "Yes. The {name} is free on Mytulify’s Free plan with unlimited use, no signup, and no watermark. Because it runs in your browser, you never pay per conversion. An account is optional and not required to use the tool itself.",

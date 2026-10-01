@@ -277,6 +277,15 @@ html[dir="rtl"] h3 {
   font-size: 0.875em;
 }
 
+.nav-cats { display: flex; flex-wrap: wrap; gap: 0.35rem 0.85rem; }
+.nav-link {
+  font-size: 0.8125rem;
+  font-weight: 650;
+  color: var(--muted);
+  text-decoration: none;
+}
+.nav-link:hover { color: var(--brand); }
+
 .pill {
   display: inline-flex;
   align-items: center;
@@ -293,6 +302,94 @@ html[dir="rtl"] h3 {
   border-color: var(--brand);
   color: var(--brand);
 }
+
+/* Dense tool directory: short markup, real link text, icon from the sprite. */
+.tool-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+@media (min-width: 640px) {
+  .tool-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 1024px) {
+  .tool-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
+@media (min-width: 1280px) {
+  .tool-grid { grid-template-columns: 1fr 1fr 1fr 1fr; }
+}
+.tool-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  padding: 0.65rem 0.75rem;
+  color: inherit;
+  text-decoration: none;
+}
+.tool-row:hover { border-color: var(--brand); }
+.tool-row svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+  margin-top: 0.15rem;
+  color: var(--brand);
+}
+.tool-row span { min-width: 0; }
+.tool-row b {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
+.tool-row small {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+.tool-row em {
+  margin-left: 0.35rem;
+  font-style: normal;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #b45309;
+}
+.tool-row[hidden] { display: none; }
+
+.post-row {
+  display: block;
+  border-bottom: 1px solid var(--border);
+  padding: 0.85rem 0;
+  color: inherit;
+  text-decoration: none;
+}
+.post-row b { display: block; font-size: 1.05rem; line-height: 1.35; }
+.post-row small { display: block; margin-top: 0.25rem; color: var(--muted); font-size: 0.875rem; line-height: 1.45; }
+.post-row:hover b { color: var(--brand); }
+
+.site-guide {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 3rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+.site-guide h2 {
+  margin-bottom: 0.75rem;
+  color: var(--foreground);
+  font-size: 1.35rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+.site-guide p { margin: 0.75rem 0; }
+.site-guide strong { color: var(--foreground); }
 
 /* colored tile for bento */
 .tile {

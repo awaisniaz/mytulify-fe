@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { TOTAL_CATEGORIES, TOTAL_AI_OCR_TOOLS, TOTAL_BROWSER_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
+import { CATEGORIES, TOTAL_CATEGORIES, TOTAL_AI_OCR_TOOLS, TOTAL_BROWSER_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { socialMeta, pageAlternates } from "@/lib/seo";
 import { Icon } from "@/components/ui/Icon";
@@ -90,7 +90,7 @@ export default async function AboutPage() {
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         {[
           [String(TOTAL_TOOLS), a.statTools, "Wrench"],
-          [String(TOTAL_CATEGORIES), a.statCategories, "LayoutGrid"],
+          [String(TOTAL_CATEGORIES), a.statCategories, "Boxes"],
           [String(TOTAL_BROWSER_TOOLS), a.statBrowser, "Lock"],
         ].map(([val, label, icon]) => (
           <div key={label as string} className="glass interactive-card rounded-2xl p-5 text-center">
@@ -114,6 +114,47 @@ export default async function AboutPage() {
           </div>
         ))}
       </div>
+
+      <section className="prose-blog mt-10 max-w-none">
+        <h2>What you can do here</h2>
+        <p>
+          {site.name} is a library of free online tools for people who need an answer or a converted file without
+          installing software. Calculators cover money, health, school, and the workshop. Converters change units,
+          files, and formats. Text, PDF, image, and developer tools do the small jobs that usually mean opening a
+          desktop app. You open a page, enter what you already have, and read the result on that same page.
+        </p>
+        <p>
+          Most tools run in the browser. The file or the numbers stay on your device, which is why those pages say
+          they are private and instant. A smaller set, including AI writers and handwriting OCR, sends the input to
+          a server so the model can run. Those pages say so, and the free plan includes a daily limit. Pro removes
+          that limit. You do not need an account to try a browser tool.
+        </p>
+        <p>
+          The categories are {CATEGORIES.map((c) => c.name).join(", ")}. Open a category when you know the kind of
+          job, or use search when you know the name of the tool. Every tool page repeats the job in plain language,
+          lists the steps, and answers the usual questions under the form. Related tools sit at the bottom when the
+          next step is a different calculation.
+        </p>
+        <p>
+          Read the result against the labels on the form. A mortgage figure depends on the rate and the term you
+          typed. A PDF conversion depends on the file you uploaded. A unit conversion depends on which units you
+          picked. If a page does not mention a rule that applies to you, use the output as a draft and check the
+          source that actually governs that decision. The tools are estimates and converters, not a bank, a clinic,
+          or a lawyer.
+        </p>
+        <h2>How a tool page is organized</h2>
+        <p>
+          The title is the task. The sentence under it is the scope. The form is next. Under the form you will find
+          a longer explanation, a numbered way to use the tool, a short table of facts, and questions. That text is
+          there so you can decide whether the tool fits before you type anything, and so you can interpret the
+          result after you do.
+        </p>
+        <p>
+          Search and the category lists use the same names and the same descriptions you see on the tool page. If
+          the description matches the input you have, you are on the right tool. If it does not, go back to the
+          category and read the next description. That is faster than guessing from an icon alone.
+        </p>
+      </section>
 
       <div className="mt-10 text-center">
         <Link

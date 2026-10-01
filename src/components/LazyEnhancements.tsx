@@ -31,15 +31,16 @@ export type SearchStrings = {
  * Loads after window load + idle — keeps search, ads, and heavy catalog off the critical path.
  */
 export function LazyEnhancements({
-  searchTools,
+  locale,
   searchStrings,
 }: {
-  searchTools: SearchTool[];
+  locale: string;
   searchStrings: SearchStrings;
 }) {
   const [ready, setReady] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [desktop, setDesktop] = useState(false);
+  const [searchTools, setSearchTools] = useState<SearchTool[] | null>(null);
 
   useEffect(() => {
     const activate = () => {
@@ -57,6 +58,18 @@ export function LazyEnhancements({
     if (document.readyState === "complete") activate();
     else window.addEventListener("load", activate, { once: true });
   }, []);
+
+  useEffect(() => {
+    if (!searchOpen || searchTools) return;
+    const ctrl = new AbortController();
+    fetch(`/api/search-index?lang=${encodeURIComponent(locale)}`, { signal: ctrl.signal })
+      .then((res) => res.json())
+      .then((data: SearchTool[]) => setSearchTools(data))
+      .catch(() => {
+        if (!ctrl.signal.aborted) setSearchTools([]);
+      });
+    return () => ctrl.abort();
+  }, [searchOpen, searchTools, locale]);
 
   useEffect(() => {
     if (!ready) return;
@@ -89,7 +102,8 @@ export function LazyEnhancements({
         <SearchModal
           open={searchOpen}
           onClose={() => setSearchOpen(false)}
-          tools={searchTools}
+          tools={searchTools ?? []}
+          loading={searchTools == null}
           strings={searchStrings}
         />
       )}

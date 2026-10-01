@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { CATEGORIES, TOTAL_TOOLS } from "@/lib/catalog";
-import { CompactToolLink } from "@/components/cards";
+import { toolDirectoryHtml } from "@/lib/catalog/directory-html";
 import { CategoryArtFade } from "@/components/CategoryArtFade";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
@@ -96,16 +96,19 @@ export async function HomeCatalog() {
                 </Link>
               </div>
 
-              <div className="relative z-10 grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {c.tools.map(({ tool, label }) => (
-                  <CompactToolLink
-                    key={tool.slug}
-                    tool={tool}
-                    label={label}
-                    comingSoonLabel={comingSoonLabel}
-                  />
-                ))}
-              </div>
+              <div
+                className="tool-grid relative z-10"
+                dangerouslySetInnerHTML={{
+                  __html: toolDirectoryHtml(
+                    c.tools.map(({ tool, label }) => ({
+                      tool,
+                      name: label.name,
+                      description: label.description,
+                      soonLabel: comingSoonLabel,
+                    })),
+                  ),
+                }}
+              />
             </section>
           ))}
         </div>

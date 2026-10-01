@@ -1,11 +1,23 @@
 import type { Metadata } from "next";
-import { BlogCard } from "@/components/blog/BlogCard";
 import { BlogCategoryNav } from "@/components/blog/BlogCategoryNav";
-import { getAllPosts, getBlogCategory } from "@/lib/blog";
+import { formatPostDate, getAllPosts, getBlogCategory, type BlogPost } from "@/lib/blog";
 import { site } from "@/lib/site";
 import { englishOnlyPageMeta, clampMetaDescription } from "@/lib/seo";
 import { getMetadataLocale } from "@/i18n/locale";
 import { TOTAL_TOOLS } from "@/lib/catalog";
+
+function esc(value: string) {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function postsHtml(posts: BlogPost[]) {
+  return posts
+    .map(
+      (post) =>
+        `<a class="post-row" href="/blog/${esc(post.slug)}"><b>${esc(post.title)}</b><small>${esc(formatPostDate(post.publishedDate))} · ${post.readingMinutes} min read · ${esc(post.excerpt)}</small></a>`,
+    )
+    .join("");
+}
 
 export async function generateMetadata({
   searchParams,
@@ -58,11 +70,7 @@ export default async function BlogIndexPage({
       {filtered.length === 0 ? (
         <p className="mt-12 text-muted">No posts in this category yet.</p>
       ) : (
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((post) => (
-            <BlogCard key={post.slug} post={post} />
-          ))}
-        </div>
+        <div className="mt-8" dangerouslySetInnerHTML={{ __html: postsHtml(filtered) }} />
       )}
     </div>
   );
