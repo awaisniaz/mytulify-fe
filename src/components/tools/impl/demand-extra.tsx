@@ -213,7 +213,7 @@ export function EmailSignatureGenerator() {
   const [company, setCompany] = React.useState("Mytulify");
   const [email, setEmail] = React.useState("alex@mytulify.com");
   const [phone, setPhone] = React.useState("+92 300 1234567");
-  const [website, setWebsite] = React.useState("https://mytulify.com");
+  const [website, setWebsite] = React.useState("https://www.mytulify.com");
   const [color, setColor] = React.useState("#0d9488");
 
   const html = `<table cellpadding="0" cellspacing="0" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#111;line-height:1.45">
@@ -285,7 +285,7 @@ export function VcardGenerator() {
   const [title, setTitle] = React.useState("Founder");
   const [email, setEmail] = React.useState("alex@mytulify.com");
   const [phone, setPhone] = React.useState("+923001234567");
-  const [url, setUrl] = React.useState("https://mytulify.com");
+  const [url, setUrl] = React.useState("https://www.mytulify.com");
 
   const vcf = `BEGIN:VCARD
 VERSION:3.0

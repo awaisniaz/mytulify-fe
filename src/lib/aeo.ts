@@ -104,35 +104,6 @@ export function howToProse(name: string, description: string, clientSide: boolea
   ];
 }
 
-export function softwareApplicationJsonLd(opts: {
-  name: string;
-  description: string;
-  url: string;
-  categoryName: string;
-  clientSide: boolean;
-}) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: opts.name,
-    applicationCategory: `${opts.categoryName}Application`,
-    operatingSystem: "Web browser",
-    browserRequirements: "Requires JavaScript. Works on desktop and mobile browsers.",
-    description: opts.description,
-    url: opts.url,
-    isAccessibleForFree: true,
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-      availability: "https://schema.org/InStock",
-      description: opts.clientSide
-        ? "Free plan — unlimited browser-side use on Mytulify"
-        : `Free plan — ${FREE_AI_DAILY_LIMIT} AI runs per day; Pro for unlimited`,
-    },
-  };
-}
-
 export function breadcrumbJsonLd(items: { name: string; item: string }[]) {
   return {
     "@context": "https://schema.org",

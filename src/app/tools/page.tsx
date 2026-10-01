@@ -5,7 +5,7 @@ import { DisplayAd } from "@/components/ads/DisplayAd";
 import { ALL_TOOLS, CATEGORIES, TOTAL_TOOLS, TOTAL_CATEGORIES } from "@/lib/catalog";
 import { toolDirectoryHtml } from "@/lib/catalog/directory-html";
 import { site } from "@/lib/site";
-import { socialMeta, pageAlternates, clampMetaDescription } from "@/lib/seo";
+import { socialMeta, pageAlternates, clampMetaDescription, publicRobots } from "@/lib/seo";
 import { getLocale, getMetadataLocale } from "@/i18n/locale";
 import { getContent, localizeTool } from "@/i18n/content";
 import { categoryLabelFrom } from "@/i18n/messaging";
@@ -24,7 +24,7 @@ export async function generateMetadata({
     title,
     description: clampMetaDescription(description),
     ...pageAlternates("/tools", locale),
-    robots: { index: true, follow: true },
+    robots: publicRobots(locale),
     ...socialMeta({ title: `${title} · ${site.name}`, description, url: "/tools", locale }),
   };
 }

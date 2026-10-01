@@ -8,7 +8,7 @@ import { CategoryArtFade } from "@/components/CategoryArtFade";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
-import { socialMeta, pageAlternates, clampMetaDescription } from "@/lib/seo";
+import { socialMeta, pageAlternates, clampMetaDescription, publicRobots } from "@/lib/seo";
 import { getLocale, getMetadataLocale } from "@/i18n/locale";
 import { categoryMeta, getContent, localizeCategory, localizeTool } from "@/i18n/content";
 import { categoryLabelFrom } from "@/i18n/messaging";
@@ -41,7 +41,7 @@ export async function generateMetadata({
     title: meta.title,
     description: clampMetaDescription(meta.description),
     ...pageAlternates(path, locale),
-    robots: { index: true, follow: true },
+    robots: publicRobots(locale),
     ...socialMeta({ title: `${meta.title} · ${site.name}`, description: meta.description, url: path, locale }),
   };
 }

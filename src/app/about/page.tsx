@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CATEGORIES, TOTAL_CATEGORIES, TOTAL_AI_OCR_TOOLS, TOTAL_BROWSER_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { socialMeta, pageAlternates } from "@/lib/seo";
+import { socialMeta, pageAlternates, publicRobots } from "@/lib/seo";
 import { Icon } from "@/components/ui/Icon";
 import { getLocale, getMetadataLocale } from "@/i18n/locale";
 import { getContent } from "@/i18n/content";
@@ -24,7 +24,7 @@ export async function generateMetadata({
     title,
     description,
     ...pageAlternates("/about", locale),
-    robots: { index: true, follow: true },
+    robots: publicRobots(locale),
     ...socialMeta({
       title: `${title} · ${site.name}`,
       description,

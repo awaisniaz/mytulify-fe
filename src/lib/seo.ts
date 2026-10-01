@@ -3,7 +3,7 @@ import { site } from "@/lib/site";
 import { messaging } from "@/lib/messaging";
 import type { Locale } from "@/i18n/config";
 import { DEFAULT_LOCALE } from "@/i18n/config";
-import { canonicalForLocale, hreflangAlternates, hreflangUrl, OG_LOCALE } from "@/lib/seo/hreflang";
+import { canonicalForLocale, hreflangUrl, OG_LOCALE } from "@/lib/seo/hreflang";
 
 type SocialMeta = Pick<Metadata, "openGraph" | "twitter">;
 
@@ -15,6 +15,15 @@ export const OG_IMAGE = {
   alt: `${site.name} — ${messaging.ogToolsLabel}`,
 } as const;
 
+/** Keep the document title inside the length site audits accept. */
+export function clampTitle(text: string, max = 60): string {
+  const t = text.trim().replace(/\s+/g, " ");
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max);
+  const lastSpace = cut.lastIndexOf(" ");
+  return (lastSpace > 24 ? cut.slice(0, lastSpace) : cut).trim();
+}
+
 /** Clamp meta description to ~155 chars for SERP. */
 export function clampMetaDescription(text: string, max = 155): string {
   const t = text.trim().replace(/\s+/g, " ");
@@ -24,18 +33,31 @@ export function clampMetaDescription(text: string, max = 155): string {
   return (lastSpace > 80 ? cut.slice(0, lastSpace) : cut).trim() + "…";
 }
 
-/** Canonical + hreflang alternates for indexable pages. */
+/**
+ * Canonical + hreflang. Only English is advertised.
+ * Locale files still leave most tool names and descriptions in English, so a
+ * ?lang=ur URL is an English page. Pointing hreflang=ur at it is a language mismatch.
+ */
 export function pageAlternates(path: string, locale: Locale = "en"): Pick<Metadata, "alternates"> {
-  const canonical = canonicalForLocale(path, locale);
-  const languages = hreflangAlternates(path);
-  // Guarantee self-reference: canonical must equal hreflang for the active locale.
-  languages[locale] = canonical;
+  const canonical = canonicalForLocale(path, DEFAULT_LOCALE);
+  if (locale !== DEFAULT_LOCALE) {
+    return { alternates: { canonical } };
+  }
   return {
     alternates: {
       canonical,
-      languages,
+      languages: {
+        en: canonical,
+        "x-default": canonical,
+      },
     },
   };
+}
+
+/** Index the English URL. ?lang= copies are UI only until the body is translated. */
+export function publicRobots(locale: Locale, index = true): NonNullable<Metadata["robots"]> {
+  if (!index || locale !== DEFAULT_LOCALE) return { index: false, follow: true };
+  return { index: true, follow: true };
 }
 
 /**

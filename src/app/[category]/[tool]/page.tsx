@@ -10,8 +10,8 @@ import { Badge } from "@/components/ui/primitives";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
 import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
-import { socialMeta, pageAlternates } from "@/lib/seo";
-import { faqPageJsonLd, howToJsonLd, howToProse, softwareApplicationJsonLd, breadcrumbJsonLd, toolQuickFacts } from "@/lib/aeo";
+import { socialMeta, pageAlternates, publicRobots } from "@/lib/seo";
+import { faqPageJsonLd, howToJsonLd, howToProse, breadcrumbJsonLd, toolQuickFacts } from "@/lib/aeo";
 import { ToolShareEmbed } from "@/components/tools/ToolShareEmbed";
 import { DisplayAd } from "@/components/ads/DisplayAd";
 import { getLocale, getMetadataLocale } from "@/i18n/locale";
@@ -75,15 +75,13 @@ export async function generateMetadata({
     tagline: cat.tagline,
   });
   const available = isToolAvailable(t);
-  const meta = toolMeta(content, label, t.clientSide, catLabel.name);
+  const meta = toolMeta(content, label, t.clientSide);
   const path = toolHref(t);
   return {
     title: meta.absolute ? { absolute: meta.title } : meta.title,
     description: meta.description,
     ...pageAlternates(path, locale),
-    robots: available
-      ? { index: true, follow: true }
-      : { index: false, follow: true },
+    robots: publicRobots(locale, available),
     ...socialMeta({
       title: meta.absolute ? meta.title : `${label.name} · ${site.name}`,
       description: meta.description,
@@ -141,13 +139,6 @@ export default async function ToolPage({
 
   const jsonLd = available
     ? [
-        softwareApplicationJsonLd({
-          name: label.name,
-          description: label.description,
-          url: pageUrl,
-          categoryName: catLabel.name.replace(/\s+/g, ""),
-          clientSide: t.clientSide,
-        }),
         breadcrumbJsonLd([
           { name: s.home, item: site.url },
           { name: catLabel.name, item: `${site.url}/${cat.slug}` },

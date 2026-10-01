@@ -30,7 +30,7 @@ If the copy is confidential (client NDA, unpublished research), prefer **local**
 | Where it sits | Extensions, Docs, desktop app | Chat app / API |
 | Strength | Grammar, clarity, consistency as you type | Structure, brainstorms, full drafts |
 | Weakness | Weak at inventing a whole article from a one-liner | Can “fix” voice into generic AI tone |
-| Official site | <a href="https://www.grammarly.com/" rel="sponsored nofollow">Grammarly</a> | <a href="https://chatgpt.com/" rel="sponsored nofollow">ChatGPT</a> |
+| Official site | <a href="https://www.grammarly.com/">Grammarly</a> | <a href="https://chatgpt.com/">ChatGPT</a> |
 
 ## Grammarly — keep your words, clean the edges
 
@@ -42,7 +42,7 @@ Choose Grammarly when:
 - You want inline red underlines, not a separate chat tab
 - Legal/comms teams want a consistent “correctness” layer
 
-Try it: <a href="https://www.grammarly.com/" rel="sponsored nofollow">Grammarly</a>
+Try it: <a href="https://www.grammarly.com/">Grammarly</a>
 
 ## ChatGPT — start from a blank page
 
@@ -56,7 +56,7 @@ Choose ChatGPT when:
 
 For job-search drafts, generate in ChatGPT or our [AI Cover Letter Generator](/ai-tools/cover-letter-generator), then proofread yourself.
 
-Try it: <a href="https://chatgpt.com/" rel="sponsored nofollow">ChatGPT</a>
+Try it: <a href="https://chatgpt.com/">ChatGPT</a>
 
 ## What to keep in the browser (free)
 

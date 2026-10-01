@@ -70,6 +70,7 @@ export async function Header() {
             className="grid h-9 w-9 place-items-center rounded-xl border-2 border-border sm:hidden"
           >
             <Icon name="Search" className="h-4 w-4" />
+            <span className="sr-only">{t.nav.search}</span>
           </Link>
           <ThemeToggleButton />
           <UserMenu labels={t.auth} />

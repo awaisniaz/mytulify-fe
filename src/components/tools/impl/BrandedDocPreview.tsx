@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { DocBrandState } from "./DocBrandControls";
 import { cn } from "@/lib/utils";
 
@@ -41,6 +42,25 @@ export function BrandedDocPreview({
   const primary = brand.primaryColor || "#0f766e";
   const accent = brand.accentColor || "#d97706";
   const brandDark = shade(primary, 0.55);
+  const [open, setOpen] = useState(false);
+
+  if (!open) {
+    return (
+      <div id={anchorId} className={cn("rounded-xl border border-border bg-surface p-4", className)}>
+        <p className="text-sm leading-relaxed text-muted">
+          The full {docType.toLowerCase()} stays closed until you open it. The form above is the part you edit.
+          Open the preview when you want to read each clause before you download.
+        </p>
+        <button
+          type="button"
+          className="mt-3 text-sm font-semibold text-brand hover:underline"
+          onClick={() => setOpen(true)}
+        >
+          Show document preview
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div

@@ -6,7 +6,7 @@ import {
   directAnswerLead,
   ensureDirectAbout,
 } from "@/lib/aeo";
-import { clampMetaDescription } from "@/lib/seo";
+import { clampMetaDescription, clampTitle } from "@/lib/seo";
 import type { Locale } from "../config";
 import { DEFAULT_LOCALE } from "../config";
 import type { ContentBundle, LocalizedCategory, LocalizedTool, ToolFaqItem, ToolHowTo } from "./types";
@@ -185,18 +185,18 @@ export function toolMeta(
   content: ContentBundle,
   label: LocalizedTool,
   clientSide: boolean,
-  categoryName?: string,
 ) {
   const s = content.strings;
-  const catLabel = categoryName ? `${categoryName} ` : "";
-  const defaultTitle = `${label.name} – Free Online ${catLabel}Tool | Mytulify`;
+  const shortTitle = `${label.name} | Mytulify`;
+  const rawTitle = label.metaTitle ?? shortTitle;
+  const title = rawTitle.length <= 60 ? rawTitle : shortTitle.length <= 60 ? shortTitle : clampTitle(shortTitle);
   const rawDesc =
     label.metaDescription ??
     (clientSide
       ? fmt(s.toolMetaClient, { desc: label.description })
       : fmt(s.toolMetaAi, { desc: label.description, limit: FREE_AI_DAILY_LIMIT }));
   return {
-    title: label.metaTitle ?? defaultTitle,
+    title,
     absolute: true,
     description: clampMetaDescription(rawDesc),
   };

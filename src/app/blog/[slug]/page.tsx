@@ -7,7 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import { formatPostDate, getAllPosts, getBlogCategory, getPostBySlug } from "@/lib/blog";
 import { getTool, getToolIcon, isToolAvailable, toolHref } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { englishOnlyPageMeta, clampMetaDescription } from "@/lib/seo";
+import { englishOnlyPageMeta, clampMetaDescription, clampTitle } from "@/lib/seo";
 import { getMetadataLocale } from "@/i18n/locale";
 import { breadcrumbJsonLd } from "@/lib/aeo";
 
@@ -26,16 +26,16 @@ export async function generateMetadata({
   const post = getPostBySlug(slug);
   if (!post) return {};
   const locale = await getMetadataLocale(searchParams);
-  const title = post.title;
+  const title = clampTitle(`${post.title} | ${site.name}`);
   const description = clampMetaDescription(post.metaDescription || post.excerpt);
   const path = `/blog/${post.slug}`;
   const image = post.featuredImage.startsWith("http")
     ? post.featuredImage
     : `${site.url}${post.featuredImage}`;
   const meta = englishOnlyPageMeta(path, locale, {
-    title: { absolute: `${title} | ${site.name} Blog` },
+    title: { absolute: title },
     description,
-    socialTitle: `${title} · ${site.name}`,
+    socialTitle: title,
   });
   return {
     ...meta,
