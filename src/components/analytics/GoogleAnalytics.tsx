@@ -18,9 +18,9 @@ export function GoogleAnalytics() {
       <Script id="ga-config" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${id}');
+          window.gtag = window.gtag || function gtag(){dataLayer.push(arguments);};
+          window.gtag('js', new Date());
+          window.gtag('config', '${id}');
         `}
       </Script>
     </>
