@@ -8,6 +8,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { LazyEnhancementsShell } from "@/components/LazyEnhancementsShell";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { WebVitals } from "@/components/analytics/WebVitals";
 import { AhrefsAnalytics } from "@/components/analytics/AhrefsAnalytics";
 import { AdSenseScript } from "@/components/ads/AdSenseScript";
 import { ads } from "@/lib/ads";
@@ -40,6 +41,7 @@ const notoUrdu = Noto_Nastaliq_Urdu({
   subsets: ["arabic"],
   weight: ["400", "600", "700"],
   display: "swap",
+  preload: false,
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -112,6 +114,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <body className="flex min-h-full min-w-0 flex-col overflow-x-clip">
         <AdSenseScript />
         <GoogleAnalytics />
+        <WebVitals />
         <AhrefsAnalytics />
         <Header />
         <main className="min-w-0 flex-1">{children}</main>

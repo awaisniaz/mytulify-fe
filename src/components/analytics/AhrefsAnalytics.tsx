@@ -8,7 +8,7 @@ export function AhrefsAnalytics() {
   return (
     <Script
       src="https://analytics.ahrefs.com/analytics.js"
-      strategy="afterInteractive"
+      strategy="lazyOnload"
       async
       data-key={ahrefsAnalytics.key}
     />
