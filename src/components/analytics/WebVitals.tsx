@@ -2,7 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { useReportWebVitals } from "next/web-vitals";
+// Next bundles web-vitals here and does not ship types for the compiled file.
+// @ts-expect-error compiled bundle has no declaration file
+import { onCLS, onFCP, onINP, onLCP, onTTFB } from "next/dist/compiled/web-vitals";
 import { analytics } from "@/lib/analytics";
 
 type VitalMetric = {
@@ -14,6 +16,9 @@ type VitalMetric = {
   navigationType?: string;
 };
 
+type VitalOpts = { reportAllChanges?: boolean; durationThreshold?: number };
+type ReportFn = (metric: VitalMetric) => void;
+
 declare global {
   interface Window {
     dataLayer?: unknown[];
@@ -21,20 +26,44 @@ declare global {
   }
 }
 
-/** Queue gtag calls before gtag.js finishes loading. */
-function ensureGtag() {
-  window.dataLayer = window.dataLayer || [];
-  if (typeof window.gtag === "function") return;
-  window.gtag = function gtag() {
-    // gtag.js only replays real `arguments` objects, not a rest array.
-    // eslint-disable-next-line prefer-rest-params
-    window.dataLayer?.push(arguments);
-  };
+const vitals = { onCLS, onFCP, onINP, onLCP, onTTFB } as unknown as {
+  onCLS: (cb: ReportFn, opts?: VitalOpts) => void;
+  onFCP: (cb: ReportFn, opts?: VitalOpts) => void;
+  onINP: (cb: ReportFn, opts?: VitalOpts) => void;
+  onLCP: (cb: ReportFn, opts?: VitalOpts) => void;
+  onTTFB: (cb: ReportFn, opts?: VitalOpts) => void;
+};
+
+/** True once gtag.js has replaced dataLayer.push. Native push drops the hit. */
+function tagReady() {
+  const push = window.dataLayer?.push;
+  return typeof push === "function" && !String(push).includes("[native code]");
+}
+
+/**
+ * gtag.js ignores hits that were pushed before it hooks dataLayer.
+ * Wait until that hook exists, then send.
+ */
+function sendWhenReady(name: string, params: Record<string, string | number>) {
+  const fire = () => window.gtag?.("event", name, params);
+  if (typeof window.gtag !== "function") return;
+  if (tagReady()) {
+    fire();
+    return;
+  }
+  const started = Date.now();
+  const timer = window.setInterval(() => {
+    if (tagReady() || Date.now() - started > 10000) {
+      window.clearInterval(timer);
+      fire();
+    }
+  }, 50);
 }
 
 /**
  * GA4 stores event `value` as an integer. CLS is a fraction (often 0.05),
  * so a raw send rounds to 0. Scale CLS by 1000; other vitals are already milliseconds.
+ * Send `delta` so repeated INP updates can be summed.
  */
 function reportWebVital(metric: VitalMetric) {
   if (!analytics.enabled || metric.name === "FID") return;
@@ -43,8 +72,7 @@ function reportWebVital(metric: VitalMetric) {
   const scale = metric.name === "CLS" ? 1000 : 1;
   const value = Math.round(metric.delta * scale);
 
-  ensureGtag();
-  window.gtag?.("event", metric.name, {
+  sendWhenReady(metric.name, {
     value,
     metric_id: metric.id,
     metric_value: Math.round(metric.value * scale),
@@ -59,7 +87,15 @@ export function WebVitals() {
   const pathname = usePathname();
   const firstPage = useRef(true);
 
-  useReportWebVitals(reportWebVital);
+  useEffect(() => {
+    vitals.onTTFB(reportWebVital);
+    vitals.onFCP(reportWebVital);
+    vitals.onLCP(reportWebVital);
+    vitals.onCLS(reportWebVital);
+    // Default INP ignores interactions under 40ms and only flushes on tab hide,
+    // so a key press never shows up while the page stays open.
+    vitals.onINP(reportWebVital, { reportAllChanges: true, durationThreshold: 0 });
+  }, []);
 
   useEffect(() => {
     if (!analytics.enabled) return;
@@ -67,8 +103,7 @@ export function WebVitals() {
       firstPage.current = false;
       return;
     }
-    ensureGtag();
-    window.gtag?.("event", "page_view", {
+    sendWhenReady("page_view", {
       page_path: pathname,
       page_location: window.location.href,
       page_title: document.title,

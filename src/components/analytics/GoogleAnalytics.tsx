@@ -9,20 +9,19 @@ export function GoogleAnalytics() {
 
   return (
     <>
+      {/* Parser-blocking stub so vitals can queue before gtag.js loads.
+          afterInteractive runs too late and drops the first hits. */}
+      <script
+        id="ga-config"
+        dangerouslySetInnerHTML={{
+          __html: `window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function gtag(){dataLayer.push(arguments);};window.gtag('js',new Date());window.gtag('config','${id}');`,
+        }}
+      />
       <Script
         id="ga-gtag"
-        async
         src={`https://www.googletagmanager.com/gtag/js?id=${id}`}
         strategy="afterInteractive"
       />
-      <Script id="ga-config" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          window.gtag = window.gtag || function gtag(){dataLayer.push(arguments);};
-          window.gtag('js', new Date());
-          window.gtag('config', '${id}');
-        `}
-      </Script>
     </>
   );
 }
