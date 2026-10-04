@@ -9,7 +9,7 @@ import { getProKey } from "@/lib/billing/client";
 
 /**
  * Fixed side ads — does NOT wrap page content (avoids hydrating the whole tree).
- * Only mounts on xl+ after idle.
+ * Only mounts on wide screens after idle, one rail on each side.
  */
 export function SideAdsMount() {
   const path = usePathname();
@@ -18,7 +18,7 @@ export function SideAdsMount() {
 
   useEffect(() => {
     if (!ads.railsEnabled) return;
-    if (!window.matchMedia("(min-width: 1280px)").matches) return;
+    if (!window.matchMedia("(min-width: 1920px)").matches) return;
     if (isAdFreePath(path)) return;
 
     const syncPro = () => setIsPro(Boolean(getProKey()));
@@ -46,13 +46,13 @@ export function SideAdsMount() {
 
   return (
     <>
-      <div className="pointer-events-none fixed inset-y-0 left-0 z-30 hidden w-[calc((100vw-1280px)/2)] min-w-[160px] max-w-[200px] xl:block">
-        <div className="pointer-events-auto sticky top-[4.5rem] ml-auto w-[160px] overflow-hidden pt-4 pr-2">
+      <div className="pointer-events-none fixed inset-y-0 left-0 z-30 hidden w-[calc((100vw-1280px)/2)] min-w-[300px] max-w-[336px] min-[1920px]:block">
+        <div className="pointer-events-auto sticky top-[4.5rem] ml-auto w-[300px] overflow-hidden pt-4 pr-3">
           <AdRail side="left" />
         </div>
       </div>
-      <div className="pointer-events-none fixed inset-y-0 right-0 z-30 hidden w-[calc((100vw-1280px)/2)] min-w-[160px] max-w-[200px] xl:block">
-        <div className="pointer-events-auto sticky top-[4.5rem] mr-auto w-[160px] overflow-hidden pt-4 pl-2">
+      <div className="pointer-events-none fixed inset-y-0 right-0 z-30 hidden w-[calc((100vw-1280px)/2)] min-w-[300px] max-w-[336px] min-[1920px]:block">
+        <div className="pointer-events-auto sticky top-[4.5rem] mr-auto w-[300px] overflow-hidden pt-4 pl-3">
           <AdRail side="right" />
         </div>
       </div>
