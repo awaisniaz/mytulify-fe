@@ -13,8 +13,9 @@ const inFeedSlot = process.env.NEXT_PUBLIC_AD_SLOT_INFEED?.trim() || INFEED_SLOT
 const inFeedLayoutKey = process.env.NEXT_PUBLIC_AD_LAYOUT_KEY_INFEED?.trim() || INFEED_LAYOUT_KEY;
 const inArticleSlot = process.env.NEXT_PUBLIC_AD_SLOT_IN_ARTICLE?.trim() || IN_ARTICLE_SLOT;
 const multiplexSlot = process.env.NEXT_PUBLIC_AD_SLOT_MULTIPLEX?.trim() || MULTIPLEX_SLOT;
-const left = process.env.NEXT_PUBLIC_AD_SLOT_LEFT?.trim() || "";
-const right = process.env.NEXT_PUBLIC_AD_SLOT_RIGHT?.trim() || "";
+/** Side rails need two different slot IDs. The page-body display unit stays separate. */
+const left = process.env.NEXT_PUBLIC_AD_SLOT_LEFT?.trim() || inArticleSlot;
+const right = process.env.NEXT_PUBLIC_AD_SLOT_RIGHT?.trim() || inFeedSlot;
 
 export const sideRails = {
   left: left && left !== right ? left : null,

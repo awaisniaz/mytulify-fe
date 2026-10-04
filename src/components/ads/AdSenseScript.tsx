@@ -1,20 +1,19 @@
-import Script from "next/script";
 import { ads } from "@/lib/ads";
 
 /**
- * Google AdSense loader — must appear once with this exact client URL.
- * Uses next/script so App Router does not strip a raw <head> tag.
+ * Google AdSense loader. A real script tag has to be in the first HTML
+ * response. next/script afterInteractive only preloads it, and the AdSense
+ * crawler does not run that later injection, so site verification fails.
  */
 export function AdSenseScript() {
   if (!ads.clientId) return null;
 
   return (
-    <Script
+    <script
       id="adsense-init"
       async
       src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ads.clientId}`}
       crossOrigin="anonymous"
-      strategy="afterInteractive"
     />
   );
 }

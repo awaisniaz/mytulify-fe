@@ -45,7 +45,7 @@ export function LazyEnhancements({
   useEffect(() => {
     const activate = () => {
       const go = () => {
-        setDesktop(window.matchMedia("(min-width: 1280px)").matches);
+        setDesktop(window.matchMedia("(min-width: 1920px)").matches);
         setReady(true);
       };
       if (typeof window.requestIdleCallback === "function") {

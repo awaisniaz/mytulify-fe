@@ -55,17 +55,17 @@ export function AdRail({ side }: { side: AdSide }) {
   if (!ads.railsEnabled || !slotId || !ads.clientId) return null;
 
   return (
-    <aside className="ad-rail w-[160px] shrink-0" aria-label="Advertisement">
+    <aside className="ad-rail w-[300px] shrink-0" aria-label="Advertisement">
       <p className="mb-1 text-center text-[10px] font-medium uppercase tracking-widest text-muted">
         Ad
       </p>
       <div className="overflow-hidden rounded-lg border border-border bg-surface-2/40">
         <ins
           className="adsbygoogle block"
-          style={{ display: "block", width: 160, minHeight: 600 }}
+          style={{ display: "block", width: 300, minHeight: 600 }}
           data-ad-client={ads.clientId}
           data-ad-slot={slotId}
-          data-ad-format="auto"
+          data-ad-format={slotId === ads.multiplexSlot ? "autorelaxed" : "auto"}
           data-full-width-responsive="false"
         />
       </div>

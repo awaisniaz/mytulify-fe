@@ -110,10 +110,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <AdSenseScript />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className="flex min-h-full min-w-0 flex-col overflow-x-clip">
-        <AdSenseScript />
         <GoogleAnalytics />
         <WebVitals />
         <AhrefsAnalytics />
