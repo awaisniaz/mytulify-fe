@@ -44,6 +44,7 @@ export function localizeTool(content: ContentBundle, tool: Tool): LocalizedTool 
     metaTitle: hit?.metaTitle ?? en?.metaTitle,
     metaDescription: hit?.metaDescription ?? en?.metaDescription,
     about: hit?.about ?? en?.about,
+    sections: hit?.sections ?? en?.sections,
     howTo: hit?.howTo ?? en?.howTo,
     faq: hit?.faq ?? en?.faq,
     related: hit?.related ?? en?.related,

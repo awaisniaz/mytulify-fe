@@ -20,6 +20,7 @@ import {
   speakUtterance,
   type VoiceGender,
 } from "./tts-data";
+import { StudioVoice } from "./StudioVoice";
 
 /* ── Caption export ─────────────────────────────────────────────────────── */
 
@@ -322,9 +323,9 @@ export function ContentCreatorTextToSpeech() {
   return (
     <div className="space-y-4">
       <Notice tone="info">
-        <strong>{actorCount} voice actors</strong> across <strong>{familyCount} languages</strong> ({localeCount}{" "}
-        regional variants) — all from your device, no AI, unlimited &amp; private. Click any actor, try every tone,
-        then speak your full script.
+        Generate a studio voiceover with the same voice presets Creo uses, or preview with{" "}
+        <strong>{actorCount} device voices</strong> across <strong>{familyCount} languages</strong> ({localeCount}{" "}
+        regional variants). Device playback stays on this browser and does not use an AI run.
       </Notice>
 
       {voices.length === 0 && (
@@ -347,6 +348,8 @@ export function ContentCreatorTextToSpeech() {
           placeholder="Paste your video script, narration, or caption…"
         />
       </Field>
+
+      <StudioVoice text={text} tone={tone} speed={rate} />
 
       <div className="grid gap-3 sm:grid-cols-3">
         <Stat label="Words" value={wordCount} />

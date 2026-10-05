@@ -21,6 +21,22 @@ import {
 import { semanticSections } from "@/lib/seo/semantic-tool";
 import { toolGuide } from "@/lib/blog/tool-guides";
 
+/** Inline `[label](/path)` links. Other text stays plain. Only same-site paths are linked. */
+function RichText({ text }: { text: string }) {
+  const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g);
+  return parts.map((part, i) => {
+    const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (!match) return <span key={i}>{part}</span>;
+    const href = match[2] ?? "";
+    if (!href.startsWith("/") || href.startsWith("//")) return <span key={i}>{match[1]}</span>;
+    return (
+      <Link key={i} href={href} className="font-medium text-brand hover:underline">
+        {match[1]}
+      </Link>
+    );
+  });
+}
+
 export function generateStaticParams() {
   return AVAILABLE_TOOLS.filter(
     (t) => t.category && !isNonCanonicalToolPath(t.category, t.slug),
@@ -112,7 +128,7 @@ export default async function ToolPage({
   const related = resolveRelated(label.related, t, 6);
   const faq = buildFaq(content, label, t.clientSide);
   const howTo = buildHowTo(content, label, t.clientSide);
-  const howToExtra = howToProse(label.name, label.description, t.clientSide);
+  const howToExtra = label.sections?.length ? [] : howToProse(label.name, label.description, t.clientSide);
   const about = toolAboutParagraphs(content, label, t.clientSide);
   const guide = toolGuide(t.category, t.slug);
   const semantic = label.about?.length
@@ -227,26 +243,45 @@ export default async function ToolPage({
       </div>
 
       <section className="mt-12 prose-tool">
-        <h2 className="text-xl font-bold">{s.aboutTool.replace("{name}", label.name)}</h2>
-        {semantic ? (
-          <div className="mt-3 space-y-6 text-muted">
-            {semantic.map((section) => (
+        {label.sections?.length ? (
+          <div className="space-y-8">
+            {label.sections.map((section) => (
               <div key={section.heading}>
-                <h3 className="text-lg font-semibold text-foreground">{section.heading}</h3>
-                <div className="mt-2 space-y-3">
+                <h2 className="text-xl font-bold text-foreground">{section.heading}</h2>
+                <div className="mt-2 space-y-3 text-muted">
                   {section.paragraphs.map((paragraph) => (
-                    <p key={paragraph.slice(0, 48)} className="leading-relaxed">{paragraph}</p>
+                    <p key={paragraph.slice(0, 48)} className="leading-relaxed">
+                      <RichText text={paragraph} />
+                    </p>
                   ))}
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="mt-3 space-y-3 text-muted">
-            {about.map((paragraph) => (
-              <p key={paragraph.slice(0, 48)} className="leading-relaxed">{paragraph}</p>
-            ))}
-          </div>
+          <>
+            <h2 className="text-xl font-bold">{s.aboutTool.replace("{name}", label.name)}</h2>
+            {semantic ? (
+              <div className="mt-3 space-y-6 text-muted">
+                {semantic.map((section) => (
+                  <div key={section.heading}>
+                    <h3 className="text-lg font-semibold text-foreground">{section.heading}</h3>
+                    <div className="mt-2 space-y-3">
+                      {section.paragraphs.map((paragraph) => (
+                        <p key={paragraph.slice(0, 48)} className="leading-relaxed">{paragraph}</p>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="mt-3 space-y-3 text-muted">
+                {about.map((paragraph) => (
+                  <p key={paragraph.slice(0, 48)} className="leading-relaxed">{paragraph}</p>
+                ))}
+              </div>
+            )}
+          </>
         )}
         {guide ? (
           <p className="mt-4 text-sm">
@@ -263,11 +298,13 @@ export default async function ToolPage({
               <li key={step.slice(0, 48)} className="leading-relaxed">{step}</li>
             ))}
           </ol>
-          <div className="mt-4 space-y-3 text-muted">
-            {howToExtra.map((p) => (
-              <p key={p.slice(0, 48)} className="leading-relaxed">{p}</p>
-            ))}
-          </div>
+          {howToExtra.length > 0 && (
+            <div className="mt-4 space-y-3 text-muted">
+              {howToExtra.map((p) => (
+                <p key={p.slice(0, 48)} className="leading-relaxed">{p}</p>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="mt-8">
@@ -304,7 +341,9 @@ export default async function ToolPage({
                 {f.q}
                 <Icon name="ChevronDown" className="h-4 w-4 shrink-0 transition-transform duration-200 group-open:rotate-180" />
               </summary>
-              <p className="border-t border-border px-4 pb-4 pt-2 text-sm text-muted">{f.a}</p>
+              <p className="border-t border-border px-4 pb-4 pt-2 text-sm text-muted">
+                {f.a.includes("](") ? <RichText text={f.a} /> : f.a}
+              </p>
             </details>
           ))}
         </div>

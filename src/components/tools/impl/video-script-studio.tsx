@@ -19,6 +19,7 @@ import {
   cleanActorName,
   type VoiceGender,
 } from "@/components/tools/impl/tts-data";
+import { StudioVoice } from "@/components/tools/impl/StudioVoice";
 
 /* ---------------------------------- types --------------------------------- */
 
@@ -813,6 +814,20 @@ export function VideoScriptStudio() {
                   />
                 </Field>
               </div>
+              <StudioVoice
+                text={voText}
+                tone={tone}
+                speed={rate}
+                defaultVoice={
+                  result.voiceStyle.genderHint === "male"
+                    ? "male"
+                    : result.voiceStyle.genderHint === "female"
+                      ? "female"
+                      : tone === "deep"
+                        ? "deep"
+                        : "natural"
+                }
+              />
               <div className="flex flex-wrap gap-2">
                 <Button type="button" onClick={() => speak(voText)} disabled={speaking || !voText.trim()}>
                   <Icon name="Play" className="h-4 w-4" />
@@ -833,8 +848,7 @@ export function VideoScriptStudio() {
                 <CopyButton value={voText} />
               </div>
               <p className="text-xs text-muted">
-                Uses your device voices (same engine as Creator TTS) — tuned to match the video&apos;s tone/pace. Record
-                system audio if you need an MP3 file.
+                Studio voiceover returns an audio file. Play voiceover below still uses a device voice for a quick preview.
               </p>
             </div>
           )}
