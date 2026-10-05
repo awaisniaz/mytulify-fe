@@ -246,7 +246,7 @@ export const TOOL_GUIDES: Record<string, { slug: string; title: string }> = {
   "home-trade-calculators/btu-calculator": { slug: "btu-calculator-guide", title: "BTU Calculator: Estimate room cooling BTU from size, ceiling height, sun, people, windows, and a kitchen load, plus AC tons" },
   "home-trade-calculators/budget-calculator": { slug: "budget-calculator-guide", title: "Budget Calculator: Split monthly income across housing, food, transport, and debt, then see what is left and the savings rate" },
   "home-trade-calculators/business-valuation-calculator": { slug: "business-valuation-calculator-guide", title: "Business Valuation Calculator: Estimate a small-business value from seller earnings and revenue using multiples you choose" },
-  "home-trade-calculators/car-trade-equity-calculator": { slug: "car-trade-equity-calculator-guide", title: "Car Trade-In Equity Calculator: Find trade-in equity, taxable price after a trade, and sales tax compared with no trade-in" },
+  "home-trade-calculators/car-trade-equity-calculator": { slug: "car-trade-equity-calculator-guide", title: "How Car Trade-In Equity Is Calculated" },
   "home-trade-calculators/cat-age-calculator": { slug: "cat-age-calculator-guide", title: "Cat Age Calculator: Convert cat years and months into an approximate human-equivalent age" },
   "home-trade-calculators/cfm-calculator": { slug: "cfm-calculator-guide", title: "CFM Calculator: Calculate airflow CFM from room volume and air changes per hour for a fan, hood, or workshop" },
   "home-trade-calculators/closing-cost-calculator": { slug: "closing-cost-calculator-guide", title: "Closing Cost Calculator: Estimate buyer closing costs from lender fees, title, inspection, appraisal, and prepaid tax and insurance" },

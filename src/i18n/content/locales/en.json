@@ -4782,6 +4782,112 @@
         "social-media-tools/caption-generator",
         "text-tools/word-counter"
       ]
+    },
+    "home-trade-calculators/car-trade-equity-calculator": {
+      "name": "Car Trade-In Calculator",
+      "description": "A car trade-in calculator for the offer in front of you. Enter the trade-in value, the loan payoff, and the next vehicle price to see equity, the taxable amount after the trade, and sales tax compared with no trade-in.",
+      "metaTitle": "Car Trade-In Calculator – Calculate Trade-In Value & Equity",
+      "metaDescription": "Free car trade-in calculator. Enter the offer, loan payoff, and next vehicle price to see equity, taxable amount, and sales tax versus no trade-in.",
+      "sections": [
+        {
+          "heading": "What Is Trade-In Equity?",
+          "paragraphs": [
+            "Trade-in equity is the gap between a dealer’s offer for your car and the amount you still owe. Equity equals trade-in value minus the loan payoff. When the offer is higher, equity is positive and can go toward the next purchase. When the payoff is higher, equity is negative, and dealers often add that shortfall to the next loan.",
+            "This page shows that equity number from the figures you type. It does not add a negative balance onto the next vehicle price, and it does not look up a market value."
+          ]
+        },
+        {
+          "heading": "How Trade-In Value Is Calculated",
+          "paragraphs": [
+            "A trade-in value is the credit a dealer gives you for the car, not the price on a retail listing. The offer usually starts from what similar vehicles sell for at wholesale or auction, then moves for condition, mileage, options, and what it will cost the dealer to resell the car.",
+            "This car trade-in value calculator does not price a year, make, or model. Type the offer you were given into Trade-in value. From that offer, the loan payoff, the next price, and a tax rate, it calculates equity, the taxable amount (next price minus trade-in value, never below zero), sales tax on that amount, and the difference versus tax on the full next price."
+          ]
+        },
+        {
+          "heading": "Positive vs Negative Equity",
+          "paragraphs": [
+            "Positive equity means the trade-in value is greater than the payoff. A $14,000 offer and a $9,000 payoff is $5,000 of equity. You can put that toward the next car only if the contract actually applies it. Read the buyer’s order before you assume the equity became a down payment.",
+            "Negative equity means the payoff is greater than the offer. A $14,000 offer and a $16,000 payoff is −$2,000. Rolling that $2,000 into the next loan raises the amount financed and the interest you pay. Use the [Loan Calculator](/calculators/loan-calculator) or the [EMI Calculator](/calculators/emi-calculator) to turn the balance into a monthly payment, and the [Loan Comparison Calculator](/home-trade-calculators/loan-comparison-calculator) if you are choosing between two rates."
+          ]
+        },
+        {
+          "heading": "Trade-In Value vs Private-Sale Value",
+          "paragraphs": [
+            "Trade-in value is the credit on a dealer deal. A private-sale price is what another person pays you. The private price is often higher, because you keep the margin a dealer holds back for reconditioning and resale. Selling it yourself also takes longer, and the lender usually has to be paid before the title can transfer.",
+            "This vehicle trade-in calculator does not estimate either price. If you already have a private-sale figure, you can type it into Trade-in value and read the equity the same way, then decide whether a faster dealer trade is worth the difference."
+          ]
+        },
+        {
+          "heading": "How Mileage Affects Trade-In Value",
+          "paragraphs": [
+            "Mileage is one of the facts a buyer uses to judge how much life the car has left. A higher odometer usually means a lower offer, because tires, brakes, and larger parts are closer to replacement. A low odometer can support a higher offer when the rest of the car matches it. Condition and local demand move the number too.",
+            "There is no cents-per-mile rate on this page. Get the offer, then enter it. For a separate year-by-year projection from a depreciation rate you choose, use the [Vehicle Depreciation Calculator](/home-trade-calculators/vehicle-depreciation-calculator). That rate is your assumption, not a dealer quote."
+          ]
+        },
+        {
+          "heading": "How Loan Balance Affects Equity",
+          "paragraphs": [
+            "The balance that matters is the payoff: the amount the lender will accept to close the loan, not the principal on an older statement. Equity moves one-for-one with that payoff. Raise the payoff by $1,000 and equity falls by $1,000. A payoff quote can include interest through a set date, so ask for a figure that is good through the day you plan to trade.",
+            "The calculator subtracts the payoff you type from the trade-in value and stops there. It does not build an amortization schedule. For a payment on the next car, use the [Loan Calculator](/calculators/loan-calculator). If negative equity is one of several balances you are paying down, the [Debt Payoff Calculator](/calculators/debt-payoff-calculator) compares snowball and avalanche schedules. It does not know your auto lender’s payoff quote."
+          ]
+        },
+        {
+          "heading": "Example Calculation",
+          "paragraphs": [
+            "The form opens with a worked example, not a market price: trade-in value $14,000, loan payoff $9,000, next vehicle price $28,000, sales tax 6.5%.",
+            "Equity = 14,000 − 9,000 = $5,000. Taxable amount = 28,000 − 14,000 = $14,000. Sales tax = 14,000 × 6.5% = $910. Tax on the full $28,000 with no trade = $1,820. Tax saved versus no trade = 1,820 − 910 = $910.",
+            "Change any field and those four results update from the new inputs. If your state does not reduce sales tax by the trade-in, ignore the tax lines and use the [Sales Tax Calculator](/calculators/sales-tax-calculator) on the full price. The equity line does not depend on the tax rate."
+          ]
+        }
+      ],
+      "howTo": {
+        "title": "How to use the Car Trade-In Calculator",
+        "steps": [
+          "Type the trade-in value — the offer you have, not a retail listing price.",
+          "Type the loan payoff from your lender’s payoff quote.",
+          "Type the next vehicle price and the sales-tax percent. The tax line treats the taxable price as the next price minus the trade-in value.",
+          "Read Equity, Taxable amount, Sales tax, and Tax saved vs no trade.",
+          "Copy the result. The math stays in your browser, and you can change one field to compare a second deal."
+        ]
+      },
+      "faq": [
+        {
+          "q": "What is a car trade-in calculator?",
+          "a": "It turns a trade-in offer and a loan payoff into equity, then compares sales tax on the next vehicle with and without that trade. You supply the offer. The page does not look up a price by make, model, or mileage."
+        },
+        {
+          "q": "What does the car trade-in equity calculator show?",
+          "a": "Trade-in equity is the trade-in value minus the loan payoff. Positive equity means the offer is higher than the payoff. Negative equity means you still owe more than the offer. The sample form, $14,000 minus $9,000, is $5,000 of positive equity."
+        },
+        {
+          "q": "Does this calculate my car’s trade-in value?",
+          "a": "No. A dealer’s car trade-in value depends on condition, mileage, options, and what similar cars sell for wholesale. Enter that offer in Trade-in value. This vehicle trade-in calculator then computes equity and a simple tax comparison."
+        },
+        {
+          "q": "How does mileage affect trade-in value?",
+          "a": "Higher mileage usually lowers the offer, because the car has more wear left for the next owner. This page has no mileage deduction. Put the offer you received in the form. A year-by-year projection from a rate you choose is on the Vehicle Depreciation Calculator."
+        },
+        {
+          "q": "How does the loan balance affect equity?",
+          "a": "Equity falls by the same amount the payoff rises. A $14,000 offer and a $9,000 payoff is $5,000 of equity. The same offer with a $16,000 payoff is $2,000 of negative equity. Use the lender’s current payoff, not an old principal balance."
+        },
+        {
+          "q": "Is the sales-tax result right for my state?",
+          "a": "The tax line assumes the taxable price is the next vehicle price minus the trade-in value, and never below zero. Some states do not allow that deduction, or they tax fees this page does not ask for. Check your state before you rely on the tax-saved figure. The Sales Tax Calculator handles a single price with no trade."
+        },
+        {
+          "q": "Is this car trade-in calculator free?",
+          "a": "Yes. It runs in your browser on Mytulify with no signup and no daily limit. The numbers you type are not uploaded."
+        }
+      ],
+      "related": [
+        "home-trade-calculators/vehicle-depreciation-calculator",
+        "calculators/loan-calculator",
+        "calculators/emi-calculator",
+        "home-trade-calculators/loan-comparison-calculator",
+        "calculators/sales-tax-calculator",
+        "calculators/debt-payoff-calculator"
+      ]
     }
   },
   "strings": {

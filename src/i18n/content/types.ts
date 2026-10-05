@@ -1,5 +1,10 @@
 export type ToolFaqItem = { q: string; a: string };
 
+export type ToolSection = {
+  heading: string;
+  paragraphs: string[];
+};
+
 export type ToolHowTo = {
   title: string;
   steps: string[];
@@ -14,6 +19,8 @@ export type LocalizedTool = {
   metaDescription?: string;
   /** Unique supporting paragraphs shown below the tool. */
   about?: string[];
+  /** Headed sections that replace the generic about copy on this tool only. */
+  sections?: ToolSection[];
   /** Optional how-to mini-guide under the about section. */
   howTo?: ToolHowTo;
   /** Custom FAQ; when set, replaces the generic FAQ template. */

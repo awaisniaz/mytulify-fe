@@ -5,6 +5,7 @@ import { Input, Select, Button } from "@/components/ui/primitives";
 import { CopyButton, Field, Output, Stat, Notice, ToolBar, TextStatBar, useToolText } from "@/components/tools/shared";
 import { Textarea } from "@/components/ui/primitives";
 import { PLATFORM_LIMITS, splitTwitterThread, twitterWeightedLength } from "@/lib/social-tools";
+import { StudioVoice } from "@/components/tools/impl/StudioVoice";
 
 const DEFAULT_SAMPLE =
   "The quick brown fox jumps over the lazy dog.\nLine two with extra   spaces.\nLine two with extra   spaces.\nHELLO world!";
@@ -768,6 +769,7 @@ export function TextToSpeech() {
     <div className="space-y-4">
       <ToolBar onSample={() => setText("Hello! This text will be read aloud by your browser.")} onClear={() => setText("")} onFileText={(t) => setText(t)} />
       <Textarea value={text} onChange={(e) => setText(e.target.value)} rows={5} className="font-sans" />
+      <StudioVoice text={text} speed={rate} />
       <p className="text-xs text-muted">{text.length} characters · ~{Math.max(1, Math.round((text.trim().match(/\S+/g) || []).length / 130))} min spoken</p>
       <div className="grid gap-3 sm:grid-cols-2">
         <Field label="Voice">
