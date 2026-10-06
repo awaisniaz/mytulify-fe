@@ -1,11 +1,23 @@
+import { headers } from "next/headers";
 import { CATEGORIES, TOTAL_BROWSER_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
 
 function esc(value: string) {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-/** Plain-language guide on every page. Real sentences, not a script payload, so the text-to-HTML ratio matches the words a person can read. */
-export function UsingTheSite() {
+function isToolPage(pathname: string): boolean {
+  const parts = pathname.replace(/\/$/, "").split("/").filter(Boolean);
+  if (parts.length !== 2) return false;
+  const [categorySlug, toolSlug] = parts;
+  const cat = CATEGORIES.find((c) => c.slug === categorySlug);
+  return Boolean(cat?.tools.some((t) => t.slug === toolSlug));
+}
+
+/** Plain-language guide on site pages. Omitted on individual tool pages so those URLs stay on-topic. */
+export async function UsingTheSite() {
+  const pathname = (await headers()).get("x-pathname") ?? "";
+  if (isToolPage(pathname)) return null;
+
   const categories = CATEGORIES.map(
     (c) =>
       `<p><strong>${esc(c.name)}.</strong> ${esc(c.description)} ${esc(c.tagline)}. Open that category and read the line under each tool name before you click. The line is the job the tool actually does.</p>`,

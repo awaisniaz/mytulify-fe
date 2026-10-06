@@ -868,26 +868,178 @@ export function AbsorptionRateCalculator() {
   );
 }
 
+function nonNegMoney(v: string): number {
+  const n = parseFloat(v);
+  if (!Number.isFinite(n) || n < 0) return 0;
+  return n;
+}
+
+function nonNegPct(v: string): number {
+  const n = parseFloat(v);
+  if (!Number.isFinite(n) || n < 0) return 0;
+  return n;
+}
+
+function hasInvalidNonNeg(v: string): boolean {
+  if (v.trim() === "") return false;
+  const n = parseFloat(v);
+  return !Number.isFinite(n) || n < 0;
+}
+
 export function CarTradeEquityCalculator() {
   const [value, setValue] = React.useState("14000");
   const [payoff, setPayoff] = React.useState("9000");
   const [next, setNext] = React.useState("28000");
   const [tax, setTax] = React.useState("6.5");
-  const equity = num(value) - num(payoff);
-  const taxable = Math.max(0, num(next) - num(value));
-  const taxDue = taxable * (num(tax) / 100);
-  const taxFull = num(next) * (num(tax) / 100);
+
+  const tradeIn = nonNegMoney(value);
+  const loanPayoff = nonNegMoney(payoff);
+  const nextPrice = nonNegMoney(next);
+  const taxPct = nonNegPct(tax);
+
+  const equity = tradeIn - loanPayoff;
+  const taxable = Math.max(0, nextPrice - tradeIn);
+  const taxDue = taxable * (taxPct / 100);
+  const taxFull = nextPrice * (taxPct / 100);
+  const taxSaved = taxFull - taxDue;
+  const negative = equity < 0;
+  const invalid =
+    hasInvalidNonNeg(value) ||
+    hasInvalidNonNeg(payoff) ||
+    hasInvalidNonNeg(next) ||
+    hasInvalidNonNeg(tax);
+
+  const equityLabel = negative ? "Negative equity" : equity > 0 ? "Positive equity" : "Equity";
+
   return (
     <Box>
+      <Notice tone="info">
+        This calculator does not estimate your vehicle&apos;s market value. Enter the trade-in offer you received.
+      </Notice>
+
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Field label="Trade-in value"><Input type="number" value={value} onChange={(e) => setValue(e.target.value)} /></Field>
-        <Field label="Loan payoff"><Input type="number" value={payoff} onChange={(e) => setPayoff(e.target.value)} /></Field>
-        <Field label="Next vehicle price"><Input type="number" value={next} onChange={(e) => setNext(e.target.value)} /></Field>
-        <Field label="Sales tax %" hint="Many states tax price minus trade"><Input type="number" value={tax} onChange={(e) => setTax(e.target.value)} /></Field>
+        <Field label="Trade-in value" hint="Enter the dealer's trade-in offer for your current vehicle.">
+          <Input
+            id="car-trade-in-value"
+            type="number"
+            inputMode="decimal"
+            min={0}
+            step="0.01"
+            aria-label="Trade-in value"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+        </Field>
+        <Field label="Loan payoff" hint="Enter the lender's current payoff amount, not your old loan balance.">
+          <Input
+            id="car-loan-payoff"
+            type="number"
+            inputMode="decimal"
+            min={0}
+            step="0.01"
+            aria-label="Loan payoff"
+            value={payoff}
+            onChange={(e) => setPayoff(e.target.value)}
+          />
+        </Field>
+        <Field label="Next vehicle price" hint="Enter the purchase price of the vehicle you're considering.">
+          <Input
+            id="car-next-price"
+            type="number"
+            inputMode="decimal"
+            min={0}
+            step="0.01"
+            aria-label="Next vehicle price"
+            value={next}
+            onChange={(e) => setNext(e.target.value)}
+          />
+        </Field>
+        <Field label="Sales tax %" hint="Enter your applicable sales-tax rate.">
+          <Input
+            id="car-sales-tax"
+            type="number"
+            inputMode="decimal"
+            min={0}
+            step="0.01"
+            aria-label="Sales tax percent"
+            value={tax}
+            onChange={(e) => setTax(e.target.value)}
+          />
+        </Field>
       </div>
-      <Stats items={[["Equity", money(equity)], ["Taxable amount", money(taxable)], ["Sales tax", money(taxDue)], ["Tax saved vs no trade", money(taxFull - taxDue)]]} />
-      <Notice tone="info">Negative equity means the payoff is higher than the trade value, and that gap is usually added to the next loan. Tax rules differ by state.</Notice>
-      <CopyResult filename="trade-equity.txt" rows={[["Equity", money(equity)], ["Tax", money(taxDue)]]} />
+
+      {invalid && (
+        <Notice tone="error">Amounts and the tax rate cannot be negative. Invalid fields are treated as $0 or 0% until you fix them.</Notice>
+      )}
+
+      <div
+        className={`rounded-2xl border p-5 text-center sm:p-6 ${
+          negative ? "border-rose-500/40 bg-rose-500/5" : "border-brand/30 bg-brand/5"
+        }`}
+        aria-live="polite"
+      >
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted">{equityLabel}</p>
+        <p className={`mt-1 text-3xl font-bold tabular-nums sm:text-4xl ${negative ? "text-rose-600 dark:text-rose-400" : "gradient-text"}`}>
+          {money(equity)}
+        </p>
+        <p className="mt-2 text-sm text-muted">
+          {money(tradeIn)} trade-in − {money(loanPayoff)} payoff
+        </p>
+      </div>
+
+      <Stats
+        items={[
+          ["Taxable amount", money(taxable)],
+          ["Sales tax", money(taxDue)],
+          ["Tax saved vs no trade", money(taxSaved)],
+        ]}
+      />
+
+      <div className="rounded-xl border border-border bg-surface-2/40 p-4 text-sm">
+        <p className="font-semibold text-foreground">How this result is calculated</p>
+        <ul className="mt-3 space-y-2 text-muted">
+          <li>
+            <span className="font-medium text-foreground">Trade-in equity:</span>{" "}
+            {money(tradeIn)} trade-in − {money(loanPayoff)} payoff = {money(equity)} equity
+          </li>
+          <li>
+            <span className="font-medium text-foreground">Taxable amount:</span>{" "}
+            {money(nextPrice)} vehicle price − {money(tradeIn)} trade-in = {money(taxable)} taxable
+            {nextPrice < tradeIn ? " (floored at $0)" : ""}
+          </li>
+          <li>
+            <span className="font-medium text-foreground">Sales tax:</span>{" "}
+            {money(taxable)} × {fmt(taxPct, 2)}% = {money(taxDue)}
+          </li>
+          <li>
+            <span className="font-medium text-foreground">Tax saved vs no trade:</span>{" "}
+            {money(taxFull)} − {money(taxDue)} = {money(taxSaved)}
+          </li>
+        </ul>
+        <p className="mt-3 text-xs text-muted">
+          “Tax saved vs no trade” is the difference between sales tax on the full next-vehicle price and sales tax on the taxable amount after the trade, using the rate you entered. It is a comparison, not a guaranteed rebate.
+        </p>
+      </div>
+
+      <Notice tone="info">
+        Sales-tax treatment of trade-ins varies by state/local jurisdiction. This calculator assumes the taxable amount is the next vehicle price minus the trade-in value. Verify the applicable rule for your location before relying on the tax estimate.
+      </Notice>
+
+      {negative && (
+        <Notice tone="info">
+          You owe {money(Math.abs(equity))} more than the dealer&apos;s trade-in offer. If that shortfall is rolled into the next auto loan, the amount financed can increase.
+        </Notice>
+      )}
+
+      <CopyResult
+        filename="trade-equity.txt"
+        rows={[
+          [equityLabel, money(equity)],
+          ["Taxable amount", money(taxable)],
+          ["Sales tax", money(taxDue)],
+          ["Tax saved vs no trade", money(taxSaved)],
+        ]}
+      />
     </Box>
   );
 }

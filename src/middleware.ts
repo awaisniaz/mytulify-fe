@@ -64,12 +64,15 @@ export function middleware(request: NextRequest) {
   if (validLang) {
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set(LOCALE_HEADER, validLang);
+    requestHeaders.set("x-pathname", path);
     const response = NextResponse.next({ request: { headers: requestHeaders } });
     rememberLocale(response, validLang);
     return response;
   }
 
-  return NextResponse.next();
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", path);
+  return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
 export const config = {

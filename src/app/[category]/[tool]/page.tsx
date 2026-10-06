@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
 import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
 import { socialMeta, pageAlternates, publicRobots } from "@/lib/seo";
-import { faqPageJsonLd, howToJsonLd, howToProse, breadcrumbJsonLd, toolQuickFacts } from "@/lib/aeo";
+import { faqPageJsonLd, howToJsonLd, howToProse, breadcrumbJsonLd, toolQuickFacts, webApplicationJsonLd } from "@/lib/aeo";
 import { ToolShareEmbed } from "@/components/tools/ToolShareEmbed";
 import { DisplayAd } from "@/components/ads/DisplayAd";
 import { getLocale, getMetadataLocale } from "@/i18n/locale";
@@ -160,6 +160,16 @@ export default async function ToolPage({
           { name: catLabel.name, item: `${site.url}/${cat.slug}` },
           { name: label.name, item: pageUrl },
         ]),
+        ...(t.slug === "car-trade-equity-calculator"
+          ? [
+              webApplicationJsonLd({
+                name: label.name,
+                description: label.description,
+                url: pageUrl,
+                category: "FinanceApplication",
+              }),
+            ]
+          : []),
         faqPageJsonLd(faq),
         howToJsonLd(howTo, pageUrl, label.name),
       ]
