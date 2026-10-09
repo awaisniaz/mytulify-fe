@@ -2,6 +2,8 @@ import type { ToolHowTo } from "@/i18n/content/types";
 import type { ToolFaqItem } from "@/i18n/content/types";
 import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
 import { site } from "@/lib/site";
+import type { ToolGuideKind } from "@/lib/seo/tool-guide-kind";
+import { ocrScriptNote } from "@/lib/seo/tool-guide-kind";
 
 /** Trim description into a clause suitable for “what is” lead sentences. */
 export function descClause(description: string): string {
@@ -59,11 +61,11 @@ export function ensureDirectAbout(
   return [directAnswerLead(name, description, poweredByAi), ...cleaned];
 }
 
-export function defaultHowTo(
-  name: string,
-  clientSide: boolean,
-): ToolHowTo {
-  if (clientSide) {
+/** @deprecated Prefer passing ToolGuideKind. */
+export function defaultHowTo(name: string, clientSideOrKind: boolean | ToolGuideKind, slug?: string): ToolHowTo {
+  const kind: ToolGuideKind =
+    typeof clientSideOrKind === "boolean" ? (clientSideOrKind ? "browser" : "ai") : clientSideOrKind;
+  if (kind === "browser") {
     return {
       title: `How to use the ${name}`,
       steps: [
@@ -73,6 +75,23 @@ export function defaultHowTo(
         "Run the tool and review the instant result displayed in your browser.",
         "Copy, download, or share the output. Processing stays on your device for privacy.",
         "Repeat as often as you need — client-side tools on Mytulify are unlimited on the Free plan.",
+      ],
+    };
+  }
+  if (kind === "ocr") {
+    const note = slug ? ocrScriptNote(slug) : null;
+    const scriptStep = note
+      ? `This page targets ${note.language} handwriting in the ${note.script}. ${note.tip}`
+      : "Upload a photo of handwriting or a scanned page. Crop margins so the writing fills most of the frame.";
+    return {
+      title: `How to use the ${name}`,
+      steps: [
+        `Open the free ${name} on Mytulify in your browser on desktop or mobile.`,
+        scriptStep,
+        "Use even lighting, avoid glare, and keep the page flat. Blurry or skewed photos produce gaps in the text.",
+        `Run OCR and wait a few seconds (Free plan: ${FREE_AI_DAILY_LIMIT} runs per day). Optionally choose a translation language if the form offers it.`,
+        "Compare the extracted text with the photo before you copy, translate, or paste it into a document.",
+        "Upgrade to Pro for unlimited daily OCR runs if you convert notes often.",
       ],
     };
   }
@@ -90,17 +109,34 @@ export function defaultHowTo(
 }
 
 /** Extra prose under How-to steps — use cases, benefits (~200+ words combined with steps). */
-export function howToProse(name: string, description: string, clientSide: boolean): string[] {
+export function howToProse(
+  name: string,
+  description: string,
+  clientSideOrKind: boolean | ToolGuideKind,
+  slug?: string,
+): string[] {
+  const kind: ToolGuideKind =
+    typeof clientSideOrKind === "boolean" ? (clientSideOrKind ? "browser" : "ai") : clientSideOrKind;
   const clause = descClause(description);
-  if (clientSide) {
+  if (kind === "browser") {
     return [
       `The ${name} is built for speed and privacy: ${clause}. Typical use cases include everyday personal tasks, student assignments, freelance deliverables, and quick checks at work when you cannot install desktop software. Because files and text often stay in your browser, it is a practical choice on shared or locked-down computers.`,
       `Benefits of using this free browser tool include zero install, instant results, unlimited use on the Free plan, and compatibility with phones, tablets, and laptops. Bookmark this page to return anytime, and pair it with related tools in the same category when your workflow needs multiple steps.`,
     ];
   }
+  if (kind === "ocr") {
+    const note = slug ? ocrScriptNote(slug) : null;
+    const scriptLine = note
+      ? `This page is tuned for ${note.language} (${note.script}). ${note.tip}`
+      : "Upload a clear photo of the page you want as editable text.";
+    return [
+      `The ${name} turns handwriting or a scan into digital text: ${clause}. ${scriptLine} Good inputs are flat pages, even light, and enough resolution that thin strokes stay visible.`,
+      `After OCR, read the result next to the photo. Gaps usually mean blur, glare, or a crop that cut vowel marks or tone marks. Do not upload ID cards, bank statements, or other sensitive documents you would not send to a cloud model. The Free plan includes a daily OCR limit; Pro removes it.`,
+    ];
+  }
   return [
-    `The ${name} helps when ${clause}. Common use cases include marketing copy, research summaries, content repurposing, and repetitive writing tasks where AI saves hours each week. Free accounts suit occasional use; creators and agencies often upgrade to Pro for unlimited daily runs.`,
-    `Best practices: start with a clear prompt, review AI output before publishing, and avoid pasting passwords or highly sensitive data. Combine this tool with Mytulify's related utilities to format, count, or export your results in one workflow.`,
+    `The ${name} helps when ${clause}. Common use cases include drafting, rewriting, and structured AI assistance where a model saves setup time. Free accounts suit occasional use; creators and agencies often upgrade to Pro for unlimited daily runs.`,
+    `Best practices: give clear source material, review AI output before publishing, and avoid pasting passwords or highly sensitive data. Combine this tool with Mytulify's related utilities to format, count, or export your results in one workflow.`,
   ];
 }
 

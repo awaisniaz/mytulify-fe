@@ -1,3 +1,5 @@
+import { ocrScriptNote } from "@/lib/seo/tool-guide-kind";
+
 export type SemanticTool = {
   name: string;
   slug: string;
@@ -29,10 +31,10 @@ const ANGLES: Record<string, Angle> = {
     limit: "The model can miss context that was not in the box. It does not replace a review by the person who owns the work.",
   },
   "handwriting-ocr": {
-    when: "Use it when the words exist on paper or in a photo and you need them as text you can edit.",
-    input: "Upload a clear photo of the page. Crop extra background if the writing is small.",
-    read: "Compare the text with the photo before you translate, summarize, or paste it into a document.",
-    limit: "Blur, glare, and unusual handwriting produce gaps. A gap is a place to look at the photo again, not a fact.",
+    when: "Use it when the words exist on paper or in a photo and you need them as editable digital text — not when you need a writing assistant or marketing draft.",
+    input: "Upload a clear, well-lit photo of the handwriting. Crop empty margins so the writing fills most of the frame.",
+    read: "Compare the extracted text with the photo before you translate, summarize, or paste it into a document.",
+    limit: "Blur, glare, stamps, and unusual handwriting produce gaps. A gap is a place to look at the photo again, not a fact to invent.",
   },
   "freelancer-tools": {
     when: "Use it when a client conversation needs a number, a clause, or a message you can send the same day.",
@@ -181,6 +183,9 @@ function privacy(tool: SemanticTool): string {
   if (tool.clientSide) {
     return `${tool.name} runs in your browser. The file or the figures stay on your device, and the free plan does not ask you to create an account.`;
   }
+  if (tool.categorySlug === "handwriting-ocr") {
+    return `${tool.name} sends the photo to a server so a vision model can read the handwriting. The free plan includes a small daily limit. Do not upload ID cards, bank statements, or other sensitive documents.`;
+  }
   return `${tool.name} sends the input to a server so the model can run. The free plan includes a small daily limit. Do not paste passwords or account numbers.`;
 }
 
@@ -197,6 +202,28 @@ function relatedSentence(tool: SemanticTool): string {
 /** On-page copy aimed at the tool name as the search phrase, using that tool's description as the scope. */
 export function semanticSections(tool: SemanticTool): SemanticSection[] {
   const angle = angleFor(tool.categorySlug);
+  const script = tool.categorySlug === "handwriting-ocr" ? ocrScriptNote(tool.slug) : null;
+  const howToParas = [
+    angle.input,
+    script
+      ? `This page targets ${script.language} handwriting (${script.script}). ${script.tip}`
+      : `Run it once with the values you have. The result should line up with this promise: ${tool.description.trim()} Change one field if you want a second case, and keep the other fields the same so you can see what moved.`,
+  ];
+  if (script) {
+    howToParas.push(
+      "Use even light, keep the page flat, and crop empty margins. Then compare every line of text with the photo before you translate or paste it.",
+    );
+  }
+  const readParas =
+    tool.categorySlug === "handwriting-ocr"
+      ? [
+          angle.read,
+          "A blank spot in the text is usually blur, glare, or a mark cut off by the crop — fix the photo and run again rather than inventing missing words.",
+        ]
+      : [
+          angle.read,
+          `Keep the units, the dates, and the file type that the form showed. A number from the ${tool.name} is ready to copy only after you have checked it against the labels on this page.`,
+        ];
   return [
     {
       heading: `What the ${tool.name} does`,
@@ -215,23 +242,19 @@ export function semanticSections(tool: SemanticTool): SemanticSection[] {
     },
     {
       heading: `How to use the ${tool.name}`,
-      paragraphs: [
-        angle.input,
-        `Run it once with the values you have. The result should line up with this promise: ${tool.description.trim()} Change one field if you want a second case, and keep the other fields the same so you can see what moved.`,
-      ],
+      paragraphs: howToParas,
     },
     {
       heading: "How to read the result",
-      paragraphs: [
-        angle.read,
-        `Keep the units, the dates, and the file type that the form showed. A number from the ${tool.name} is ready to copy only after you have checked it against the labels on this page.`,
-      ],
+      paragraphs: readParas,
     },
     {
       heading: `What the ${tool.name} leaves out`,
       paragraphs: [
         angle.limit,
-        `Anything the description does not mention is outside this tool. Use the result as the estimate or the file this page promised, then check the source that actually applies to your bank, school, client, or project.`,
+        tool.categorySlug === "handwriting-ocr"
+          ? "OCR does not certify a transcript for legal or medical use. Unusual handwriting, stamps, and low-resolution photos leave gaps that only a human reading the photo can fill."
+          : `Anything the description does not mention is outside this tool. Use the result as the estimate or the file this page promised, then check the source that actually applies to your bank, school, client, or project.`,
       ],
     },
     {

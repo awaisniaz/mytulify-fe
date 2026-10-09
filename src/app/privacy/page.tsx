@@ -35,12 +35,12 @@ export default function PrivacyPage() {
         {
           icon: "Lock",
           title: "Browser tools",
-          body: "Most tools process your files and text in your browser. That input is not uploaded for those tools and is discarded when you close or refresh the page. We do not sell the content you type or upload.",
+          body: `Most of our ${TOTAL_TOOLS}+ tools process files and text entirely in your browser (client-side). For those tools, the input is not uploaded to Mytulify and is discarded when you close or refresh the page. We do not sell the content you type or upload.`,
         },
         {
           icon: "Sparkles",
-          title: "AI and server tools",
-          body: `${TOTAL_SERVER_SIDE_TOOLS} tools — including AI assistants and handwriting OCR — send the input you submit to our server so we can return a result. We use that input to complete the request. Do not paste passwords, payment card numbers, or government ID numbers into an AI tool.`,
+          title: "AI, OCR, and other server tools",
+          body: `${TOTAL_SERVER_SIDE_TOOLS} tools — including AI assistants and handwriting OCR — send the text or image you submit to our servers so we can return a result. To generate that result we may call a third-party AI model provider (including vision models for OCR). We use the input to complete the request and do not sell it. Do not paste passwords, payment card numbers, government ID numbers, or photos of identity documents into these tools.`,
         },
         {
           icon: "Mail",
@@ -49,8 +49,8 @@ export default function PrivacyPage() {
         },
         {
           icon: "Globe",
-          title: "Cookies, ads, and analytics",
-          body: "A locale cookie remembers the language you pick. Sign-in uses a session cookie. Some pages show Google AdSense. Ad partners may set their own cookies under Google's advertising policies. We may use aggregate analytics to see which tools are used. Analytics does not include the files you process in a browser tool. Some blog posts include affiliate links; if you buy through one, we may earn a commission.",
+          title: "Cookies, ads, analytics, and consent",
+          body: "A locale cookie remembers the language you pick. Sign-in uses a session cookie. Some pages load Google AdSense, which may set advertising cookies under Google's policies. For visitors in the EEA, UK, or Switzerland, Google may show a consent message for personalized ads when that feature is enabled in the AdSense account; we do not run a separate first-party consent management platform on this site. We may use aggregate analytics to see which tools are used. Analytics does not include the files you process in a browser-only tool. Some blog posts include affiliate links; if you buy through one, we may earn a commission.",
         },
         {
           icon: "EyeOff",
