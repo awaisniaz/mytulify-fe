@@ -154,6 +154,9 @@ export default async function ToolPage({
           href: toolHref(item),
         })),
       });
+  const visibleSemantic = semantic?.filter(
+    (section) => cat.slug !== "handwriting-ocr" || section.heading !== `How to use the ${label.name}`,
+  );
   const facts = toolQuickFacts(label.name, t.clientSide);
   const present = getToolIconPresentation(t);
   const s = content.strings;
@@ -279,9 +282,9 @@ export default async function ToolPage({
         ) : (
           <>
             <h2 className="text-xl font-bold">{s.aboutTool.replace("{name}", label.name)}</h2>
-            {semantic ? (
+            {visibleSemantic ? (
               <div className="mt-3 space-y-6 text-muted">
-                {semantic.map((section) => (
+                {visibleSemantic.map((section) => (
                   <div key={section.heading}>
                     <h3 className="text-lg font-semibold text-foreground">{section.heading}</h3>
                     <div className="mt-2 space-y-3">

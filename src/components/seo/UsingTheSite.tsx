@@ -34,7 +34,9 @@ function shouldSuppressGuide(pathname: string): boolean {
 /** Plain-language guide on marketing pages. Omitted on tool URLs and legal/trust pages. */
 export async function UsingTheSite() {
   const pathname = (await headers()).get("x-pathname") ?? "";
-  if (shouldSuppressGuide(pathname)) return null;
+  // The guide is only useful when middleware identifies a marketing route.
+  // Fail closed so a missing request header cannot inject it into every page.
+  if (!pathname || shouldSuppressGuide(pathname)) return null;
 
   const categories = CATEGORIES.map(
     (c) =>

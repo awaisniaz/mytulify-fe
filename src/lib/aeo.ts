@@ -54,7 +54,17 @@ const LEAD_DANGLING = new Set([
 ]);
 
 /** First sentence for AEO/GEO: complete, grammatical direct answer (prefer full clause). */
-export function directAnswerLead(name: string, description: string, poweredByAi = false): string {
+export function directAnswerLead(
+  name: string,
+  description: string,
+  poweredByAi = false,
+  slug?: string,
+): string {
+  const ocrNote = slug ? ocrScriptNote(slug) : null;
+  if (ocrNote) {
+    return `${name} is a free online handwriting OCR tool that converts ${ocrNote.language} handwriting from a photo into editable ${ocrNote.language} text, with optional translation into another language.`;
+  }
+
   // "to <infinitive…>" stays grammatical after descClause lowercases "Convert" → "convert".
   const prefix = poweredByAi
     ? `${name} is a free AI-powered tool to`
@@ -94,9 +104,10 @@ export function ensureDirectAbout(
   name: string,
   description: string,
   poweredByAi = false,
+  slug?: string,
 ): string[] {
   const cleaned = paragraphs.map((p) => p.trim()).filter(Boolean);
-  if (!cleaned.length) return [directAnswerLead(name, description, poweredByAi)];
+  if (!cleaned.length) return [directAnswerLead(name, description, poweredByAi, slug)];
   const first = cleaned[0]!;
   const lead = firstSentence(first);
   const leadWords = lead.split(/\s+/).length;
@@ -109,7 +120,7 @@ export function ensureDirectAbout(
   }
 
   // Vague or overlong opening — prepend a tight direct answer
-  return [directAnswerLead(name, description, poweredByAi), ...cleaned];
+  return [directAnswerLead(name, description, poweredByAi, slug), ...cleaned];
 }
 
 /** @deprecated Prefer passing ToolGuideKind. */
@@ -169,6 +180,12 @@ export function howToProse(
   const kind: ToolGuideKind =
     typeof clientSideOrKind === "boolean" ? (clientSideOrKind ? "browser" : "ai") : clientSideOrKind;
   const clause = descClause(description);
+  if (slug === "duplicate-photo-finder") {
+    return [
+      "Example: byte-for-byte copies of the same JPG have the same MD5 result and count as exact duplicates. A resized or recompressed copy has different bytes, but its difference hash or average hash can still group it with the original.",
+      "Review similar groups before removing anything: two frames from a camera burst can look alike without being duplicates. Keep the highest-resolution copy or pin the frame you want, then export the list for manual removal.",
+    ];
+  }
   if (kind === "browser") {
     return [
       `The ${name} is built for speed and privacy: ${clause}. Typical use cases include everyday personal tasks, student assignments, freelance deliverables, and quick checks at work when you cannot install desktop software. Because files and text often stay in your browser, it is a practical choice on shared or locked-down computers.`,
@@ -176,13 +193,8 @@ export function howToProse(
     ];
   }
   if (kind === "ocr") {
-    const note = slug ? ocrScriptNote(slug) : null;
-    const scriptLine = note
-      ? `This page is tuned for ${note.language} (${note.script}). ${note.tip}`
-      : "Upload a clear photo of the page you want as editable text.";
     return [
-      `The ${name} turns handwriting or a scan into digital text — it can ${clause}. ${scriptLine} Good inputs are flat pages, even light, and enough resolution that thin strokes stay visible.`,
-      `After OCR, read the result next to the photo. Gaps usually mean blur, glare, or a crop that cut vowel marks or tone marks. Do not upload ID cards, bank statements, or other sensitive documents you would not send to a cloud model. The Free plan includes a daily OCR limit; Pro removes it.`,
+      "A transcription can still misread names, dates, and amounts. Check those details against the original image before you rely on the text.",
     ];
   }
   return [
