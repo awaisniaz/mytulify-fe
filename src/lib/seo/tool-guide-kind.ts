@@ -19,6 +19,11 @@ export function toolGuideKind(input: {
   return "ai";
 }
 
+/** The transcription pages expose an optional translation selector. */
+export function isHandwritingTextOcrSlug(slug?: string | null): boolean {
+  return slug === "handwriting-to-text" || /^handwriting-to-text-[a-z]+$/i.test(slug ?? "");
+}
+
 /**
  * Compact per-script notes for language OCR pages.
  * Shared OCR tips live elsewhere — these lines stay distinctive per language.
@@ -67,7 +72,7 @@ const OCR_SCRIPT_NOTES: Record<string, { language: string; script: string; tip: 
   gujarati: {
     language: "Gujarati",
     script: "Gujarati abugida",
-    tip: "Include the full headline (shirorekha) of each word; clipped tops lose identity.",
+    tip: "Keep Gujarati vowel signs and conjuncts fully in frame; clipped marks can change a word.",
   },
   hindi: {
     language: "Hindi",
@@ -176,8 +181,8 @@ const OCR_SCRIPT_NOTES: Record<string, { language: string; script: string; tip: 
   },
   vietnamese: {
     language: "Vietnamese",
-    script: "Latin with Vietnamese tone marks",
-    tip: "Tone diacritics are dense — use more light and avoid compression artifacts.",
+    script: "Latin with Vietnamese diacritics",
+    tip: "Keep Vietnamese vowel and tone diacritics sharp; a lost mark can change a word.",
   },
 };
 

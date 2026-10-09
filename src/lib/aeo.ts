@@ -3,7 +3,7 @@ import type { ToolFaqItem } from "@/i18n/content/types";
 import { FREE_AI_DAILY_LIMIT } from "@/lib/billing/plans";
 import { site } from "@/lib/site";
 import type { ToolGuideKind } from "@/lib/seo/tool-guide-kind";
-import { ocrScriptNote } from "@/lib/seo/tool-guide-kind";
+import { isHandwritingTextOcrSlug, ocrScriptNote } from "@/lib/seo/tool-guide-kind";
 
 /** Trim description into a clause suitable for “what is” lead sentences. */
 export function descClause(description: string): string {
@@ -142,17 +142,22 @@ export function defaultHowTo(name: string, clientSideOrKind: boolean | ToolGuide
   }
   if (kind === "ocr") {
     const note = slug ? ocrScriptNote(slug) : null;
-    const scriptStep = note
-      ? `This page is for ${note.language} handwriting in the ${note.script}.`
-      : "Crop empty margins so the writing fills most of the frame.";
+    const isTextOcr = isHandwritingTextOcrSlug(slug);
+    const imageStep = note
+      ? `This page reads ${note.language} handwriting (${note.script}). ${note.tip}`
+      : isTextOcr
+        ? null
+        : "Crop empty margins while keeping all page content in frame.";
+    const optionsStep = isTextOcr
+      ? "Set the output style, reading mode, cleanup, and uncertainty options. Select a translation language only if you want a translation, then run OCR."
+      : "Choose any output or summary options shown for this tool, then run it.";
     return {
       title: `How to use the ${name}`,
       steps: [
-        "Upload a clear, upright photo with the writing fully in frame.",
-        scriptStep,
-        "Use even lighting, avoid glare, and keep the page flat. Blurry or skewed photos produce gaps in the text.",
-        "Run OCR. If you want a translation, choose a target language in the form before submitting.",
-        "Compare the extracted text with the photo before you copy, translate, or paste it into a document.",
+        "Upload a clear, upright photo of a flat page with even lighting; keep all writing in frame and avoid blur, glare, and skew.",
+        ...(imageStep ? [imageStep] : []),
+        optionsStep,
+        "Review the result against the photo before you copy or download it.",
       ],
     };
   }
