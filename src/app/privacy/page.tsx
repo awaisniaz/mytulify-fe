@@ -50,7 +50,7 @@ export default function PrivacyPage() {
         {
           icon: "Globe",
           title: "Cookies, ads, analytics, and consent",
-          body: "A locale cookie remembers the language you pick. Sign-in uses a session cookie. Some pages load Google AdSense, which may set advertising cookies under Google's policies. For visitors in the EEA, UK, or Switzerland, Google may show a consent message for personalized ads when that feature is enabled in the AdSense account; we do not run a separate first-party consent management platform on this site. We may use aggregate analytics to see which tools are used. Analytics does not include the files you process in a browser-only tool. Some blog posts include affiliate links; if you buy through one, we may earn a commission.",
+          body: "A locale cookie remembers the language you pick. Sign-in uses a session cookie. Google's AdSense script loads sitewide, while ad units appear only on selected pages; Google may use advertising cookies under its policies. For visitors in the EEA, UK, or Switzerland, a Google consent message may appear if an eligible message is configured in the AdSense account; we do not run a separate first-party consent management platform on this site. We may use aggregate analytics to see which tools are used. Analytics does not include the files you process in a browser-only tool. Some blog posts include affiliate links; if you buy through one, we may earn a commission.",
         },
         {
           icon: "EyeOff",

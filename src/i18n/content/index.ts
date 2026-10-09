@@ -8,6 +8,7 @@ import {
 } from "@/lib/aeo";
 import { clampMetaDescription, clampTitle } from "@/lib/seo";
 import {
+  isHandwritingTextOcrSlug,
   ocrScriptNote,
   toolGuideKind,
   type ToolGuideKind,
@@ -74,32 +75,65 @@ export function localizeTool(content: ContentBundle, tool: Tool): LocalizedTool 
       base.sections = undefined;
     }
     if (!base.faq?.length) {
+      const isTextOcr = isHandwritingTextOcrSlug(tool.slug);
       const scriptFaq = note
         ? ` It targets ${note.language} handwriting in the ${note.script}.`
         : "";
       const qualityFaq = note
-        ? `${note.tip} Faint writing and heavily stylized handwriting can still be misread, so review the result against the original image.`
-        : "Use a well-lit, sharp photo with the writing filling most of the frame. Faint or heavily stylized handwriting can still be misread, so review the result against the original image.";
+        ? "Use a sharp, well-lit photo with the writing fully in frame. Faint or heavily stylized handwriting can still be misread, so compare the result with the original image."
+        : "Use a sharp, well-lit photo with the writing filling most of the frame. Faint or heavily stylized handwriting can still be misread, so compare the result with the original image.";
+      const purposeFaq = isTextOcr
+        ? `${name} is a free handwriting OCR tool on Mytulify that turns a photo of handwriting into editable digital text.${scriptFaq} Upload a clear image, then review and copy or download the transcription.`
+        : `${name} is a free handwriting tool on Mytulify. ${base.description} Upload a clear image and review the result against the original before you use it.`;
+      const outputFaq = isTextOcr
+        ? {
+            q: "Can I translate the extracted text?",
+            a: "Yes. Choose a language under Translate to before you run OCR. The result includes the original transcription and its translation. Choose Original only to return just the source text.",
+          }
+        : tool.slug === "handwritten-math-ocr"
+          ? {
+              q: "Which output formats are available?",
+              a: "Choose display or inline LaTeX, plain ASCII math, a step-by-step solution, or a check and simplification in the output format menu.",
+            }
+          : tool.slug === "handwritten-notes-summarizer"
+            ? {
+                q: "Which summary styles and languages can I choose?",
+                a: "Choose a bullet summary, outline, flashcards, meeting minutes, or a full transcript with a short summary. You can keep the notes' language or select another output language.",
+              }
+            : tool.slug === "handwritten-form-extractor"
+              ? {
+                  q: "Which output formats are available?",
+                  a: "The form extractor can return JSON key–value pairs, a Markdown table, or CSV. You can also enter expected field names as hints.",
+                }
+              : tool.slug === "handwritten-table-ocr"
+                ? {
+                    q: "Which output formats are available?",
+                    a: "Choose a Markdown table, CSV, or a JSON array of row objects in the output format menu.",
+                  }
+                : {
+                    q: "Can I choose how the Markdown is structured?",
+                    a: "Yes. Choose Smart to detect headings and lists, Prefer bullet lists, or Flat paragraphs only before converting the image.",
+                  };
       base.faq = [
         {
           q: `What is ${name}?`,
-          a: `${name} is a free handwriting OCR tool on Mytulify that turns a photo of handwriting into editable digital text.${scriptFaq} Upload a clear image, wait a few seconds, then copy or download the transcription for notes, forms, or archives.`,
+          a: purposeFaq,
         },
         {
           q: `Is ${name} free?`,
-          a: `Yes. Free accounts get ${FREE_AI_DAILY_LIMIT} AI/OCR runs per day on Mytulify. Upgrade to Pro for unlimited handwriting OCR when you need higher daily volume.`,
+          a: `Yes. The Free plan includes ${FREE_AI_DAILY_LIMIT} AI/OCR runs per day on Mytulify. Pro includes unlimited handwriting OCR.`,
         },
         {
           q: "What image quality works best?",
           a: qualityFaq,
         },
         {
-          q: "Can I translate the extracted text?",
-          a: "Yes. After OCR, choose a language under Translate to. You will see the original transcription and a translation side by side. Pick Original only if you just want the source text.",
+          q: outputFaq.q,
+          a: outputFaq.a,
         },
         {
           q: "Is my handwriting photo stored?",
-          a: "The image is sent to a Mytulify server and may be sent to the model provider used to generate the transcription. This tool does not create a saved image library. Avoid uploading sensitive documents you would not send to an online service.",
+          a: "The image is sent to a Mytulify server and may be sent to the model provider used to produce the result. This tool does not create a saved image library. Avoid uploading sensitive documents you would not send to an online service.",
         },
       ];
     }
@@ -153,13 +187,14 @@ export function buildFaq(
 
   if (kind === "ocr") {
     const note = opts?.slug ? ocrScriptNote(opts.slug) : null;
+    const isTextOcr = isHandwritingTextOcrSlug(opts?.slug);
     const scriptBit = note
       ? ` It is aimed at ${note.language} handwriting (${note.script}).`
       : "";
     return [
       {
         q: fmt(s.faqWhatIsQ, vars),
-        a: `${name} is a free handwriting OCR tool on Mytulify that can ${clause}.${scriptBit} Upload a photo, run OCR, then copy or optionally translate the text. The Free plan includes ${FREE_AI_DAILY_LIMIT} runs per day.`,
+        a: `${name} is a free handwriting tool on Mytulify that can ${clause}.${scriptBit} Upload a clear photo, choose the options shown for this tool, and review the result. The Free plan includes ${FREE_AI_DAILY_LIMIT} runs per day.`,
       },
       {
         q: fmt(s.faqIsFreeQ, vars),
@@ -167,13 +202,15 @@ export function buildFaq(
       },
       {
         q: "What happens to my photo?",
-        a: `The ${name} sends the image you upload to a Mytulify server and may also send it to a third-party model provider to produce the result. Do not upload identity documents, bank statements, or other sensitive pages. Always compare the text with the photo before you rely on it.`,
+        a: `The ${name} sends the image you upload to a Mytulify server and may also send it to a third-party model provider to produce the result. Do not upload identity documents, bank statements, or other sensitive pages. Always compare the result with the photo before you rely on it.`,
       },
       {
-        q: fmt(s.faqHowQ, vars),
-        a: note
-          ? `Open the ${name}, upload a clear photo of ${note.language} handwriting, run OCR, then check the text against the image. ${note.tip}`
-          : `Open the ${name}, upload a clear photo of the page, run OCR, then check the text against the image before you copy or translate it.`,
+        q: isTextOcr ? "Can I translate the extracted text?" : fmt(s.faqHowQ, vars),
+        a: isTextOcr
+          ? "Yes. Choose a language under Translate to before you run OCR. Choose Original only if you want the transcription without translation."
+          : note
+            ? `Upload a clear photo of ${note.language} handwriting, choose the available options, run the tool, then compare the result with the image. ${note.tip}`
+            : `Upload a clear photo, choose the available options, run the tool, then compare the result with the image.`,
       },
     ];
   }
@@ -234,8 +271,7 @@ export function toolAboutParagraphs(
   }
   const lead = directAnswerLead(label.name, label.description, poweredByAi, opts?.slug);
   if (kind === "ocr") {
-    const privacy = `${label.name} sends the photo to a Mytulify server and may also send it to the model provider used to produce the transcription. Do not upload identity documents, bank statements, or other sensitive pages.`;
-    return [lead, privacy];
+    return [`${label.name} sends the photo to a Mytulify server and may also send it to the model provider used to produce the result. Do not upload identity documents, bank statements, or other sensitive pages.`];
   }
   const clientSide = kind === "browser";
   const second = clientSide

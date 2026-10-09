@@ -157,7 +157,7 @@ export default async function ToolPage({
   const visibleSemantic = semantic?.filter(
     (section) => cat.slug !== "handwriting-ocr" || section.heading !== `How to use the ${label.name}`,
   );
-  const facts = toolQuickFacts(label.name, t.clientSide);
+  const facts = toolQuickFacts(label.name, t.clientSide, cat.slug);
   const present = getToolIconPresentation(t);
   const s = content.strings;
   const perDay = s.perDayFree.replace("{limit}", String(FREE_AI_DAILY_LIMIT));

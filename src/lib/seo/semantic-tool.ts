@@ -1,6 +1,3 @@
-import { ocrScriptNote } from "@/lib/seo/tool-guide-kind";
-import { directAnswerLead } from "@/lib/aeo";
-
 export type SemanticTool = {
   name: string;
   slug: string;
@@ -30,12 +27,6 @@ const ANGLES: Record<string, Angle> = {
     input: "Paste the real text. A short label is not enough for the model to stay on the job described above.",
     read: "Treat the output as a draft. Check names, numbers, and any claim you would send to someone else.",
     limit: "The model can miss context that was not in the box. It does not replace a review by the person who owns the work.",
-  },
-  "handwriting-ocr": {
-    when: "Use it when the words exist on paper or in a photo and you need them as editable digital text — not when you need a writing assistant or marketing draft.",
-    input: "Upload a clear, well-lit photo of the handwriting. Crop empty margins so the writing fills most of the frame.",
-    read: "Compare the extracted text with the photo before you translate, summarize, or paste it into a document.",
-    limit: "Blur, glare, stamps, and unusual handwriting produce gaps. A gap is a place to look at the photo again, not a fact to invent.",
   },
   "freelancer-tools": {
     when: "Use it when a client conversation needs a number, a clause, or a message you can send the same day.",
@@ -185,7 +176,7 @@ function privacy(tool: SemanticTool): string {
     return `${tool.name} runs in your browser. The file or the figures stay on your device, and the free plan does not ask you to create an account.`;
   }
   if (tool.categorySlug === "handwriting-ocr") {
-    return `${tool.name} sends the photo to a Mytulify server and may also send it to a third-party model provider to produce the transcription. Do not upload identity documents, bank statements, or other sensitive pages.`;
+    return `${tool.name} sends the photo to a Mytulify server and may also send it to a third-party model provider to produce the result. Do not upload identity documents, bank statements, or other sensitive pages.`;
   }
   return `${tool.name} sends the input to a server so the model can run. The free plan includes a small daily limit. Do not paste passwords or account numbers.`;
 }
@@ -202,19 +193,16 @@ function relatedSentence(tool: SemanticTool): string {
 
 /** On-page copy aimed at the tool name as the search phrase, using that tool's description as the scope. */
 export function semanticSections(tool: SemanticTool): SemanticSection[] {
-  const script = tool.categorySlug === "handwriting-ocr" ? ocrScriptNote(tool.slug) : null;
-  const lead = script
-    ? directAnswerLead(tool.name, tool.description, true, tool.slug)
-    : semanticLead(tool.name, tool.description);
   if (tool.categorySlug === "handwriting-ocr") {
     return [
       {
-        heading: `What the ${tool.name} does`,
-        paragraphs: [lead, privacy(tool)],
+        heading: "How your image is processed",
+        paragraphs: [privacy(tool)],
       },
     ];
   }
 
+  const lead = semanticLead(tool.name, tool.description);
   const angle = angleFor(tool.categorySlug);
   const howToParas = [
     angle.input,
