@@ -31,8 +31,8 @@ const OCR_SCRIPT_NOTES: Record<string, { language: string; script: string; tip: 
   },
   bengali: {
     language: "Bengali",
-    script: "Bengali (Bangla) abugida",
-    tip: "Keep Bengali conjuncts and matras fully in frame; cropping a matra can change the word.",
+    script: "Bengali (Bangla) script",
+    tip: "Keep Bengali vowel signs (matras) and conjunct characters fully in frame; cropping either can change a word.",
   },
   chinese: {
     language: "Chinese",
@@ -41,8 +41,8 @@ const OCR_SCRIPT_NOTES: Record<string, { language: string; script: string; tip: 
   },
   dutch: {
     language: "Dutch",
-    script: "Latin with Dutch accents",
-    tip: "Accented letters (é, ë, ï) need sharp focus — blur turns them into plain vowels.",
+    script: "Latin alphabet",
+    tip: "Keep spaces between joined cursive letters clear; missed word breaks can change the sentence.",
   },
   english: {
     language: "English",
@@ -111,7 +111,7 @@ const OCR_SCRIPT_NOTES: Record<string, { language: string; script: string; tip: 
   },
   persian: {
     language: "Persian",
-    script: "Arabic-based (right-to-left)",
+    script: "Persian alphabet (Arabic-based, right-to-left)",
     tip: "Photograph flat and upright; slanted RTL lines scramble connected forms.",
   },
   polish: {
@@ -127,7 +127,7 @@ const OCR_SCRIPT_NOTES: Record<string, { language: string; script: string; tip: 
   punjabi: {
     language: "Punjabi",
     script: "Gurmukhi",
-    tip: "Keep vowel signs fully visible; cropped matras are a frequent miss.",
+    tip: "Keep Gurmukhi vowel signs fully visible; cropping one can change the word.",
   },
   russian: {
     language: "Russian",
@@ -171,7 +171,7 @@ const OCR_SCRIPT_NOTES: Record<string, { language: string; script: string; tip: 
   },
   urdu: {
     language: "Urdu",
-    script: "Nastaliq / Arabic-based (right-to-left)",
+    script: "Nastaliq (Perso-Arabic, right-to-left)",
     tip: "Nastaliq stacking needs a flat photo from above; angle shots merge ligatures.",
   },
   vietnamese: {

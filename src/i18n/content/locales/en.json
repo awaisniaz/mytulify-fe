@@ -348,7 +348,7 @@
         },
         {
           "q": "Is my photo stored?",
-          "a": "Images are sent for the OCR request and are not kept as a permanent archive after the request completes. Avoid uploading sensitive documents."
+          "a": "The image is sent to a Mytulify server and may also be sent to the model provider used to process it. This tool does not create a saved image library. Avoid uploading sensitive documents."
         }
       ],
       "related": [
