@@ -217,14 +217,18 @@ export function breadcrumbJsonLd(items: { name: string; item: string }[]) {
 
 export type QuickFact = { label: string; value: string };
 
-export function toolQuickFacts(name: string, clientSide: boolean): QuickFact[] {
+export function toolQuickFacts(name: string, clientSide: boolean, categorySlug?: string): QuickFact[] {
   return [
     { label: "Tool", value: name },
     { label: "Price", value: "Free to use on Mytulify" },
     { label: "Signup required", value: "No" },
     {
       label: "Processing",
-      value: clientSide ? "In your browser (client-side)" : "Secure server + AI model",
+      value: clientSide
+        ? "In your browser (client-side)"
+        : categorySlug === "handwriting-ocr"
+          ? "Mytulify server + model provider"
+          : "Secure server + AI model",
     },
     {
       label: "Daily limit (Free)",
