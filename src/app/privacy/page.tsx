@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { TOTAL_SERVER_SIDE_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
+import { TOTAL_AI_OCR_TOOLS, TOTAL_SERVER_SIDE_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
 import { LegalPage } from "@/components/legal/LegalPage";
 import { site } from "@/lib/site";
 import { englishOnlyPageMeta } from "@/lib/seo";
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
         {
           icon: "Sparkles",
           title: "AI, OCR, and other server tools",
-          body: `${TOTAL_SERVER_SIDE_TOOLS} tools — including AI assistants and handwriting OCR — send the text or image you submit to our servers so we can return a result. To generate that result we may call a third-party AI model provider (including vision models for OCR). We use the input to complete the request and do not sell it. Do not paste passwords, payment card numbers, government ID numbers, or photos of identity documents into these tools.`,
+          body: `${TOTAL_SERVER_SIDE_TOOLS} server-side tools send the text or image you submit to our servers so we can return a result. Of those, ${TOTAL_AI_OCR_TOOLS} are AI assistants and handwriting OCR (the figure shown on the About page); the rest are other server-backed utilities. To generate AI/OCR results we may call a third-party model provider (including vision models for OCR). We use the input to complete the request and do not sell it. Do not paste passwords, payment card numbers, government ID numbers, or photos of identity documents into these tools.`,
         },
         {
           icon: "Mail",

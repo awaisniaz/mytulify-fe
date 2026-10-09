@@ -8,24 +8,75 @@ import { ocrScriptNote } from "@/lib/seo/tool-guide-kind";
 /** Trim description into a clause suitable for “what is” lead sentences. */
 export function descClause(description: string): string {
   let d = description.trim().replace(/\s+/g, " ").replace(/\.$/, "");
-  if (!d) return "helps you get work done online in seconds";
+  if (!d) return "help you get work done online in seconds";
   d = d.charAt(0).toLowerCase() + d.slice(1);
   return d;
 }
 
-/** First sentence for AEO/GEO: direct answer, ideally under 25 words. */
+/** Words that must not end a clipped lead (prepositions, articles, dangling modifiers). */
+const LEAD_DANGLING = new Set([
+  "a",
+  "an",
+  "the",
+  "and",
+  "or",
+  "of",
+  "to",
+  "into",
+  "onto",
+  "for",
+  "with",
+  "from",
+  "by",
+  "on",
+  "in",
+  "at",
+  "as",
+  "via",
+  "per",
+  "than",
+  "then",
+  "that",
+  "which",
+  "whose",
+  "when",
+  "while",
+  "about",
+  "over",
+  "under",
+  "after",
+  "before",
+  "optional",
+  "another",
+  "your",
+  "its",
+  "their",
+]);
+
+/** First sentence for AEO/GEO: complete, grammatical direct answer (prefer full clause). */
 export function directAnswerLead(name: string, description: string, poweredByAi = false): string {
+  // "to <infinitive…>" stays grammatical after descClause lowercases "Convert" → "convert".
   const prefix = poweredByAi
-    ? `${name} is a free AI-powered tool that`
-    : `${name} is a free online tool that`;
+    ? `${name} is a free AI-powered tool to`
+    : `${name} is a free online tool to`;
   const clause = descClause(description);
   const draft = `${prefix} ${clause}.`;
   const words = draft.split(/\s+/);
-  if (words.length <= 25) return draft;
+  // Soft AEO length preference — never cut mid-phrase when the full sentence is still readable.
+  if (words.length <= 40) return draft;
+
   const prefixLen = prefix.split(/\s+/).length;
-  const budget = Math.max(6, 24 - prefixLen);
-  const clipped = clause.split(/\s+/).slice(0, budget).join(" ").replace(/[.,;:]+$/, "");
-  return `${prefix} ${clipped}.`;
+  const budget = Math.max(8, 36 - prefixLen);
+  const clippedWords = clause.split(/\s+/).slice(0, budget);
+  while (clippedWords.length > 4 && LEAD_DANGLING.has(clippedWords[clippedWords.length - 1]!.toLowerCase())) {
+    clippedWords.pop();
+  }
+  // Prefer ending on a comma/phrase boundary inside the budget when available.
+  const joined = clippedWords.join(" ");
+  const comma = joined.lastIndexOf(",");
+  const safe =
+    comma > 12 ? joined.slice(0, comma).trim() : joined.replace(/[.,;:]+$/, "").trim();
+  return `${prefix} ${safe}.`;
 }
 
 function escapeRegExp(s: string) {
@@ -130,7 +181,7 @@ export function howToProse(
       ? `This page is tuned for ${note.language} (${note.script}). ${note.tip}`
       : "Upload a clear photo of the page you want as editable text.";
     return [
-      `The ${name} turns handwriting or a scan into digital text: ${clause}. ${scriptLine} Good inputs are flat pages, even light, and enough resolution that thin strokes stay visible.`,
+      `The ${name} turns handwriting or a scan into digital text — it can ${clause}. ${scriptLine} Good inputs are flat pages, even light, and enough resolution that thin strokes stay visible.`,
       `After OCR, read the result next to the photo. Gaps usually mean blur, glare, or a crop that cut vowel marks or tone marks. Do not upload ID cards, bank statements, or other sensitive documents you would not send to a cloud model. The Free plan includes a daily OCR limit; Pro removes it.`,
     ];
   }

@@ -55,24 +55,27 @@ export function localizeTool(content: ContentBundle, tool: Tool): LocalizedTool 
     related: hit?.related ?? en?.related,
   };
 
-  // Unique SERP copy for OCR language pages when no hand-written SEO override exists.
+  // Unique SERP + FAQ for OCR language pages when no hand-written SEO override exists.
+  // Do NOT inject a thin `about` array here — that blocked semanticSections and clipped leads
+  // mid-sentence ("…translation into."). Semantic + howToProse own the on-page body.
   if (tool.category === "handwriting-ocr" && !base.metaTitle) {
     const name = base.name;
+    const note = ocrScriptNote(tool.slug);
     base.metaTitle = `${name} – Free Online OCR | Mytulify`;
     base.metaDescription =
       base.metaDescription ??
       `${base.description} Upload a photo and get editable text in seconds. Free AI OCR on Mytulify — ${FREE_AI_DAILY_LIMIT} runs/day, no signup.`;
-    if (!base.about?.length) {
-      base.about = [
-        directAnswerLead(name, base.description),
-        "Upload a clear photo or scan, pick a translation language if you need one, then copy the original text and the translation. The Free plan includes limited daily AI runs; Pro unlocks unlimited OCR.",
-      ];
-    }
     if (!base.faq?.length) {
+      const scriptFaq = note
+        ? ` It targets ${note.language} handwriting in the ${note.script}. ${note.tip}`
+        : "";
+      const qualityFaq = note
+        ? `Use even light, a flat page, and a tight crop so ${note.language} characters stay sharp. ${note.tip} Avoid heavy glare, blur, and extreme angles.`
+        : "Use a well-lit, sharp photo with the writing filling most of the frame. Avoid heavy glare, blur, or extreme angles for the most accurate transcription from the OCR model.";
       base.faq = [
         {
           q: `What is ${name}?`,
-          a: `${name} is a free AI OCR tool on Mytulify that turns a photo of handwriting into editable digital text. Upload a clear image, wait a few seconds, then copy or download the transcription for notes, forms, or archives.`,
+          a: `${name} is a free handwriting OCR tool on Mytulify that turns a photo of handwriting into editable digital text.${scriptFaq} Upload a clear image, wait a few seconds, then copy or download the transcription for notes, forms, or archives.`,
         },
         {
           q: `Is ${name} free?`,
@@ -80,7 +83,7 @@ export function localizeTool(content: ContentBundle, tool: Tool): LocalizedTool 
         },
         {
           q: "What image quality works best?",
-          a: "Use a well-lit, sharp photo with the writing filling most of the frame. Avoid heavy glare, blur, or extreme angles for the most accurate transcription from the OCR model.",
+          a: qualityFaq,
         },
         {
           q: "Can I translate the extracted text?",
@@ -148,7 +151,7 @@ export function buildFaq(
     return [
       {
         q: fmt(s.faqWhatIsQ, vars),
-        a: `${name} is a free handwriting OCR tool on Mytulify that ${clause}.${scriptBit} Upload a photo, run OCR, then copy or optionally translate the text. The Free plan includes ${FREE_AI_DAILY_LIMIT} runs per day.`,
+        a: `${name} is a free handwriting OCR tool on Mytulify that can ${clause}.${scriptBit} Upload a photo, run OCR, then copy or optionally translate the text. The Free plan includes ${FREE_AI_DAILY_LIMIT} runs per day.`,
       },
       {
         q: fmt(s.faqIsFreeQ, vars),
