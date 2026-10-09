@@ -185,7 +185,7 @@ function privacy(tool: SemanticTool): string {
     return `${tool.name} runs in your browser. The file or the figures stay on your device, and the free plan does not ask you to create an account.`;
   }
   if (tool.categorySlug === "handwriting-ocr") {
-    return `${tool.name} sends the photo to a server so a vision model can read the handwriting. The free plan includes a small daily limit. Do not upload ID cards, bank statements, or other sensitive documents.`;
+    return `${tool.name} sends the photo to a Mytulify server and may also send it to a third-party model provider to produce the transcription. Do not upload identity documents, bank statements, or other sensitive pages.`;
   }
   return `${tool.name} sends the input to a server so the model can run. The free plan includes a small daily limit. Do not paste passwords or account numbers.`;
 }
@@ -202,32 +202,28 @@ function relatedSentence(tool: SemanticTool): string {
 
 /** On-page copy aimed at the tool name as the search phrase, using that tool's description as the scope. */
 export function semanticSections(tool: SemanticTool): SemanticSection[] {
-  const angle = angleFor(tool.categorySlug);
   const script = tool.categorySlug === "handwriting-ocr" ? ocrScriptNote(tool.slug) : null;
   const lead = script
     ? directAnswerLead(tool.name, tool.description, true, tool.slug)
     : semanticLead(tool.name, tool.description);
+  if (tool.categorySlug === "handwriting-ocr") {
+    return [
+      {
+        heading: `What the ${tool.name} does`,
+        paragraphs: [lead, privacy(tool)],
+      },
+    ];
+  }
+
+  const angle = angleFor(tool.categorySlug);
   const howToParas = [
     angle.input,
-    script
-      ? `This page targets ${script.language} handwriting (${script.script}). ${script.tip}`
-      : `Run it once with the values you have. The result should line up with this promise: ${tool.description.trim()} Change one field if you want a second case, and keep the other fields the same so you can see what moved.`,
+    `Run it once with the values you have. The result should line up with this promise: ${tool.description.trim()} Change one field if you want a second case, and keep the other fields the same so you can see what moved.`,
   ];
-  if (script) {
-    howToParas.push(
-      "Use even light, keep the page flat, and crop empty margins. Then compare every line of text with the photo before you translate or paste it.",
-    );
-  }
-  const readParas =
-    tool.categorySlug === "handwriting-ocr"
-      ? [
-          angle.read,
-          "A blank spot in the text is usually blur, glare, or a mark cut off by the crop — fix the photo and run again rather than inventing missing words.",
-        ]
-      : [
-          angle.read,
-          `Keep the units, the dates, and the file type that the form showed. A number from the ${tool.name} is ready to copy only after you have checked it against the labels on this page.`,
-        ];
+  const readParas = [
+    angle.read,
+    `Keep the units, the dates, and the file type that the form showed. A number from the ${tool.name} is ready to copy only after you have checked it against the labels on this page.`,
+  ];
   return [
     {
       heading: `What the ${tool.name} does`,

@@ -143,17 +143,16 @@ export function defaultHowTo(name: string, clientSideOrKind: boolean | ToolGuide
   if (kind === "ocr") {
     const note = slug ? ocrScriptNote(slug) : null;
     const scriptStep = note
-      ? `This page targets ${note.language} handwriting in the ${note.script}. ${note.tip}`
-      : "Upload a photo of handwriting or a scanned page. Crop margins so the writing fills most of the frame.";
+      ? `This page is for ${note.language} handwriting in the ${note.script}.`
+      : "Crop empty margins so the writing fills most of the frame.";
     return {
       title: `How to use the ${name}`,
       steps: [
-        `Open the free ${name} on Mytulify in your browser on desktop or mobile.`,
+        "Upload a clear, upright photo with the writing fully in frame.",
         scriptStep,
         "Use even lighting, avoid glare, and keep the page flat. Blurry or skewed photos produce gaps in the text.",
-        `Run OCR and wait a few seconds (Free plan: ${FREE_AI_DAILY_LIMIT} runs per day). Optionally choose a translation language if the form offers it.`,
+        "Run OCR. If you want a translation, choose a target language in the form before submitting.",
         "Compare the extracted text with the photo before you copy, translate, or paste it into a document.",
-        "Upgrade to Pro for unlimited daily OCR runs if you convert notes often.",
       ],
     };
   }
@@ -170,7 +169,7 @@ export function defaultHowTo(name: string, clientSideOrKind: boolean | ToolGuide
   };
 }
 
-/** Extra prose under How-to steps — use cases, benefits (~200+ words combined with steps). */
+/** Short supporting prose under How-to steps; avoid filler and repeated instructions. */
 export function howToProse(
   name: string,
   description: string,

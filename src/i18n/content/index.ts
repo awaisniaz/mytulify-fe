@@ -75,11 +75,11 @@ export function localizeTool(content: ContentBundle, tool: Tool): LocalizedTool 
     }
     if (!base.faq?.length) {
       const scriptFaq = note
-        ? ` It targets ${note.language} handwriting in the ${note.script}. ${note.tip}`
+        ? ` It targets ${note.language} handwriting in the ${note.script}.`
         : "";
       const qualityFaq = note
-        ? `Use even light, a flat page, and a tight crop so ${note.language} characters stay sharp. ${note.tip} Avoid heavy glare, blur, and extreme angles.`
-        : "Use a well-lit, sharp photo with the writing filling most of the frame. Avoid heavy glare, blur, or extreme angles for the most accurate transcription from the OCR model.";
+        ? `${note.tip} Faint writing and heavily stylized handwriting can still be misread, so review the result against the original image.`
+        : "Use a well-lit, sharp photo with the writing filling most of the frame. Faint or heavily stylized handwriting can still be misread, so review the result against the original image.";
       base.faq = [
         {
           q: `What is ${name}?`,
@@ -99,7 +99,7 @@ export function localizeTool(content: ContentBundle, tool: Tool): LocalizedTool 
         },
         {
           q: "Is my handwriting photo stored?",
-          a: "Images are processed to generate your result and are not kept as a long-term archive. Avoid uploading sensitive documents you would not send to any online service.",
+          a: "The image is sent to a Mytulify server and may be sent to the model provider used to generate the transcription. This tool does not create a saved image library. Avoid uploading sensitive documents you would not send to an online service.",
         },
       ];
     }
@@ -167,7 +167,7 @@ export function buildFaq(
       },
       {
         q: "What happens to my photo?",
-        a: `The ${name} sends the image you upload to Mytulify’s server so a vision model can read the handwriting. We use it to complete that request — do not upload ID cards, bank documents, or other sensitive pages. Always compare the text with the photo before you rely on it.`,
+        a: `The ${name} sends the image you upload to a Mytulify server and may also send it to a third-party model provider to produce the result. Do not upload identity documents, bank statements, or other sensitive pages. Always compare the text with the photo before you rely on it.`,
       },
       {
         q: fmt(s.faqHowQ, vars),
@@ -234,15 +234,8 @@ export function toolAboutParagraphs(
   }
   const lead = directAnswerLead(label.name, label.description, poweredByAi, opts?.slug);
   if (kind === "ocr") {
-    const note = opts?.slug ? ocrScriptNote(opts.slug) : null;
-    const second = `The Free plan includes ${FREE_AI_DAILY_LIMIT} OCR runs per day; Pro unlocks unlimited runs. Your photo is sent to our server so a vision model can read it — avoid ID documents and other sensitive pages, and compare every line with the image.`;
-    const useCases = note
-      ? `Use the ${label.name} when you need editable ${note.language} text from paper notes, worksheets, or a phone photo. ${note.tip}`
-      : `Use the ${label.name} when the words exist on paper or in a photo and you need them as text you can edit, search, or translate.`;
-    const benefits = `Key habits for better OCR: even light, a flat page, a tight crop around the writing, and enough resolution that thin strokes stay visible. Explore related handwriting tools below when you need math, tables, Markdown, or a summary next.`;
-    const detail = `${label.name} is built around one job: ${label.description} The upload form on this page is the whole product.`;
-    const reading = `Gaps in the text usually mean blur, glare, or a crop that cut marks off the page — fix the photo and run again rather than guessing missing words.`;
-    return [lead, second, useCases, benefits, detail, reading];
+    const privacy = `${label.name} sends the photo to a Mytulify server and may also send it to the model provider used to produce the transcription. Do not upload identity documents, bank statements, or other sensitive pages.`;
+    return [lead, privacy];
   }
   const clientSide = kind === "browser";
   const second = clientSide
