@@ -7,6 +7,7 @@ export const ENGLISH_ONLY_PREFIXES = [
   "/privacy",
   "/terms",
   "/disclaimer",
+  "/about",
   "/contact",
   "/request-tool",
   "/press",

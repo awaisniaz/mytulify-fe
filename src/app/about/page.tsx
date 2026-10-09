@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CATEGORIES, TOTAL_CATEGORIES, TOTAL_AI_OCR_TOOLS, TOTAL_BROWSER_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
 import { site } from "@/lib/site";
-import { socialMeta, pageAlternates, publicRobots } from "@/lib/seo";
+import { englishOnlyPageMeta } from "@/lib/seo";
 import { Icon } from "@/components/ui/Icon";
 import { getLocale, getMetadataLocale } from "@/i18n/locale";
 import { getContent } from "@/i18n/content";
@@ -20,18 +20,11 @@ export async function generateMetadata({
     .replace("{client}", String(TOTAL_BROWSER_TOOLS));
   const title = content.strings.aboutPage.title;
   const description = `Learn about ${site.name} — ${intro}`;
-  return {
+  return englishOnlyPageMeta("/about", locale, {
     title,
     description,
-    ...pageAlternates("/about", locale),
-    robots: publicRobots(locale),
-    ...socialMeta({
-      title: `${title} · ${site.name}`,
-      description,
-      url: "/about",
-      locale,
-    }),
-  };
+    socialTitle: `${title} · ${site.name}`,
+  });
 }
 
 export default async function AboutPage() {

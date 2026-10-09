@@ -4928,7 +4928,7 @@
     "faqSafeQ": "Is my data safe with the {name}?",
     "faqSafeA": "Yes. The {name} runs entirely in your browser, so your files and text are not uploaded to Mytulify servers for processing. That client-side design keeps routine work private on your device. Still avoid sharing secrets in any online tool if policies forbid it.",
     "faqDataQ": "How is my data handled by the {name}?",
-    "faqDataA": "The {name} sends your input to Mytulify’s server, which calls an AI model to generate the result. We do not keep a long-term archive of your prompts. Avoid pasting passwords, private keys, or confidential data, and always review AI output before you rely on it.",
+    "faqDataA": "The {name} sends your input to Mytulify’s server, which may call a third-party AI model to generate the result. We do not keep a long-term archive of your prompts. Avoid pasting passwords, private keys, or confidential data, and always review AI output before you rely on it.",
     "faqHowQ": "How do I use the {name}?",
     "faqHowAClient": "Open the {name}, enter or upload your input, then run the tool. {desc} The result appears instantly on your device so you can copy or download it without waiting on a server queue.",
     "faqHowAAi": "Open the {name}, paste or upload your content, then click generate. {desc} An AI model returns a result in a few seconds — review it, then copy or download what you need.",

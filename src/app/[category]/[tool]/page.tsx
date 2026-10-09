@@ -126,10 +126,18 @@ export default async function ToolPage({
     tagline: cat.tagline,
   });
   const related = resolveRelated(label.related, t, 6);
-  const faq = buildFaq(content, label, t.clientSide);
-  const howTo = buildHowTo(content, label, t.clientSide);
-  const howToExtra = label.sections?.length ? [] : howToProse(label.name, label.description, t.clientSide);
-  const about = toolAboutParagraphs(content, label, t.clientSide);
+  const guideOpts = { categorySlug: cat.slug, slug: t.slug };
+  const faq = buildFaq(content, label, t.clientSide, guideOpts);
+  const howTo = buildHowTo(content, label, t.clientSide, guideOpts);
+  const howToExtra = label.sections?.length
+    ? []
+    : howToProse(
+        label.name,
+        label.description,
+        t.clientSide ? "browser" : cat.slug === "handwriting-ocr" ? "ocr" : "ai",
+        t.slug,
+      );
+  const about = toolAboutParagraphs(content, label, t.clientSide, guideOpts);
   const guide = toolGuide(t.category, t.slug);
   const semantic = label.about?.length
     ? null

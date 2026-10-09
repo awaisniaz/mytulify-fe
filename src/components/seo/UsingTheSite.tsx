@@ -5,6 +5,17 @@ function esc(value: string) {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+/** Legal / trust pages — keep them on-topic for AdSense & user trust (no site-wide tool guide). */
+const SUPPRESS_GUIDE_PATHS = new Set([
+  "/privacy",
+  "/terms",
+  "/disclaimer",
+  "/about",
+  "/contact",
+  "/press",
+  "/link-to-us",
+]);
+
 function isToolPage(pathname: string): boolean {
   const parts = pathname.replace(/\/$/, "").split("/").filter(Boolean);
   if (parts.length !== 2) return false;
@@ -13,10 +24,17 @@ function isToolPage(pathname: string): boolean {
   return Boolean(cat?.tools.some((t) => t.slug === toolSlug));
 }
 
-/** Plain-language guide on site pages. Omitted on individual tool pages so those URLs stay on-topic. */
+function shouldSuppressGuide(pathname: string): boolean {
+  const path = pathname.replace(/\/$/, "") || "/";
+  if (SUPPRESS_GUIDE_PATHS.has(path)) return true;
+  if (isToolPage(path)) return true;
+  return false;
+}
+
+/** Plain-language guide on marketing pages. Omitted on tool URLs and legal/trust pages. */
 export async function UsingTheSite() {
   const pathname = (await headers()).get("x-pathname") ?? "";
-  if (isToolPage(pathname)) return null;
+  if (shouldSuppressGuide(pathname)) return null;
 
   const categories = CATEGORIES.map(
     (c) =>
