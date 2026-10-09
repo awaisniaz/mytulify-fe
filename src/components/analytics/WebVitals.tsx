@@ -88,6 +88,8 @@ export function WebVitals() {
   const firstPage = useRef(true);
 
   useEffect(() => {
+    if (!analytics.enabled) return;
+
     vitals.onTTFB(reportWebVital);
     vitals.onFCP(reportWebVital);
     vitals.onLCP(reportWebVital);

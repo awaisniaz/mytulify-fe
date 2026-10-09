@@ -64,9 +64,11 @@ export async function generateMetadata(): Promise<Metadata> {
       url: "/",
       locale,
     }),
-    other: {
-      "google-adsense-account": ads.clientId,
-    },
+    other: ads.enabled
+      ? {
+          "google-adsense-account": ads.clientId,
+        }
+      : undefined,
   };
 }
 

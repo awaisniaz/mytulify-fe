@@ -1,4 +1,5 @@
 /** Google AdSense — one publisher script, separate display + in-feed units. */
+import { IS_PRODUCTION } from "@/lib/runtime";
 
 const LIVE_CLIENT = "ca-pub-7509015640782855";
 const DISPLAY_SLOT = "8994099823";
@@ -7,7 +8,8 @@ const INFEED_LAYOUT_KEY = "-6t+ed+2i-1n-4w";
 const IN_ARTICLE_SLOT = "8819849163";
 const MULTIPLEX_SLOT = "5539079700";
 
-const clientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT?.trim() || LIVE_CLIENT;
+const configuredClientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT?.trim() || LIVE_CLIENT;
+const clientId = IS_PRODUCTION ? configuredClientId : "";
 const displaySlot = process.env.NEXT_PUBLIC_AD_SLOT_DISPLAY?.trim() || DISPLAY_SLOT;
 const inFeedSlot = process.env.NEXT_PUBLIC_AD_SLOT_INFEED?.trim() || INFEED_SLOT;
 const inFeedLayoutKey = process.env.NEXT_PUBLIC_AD_LAYOUT_KEY_INFEED?.trim() || INFEED_LAYOUT_KEY;
@@ -29,8 +31,10 @@ export const ads = {
   inFeedLayoutKey,
   inArticleSlot,
   multiplexSlot,
-  enabled: Boolean(clientId && (displaySlot || inFeedSlot || inArticleSlot || multiplexSlot)),
-  railsEnabled: Boolean(clientId && (left || right)),
+  enabled: Boolean(
+    IS_PRODUCTION && clientId && (displaySlot || inFeedSlot || inArticleSlot || multiplexSlot),
+  ),
+  railsEnabled: Boolean(IS_PRODUCTION && clientId && (left || right)),
   isTestMode: false,
   sideRails,
   bothSides: Boolean(sideRails.left && sideRails.right),
