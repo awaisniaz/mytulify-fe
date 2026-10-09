@@ -32,7 +32,7 @@ const OCR_SCRIPT_NOTES: Record<string, { language: string; script: string; tip: 
   bengali: {
     language: "Bengali",
     script: "Bengali (Bangla) abugida",
-    tip: "Keep conjugate characters fully in frame — cropped matras often drop vowels.",
+    tip: "Keep Bengali conjuncts and matras fully in frame; cropping a matra can change the word.",
   },
   chinese: {
     language: "Chinese",

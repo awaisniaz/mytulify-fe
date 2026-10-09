@@ -1,4 +1,5 @@
 import { ocrScriptNote } from "@/lib/seo/tool-guide-kind";
+import { directAnswerLead } from "@/lib/aeo";
 
 export type SemanticTool = {
   name: string;
@@ -203,6 +204,9 @@ function relatedSentence(tool: SemanticTool): string {
 export function semanticSections(tool: SemanticTool): SemanticSection[] {
   const angle = angleFor(tool.categorySlug);
   const script = tool.categorySlug === "handwriting-ocr" ? ocrScriptNote(tool.slug) : null;
+  const lead = script
+    ? directAnswerLead(tool.name, tool.description, true, tool.slug)
+    : semanticLead(tool.name, tool.description);
   const howToParas = [
     angle.input,
     script
@@ -228,7 +232,7 @@ export function semanticSections(tool: SemanticTool): SemanticSection[] {
     {
       heading: `What the ${tool.name} does`,
       paragraphs: [
-        semanticLead(tool.name, tool.description),
+        lead,
         `That is the whole scope of the page. It sits in ${tool.categoryName}, the group for ${tool.tagline.toLowerCase()}. The ${tool.name} only does the job in that first sentence.`,
         privacy(tool),
       ],

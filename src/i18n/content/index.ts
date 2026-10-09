@@ -64,7 +64,15 @@ export function localizeTool(content: ContentBundle, tool: Tool): LocalizedTool 
     base.metaTitle = `${name} – Free Online OCR | Mytulify`;
     base.metaDescription =
       base.metaDescription ??
-      `${base.description} Upload a photo and get editable text in seconds. Free AI OCR on Mytulify — ${FREE_AI_DAILY_LIMIT} runs/day, no signup.`;
+      (note
+        ? `Convert ${note.language} handwriting from a photo into editable text, then translate it if needed. Free AI OCR on Mytulify with ${FREE_AI_DAILY_LIMIT} daily runs.`
+        : `${base.description} Free AI OCR on Mytulify with ${FREE_AI_DAILY_LIMIT} daily runs.`);
+    if (note) {
+      // Keep OCR language landing pages on the shared, complete language-aware copy.
+      // Older generated about arrays could contain clipped lead sentences.
+      base.about = undefined;
+      base.sections = undefined;
+    }
     if (!base.faq?.length) {
       const scriptFaq = note
         ? ` It targets ${note.language} handwriting in the ${note.script}. ${note.tip}`
@@ -222,9 +230,9 @@ export function toolAboutParagraphs(
   const kind = resolveKind(clientSideOrKind, opts);
   const poweredByAi = kind !== "browser";
   if (label.about?.length) {
-    return ensureDirectAbout(label.about, label.name, label.description, poweredByAi);
+    return ensureDirectAbout(label.about, label.name, label.description, poweredByAi, opts?.slug);
   }
-  const lead = directAnswerLead(label.name, label.description, poweredByAi);
+  const lead = directAnswerLead(label.name, label.description, poweredByAi, opts?.slug);
   if (kind === "ocr") {
     const note = opts?.slug ? ocrScriptNote(opts.slug) : null;
     const second = `The Free plan includes ${FREE_AI_DAILY_LIMIT} OCR runs per day; Pro unlocks unlimited runs. Your photo is sent to our server so a vision model can read it — avoid ID documents and other sensitive pages, and compare every line with the image.`;
