@@ -22,6 +22,8 @@ export const sideRails = {
   right: right || null,
 } as const;
 
+
+
 export const ads = {
   clientId,
   displaySlot,
