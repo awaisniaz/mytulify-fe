@@ -8,11 +8,6 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { LazyEnhancementsShell } from "@/components/LazyEnhancementsShell";
 import { UsingTheSite } from "@/components/seo/UsingTheSite";
-import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
-import { WebVitals } from "@/components/analytics/WebVitals";
-import { AhrefsAnalytics } from "@/components/analytics/AhrefsAnalytics";
-import { AdSenseScript } from "@/components/ads/AdSenseScript";
-import { ads } from "@/lib/ads";
 import { themeScript } from "@/lib/theme-script";
 import { getLocale } from "@/i18n/locale";
 import { getMessaging } from "@/i18n/messaging";
@@ -64,9 +59,6 @@ export async function generateMetadata(): Promise<Metadata> {
       url: "/",
       locale,
     }),
-    other: {
-      "google-adsense-account": ads.clientId,
-    },
   };
 }
 
@@ -110,13 +102,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <AdSenseScript />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className="flex min-h-full min-w-0 flex-col overflow-x-clip">
-        <GoogleAnalytics />
-        <WebVitals />
-        <AhrefsAnalytics />
         <Header />
         <main className="min-w-0 flex-1">{children}</main>
         <UsingTheSite />

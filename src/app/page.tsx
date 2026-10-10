@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { HomeHero } from "@/components/home/HomeHero";
 import { HomeCatalog } from "@/components/home/HomeCatalog";
-import { DisplayAd } from "@/components/ads/DisplayAd";
 import { Icon } from "@/components/ui/Icon";
 import { site } from "@/lib/site";
 import { socialMeta, pageAlternates, publicRobots } from "@/lib/seo";
@@ -62,14 +61,10 @@ export default async function Home() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-3 py-5 sm:px-6 sm:py-6">
-        <DisplayAd />
-      </div>
-
       <HomeCatalog />
 
       <section className="mx-auto max-w-7xl px-3 pb-12 sm:px-6 sm:pb-16">
-        <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-brand via-orange-500 to-amber-500 px-5 py-10 text-center text-white sm:rounded-3xl sm:px-12 sm:py-14">
+        <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-brand via-brand-2 to-indigo-500 px-5 py-10 text-center text-white sm:rounded-3xl sm:px-12 sm:py-14">
           <h2 className="text-2xl font-extrabold sm:text-4xl">{t.home.ctaTitle}</h2>
           <p className="mx-auto mt-3 max-w-md text-sm text-white/85 sm:text-base">
             {messaging.homeCtaSubtitle}

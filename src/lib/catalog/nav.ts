@@ -18,13 +18,14 @@ type NavSeed = {
  * Nav rows keep presentation from JSON, but toolCount is always live from the catalog
  * so header counts never drift when tools are added.
  */
-export const NAV_CATEGORIES: NavCategory[] = (navData as NavSeed[]).map((row) => {
+export const NAV_CATEGORIES: NavCategory[] = (navData as NavSeed[]).flatMap((row) => {
   const cat = CATEGORIES.find((c) => c.slug === row.slug);
-  return {
+  if (!cat) return [];
+  return [{
     slug: row.slug,
-    name: cat?.name ?? row.name,
+    name: cat.name,
     icon: row.icon,
     gradient: row.gradient,
-    toolCount: cat?.tools.length ?? row.toolCount ?? 0,
-  };
+    toolCount: cat.tools.length,
+  }];
 });

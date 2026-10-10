@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { CATEGORIES, getCategory, isToolAvailable } from "@/lib/catalog";
 import { toolDirectoryHtml } from "@/lib/catalog/directory-html";
-import { DisplayAd } from "@/components/ads/DisplayAd";
 import { CategoryArtFade } from "@/components/CategoryArtFade";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
@@ -128,10 +127,6 @@ export default async function CategoryPage({
             </span>
           </div>
         </div>
-      </div>
-
-      <div className="mb-8">
-        <DisplayAd />
       </div>
 
       {locale === "en" && (

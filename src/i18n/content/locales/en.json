@@ -31,8 +31,8 @@
       "tagline": "Configs, manifests & scripts"
     },
     "health-tools": {
-      "name": "Health & Fitness",
-      "description": "Free health and fitness calculators — hydration, macros, heart-rate zones, training and more. Instant, private and running entirely in your browser.",
+      "name": "Health Calculators",
+      "description": "Free health calculators for hydration, nutrition, heart-rate zones, training, and more. Get a quick estimate in your browser.",
       "tagline": "Fitness, nutrition & wellbeing"
     },
     "image-tools": {

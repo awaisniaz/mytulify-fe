@@ -57,7 +57,7 @@ export const messaging = {
   toolAboutAi: (name: string, desc: string) =>
     `The ${name} is an AI-powered tool from ${APP_NAME}. ${desc} The Free plan includes ${FREE_AI_DAILY_LIMIT} runs per day; Pro unlocks unlimited runs. Input is processed on our server — avoid pasting secrets.`,
 
-  ogToolsLabel: `${TOTAL_TOOLS}+ online tools`,
+  ogToolsLabel: `${TOTAL_TOOLS}+ free calculators`,
   ogCategoryTools: (count: number) => `${count} tools · Free tier + Pro`,
   ogToolBadgeClient: "Free browser tool · No signup",
   ogToolBadgeAi: `AI tool · ${FREE_AI_DAILY_LIMIT} free runs/day`,

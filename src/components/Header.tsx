@@ -2,7 +2,6 @@ import Link from "next/link";
 import { NAV_CATEGORIES } from "@/lib/catalog/nav";
 import { Icon } from "@/components/ui/Icon";
 import { ThemeToggleButton } from "@/components/ThemeToggleButton";
-import { UserMenu } from "@/components/auth/UserMenu";
 import { SiteLogo } from "@/components/SiteLogo";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { getLocale } from "@/i18n/locale";
@@ -55,9 +54,6 @@ export async function Header() {
           <Link href="/blog" className="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-foreground">
             {t.nav.blog}
           </Link>
-          <Link href="/pricing" className="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-brand">
-            {t.nav.pricing}
-          </Link>
           <Link href="/request-tool" className="rounded-lg px-3 py-2 text-sm font-medium text-muted/80 transition-colors hover:text-brand">
             {t.nav.requestTool}
           </Link>
@@ -84,7 +80,6 @@ export async function Header() {
             <span className="sr-only">{t.nav.search}</span>
           </Link>
           <ThemeToggleButton />
-          <UserMenu labels={t.auth} />
           <details className="group relative lg:hidden">
             <summary
               aria-label={t.nav.menu}
@@ -102,9 +97,6 @@ export async function Header() {
               </Link>
               <Link href="/blog" className="block rounded-xl p-3 font-bold hover:bg-surface-2">
                 {t.nav.blog}
-              </Link>
-              <Link href="/pricing" className="block rounded-xl p-3 font-bold hover:bg-surface-2">
-                {t.nav.pricing}
               </Link>
               <Link href="/request-tool" className="block rounded-xl p-3 text-sm font-semibold text-muted hover:bg-surface-2 hover:text-foreground">
                 {t.nav.requestTool}

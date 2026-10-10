@@ -9,11 +9,6 @@ const SearchModal = dynamic(
   { ssr: false },
 );
 
-const SideAdsMount = dynamic(
-  () => import("@/components/ads/SideAdsMount").then((m) => m.SideAdsMount),
-  { ssr: false, loading: () => null },
-);
-
 export type SearchTool = Tool & { categoryName: string };
 
 export type SearchStrings = {
@@ -28,7 +23,7 @@ export type SearchStrings = {
 };
 
 /**
- * Loads after window load + idle — keeps search, ads, and heavy catalog off the critical path.
+ * Loads search after window load + idle so the catalog stays off the critical path.
  */
 export function LazyEnhancements({
   locale,
@@ -39,13 +34,11 @@ export function LazyEnhancements({
 }) {
   const [ready, setReady] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [desktop, setDesktop] = useState(false);
   const [searchTools, setSearchTools] = useState<SearchTool[] | null>(null);
 
   useEffect(() => {
     const activate = () => {
       const go = () => {
-        setDesktop(window.matchMedia("(min-width: 1920px)").matches);
         setReady(true);
       };
       if (typeof window.requestIdleCallback === "function") {
@@ -107,7 +100,6 @@ export function LazyEnhancements({
           strings={searchStrings}
         />
       )}
-      {desktop && <SideAdsMount />}
     </>
   );
 }

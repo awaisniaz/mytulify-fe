@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { TOTAL_SERVER_SIDE_TOOLS, TOTAL_TOOLS } from "@/lib/catalog";
+import { TOTAL_TOOLS } from "@/lib/catalog";
 import { LegalPage } from "@/components/legal/LegalPage";
 import { site } from "@/lib/site";
 import { englishOnlyPageMeta } from "@/lib/seo";
@@ -11,7 +11,7 @@ export async function generateMetadata({
   searchParams: Promise<{ lang?: string | string[] }>;
 }): Promise<Metadata> {
   const locale = await getMetadataLocale(searchParams);
-  const privacyDescription = `${site.name} privacy policy — browser tools stay on your device, what AI tools send, accounts, ads, and how to contact us.`;
+  const privacyDescription = `${site.name} privacy policy — how calculator inputs, account details, and site preferences are handled.`;
   return englishOnlyPageMeta("/privacy", locale, {
     title: "Privacy Policy",
     description: privacyDescription,
@@ -24,8 +24,8 @@ export default function PrivacyPage() {
     <LegalPage
       label="Legal"
       title="Privacy Policy"
-      intro={`How ${site.name} handles data across ${TOTAL_TOOLS}+ tools.`}
-      updated="September 30, 2026"
+      intro={`How ${site.name} handles data across its ${TOTAL_TOOLS}+ calculators.`}
+      updated="October 10, 2026"
       sections={[
         {
           icon: "Shield",
@@ -34,13 +34,8 @@ export default function PrivacyPage() {
         },
         {
           icon: "Lock",
-          title: "Browser tools",
-          body: "Most tools process your files and text in your browser. That input is not uploaded for those tools and is discarded when you close or refresh the page. We do not sell the content you type or upload.",
-        },
-        {
-          icon: "Sparkles",
-          title: "AI and server tools",
-          body: `${TOTAL_SERVER_SIDE_TOOLS} tools — including AI assistants and handwriting OCR — send the input you submit to our server so we can return a result. We use that input to complete the request. Do not paste passwords, payment card numbers, or government ID numbers into an AI tool.`,
+          title: "Calculator inputs",
+          body: "Calculator inputs are processed in your browser to show the result. They are not sent to our server for calculation. We do not sell the numbers you enter.",
         },
         {
           icon: "Mail",
@@ -49,8 +44,8 @@ export default function PrivacyPage() {
         },
         {
           icon: "Globe",
-          title: "Cookies, ads, and analytics",
-          body: "A locale cookie remembers the language you pick. Sign-in uses a session cookie. Some pages show Google AdSense. Ad partners may set their own cookies under Google's advertising policies. We may use aggregate analytics to see which tools are used. Analytics does not include the files you process in a browser tool. Some blog posts include affiliate links; if you buy through one, we may earn a commission.",
+          title: "Preferences and analytics",
+          body: "A locale cookie remembers the language you pick, and sign-in uses a session cookie. Calculator Bazaar does not load third-party advertising or analytics scripts.",
         },
         {
           icon: "EyeOff",

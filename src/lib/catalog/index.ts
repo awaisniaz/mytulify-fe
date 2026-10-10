@@ -1,25 +1,10 @@
 import type { Category, CategoryData, CategoryMeta, Tool } from "./types";
-import { ocrCatalogTools } from "../ai/tools";
 import { isToolAvailable } from "./availability";
 
 export { isToolAvailable, COMING_SOON_KEYS, LIVE_SERVER_TOOLS } from "./availability";
 
-import textTools from "./categories/text-tools.json";
-import aiTools from "./categories/ai-tools.json";
-import devopsTools from "./categories/devops-tools.json";
 import healthTools from "./categories/health-tools.json";
-import developerTools from "./categories/developer-tools.json";
-import securityTools from "./categories/security-password-tools.json";
-import pdfTools from "./categories/pdf-tools.json";
-import imageTools from "./categories/image-tools.json";
-import colorTools from "./categories/color-tools.json";
 import calculators from "./categories/calculators.json";
-import unitConverters from "./categories/unit-converters.json";
-import seoTools from "./categories/seo-web-tools.json";
-import socialTools from "./categories/social-media-tools.json";
-import convertersGenerators from "./categories/converters-generators.json";
-import freelancerTools from "./categories/freelancer-tools.json";
-import contentCreatorTools from "./categories/content-creator-tools.json";
 import homeTradeCalculators from "./categories/home-trade-calculators.json";
 
 export type { Category, Tool, Level, Complexity } from "./types";
@@ -46,34 +31,15 @@ const META: Record<string, CategoryMeta> = {
   "home-trade-calculators": { icon: "Wrench", gradient: "from-orange-500 to-amber-600", tagline: "Home, workshop, electrical & property" },
 };
 
-const handwritingOcr: CategoryData = {
-  name: "Handwriting OCR",
-  slug: "handwriting-ocr",
-  description:
-    "AI-powered handwriting tools — OCR in 30+ languages, form & table extractors, math to LaTeX, Markdown conversion, and note summarizers. Upload a photo and get editable digital text.",
-  tools: ocrCatalogTools(),
+const calculatorTools: CategoryData = {
+  ...calculators,
+  tools: calculators.tools.filter(
+    (tool) => tool.slug !== "random-number-generator" && tool.slug !== "tasbih-counter",
+  ),
 };
 
-const RAW: CategoryData[] = [
-  aiTools,
-  handwritingOcr,
-  freelancerTools,
-  devopsTools,
-  healthTools,
-  textTools,
-  developerTools,
-  securityTools,
-  pdfTools,
-  imageTools,
-  colorTools,
-  calculators,
-  unitConverters,
-  seoTools,
-  socialTools,
-  contentCreatorTools,
-  convertersGenerators,
-  homeTradeCalculators,
-] as CategoryData[];
+/** Calculator Bazaar only publishes calculators, grouped by everyday use. */
+const RAW: CategoryData[] = [healthTools, calculatorTools, homeTradeCalculators] as CategoryData[];
 
 /** Fully-resolved categories with metadata and category-stamped tools. */
 export const CATEGORIES: Category[] = RAW.map((c) => ({

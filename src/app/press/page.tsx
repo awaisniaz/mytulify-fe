@@ -14,7 +14,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const locale = await getMetadataLocale(searchParams);
   const title = "Press & Media Kit";
-  const description = `Brand assets, boilerplate, and facts about ${site.name} — ${offpage.stats.tools}+ free online tools for press, partners, and directory listings.`;
+  const description = `Brand assets, boilerplate, and facts about ${site.name} — ${offpage.stats.tools}+ free online calculators.`;
   return englishOnlyPageMeta("/press", locale, {
     title,
     description,
@@ -51,9 +51,9 @@ export default function PressPage() {
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         {[
-          [String(offpage.stats.tools), "Free tools", "Wrench"],
-          [String(offpage.stats.categories), "Categories", "LayoutGrid"],
-          [String(offpage.stats.browserTools), "Browser-only", "Lock"],
+          [String(offpage.stats.tools), "Free calculators", "Calculator"],
+          [String(offpage.stats.categories), "Collections", "LayoutGrid"],
+          ["No signup", "Required", "Lock"],
         ].map(([val, label, icon]) => (
           <div key={label as string} className="glass rounded-2xl p-5 text-center">
             <Icon name={icon as string} className="mx-auto h-5 w-5 text-brand" />
@@ -75,28 +75,30 @@ export default function PressPage() {
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <figure className="rounded-xl border border-border bg-surface p-4">
             {/* eslint-disable-next-line @next/next/no-img-element -- brand file shown on the page, not linked as a document */}
-            <img src="/logo.png" alt="Mytulify logo" width={120} height={132} className="h-24 w-auto" />
+            <img src="/logo.png" alt="Calculator Bazaar logo" width={560} height={120} className="h-16 w-auto" />
             <figcaption className="mt-2 text-sm text-muted">Logo, PNG</figcaption>
           </figure>
           <figure className="rounded-xl border border-border bg-surface p-4">
             {/* eslint-disable-next-line @next/next/no-img-element -- brand file shown on the page, not linked as a document */}
-            <img src="/og-share.png" alt="Mytulify share image, 1200 by 630" className="w-full rounded-lg" />
+            <img src="/og-share.png" alt="Calculator Bazaar share image, 1200 by 630" className="w-full rounded-lg" />
             <figcaption className="mt-2 text-sm text-muted">Share image, 1200 by 630</figcaption>
           </figure>
         </div>
         <ul className="mt-4 space-y-2 text-sm">
           <li>
             <span className="text-muted">Website: </span>
-            <a href={site.url} className="text-brand hover:underline">Mytulify</a>
+            <a href={site.url} className="text-brand hover:underline">{site.name}</a>
           </li>
           <li>
             <span className="text-muted">Contact: </span>
             <a href={`mailto:${offpage.email}`} className="text-brand hover:underline">{offpage.email}</a>
           </li>
-          <li>
-            <span className="text-muted">Twitter: </span>
-            <a href={offpage.twitterUrl} className="text-brand hover:underline" target="_blank" rel="noreferrer">{offpage.twitter}</a>
-          </li>
+          {site.twitter ? (
+            <li>
+              <span className="text-muted">Social: </span>
+              <a href={offpage.twitterUrl} className="text-brand hover:underline" target="_blank" rel="noreferrer">{offpage.twitter}</a>
+            </li>
+          ) : null}
         </ul>
       </section>
 
@@ -120,7 +122,7 @@ export default function PressPage() {
       <section className="mt-10 rounded-2xl border border-brand/20 bg-brand/5 p-6">
         <h2 className="text-lg font-bold">For partners &amp; bloggers</h2>
         <p className="mt-2 text-sm text-muted">
-          Link to individual tools or use our badges. See preferred anchor text and HTML snippets on the link page.
+          Link to individual calculators or use our badges. See preferred anchor text and HTML snippets on the link page.
         </p>
         <Link href="/link-to-us" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand hover:underline">
           Link to us page <Icon name="ArrowRight" className="h-4 w-4" />

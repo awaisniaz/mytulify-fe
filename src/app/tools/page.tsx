@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ToolDirectoryFilter } from "@/components/ToolDirectoryFilter";
-import { DisplayAd } from "@/components/ads/DisplayAd";
 import { ALL_TOOLS, CATEGORIES, TOTAL_TOOLS, TOTAL_CATEGORIES } from "@/lib/catalog";
 import { toolDirectoryHtml } from "@/lib/catalog/directory-html";
 import { site } from "@/lib/site";
@@ -52,9 +51,6 @@ export default async function ToolsPage() {
       <div className="mb-6 border-b border-border pb-5 sm:mb-8 sm:pb-6">
         <h1 className="text-xl font-bold sm:text-3xl">{s.toolsPageTitle.replace("{n}", String(TOTAL_TOOLS))}</h1>
         <p className="mt-1 text-sm text-muted sm:text-base">{s.toolsPageSub.replace("{cats}", String(TOTAL_CATEGORIES))}</p>
-      </div>
-      <div className="mb-6 sm:mb-8">
-        <DisplayAd />
       </div>
       <Suspense fallback={<div className="skeleton h-24 rounded-xl" />}>
         <ToolDirectoryFilter

@@ -20,9 +20,8 @@ export async function Footer() {
             <SiteLogo logoHeight={24} nameClassName="font-bold text-sm sm:text-base" />
             <p className="mt-2 max-w-xs text-sm text-muted">{messaging.siteDescription}</p>
             <p className="mt-3 max-w-md text-sm leading-relaxed text-muted">
-              Open a tool, enter the text, file, or numbers you already have, and read the result on the same page.
-              Browser tools stay on your device. The page under each tool explains the inputs, the limits, and the
-              questions people ask before they use the output.
+              Choose a calculator, enter your numbers, and explore a clear result. Our collections cover money,
+              health, home projects, school, and everyday decisions.
             </p>
             <p className="mt-3 text-sm font-medium text-muted">{messaging.footerNote}</p>
           </div>
@@ -45,7 +44,6 @@ export async function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             <Link href={pathWithLocale("/tools", locale)} className="hover:text-foreground">{t.footer.allTools}</Link>
             <Link href="/blog" className="hover:text-foreground">{t.footer.blog}</Link>
-            <Link href="/pricing" className="hover:text-foreground">{t.footer.pricing}</Link>
             <Link href="/request-tool" className="hover:text-foreground">{t.footer.requestTool}</Link>
             <Link href={pathWithLocale("/about", locale)} className="hover:text-foreground">{t.footer.about}</Link>
             <Link href="/press" className="hover:text-foreground">{t.footer.press}</Link>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" rx="28" fill="#F7F8FC"/>
+  <circle cx="1078" cy="71" r="255" fill="#C7D2FE" fill-opacity=".44"/>
+  <circle cx="117" cy="640" r="220" fill="#A5F3FC" fill-opacity=".42"/>
+  <rect x="84" y="88" width="84" height="84" rx="23" fill="#4F46E5"/>
+  <rect x="107" y="109" width="38" height="48" rx="7" stroke="#FFFFFF" stroke-width="5"/>
+  <path d="M115 121h22" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="116" cy="133" r="3" fill="#FFFFFF"/><circle cx="126" cy="133" r="3" fill="#FFFFFF"/><circle cx="136" cy="133" r="3" fill="#FFFFFF"/>
+  <circle cx="116" cy="144" r="3" fill="#FFFFFF"/><circle cx="126" cy="144" r="3" fill="#FFFFFF"/><circle cx="136" cy="144" r="3" fill="#FFFFFF"/>
+  <text x="191" y="119" fill="#697087" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="4">CALCULATOR</text>
+  <text x="188" y="160" fill="#171A2D" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="800">Bazaar</text>
+  <rect x="84" y="232" width="1032" height="2" fill="#E2E5EF"/>
+  <text x="84" y="333" fill="#171A2D" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="800" letter-spacing="-2">Good decisions start</text>
+  <text x="84" y="413" fill="#4F46E5" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="800" letter-spacing="-2">with clear numbers.</text>
+  <text x="87" y="470" fill="#697087" font-family="Arial, Helvetica, sans-serif" font-size="25">Free calculators for money, health, home projects, and everyday life.</text>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">
+    <rect x="84" y="525" width="172" height="52" rx="18" fill="#FFFFFF" stroke="#E2E5EF"/><text x="112" y="558" fill="#4338CA">MONEY</text>
+    <rect x="275" y="525" width="172" height="52" rx="18" fill="#FFFFFF" stroke="#E2E5EF"/><text x="304" y="558" fill="#4338CA">HEALTH</text>
+    <rect x="466" y="525" width="172" height="52" rx="18" fill="#FFFFFF" stroke="#E2E5EF"/><text x="495" y="558" fill="#4338CA">HOME</text>
+  </g>
+</svg>

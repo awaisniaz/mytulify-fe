@@ -2,29 +2,24 @@ import { messaging } from "./messaging";
 import { SITE_URL } from "./env";
 
 export const site = {
-  name: "Mytulify",
+  name: "Calculator Bazaar",
   tagline: messaging.tagline,
   description: messaging.siteDescription,
   url: SITE_URL,
   locale: "en_US",
-  twitter: "@mytulify",
+  /** Add the Calculator Bazaar account here after its handle is confirmed. */
+  twitter: "",
   supportEmail: "support@mytulify.com",
   /** Inbox for /request-tool submissions (Next.js API → SMTP). */
   requestNotifyEmail: "mytulify@gmail.com",
   keywords: [
-    "online tools",
-    "free online tools",
-    "online tools hub",
-    "pdf tools",
-    "image tools",
-    "text tools",
-    "seo tools",
-    "developer tools",
-    "unit converter",
-    "calculator",
-    "sip calculator",
-    "cagr calculator",
-    "freelancer tools",
-    "freelance contract",
+    "free online calculators",
+    "financial calculators",
+    "health calculators",
+    "home improvement calculators",
+    "loan calculator",
+    "mortgage calculator",
+    "BMI calculator",
+    "percentage calculator",
   ],
 };

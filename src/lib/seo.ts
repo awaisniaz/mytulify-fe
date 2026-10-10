@@ -152,7 +152,7 @@ export function socialMeta({
       card: "summary_large_image",
       title,
       description,
-      creator: site.twitter,
+      ...(site.twitter ? { creator: site.twitter } : {}),
       images: [OG_IMAGE.url],
     },
   };

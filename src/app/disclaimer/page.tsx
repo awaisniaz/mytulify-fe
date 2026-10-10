@@ -47,14 +47,9 @@ export default function DisclaimerPage() {
           body: "Nothing on this site is legal advice, tax advice, or a recommendation to buy, sell, or borrow. Zakat, HRA, payroll, and similar calculators follow the inputs and published-style formulas you select. Confirm figures with a qualified adviser and the official rules that apply to you.",
         },
         {
-          icon: "Sparkles",
-          title: "AI output",
-          body: "AI writing, OCR, and related tools can omit text, misread handwriting, or invent details. Check the output against your source before you use it.",
-        },
-        {
           icon: "Globe",
-          title: "Ads and other sites",
-          body: "Some pages show ads or link to other websites, including affiliate product links on the blog. We do not control those sites and are not responsible for their content, prices, or privacy practices. A link is not an endorsement of every claim on the destination page.",
+          title: "External websites",
+          body: "Calculator Bazaar does not control external websites linked from this site. Review their content and privacy practices before using them.",
         },
         {
           icon: "AlertTriangle",

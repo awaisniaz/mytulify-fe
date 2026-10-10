@@ -1,85 +1,70 @@
 import Link from "next/link";
-import { CATEGORIES, TOTAL_TOOLS, featuredTools, toolHref, getToolIcon, getToolIconPresentation } from "@/lib/catalog";
+import { CATEGORIES, TOTAL_TOOLS, AVAILABLE_TOOLS, toolHref, getToolIcon } from "@/lib/catalog";
 import { Icon } from "@/components/ui/Icon";
-import { CategoryArtFade } from "@/components/CategoryArtFade";
-import { cn } from "@/lib/utils";
 import { getLocale } from "@/i18n/locale";
-import { getMessages } from "@/i18n/messages";
-import { getMessaging, categoryLabelFrom } from "@/i18n/messaging";
-import { getContent, localizeTool } from "@/i18n/content";
+import { getContent, localizeCategory, localizeTool } from "@/i18n/content";
+import { cn } from "@/lib/utils";
 
-const HERO_CATS = CATEGORIES.slice(0, 6);
+const QUICK_LINKS = ["loan-calculator", "bmi-calculator", "percentage-calculator", "mortgage-calculator"];
 
 export async function HomeHero() {
   const locale = await getLocale();
-  const t = await getMessages(locale);
-  const messaging = await getMessaging(locale);
   const content = await getContent(locale);
-  const popular = featuredTools(5);
+  const popular = QUICK_LINKS
+    .map((slug) => AVAILABLE_TOOLS.find((tool) => tool.slug === slug))
+    .filter((tool) => tool !== undefined);
 
   return (
-    <section className="relative overflow-hidden border-b border-border">
-      <div className="pointer-events-none absolute -end-24 -top-20 h-72 w-72 rounded-full bg-brand/15 blur-3xl" />
-      <div className="pointer-events-none absolute -start-16 bottom-0 h-56 w-56 rounded-full bg-orange-400/10 blur-3xl" />
-
-      <div className="relative mx-auto grid max-w-7xl gap-8 px-3 py-8 sm:gap-10 sm:px-6 sm:py-12 lg:grid-cols-2 lg:items-center lg:py-16">
-        <div className="min-w-0">
-          <div className="inline-flex items-center gap-2 rounded-full bg-brand/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand" />
-            {messaging.heroBadge}
-          </div>
-
-          <h1 className="hero-lcp mt-4 text-[1.85rem] font-extrabold leading-[1.12] tracking-tight sm:mt-5 sm:text-5xl lg:text-[3.25rem]">
-            {messaging.heroTitleLead}
-            <br />
-            <span className="text-brand">{t.home.heroEverything}</span> {t.home.heroYouDo}
-          </h1>
-
-          <p className="mt-3 text-base font-bold tracking-tight text-foreground sm:text-xl">
-            {TOTAL_TOOLS}+ free tools — and growing
+    <section className="relative isolate overflow-hidden border-b border-border bg-[radial-gradient(ellipse_at_top_left,_rgba(99,102,241,0.13),_transparent_52%),linear-gradient(to_bottom,_var(--surface),_var(--background))]">
+      <div aria-hidden className="pointer-events-none absolute -end-28 top-16 -z-10 h-80 w-80 rounded-full bg-cyan-400/10 blur-3xl" />
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-14 lg:py-20">
+        <div>
+          <p className="inline-flex items-center gap-2 rounded-full border border-brand/15 bg-brand/5 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.13em] text-brand">
+            <Icon name="Calculator" className="h-4 w-4" />
+            Free calculators for everyday decisions
           </p>
 
-          <p className="mt-3 max-w-md text-sm leading-relaxed text-muted sm:text-base">
-            {messaging.heroSubtitle}
+          <h1 className="hero-lcp mt-6 max-w-3xl text-4xl font-extrabold leading-[1.06] tracking-[-0.04em] sm:text-6xl lg:text-[4.25rem]">
+            Good decisions start with <span className="text-brand">clear numbers.</span>
+          </h1>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+            Calculate payments, percentages, health goals, project materials, and more. Enter your numbers and get a useful answer in seconds.
           </p>
 
           <form
             action="/tools"
             method="get"
-            className="input-glow mt-6 flex flex-col gap-2 rounded-2xl border-2 border-border bg-surface p-2 shadow-sm sm:mt-7 sm:flex-row sm:items-center"
+            className="input-glow mt-7 flex flex-col gap-2 rounded-2xl border border-border bg-surface p-2 shadow-lg shadow-indigo-950/5 sm:flex-row sm:items-center"
           >
-            <div className="flex min-w-0 flex-1 items-center gap-2">
-              <Icon name="Search" className="ms-2 h-5 w-5 shrink-0 text-muted" />
+            <div className="flex min-w-0 flex-1 items-center gap-3 px-2">
+              <Icon name="Search" className="h-5 w-5 shrink-0 text-brand" />
               <input
                 name="q"
                 type="search"
-                placeholder={t.home.searchPlaceholder(TOTAL_TOOLS)}
-                className="h-11 min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted sm:h-12"
+                placeholder={`Search ${TOTAL_TOOLS}+ calculators…`}
+                aria-label="Search calculators"
+                className="h-12 min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted"
               />
             </div>
             <button
               type="submit"
-              className="h-11 w-full shrink-0 rounded-xl bg-brand px-5 text-sm font-bold text-brand-fg transition-colors hover:bg-brand-2 sm:h-12 sm:w-auto"
+              className="h-12 rounded-xl bg-brand px-6 text-sm font-bold text-brand-fg transition-colors hover:bg-brand-2"
             >
-              {t.home.go}
+              Find a calculator
             </button>
           </form>
 
-          <div className="mt-5 flex flex-wrap gap-2">
-            {popular.map((tool) => {
+          <div className="mt-5 flex flex-wrap items-center gap-2 text-xs text-muted">
+            <span className="me-1 font-semibold">Popular:</span>
+            {popular.slice(0, 4).map((tool) => {
               const label = localizeTool(content, tool);
-              const icon = getToolIcon(tool);
-              const present = getToolIconPresentation(tool);
               return (
                 <Link
-                  key={toolHref(tool)}
+                  key={tool.slug}
                   href={toolHref(tool)}
                   prefetch={false}
-                  className="pill inline-flex items-center gap-1.5 text-xs"
+                  className="rounded-full border border-border bg-surface/80 px-3 py-1.5 font-medium transition-colors hover:border-brand/40 hover:text-brand"
                 >
-                  <span className={cn("grid h-5 w-5 place-items-center rounded-md", present.bg)}>
-                    <Icon name={icon} className={cn("h-3 w-3", present.fg)} />
-                  </span>
                   {label.name}
                 </Link>
               );
@@ -87,59 +72,58 @@ export async function HomeHero() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
-          {HERO_CATS.map((c, i) => {
-            const featured = i === 0;
-            return (
-              <a
-                key={c.slug}
-                href={`#${c.slug}`}
-                className={cn(
-                  "group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br text-white shadow-sm",
-                  "transition-transform hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                  c.gradient,
-                  featured && "col-span-2 row-span-2 min-h-[140px] p-4 sm:min-h-[176px] sm:p-5 lg:min-h-[208px] lg:p-6",
-                  !featured && "min-h-[96px] p-3 sm:min-h-[108px] sm:p-3.5",
-                  i > 3 && "hidden sm:flex",
-                )}
-              >
-                <CategoryArtFade slug={c.slug} variant={featured ? "hero" : "tile"} />
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-black/35 via-black/10 to-transparent"
-                />
-                <span
-                  className={cn(
-                    "relative z-10 grid place-items-center rounded-xl bg-white/15 ring-1 ring-white/25 backdrop-blur-[2px]",
-                    featured ? "h-10 w-10 sm:h-11 sm:w-11" : "h-8 w-8",
-                  )}
-                >
-                  <Icon
-                    name={c.icon}
-                    className={cn(featured ? "h-5 w-5" : "h-3.5 w-3.5 sm:h-4 sm:w-4")}
-                  />
-                </span>
-                <div className={cn("relative z-10", featured ? "max-w-[62%] sm:max-w-[65%]" : "max-w-[58%] sm:max-w-[60%]")}>
-                  <p
-                    className={cn(
-                      "font-bold leading-snug drop-shadow-sm",
-                      featured ? "text-base sm:text-lg lg:text-xl" : "text-xs sm:text-sm",
-                    )}
+        <div className="relative mx-auto w-full max-w-lg">
+          <div aria-hidden className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-brand/15 via-transparent to-cyan-400/15 blur-xl" />
+          <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-surface p-5 shadow-2xl shadow-slate-950/10 sm:p-7">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.15em] text-brand">Calculator Bazaar</p>
+                <h2 className="mt-1 text-xl font-extrabold tracking-tight sm:text-2xl">Start with a popular pick</h2>
+                <p className="mt-1 text-sm text-muted">Simple inputs. Clear results.</p>
+              </div>
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-brand/10 text-brand">
+                <Icon name="Sparkles" className="h-5 w-5" />
+              </span>
+            </div>
+
+            <div className="mt-5 grid gap-2.5">
+              {popular.map((tool, index) => {
+                const label = localizeTool(content, tool);
+                const category = CATEGORIES.find((item) => item.slug === tool.category);
+                const categoryLabel = category
+                  ? localizeCategory(content, category.slug, {
+                      name: category.name,
+                      description: category.description,
+                      tagline: category.tagline,
+                    }).name
+                  : "Calculator";
+                return (
+                  <Link
+                    key={tool.slug}
+                    href={toolHref(tool)}
+                    prefetch={false}
+                    className="group flex items-center gap-3 rounded-2xl border border-border/80 bg-background/70 p-3.5 transition-all hover:-translate-y-0.5 hover:border-brand/30 hover:bg-brand/5 hover:shadow-md"
                   >
-                    {categoryLabelFrom(t, c.slug, c.name)}
-                  </p>
-                  <p
-                    className={cn(
-                      "text-white/85",
-                      featured ? "mt-1 text-xs sm:text-sm" : "mt-0.5 text-[10px] sm:text-[11px]",
-                    )}
-                  >
-                    {t.home.toolsInCategory(c.tools.length)}
-                  </p>
-                </div>
-              </a>
-            );
-          })}
+                    <span className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-xl text-brand", index % 2 ? "bg-cyan-500/10" : "bg-brand/10")}>
+                      <Icon name={getToolIcon(tool)} className="h-5 w-5" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-bold">{label.name}</span>
+                      <span className="mt-0.5 block truncate text-xs text-muted">{categoryLabel}</span>
+                    </span>
+                    <Icon name="ArrowUpRight" className="h-4 w-4 shrink-0 text-muted transition-colors group-hover:text-brand" />
+                  </Link>
+                );
+              })}
+            </div>
+
+            <div className="mt-5 flex items-center justify-between rounded-xl bg-surface-2/70 px-4 py-3">
+              <span className="text-sm font-semibold">Explore the full collection</span>
+              <Link href="/tools" className="inline-flex items-center gap-1 text-sm font-bold text-brand hover:underline">
+                {TOTAL_TOOLS}+ calculators <Icon name="ArrowRight" className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </section>
